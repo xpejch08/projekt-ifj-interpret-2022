@@ -17,20 +17,78 @@
 #define assignOrEqualState 311
 #define equalState 312
 
-
+//todo token initialization, change returns of getNextToken function
 FILE *source;
 
 void setSourceFile(FILE *f){
     source = f;
 }
 
+//todo fix this function, probably problem in "strInit"
 void initToken(token *token){
     token->type = TYPE_INITIAL;
     strInit(token->content.str);
 }
 
-int keywordCmp();//TODO function that compares keyword to string and changes attr type to identifier or keyword
+/**
+ * @brief function that checks if a string is a keyword and sets the token depending on the output
+ * @param str dynamic string that we want to compare with a keyword
+ * @param attr main token attribute that we set depending on the outcome
+ * @return returns 0 if successful
+ */
+int keywordCmp(string *str, token *attr){//TODO check case insensitivity -> convert all to lower case function, change return
+    if(strCmpConstStr(str, "else") == 0){
+        attr->type = TYPE_KEYWORD;
+        attr->content.keyword = KEYWORD_ELSE;
+    }
+    else if(strCmpConstStr(str, "if") == 0){
+        attr->type = TYPE_KEYWORD;
+        attr->content.keyword = KEYWORD_IF;
+    }
+    else if(strCmpConstStr(str, "function") == 0){
+        attr->type = TYPE_KEYWORD;
+        attr->content.keyword = KEYWORD_FUNCTION;
+    }
+    else if(strCmpConstStr(str, "float") == 0){
+        attr->type = TYPE_KEYWORD;
+        attr->content.keyword = KEYWORD_FLOAT;
+    }
+    else if(strCmpConstStr(str, "int") == 0){
+        attr->type = TYPE_KEYWORD;
+        attr->content.keyword = KEYWORD_INT;
+    }
+    else if(strCmpConstStr(str, "null") == 0){
+        attr->type = TYPE_KEYWORD;
+        attr->content.keyword = KEYWORD_NULL;
+    }
+    else if(strCmpConstStr(str, "return") == 0){
+        attr->type = TYPE_KEYWORD;
+        attr->content.keyword = KEYWORD_RETURN;
+    }
+    else if(strCmpConstStr(str, "string") == 0){
+        attr->type = TYPE_KEYWORD;
+        attr->content.keyword = KEYWORD_STRING;
+    }
+    else if(strCmpConstStr(str, "void") == 0){
+        attr->type = TYPE_KEYWORD;
+        attr->content.keyword = KEYWORD_VOID;
+    }
+    else if(strCmpConstStr(str, "while") == 0){
+        attr->type = TYPE_KEYWORD;
+        attr->content.keyword = KEYWORD_WHILE;
+    }
+    else{
+        attr->type = TYPE_IDENTIFIER;
+    }
+    return 0;
 
+};
+
+/**
+ * @brief main function of lexical analysis, finite state machine that creates tokens
+ * @param attr token sent to parser
+ * @return returns different LEX_ERROR if something goes wrong else returns 0
+ */
 
 int getNextToken(token *attr) {
     int state = basicState;
@@ -202,6 +260,7 @@ int getNextToken(token *attr) {
 }
 int main(){
     token *attr;
+    initToken(attr);
     getNextToken(attr);
     return 0;
 }
