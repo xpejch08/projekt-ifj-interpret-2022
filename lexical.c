@@ -8,8 +8,8 @@
 #define oneLineCommentState 302 //one line comment state waiting for '\n' to end else returns LEX_ERROR
 #define blockCommentState 303 //block comment state waiting for a '*' symbol that will jump to the next state waitForBlockCommentEnd
 #define waitForBlockCommentEnd 304 //waitForBlockCommentEnd checks if the '/' symbol followed after the '*' symbol then ends comment otherwise jumps back to blockCommentState
-#define variableBeginState 305 //the $ symbol tells us the next token will be a variable
-#define variableState 306 //reading the variable
+#define keywordOrIdentifierStateBegin 305 //the $ symbol tells us the next token will be a variable
+#define keywordOrIdentifierState 306 //reading the variable
 #define identifierOrKeywordState 307 //the next token will be an identifier or a keyword
 #define numberState 308 //the next token will be a number, we don't know the specific data type yet
 #define smallerThanOrEqualState 309
@@ -17,7 +17,8 @@
 #define assignOrEqualState 311
 #define equalState 312
 
-//todo token initialization, change returns of getNextToken function
+
+//todo token initialization, define returns of getNextToken function soMething like -> LEX_ERROR
 FILE *source;
 
 void setSourceFile(FILE *f){
@@ -36,7 +37,7 @@ void initToken(token *token){
  * @param attr main token attribute that we set depending on the outcome
  * @return returns 0 if successful
  */
-int keywordCmp(string *str, token *attr){//TODO check case insensitivity -> convert all to lower case function, change return
+int keywordCmp(string *str, token *attr){
     if(strCmpConstStr(str, "else") == 0){
         attr->type = TYPE_KEYWORD;
         attr->content.keyword = KEYWORD_ELSE;
@@ -79,6 +80,7 @@ int keywordCmp(string *str, token *attr){//TODO check case insensitivity -> conv
     }
     else{
         attr->type = TYPE_IDENTIFIER;
+        strCopyStr(attr->content.str, str);
     }
     return 0;
 
@@ -199,26 +201,26 @@ int getNextToken(token *attr) {
                 if(character == EOF){
                     return LEX_ERROR;
                 }
-            case variableBeginState:
+            case keywordOrIdentifierStateBegin:
                 if(isalpha(character) || character == '_'){
+                    (char) tolower(character);
                     strAddChar(attr->content.str, character);
-                    state = variableState;
+                    state = keywordOrIdentifierState;
                 }
-                else{
+                else if(character == EOF){
                     return LEX_ERROR;
                 }
-            case variableState://TODO function while runs forever with same character fix
-                while(1){
-                    if(isalnum(character) || character == '_')
-                        strAddChar(attr->content.str, character);
-                    else if(character == EOF){
-                        return LEX_ERROR;
-                    }
-                    else {
-                        state = basicState;
-                        break;
-                    }
+            case keywordOrIdentifierState:
+                if(isalnum(character) || character == '_'){
+                    (char) tolower(character);
+                    strAddChar(attr->content.str, character);
                 }
+                else{
+                    ungetc(character, source);
+                    keywordCmp(attr->content.str, attr);
+
+                }
+                break;
             case smallerThanOrEqualState:
                 if(character == '='){
                     attr->type = TYPE_SMALLER_OR_EQUAL;
