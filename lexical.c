@@ -28,7 +28,14 @@
 #define escapeOctaState 319
 #define waitOctaState 320
 #define endOctaState 321
-#define numberState 322
+#define decimalState 322
+#define exponentState 323
+#define exponentPlusOrMinusState 324
+#define endExponentState 325
+#define notEqualState 326
+#define notEqualStateEnd 327
+
+
 //todo token initialization, change returns of getNextToken function
 FILE *source;
 
@@ -36,7 +43,6 @@ void setSourceFile(FILE *f){
     source = f;
 }
 
-//todo fix this function, probably problem in "strInit"
 void initToken(token *token){
     token->type = TYPE_INITIAL;
     strInit(token->content.str);
@@ -51,7 +57,7 @@ int octaToDecimal(const char *arr){
         rightmost = octal / 10;
         octal = octal / 10;
 
-        decimal = decimal + rightmost * pow(8, position);
+        decimal = decimal + rightmost * (int) pow(8, position);
         position++;
     }
     return decimal;
@@ -124,7 +130,7 @@ int keywordCmp(string *str, token *attr){
     }
     return LEX_OK;
 
-};
+}
 
 /**
  * @brief main function of lexical analysis, finite state machine that creates tokens
@@ -135,6 +141,7 @@ int keywordCmp(string *str, token *attr){
 int getNextToken(token *attr) {
     int state = basicState;
     char character;
+    char *endptr;
     char hexaEscape[2];
     char octaEscape[3];
     strInit(attr->content.str);
@@ -188,6 +195,9 @@ int getNextToken(token *attr) {
 
                 else if(character == '>'){
                     state = smallerThanOrEqualState;
+                }
+                else if(character == '!'){
+                    state = notEqualState;
                 }
                 else if(character == '<'){
                     state = greaterThanOrEqualState;
@@ -368,7 +378,54 @@ int getNextToken(token *attr) {
                     strAddChar(attr->content.str, character);
                     state = waitForStringEnd;
                 }
-
+            case numberState:
+                if(isdigit(character)){
+                    strAddChar(attr->content.str, character);
+                }
+                else if(character == '.'){
+                    strAddChar(attr->content.str, character);
+                    state = decimalState;
+                }
+                else if(character == 'e' || character == 'E'){
+                    strAddChar(attr->content.str, character);
+                    state = exponentState;
+                }
+                else{
+                    ungetc(character, source);
+                    attr->type = TYPE_INTEGER_NUMBER;
+                    attr->content.integerNumber = atoi(attr->content.str->str);
+                    return LEX_OK;
+                }
+                break;
+            case decimalState:
+                if(isdigit(character)){
+                    strAddChar(attr->content.str, character);
+                }
+                else if(character == 'e' || character == 'E'){
+                    strAddChar(attr->content.str, character);
+                    state = exponentPlusOrMinusState;
+                }
+                else if(isspace(character)){
+                    attr->type = TYPE_DOUBLE_NUMBER;
+                    attr->content.doubleNumber = strtod(attr->content.str->str, &endptr);
+                }
+            case exponentPlusOrMinusState:
+                if(character == '+' || character == '-' || isdigit(character) == 1){
+                    strAddChar(attr->content.str, character);
+                    state = endExponentState;
+                }
+            case endExponentState:
+                if(isdigit(character)){
+                    strAddChar(attr->content.str,character);
+                }
+                else if(isspace(character)){
+                    ungetc(character, source);
+                    attr->type = TYPE_EXPONENT_NUMBER;
+                    return LEX_OK;
+                }
+                else{
+                    return LEX_ERROR;
+                }
 
             case smallerThanOrEqualState:
                 if(character == '='){
@@ -394,12 +451,29 @@ int getNextToken(token *attr) {
                 }
                 else{
                     attr->type = TYPE_ASSIGN;
-                    return 0;
+                    return LEX_OK;
                 }
             case equalState:
                 if(character == '='){
                     attr->type = TYPE_EQUAL;
-                    return 0;
+                    return LEX_OK;
+                }
+                else{
+                    return LEX_ERROR;
+                }
+            case notEqualState:
+                if(character == '='){
+                    state = notEqualStateEnd;
+                }
+                else{
+                    return LEX_ERROR;
+                }
+            case notEqualStateEnd:
+                if(character == '='){
+                    attr->type = TYPE_NOT_EQUAL;
+                }
+                else{
+                    return LEX_ERROR;
                 }
 
 

@@ -19,8 +19,10 @@ typedef enum {
 typedef enum{
     TYPE_INITIAL,
     TYPE_KEYWORD,
+    TYPE_VARIABLE,
     TYPE_INTEGER_NUMBER,
-    TYPE_FLOAT_NUMBER,
+    TYPE_DOUBLE_NUMBER,
+    TYPE_EXPONENT_NUMBER,
     TYPE_IDENTIFIER,
     TYPE_STRING,
     TYPE_MULTIPLY,
@@ -41,7 +43,7 @@ typedef enum{
 
 typedef union{
     int integerNumber;
-    double floatnumber;
+    double doubleNumber;
     string *str;
     keyword keyword;
 }tokenContent;
@@ -54,6 +56,7 @@ typedef struct{
 
 
 #define LEX_ERROR 1
+#define LEX_OK 0
 
 void setSourceFile(FILE *f);
 int getNextToken(token *attr);
