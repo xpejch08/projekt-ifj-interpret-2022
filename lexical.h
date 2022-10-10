@@ -2,6 +2,7 @@
 #define LEXICAL_H
 
 #include "str.h"
+#include "errors.h"
 
 typedef enum {
     KEYWORD_ELSE, //100
@@ -53,10 +54,6 @@ typedef struct{
     tokenType type;
 }token;
 
-
-
-#define LEX_ERROR 1
-#define LEX_OK 0
 
 void setSourceFile(FILE *f);
 int getNextToken(token *attr);

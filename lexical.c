@@ -128,7 +128,7 @@ int keywordCmp(string *str, token *attr){
         attr->type = TYPE_IDENTIFIER;
         strCopyStr(attr->content.str, str);
     }
-    return LEX_OK;
+    return SUCCES;
 
 }
 
@@ -289,7 +289,7 @@ int getNextToken(token *attr) {
                     if (character == '"') {
                         attr->type = TYPE_STRING;
                         ungetc(character, source);
-                        return LEX_OK;
+                        return SUCCES;
                     }
                     else {
                         strAddChar(attr->content.str, character);
@@ -394,7 +394,7 @@ int getNextToken(token *attr) {
                     ungetc(character, source);
                     attr->type = TYPE_INTEGER_NUMBER;
                     attr->content.integerNumber = atoi(attr->content.str->str);
-                    return LEX_OK;
+                    return SUCCES;
                 }
                 break;
             case decimalState:
@@ -421,7 +421,7 @@ int getNextToken(token *attr) {
                 else if(isspace(character)){
                     ungetc(character, source);
                     attr->type = TYPE_EXPONENT_NUMBER;
-                    return LEX_OK;
+                    return SUCCES;
                 }
                 else{
                     return LEX_ERROR;
@@ -451,12 +451,12 @@ int getNextToken(token *attr) {
                 }
                 else{
                     attr->type = TYPE_ASSIGN;
-                    return LEX_OK;
+                    return SUCCES;
                 }
             case equalState:
                 if(character == '='){
                     attr->type = TYPE_EQUAL;
-                    return LEX_OK;
+                    return SUCCES;
                 }
                 else{
                     return LEX_ERROR;
