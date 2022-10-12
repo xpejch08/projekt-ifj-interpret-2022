@@ -23,8 +23,8 @@ TNode *BVSSearch(TNode *rootPtr, token token){
 */
 void BVSFree(TRoot *SymTable, TNode *rootPtr){
     if(rootPtr != NULL){
-        RootsDelete(SymTable ,rootPtr->rightPtr);
-        RootsDelete(SymTable, rootPtr->leftPtr);
+        BVSFree(SymTable ,rootPtr->rightPtr);
+        BVSFree(SymTable, rootPtr->leftPtr);
         free(rootPtr);
     }
     free(SymTable);
