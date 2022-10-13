@@ -1,26 +1,56 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
+#include <stdbool.h>
 #include "symtable.h"
 
 void BVSInit(TRoot *SymTable){
     SymTable->rootPtr = NULL;
 }
 
-TNode *BVSInsert(TNode *rootPtr, token token){
+TNode *BVSCreate(token token){
     TNode *newPtr = malloc(sizeof(struct tnode));
-    rootPtr->leftPtr = NULL;
-    rootPtr->rightPtr = NULL;
-    rootPtr->type = token.type;
+    if(newPtr == NULL){
+        // TODO jaky error to ma ukazat pri chybne alokaci??
+    }
+    newPtr->leftPtr = NULL;
+    newPtr->rightPtr = NULL;
+    newPtr->type = token.type;
+    newPtr->content = token.content;
 
     return newPtr;
 }
-// TODO musime se domluvit podle ceho budeme vyhledavat
-/*
-TNode *BVSSearch(TNode *rootPtr, token token){
-    
+
+TNode *BVSInsert(TNode *rootPtr, token token){
+    if(rootPtr == NULL){
+        return BVSCreate(token);
+    }
+    else{
+        if((strCmpStr(&(token.content), &(rootPtr->content))) < 0){
+            rootPtr->leftPtr = BVSInsert(rootPtr->leftPtr, token);
+        }
+        else if((strCmpStr(&(token.content), &(rootPtr->content))) < 0){
+            rootPtr->rightPtr = BVSInsert(rootPtr->rightPtr, token);
+        }
+        return rootPtr;
+    }
 }
-*/
+
+bool BVSSearch(TNode *rootPtr, token token){
+    if(rootPtr == NULL){
+        return false;
+    }
+    else{
+        if((strCmpStr(&(token.content), &(rootPtr->content))) < 0){
+            rootPtr->leftPtr = BVSSearch(rootPtr->leftPtr, token);
+        }
+        else if((strCmpStr(&(token.content), &(rootPtr->content))) < 0){
+            rootPtr->rightPtr = BVSSearch(rootPtr->rightPtr, token);
+        }
+        return true;
+    }
+}
+
 void BVSFree(TRoot *SymTable, TNode *rootPtr){
     if(rootPtr != NULL){
         BVSFree(SymTable ,rootPtr->rightPtr);

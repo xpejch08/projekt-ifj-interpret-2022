@@ -3,6 +3,7 @@
 
 typedef struct tnode{
     tokenType type;
+    tokenContent content;
     struct tnode *leftPtr;
     struct tnode *rightPtr;
 }TNode;
@@ -12,6 +13,7 @@ typedef struct troot{
 }TRoot;
 
 void BVSInit(TRoot *SymTable);
+TNode *BVSCreate(token token);
 TNode *BVSInsert(TNode *rootPtr, token token);
-TNode *BVSSearch(TNode *rootPtr, token token);
+bool BVSSearch(TNode *rootPtr, token token);
 void BVSFree(TRoot *SymTable, TNode *rootPtr);
