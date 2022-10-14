@@ -1,11 +1,14 @@
 #include "lexical.h"
 #include "stack.h"
+#include "errors.h"
+#include "str.h"
 
 typedef struct tnode{
     tokenType type;
     tokenContent content;
     struct tnode *leftPtr;
     struct tnode *rightPtr;
+    string key;
 }TNode;
 
 typedef struct troot{

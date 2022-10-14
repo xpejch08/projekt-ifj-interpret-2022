@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <malloc.h>
 #include <stdbool.h>
+#include <string.h>
 #include "symtable.h"
 
 void BVSInit(TRoot *SymTable){
@@ -11,7 +12,8 @@ void BVSInit(TRoot *SymTable){
 TNode *BVSCreate(token token){
     TNode *newPtr = malloc(sizeof(struct tnode));
     if(newPtr == NULL){
-        // TODO jaky error to ma ukazat pri chybne alokaci??
+        fprintf(stderr, "Chyba pri alokaci prvku");
+        return INT_ERROR; 
     }
     newPtr->leftPtr = NULL;
     newPtr->rightPtr = NULL;
@@ -26,10 +28,10 @@ TNode *BVSInsert(TNode *rootPtr, token token){
         return BVSCreate(token);
     }
     else{
-        if((strCmpStr(&(token.content), &(rootPtr->content))) < 0){
+        if((strcmp(&(token.content), &(rootPtr->content))) < 0){
             rootPtr->leftPtr = BVSInsert(rootPtr->leftPtr, token);
         }
-        else if((strCmpStr(&(token.content), &(rootPtr->content))) < 0){
+        else if((strcmp(&(token.content), &(rootPtr->content))) > 0){
             rootPtr->rightPtr = BVSInsert(rootPtr->rightPtr, token);
         }
         return rootPtr;
@@ -41,10 +43,10 @@ bool BVSSearch(TNode *rootPtr, token token){
         return false;
     }
     else{
-        if((strCmpStr(&(token.content), &(rootPtr->content))) < 0){
+        if((strcmp(&(token.content), &(rootPtr->content))) < 0){
             rootPtr->leftPtr = BVSSearch(rootPtr->leftPtr, token);
         }
-        else if((strCmpStr(&(token.content), &(rootPtr->content))) < 0){
+        else if((strcmp0(&(token.content), &(rootPtr->content))) < 0){
             rootPtr->rightPtr = BVSSearch(rootPtr->rightPtr, token);
         }
         return true;
