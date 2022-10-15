@@ -175,22 +175,35 @@ int getNextToken(token *attr) {
                 else if(character == '*'){
                     attr->type = TYPE_MULTIPLY;
                     strFree(attr->content.str);
-                    return 0;
+                    return SUCCES;
                 }
                 else if(character == '+'){
                     attr->type = TYPE_ADDITION;
                     strFree(attr->content.str);
-                    return 0;
+                    return SUCCES;
                 }
                 else if(character == '-'){
                     attr->type = TYPE_SUBTRACTION;
                     strFree(attr->content.str);
-                    return 0;
+                    return SUCCES;
                 }
                 else if(character == '.'){
                     attr->type = TYPE_CONCATENATE;
                     strFree(attr->content.str);
-                    return 0;
+                    return SUCCES;
+                }
+                else if(character == EOF){
+                    attr->type = TYPE_END_OF_FILE;
+                    return SUCCES;
+                }
+                else if(character == '('){
+                    attr->type = TYPE_LBRACKET;
+                    return SUCCES;
+                }
+
+                else if(character == ')'){
+                    attr->type = TYPE_RBRACKET;
+                    return SUCCES;
                 }
 
                 else if(character == '>'){
@@ -219,7 +232,7 @@ int getNextToken(token *attr) {
                 else {
                     attr->type = TYPE_DIVIDE;
                     ungetc(character, source);
-                    return 0;
+                    return SUCCES;
                 }
             case oneLineCommentState :
                 if(character == '\n'){
@@ -482,10 +495,4 @@ int getNextToken(token *attr) {
 
     }
 
-}
-int main(){
-    token *attr;
-    initToken(attr);
-    getNextToken(attr);
-    return 0;
 }

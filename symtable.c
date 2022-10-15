@@ -28,10 +28,10 @@ TNode *BVSInsert(TNode *rootPtr, token token){
         return BVSCreate(token);
     }
     else{
-        if((strcmp(&(token.content), &(rootPtr->content))) < 0){
+        if((strCmpStr((token.content), (rootPtr->content))) < 0){
             rootPtr->leftPtr = BVSInsert(rootPtr->leftPtr, token);
         }
-        else if((strcmp(&(token.content), &(rootPtr->content))) > 0){
+        else if((strCmpStr((token.content), (rootPtr->content))) > 0){
             rootPtr->rightPtr = BVSInsert(rootPtr->rightPtr, token);
         }
         return rootPtr;
@@ -43,10 +43,10 @@ bool BVSSearch(TNode *rootPtr, token token){
         return false;
     }
     else{
-        if((strcmp(&(token.content), &(rootPtr->content))) < 0){
+        if((strCmpStr((token.content), (rootPtr->content))) < 0){
             rootPtr->leftPtr = BVSSearch(rootPtr->leftPtr, token);
         }
-        else if((strcmp0(&(token.content), &(rootPtr->content))) < 0){
+        else if((strCmpStr((token.content), (rootPtr->content))) < 0){
             rootPtr->rightPtr = BVSSearch(rootPtr->rightPtr, token);
         }
         return true;

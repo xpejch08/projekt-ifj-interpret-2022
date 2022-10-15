@@ -37,7 +37,10 @@ typedef enum{
     TYPE_GREATER_OR_EQUAL,
     TYPE_EQUAL,
     TYPE_NOT_EQUAL,
-    TYPE_ASSIGN
+    TYPE_ASSIGN,
+    TYPE_END_OF_FILE,
+    TYPE_LBRACKET,
+    TYPE_RBRACKET
 
 
 }tokenType;

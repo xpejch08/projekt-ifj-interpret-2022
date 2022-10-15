@@ -2,7 +2,7 @@
 // Created by stepan on 12.10.22.
 //
 
-#ifndef PROJEKT_IFJ_INTERPRET_2022_PARSER_H
-#define PROJEKT_IFJ_INTERPRET_2022_PARSER_H
+#ifndef PARSER_H
+#define PARSER_H
 
 #endif //PROJEKT_IFJ_INTERPRET_2022_PARSER_H
