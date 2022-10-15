@@ -27,7 +27,8 @@ void generateInstruction(){
 
 int stat(); // function declaration;
 
-//check declare function
+//check declare function, checks beginning of token type for example checks if there is a left bracket after while,
+// recursively calls itself
 int declrList(){
 
     switch (sToketabn->type) {
@@ -64,15 +65,23 @@ int declrList(){
 
     }
 }
-
+//check after function, checks ending of token type for example checks if there is a right bracket after condition of
+// while, recursively calls itself
+//also calls main fynction stat
 int statList(){
     //todo
 }
 
+
+//stat function checks content of different types, for example condition of while or body of while, calls function
+//statlist -> statlist calls stat recursively
 int stat(){
 
  //todo
 }
+
+//function that calls function declr list and statlist depending on the type, also checks if there is end of file after
+// or not
 int program(){
 
     int result;
@@ -143,19 +152,21 @@ int program(){
     }
 }
 
-int parse(TNode *BVS, tStack *Ilist){
+//function that initializes tree, list of instructions, token, reads first token and calls program() function
+int parse(TNode *BVS, tStack *iList){
 
     int result;
     tree = BVS;
-    list = Ilist;
-    strInit(&content);
+    list = iList;
+    //todo fix init token function
+    initToken(sToken);
     if((tokenId = getNextToken(sToken)) == LEX_ERROR){
         return LEX_ERROR;
     }
     else{
         result = program();
     }
-    strFree(content);
+    //todo freeToken() funtcion
     return result;
 }
 
