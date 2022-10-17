@@ -11,7 +11,7 @@
 //todo function declrlist -> starts a type(checks if something is declared or not etc.) for all types that need it
 //todo function statlist that ends functions (checks for right bracket, semicolon, etc.) for all types that need it
 
-Tnode *tree;
+TNode *tree;
 tStack *list;
 int tokenId;
 token *sToken;
@@ -20,7 +20,7 @@ int incId = 1;
 
 
 //initializing tree
-BVSInit(*tree);
+BVSInit(tree);
 
 void generateInstruction(){
 //todo define instructions in stack.h and write generateInstruction function
@@ -32,11 +32,11 @@ int stat(); // function declaration;
 // recursively calls itself
 int declrList(){
 
-    switch (sToketabn->type) {
+    switch (sToken->type) {
         case TYPE_IDENTIFIER:
 
-            if(BVSSearch(tree, sToken) == false){
-                BVSInsert(tree, sToken);
+            if(BVSSearch(tree, *sToken) == false){
+                BVSInsert(tree, *sToken);
             }
             else{
                 return SEM_ERROR;
@@ -45,8 +45,8 @@ int declrList(){
             switch (sToken->content.keyword) {
                 case KEYWORD_WHILE:
 
-                    if(BVSSearch(tree, sToken) == false){
-                        BVSInsert(tree, sToken)
+                    if(BVSSearch(tree, *sToken) == false){
+                        BVSInsert(tree, *sToken);
                     }
                     else{
                         return SEM_ERROR;
@@ -77,7 +77,7 @@ int statList(){
 //stat function checks content of different types, for example condition of while or body of while, calls function
 //statlist -> statlist calls stat recursively
 int stat(){
-
+    
  //todo
 }
 
