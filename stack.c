@@ -8,14 +8,15 @@ void StackInit(tStack *stack){
     stack->topPtr = NULL;
 }
 
-void StackPush(tStack *stack, token *token){
+void StackPush(tStack *stack, token token){
     tElement *element = malloc(sizeof(tElement));
     if(element ==NULL){
         return 1;
     }
     element->nextPtr = stack->topPtr;
     stack->topPtr = element;
-    stack->topPtr->data = token;
+    stack->topPtr->content = token.content;
+    stack->topPtr->type = token.type;
 }
 
 void StackPop(tStack *stack){
@@ -39,5 +40,5 @@ void StackFree(tStack *stack){
 }
 
 void StackTop(tStack *stack){
-    return (stack->topPtr->data);
+    return (stack->topPtr->content);
 }

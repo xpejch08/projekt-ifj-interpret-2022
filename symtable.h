@@ -1,3 +1,6 @@
+#ifndef SYMTABLE_H
+#define SYMTABLE_H
+
 #include "lexical.h"
 #include "stack.h"
 #include "errors.h"
@@ -20,3 +23,5 @@ TNode *BVSCreate(token token);
 TNode *BVSInsert(TNode *rootPtr, token token);
 bool BVSSearch(TNode *rootPtr, token token);
 void BVSFree(TRoot *SymTable, TNode *rootPtr);
+
+#endif

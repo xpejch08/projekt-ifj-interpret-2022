@@ -1,7 +1,11 @@
+#ifndef STACK_H
+#define STACK_H
+
 #include "lexical.h"
 
 typedef struct element {
-    struct token *data; // data 
+    tokenType type;
+    tokenContent content;
     struct element *nextPtr; // pointer on following token
 }tElement;
 
@@ -12,10 +16,12 @@ typedef struct stack
 
 void StackInit(tStack *stack);
 
-void StackPush(tStack *stack, token *token);
+void StackPush(tStack *stack, token token);
 
 void StackPop(tStack *stack);
 
 void StackFree(tStack *stack);
 
 void StackTop(tStack *stack);
+
+#endif
