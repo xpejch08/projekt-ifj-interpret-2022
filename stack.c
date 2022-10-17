@@ -3,15 +3,23 @@
 #include <malloc.h>
 #include "stack.h"
 
-
+/**
+ * @brief function creates new node in SymTable
+ * @param token token from which we put data
+ */
 void StackInit(tStack *stack){
     stack->topPtr = NULL;
 }
-
+/**
+ * @brief function creates new node in SymTable
+ * @param token token from which we put data
+ * @return returns newly created node
+ */
 void StackPush(tStack *stack, token token){
     tElement *element = malloc(sizeof(tElement));
     if(element ==NULL){
-        return 1;
+        fprintf(stderr, "Chyba pri alokaci prvku");
+        return INT_ERROR; 
     }
     element->nextPtr = stack->topPtr;
     stack->topPtr = element;
@@ -40,5 +48,5 @@ void StackFree(tStack *stack){
 }
 
 void StackTop(tStack *stack){
-    return (stack->topPtr->content);
+    return (stack->topPtr);
 }
