@@ -1,7 +1,7 @@
 #ifndef CODE_GEN_H
 #define CODE_GEN_H
 
-
+//Instr
 #define MOVS 400
 #define ADDS 401
 #define SUBS 402
@@ -28,7 +28,5 @@ typedef struct instrNode
     TInstNode *next;
     int instruction;
 };
-
-
 
 #endif
