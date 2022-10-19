@@ -66,14 +66,14 @@ int declrList(){
                     }else{
                         return SUCCES;
                     }
-                case KEYWORD_RETURN:
-                    getNextToken(sToken);
-                    // TODO check if anything is missing
-                    if(sToken->type != TYPE_VARIABLE || sToken->type != TYPE_STRING || sToken->type != TYPE_INTEGER_NUMBER || sToken){
-                        return SYN_ERROR;
-                    }else{
-                        return SUCCES;
-                    }
+                //case KEYWORD_RETURN:
+                //    getNextToken(sToken);
+                //    // TODO check if anything is missing
+                //    if(sToken->type != TYPE_VARIABLE || sToken->type != TYPE_STRING || sToken->type != TYPE_INTEGER_NUMBER || sToken){
+                //        return SYN_ERROR;
+                //    }else{
+                //        return SUCCES;
+                //    }
                 case KEYWORD_INT:
                     getNextToken(sToken);
                     if(sToken->type != TYPE_VARIABLE){
