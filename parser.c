@@ -53,7 +53,7 @@ int declrList(){
                     }
                 case KEYWORD_VOID:
                     getNextToken(sToken);
-                    if(sToken->type != TYPE_LBRACKET){
+                    if(sToken->type != TYPE_LB  RACKET){
                         return SYN_ERROR;
                     }
                     else{
@@ -118,6 +118,39 @@ int declrList(){
 // while, recursively calls itself
 //also calls main fynction stat
 int statList(){
+    int result;
+    if((result = getNextToken(sToken)) == LEX_ERROR){
+        return LEX_ERROR
+    }
+    switch (sToken->type) {
+        case TYPE_RVINCULUM:
+            return SUCCES;
+            break;
+        case TYPE_VARIABLE:
+        case TYPE_END_OF_FILE:
+        case TYPE_IDENTIFIER:
+        case TYPE_SEMICOLON:
+            return SUCCES;
+        case TYPE_RBRACKET:
+            return SUCCES;
+        case TYPE_ASSIGN:
+        case TYPE_ADDITION:
+        case TYPE_MULTIPLY:
+        case TYPE_DIVIDE:
+        case TYPE_SUBTRACTION:
+        case TYPE_SMALLER_THAN:
+        case TYPE_SMALLER_OR_EQUAL:
+        case TYPE_GREATER_THAN:
+        case TYPE_GREATER_OR_EQUAL:
+        case TYPE_EQUAL:
+        case TYPE_CONCATENATE:
+        case TYPE_INITIAL:
+        case TYPE_STRING:
+        case TYPE_INTEGER_NUMBER:
+        case TYPE_DOUBLE_NUMBER:
+        case TYPE_EXPONENT_NUMBER:
+        case TYPE_NOT_EQUAL:
+    }
     //todo statList
 }
 
@@ -161,11 +194,11 @@ int program(){
         case TYPE_KEYWORD:
             switch (sToken->content.keyword) {
                 case KEYWORD_WHILE:
-                    if((result = declrList()) == SYN_ERROR){
-                        return SYN_ERROR;
+                    if((result = declrList()) != SUCCES){
+                        return result;
                     }
-                    if((result = statList()) == SYN_ERROR){
-                        return SYN_ERROR;
+                    if((result = statList()) != SUCCES){
+                        return result;
                     }
 
                     if((sToken->type) != TYPE_END_OF_FILE){
@@ -198,6 +231,11 @@ int program(){
         case TYPE_ADDITION:
         case TYPE_ASSIGN:
         case TYPE_END_OF_FILE:
+        case TYPE_LBRACKET:
+        case TYPE_RBRACKET:
+        case TYPE_SEMICOLON:
+        case TYPE_RVINCULUM:
+        case TYPE_LVINCULUM:
     }
 }
 
