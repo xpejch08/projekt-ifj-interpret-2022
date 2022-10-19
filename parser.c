@@ -53,7 +53,7 @@ int declrList(){
                     }
                 case KEYWORD_VOID:
                     getNextToken(sToken);
-                    if(sToken->type != TYPE_LB  RACKET){
+                    if(sToken->type != TYPE_LBRACKET){
                         return SYN_ERROR;
                     }
                     else{
@@ -120,7 +120,7 @@ int declrList(){
 int statList(){
     int result;
     if((result = getNextToken(sToken)) == LEX_ERROR){
-        return LEX_ERROR
+        return LEX_ERROR;
     }
     switch (sToken->type) {
         case TYPE_RVINCULUM:
