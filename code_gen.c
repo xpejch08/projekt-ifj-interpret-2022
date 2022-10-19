@@ -25,7 +25,8 @@ void instructionInsertLast(TInstList *instrList, TInst I)
     TItemList *new = malloc(sizeof(TItemList));
     if(new == NULL)
     {
-        return 1;
+        fprintf(stderr,"Chyba alokace prvku");
+        return INT_ERROR;
     }
     new->instruction = I;
     if (instrList->first != NULL)
@@ -72,5 +73,13 @@ void instructionActiveNext(TInstList *instrList)
         {
         instrList->active = instrList->active->next;
         }
+    }
+}
+
+TInst *instructionGetData(TInstList *instrList)
+{
+    if(instrList->active != NULL)
+    {
+        return &(instrList->active->instruction);
     }
 }
