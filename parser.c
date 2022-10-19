@@ -38,43 +38,79 @@ int declrList(){
             if(BVSSearch(tree, *sToken) == false){
                 BVSInsert(tree, *sToken);
             }
-            else if((tokenId == getNextToken()) == LEX_ERROR){
-                return LEX_ERROR;
+            else{
+                return SEM_ERROR;
             }
-            if(sToken->type != TYPE_SEMICOLON){
-                return SYN_ERROR;
-            }
-
-            if((tokenId == getNextToken()) == LEX_ERROR){
-                return LEX_ERROR;
-            }
-            return declrList();
         case TYPE_KEYWORD:
             switch (sToken->content.keyword) {
                 case KEYWORD_WHILE:
-
-
-                    if (BVSSearch(tree, *sToken) == false) {
-                        BVSInsert(tree, *sToken);
-                    } else {
-                        return SEM_ERROR;
-                    }
-                    if (tokenId == getNextToken(sToken) == LEX_ERROR) {
-                        return LEX_ERROR;
-                    }
-                    if (sToken->type != TYPE_LBRACKET) {
+                    getNextToken(sToken);
+                    if(sToken->type != TYPE_LBRACKET){
                         return SYN_ERROR;
                     }
-                    if (tokenId == getNextToken(sToken) == LEX_ERROR) {
-                        return declrList();
+                    else{
+                        return SUCCES;
                     }
-                    break;
-                }
-        case TYPE_LBRACKET:
-            if((tokenId = getNextToken(sToken)) == LEX_ERROR){
-                return LEX_ERROR;
+                case KEYWORD_VOID:
+                    getNextToken(sToken);
+                    if(sToken->type != TYPE_LBRACKET){
+                        return SYN_ERROR;
+                    }
+                    else{
+                        return SUCCES;
+                    }
+                case KEYWORD_STRING:
+                    getNextToken(sToken);
+                    if(sToken->type != TYPE_VARIABLE){
+                        return SYN_ERROR;
+                    }else{
+                        return SUCCES;
+                    }
+                case KEYWORD_RETURN:
+                    getNextToken(sToken);
+                    // TODO check if anything is missing
+                    if(sToken->type != TYPE_VARIABLE || sToken->type != TYPE_STRING || sToken->type != TYPE_INTEGER_NUMBER || sToken){
+                        return SYN_ERROR;
+                    }else{
+                        return SUCCES;
+                    }
+                case KEYWORD_INT:
+                    getNextToken(sToken);
+                    if(sToken->type != TYPE_VARIABLE){
+                        return SYN_ERROR;
+                    }else{
+                        return SUCCES;
+                    }
+                case KEYWORD_IF:
+                    getNextToken(sToken);
+                    if(sToken->type != TYPE_LBRACKET){
+                        return SYN_ERROR;
+                    }else{
+                        return SUCCES;
+                    }
+                case KEYWORD_FUNCTION:
+                    getNextToken(sToken);
+                    if(sToken->type != TYPE_LBRACKET){
+                        return SYN_ERROR;
+                    }else{
+                        return SUCCES;
+                    }
+                case KEYWORD_FLOAT:
+                    getNextToken(sToken);
+                    if(sToken->type != TYPE_VARIABLE){
+                        return SYN_ERROR;
+                    }else{
+                        return SUCCES;
+                    }
+                case KEYWORD_ELSE:
+                    getNextToken(sToken);
+                    if(sToken->type != TYPE_LVINCULUM){
+                        return SYN_ERROR;
+                    }else{
+                        return SUCCES;
+                    }
             }
-            return SUCCES;
+
 
     }
 }
@@ -82,22 +118,14 @@ int declrList(){
 // while, recursively calls itself
 //also calls main fynction stat
 int statList(){
-    int result;
-    if((result = getNextToken(sToken)) == LEX_ERROR){
-        return LEX_ERROR;
-    }
-    switch (sToken) {
-        case TYPE_RBRACKET:
-            return SUCCES;
-        case TYPE_KEYWORD:
-        case TYP:
-    }
+    //todo
 }
 
 
 //stat function checks content of different types, for example condition of while or body of while, calls function
 //statlist -> statlist calls stat recursively
 int stat(){
+    
  //todo
 }
 
@@ -170,9 +198,6 @@ int program(){
         case TYPE_ADDITION:
         case TYPE_ASSIGN:
         case TYPE_END_OF_FILE:
-        case TYPE_LBRACKET:
-        case TYPE_RBRACKET:
-        case TYPE_SEMICOLON:
     }
 }
 
