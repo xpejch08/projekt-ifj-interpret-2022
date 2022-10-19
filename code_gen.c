@@ -55,3 +55,22 @@ void instructionInsertFirst(TInstList *instrList, TInst I)
         instrList->first = new;
     }
 }
+
+void instructionActiveFirst(TInstList *instrList)
+{
+    if(instrList->first != NULL)
+    {
+        instrList->active = instrList->first;
+    }
+}
+
+void instructionActiveNext(TInstList *instrList)
+{
+    if(instrList->first != NULL)
+    {
+        if(instrList->active->next != NULL)
+        {
+        instrList->active = instrList->active->next;
+        }
+    }
+}

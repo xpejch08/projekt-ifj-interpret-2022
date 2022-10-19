@@ -48,4 +48,10 @@ void instructionInsertLast(TInstList *instrList, TInst I);
 // funkce vlozi isntrukci na zacatek seznamu
 void instructionInsertFirst(TInstList *instrList, TInst I);
 
+//funkce zaktivuje prvni instrukci
+void instructionActiveFirst(TInstList *instrList);
+
+//funkce aktivuje nasledujici instrukci
+void instructionActiveNext(TInstList *instrList);
+
 #endif
