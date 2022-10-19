@@ -44,23 +44,71 @@ int declrList(){
         case TYPE_KEYWORD:
             switch (sToken->content.keyword) {
                 case KEYWORD_WHILE:
-
-                    if(BVSSearch(tree, *sToken) == false){
-                        BVSInsert(tree, *sToken);
-                    }
-                    else{
-                        return SEM_ERROR;
-                    }
-                    if(tokenId == getNextToken(sToken) == LEX_ERROR){
-                        return LEX_ERROR;
-                    }
+                    getNextToken(sToken);
                     if(sToken->type != TYPE_LBRACKET){
                         return SYN_ERROR;
                     }
-                    if(tokenId == getNextToken(sToken) == LEX_ERROR){
-                        return declrList();
+                    else{
+                        return SUCCES;
                     }
-
+                case KEYWORD_VOID:
+                    getNextToken(sToken);
+                    if(sToken->type != TYPE_LBRACKET){
+                        return SYN_ERROR;
+                    }
+                    else{
+                        return SUCCES;
+                    }
+                case KEYWORD_STRING:
+                    getNextToken(sToken);
+                    if(sToken->type != TYPE_VARIABLE){
+                        return SYN_ERROR;
+                    }else{
+                        return SUCCES;
+                    }
+                case KEYWORD_RETURN:
+                    getNextToken(sToken);
+                    // TODO check if anything is missing
+                    if(sToken->type != TYPE_VARIABLE || sToken->type != TYPE_STRING || sToken->type != TYPE_INTEGER_NUMBER || sToken){
+                        return SYN_ERROR;
+                    }else{
+                        return SUCCES;
+                    }
+                case KEYWORD_INT:
+                    getNextToken(sToken);
+                    if(sToken->type != TYPE_VARIABLE){
+                        return SYN_ERROR;
+                    }else{
+                        return SUCCES;
+                    }
+                case KEYWORD_IF:
+                    getNextToken(sToken);
+                    if(sToken->type != TYPE_LBRACKET){
+                        return SYN_ERROR;
+                    }else{
+                        return SUCCES;
+                    }
+                case KEYWORD_FUNCTION:
+                    getNextToken(sToken);
+                    if(sToken->type != TYPE_LBRACKET){
+                        return SYN_ERROR;
+                    }else{
+                        return SUCCES;
+                    }
+                case KEYWORD_FLOAT:
+                    getNextToken(sToken);
+                    if(sToken->type != TYPE_VARIABLE){
+                        return SYN_ERROR;
+                    }else{
+                        return SUCCES;
+                    }
+                case KEYWORD_ELSE:
+                    getNextToken(sToken);
+                    if(sToken->type != TYPE_LVINCULUM){
+                        return SYN_ERROR;
+                    }else{
+                        return SUCCES;
+                    }
             }
 
 
