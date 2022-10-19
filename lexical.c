@@ -205,6 +205,19 @@ int getNextToken(token *attr) {
                     attr->type = TYPE_RBRACKET;
                     return SUCCES;
                 }
+                else if(character == ';'){
+                    attr->type = TYPE_SEMICOLON;
+                    return SUCCES;
+                }
+                else if(character == '{'){
+                    attr->type = TYPE_LVINCULUM;
+                    return SUCCES;
+                }
+
+                else if(character == '}'){
+                    attr->type = TYPE_RVINCULUM;
+                    return SUCCES;
+                }
 
                 else if(character == '>'){
                     state = smallerThanOrEqualState;

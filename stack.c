@@ -17,7 +17,7 @@ void StackInit(tStack *stack){
  */
 void StackPush(tStack *stack, token token){
     tElement *element = malloc(sizeof(tElement));
-    if(element ==NULL){
+    if(element == NULL){
         fprintf(stderr, "Chyba pri alokaci prvku");
         return INT_ERROR; 
     }
