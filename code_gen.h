@@ -1,6 +1,8 @@
 #ifndef CODE_GEN_H
 #define CODE_GEN_H
 
+#include "symtable.h"
+
 //Instr
 #define MOVS 400
 #define ADDS 401
@@ -12,21 +14,28 @@
 #define LTS 407
 #define GTS 408
 
-typedef struct instrList TInst;
-typedef struct instrNode TInstNode;
+typedef struct TInstList instrList;
+typedef struct TNode tnode;
 
+
+typedef struct
+{
+    struct instrList *first;
+    struct instrList *last; 
+    struct instrList *active;
+}TInstList;
 
 typedef struct instrList
 {
-    TInst *first;
-    TInst *last; 
-};
-
-typedef struct instrNode
-{
-    TInstNode *param;
-    TInstNode *next;
+    instrList *next;
     int instruction;
-};
+}TItemList;
+
+// funkce inicializuje seznam instrukcí
+void instructionInit(TInstList *instrList);
+
+//funkce uvolni instrukci ze seznamu
+void instructionFree(TInstList *instrList);
+
 
 #endif
