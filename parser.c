@@ -118,7 +118,7 @@ int declrList(){
 // while, recursively calls itself
 //also calls main fynction stat
 int statList(){
-    //todo
+    //todo statList
 }
 
 
