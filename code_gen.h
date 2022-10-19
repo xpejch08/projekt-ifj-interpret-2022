@@ -1,7 +1,7 @@
 #ifndef CODE_GEN_H
 #define CODE_GEN_H
 
-#include "symtable.h"
+#include "stack.h"
 
 //Instr
 #define MOVS 400
@@ -20,6 +20,9 @@ typedef struct TNode tnode;
 typedef struct 
 {
     int instrID;
+    void *addr1;
+    void *addr2;
+    void *addr3;
 }TInst;
 
 
@@ -53,5 +56,8 @@ void instructionActiveFirst(TInstList *instrList);
 
 //funkce aktivuje nasledujici instrukci
 void instructionActiveNext(TInstList *instrList);
+
+// funkce vrati data instrukce
+TInst *instructionGetData(TInstList *instrList);
 
 #endif
