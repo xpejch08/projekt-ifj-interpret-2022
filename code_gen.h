@@ -17,6 +17,11 @@
 typedef struct TInstList instrList;
 typedef struct TNode tnode;
 
+typedef struct 
+{
+    int instrID;
+}TInst;
+
 
 typedef struct
 {
@@ -27,15 +32,20 @@ typedef struct
 
 typedef struct instrList
 {
-    instrList *next;
-    int instruction;
+    struct instrList *next;
+    TInst instruction;
 }TItemList;
 
 // funkce inicializuje seznam instrukcí
 void instructionInit(TInstList *instrList);
 
-//funkce uvolni instrukci ze seznamu
+//funkce uvolni instrukce ze seznamu
 void instructionFree(TInstList *instrList);
 
+// funkce vlozi instrukci na konec seznamu
+void instructionInsertLast(TInstList *instrList, TInst I);
+
+// funkce vlozi isntrukci na zacatek seznamu
+void instructionInsertFirst(TInstList *instrList, TInst I);
 
 #endif
