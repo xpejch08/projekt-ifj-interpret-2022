@@ -12,7 +12,7 @@
 //todo function statlist that ends functions (checks for right bracket, semicolon, etc.) for all types that need it
 
 TNode *tree;
-tStack *list;
+DLLElementPtr *list;
 int tokenId;
 token *sToken;
 
@@ -240,7 +240,7 @@ int program(){
 }
 
 //function that initializes tree, list of instructions, token, reads first token and calls program() function
-int parse(TNode *BVS, tStack *iList){
+int parse(TNode *BVS,DLLElementPtr *iList){
 
     int result;
     tree = BVS;

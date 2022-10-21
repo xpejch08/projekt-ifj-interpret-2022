@@ -3,50 +3,64 @@
 #include <malloc.h>
 #include "stack.h"
 
-/**
- * @brief function creates new node in SymTable
- * @param token token from which we put data
- */
-void StackInit(tStack *stack){
-    stack->topPtr = NULL;
+void DLL_Init( DLList *list ) {
+	list->activeElement = NULL;
+	list->firstElement = NULL;
+	list->lastElement = NULL;
 }
-/**
- * @brief function creates new node in SymTable
- * @param token token from which we put data
- * @return returns newly created node
- */
-void StackPush(tStack *stack, token token){
-    tElement *element = malloc(sizeof(tElement));
-    if(element == NULL){
-        fprintf(stderr, "Chyba pri alokaci prvku");
+
+void DLL_InsertFirst( DLList *list, token token ) {
+	DLLElementPtr insertingptr = malloc(sizeof(struct DLLElement));
+
+	if(insertingptr == NULL){
+		fprintf(stderr, "Chyba pri alokaci prvku");
         return INT_ERROR; 
-    }
-    element->nextPtr = stack->topPtr;
-    stack->topPtr = element;
-    stack->topPtr->content = token.content;
-    stack->topPtr->type = token.type;
+	}
+    insertingptr->type = token.type;
+    insertingptr->content = token.content;  
+    insertingptr->previousElement = NULL; 
+
+	if(list->firstElement == NULL){ 
+		insertingptr->nextElement = NULL;  
+		list->lastElement = insertingptr; 
+	}else{ 
+		insertingptr->nextElement = list->firstElement;
+		list->firstElement->previousElement = insertingptr;
+	}
+	list->firstElement = insertingptr;
 }
 
-void StackPop(tStack *stack){
-    tElement *element;
-    if (stack->topPtr != NULL) {
-        element = stack->topPtr;
-        stack->topPtr = stack->topPtr->nextPtr;
-        free(element);
-    }
+void DLL_InsertLast( DLList *list, token token ) {
+	DLLElementPtr insertinglastptr = malloc(sizeof(struct DLLElement));
+
+	if(insertinglastptr == NULL){
+		fprintf(stderr, "Chyba pri alokaci prvku");
+        return INT_ERROR; 
+	}
+    insertinglastptr->content = token.content;
+    insertinglastptr->type = token.type;
+    insertinglastptr->nextElement = NULL;
+	if(list->firstElement == NULL) 
+	{
+		list->firstElement = insertinglastptr; 
+		insertinglastptr->previousElement = NULL; 
+	}else{ 
+		insertinglastptr->previousElement = list->lastElement; 
+		list->lastElement->nextElement = insertinglastptr; 
+	}
+	list->lastElement = insertinglastptr;
 }
 
-void StackFree(tStack *stack){
-    if(stack->topPtr != NULL){
-        tElement *remove = stack->topPtr;
-        while(remove != NULL)
-        {
-            remove = remove->nextPtr;
-            free(remove);
-        }
-    }
-}
-
-void StackTop(tStack *stack){
-    return (stack->topPtr);
+void DLL_Free( DLList *list ) {
+	if(list->firstElement == NULL){
+		return;
+	}
+	DLLElementPtr deletingElement = list->firstElement;
+	
+	do{ 
+		list->firstElement = list->firstElement->nextElement; 
+		free(deletingElement); 
+		deletingElement = list->firstElement; 
+	}while(deletingElement != NULL);
+	
 }

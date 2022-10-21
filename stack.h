@@ -3,43 +3,25 @@
 
 #include "lexical.h"
 
-typedef struct element {
-    tokenType type;
+typedef struct DLLElement {
+	tokenType type;
     tokenContent content;
-    struct element *nextPtr; // pointer on following token
-}tElement;
+	struct DLLElement *previousElement;
+	struct DLLElement *nextElement;
+} *DLLElementPtr;
 
-typedef struct stack
-{
-    tElement *topPtr; // pointer on top of the stack
-}tStack;
+typedef struct {
+	DLLElementPtr firstElement;
+	DLLElementPtr activeElement;
+	DLLElementPtr lastElement;
+} DLList;
 
-/**
- * @brief function function initializes new stack
- * @param stack pointer to first element
- */
-void StackInit(tStack *stack);
-/**
- * @brief function pushes on top new element
- * @param stack stack
- * @param token token from which we insert data
- */
-void StackPush(tStack *stack, token token);
-/**
- * @brief function pops element from top
- * @param stack stack
- */
-void StackPop(tStack *stack);
-/**
- * @brief function which free whole stack
- * @param stack stack
- */
-void StackFree(tStack *stack);
-/**
- * @brief function returns top of stack
- * @param stack stack
- * @return returns head of stack
- */
-void StackTop(tStack *stack);
+void DLL_Init( DLList *list );
+
+void DLL_InsertFirst( DLList *list, token token );
+
+void DLL_InsertLast( DLList *list, token token );
+
+void DLL_Free( DLList *list );
 
 #endif
