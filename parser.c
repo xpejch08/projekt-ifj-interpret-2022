@@ -59,13 +59,13 @@ int declrList(){
                     else{
                         return SUCCES;
                     }
-                case KEYWORD_STRING:
-                    getNextToken(sToken);
-                    if(sToken->type != TYPE_VARIABLE){
-                        return SYN_ERROR;
-                    }else{
-                        return SUCCES;
-                    }
+                //case KEYWORD_STRING:
+                //    getNextToken(sToken);
+                //    if(sToken->type != TYPE_VARIABLE){
+                //        return SYN_ERROR;
+                //    }else{
+                //        return SUCCES;
+                //    }
                 //case KEYWORD_RETURN:
                 //    getNextToken(sToken);
                 //    // TODO check if anything is missing
@@ -90,7 +90,7 @@ int declrList(){
                     }
                 case KEYWORD_FUNCTION:
                     getNextToken(sToken);
-                    if(sToken->type != TYPE_LBRACKET){
+                    if(sToken->type != TYPE_VARIABLE){
                         return SYN_ERROR;
                     }else{
                         return SUCCES;
@@ -172,8 +172,8 @@ int program(){
             if((result = declrList()) == SYN_ERROR){
                 return SYN_ERROR;
             }
-            if((result = statList()) == SYN_ERROR){
-                return SYN_ERROR;
+            if((result = statList()) != SUCCES){
+                return result;
             }
 
             if((sToken->type) != TYPE_END_OF_FILE){
@@ -186,6 +186,7 @@ int program(){
 
 
         case TYPE_NOT_EQUAL:
+            return SYN_ERROR;
         case TYPE_EXPONENT_NUMBER:
         case TYPE_DOUBLE_NUMBER:
         case TYPE_INTEGER_NUMBER:
@@ -208,7 +209,23 @@ int program(){
                     generateInstruction();
 
                     return SUCCES;
+
                 case KEYWORD_VOID:
+                    if((result = declrList()) != SUCCES){
+                        return result;
+                    }
+                    if((result = statList()) != SUCCES){
+                        return result;
+                    }
+
+                    if((sToken->type) != TYPE_END_OF_FILE){
+                        return SYN_ERROR;
+                    }
+
+                    generateInstruction();
+
+                    return SUCCES;
+
                 case KEYWORD_STRING:
                 case KEYWORD_RETURN:
                 case KEYWORD_NULL:
@@ -230,9 +247,11 @@ int program(){
         case TYPE_MULTIPLY:
         case TYPE_ADDITION:
         case TYPE_ASSIGN:
+            return SYN_ERROR;    
         case TYPE_END_OF_FILE:
         case TYPE_LBRACKET:
         case TYPE_RBRACKET:
+            return SYN_ERROR;
         case TYPE_SEMICOLON:
         case TYPE_RVINCULUM:
         case TYPE_LVINCULUM:
