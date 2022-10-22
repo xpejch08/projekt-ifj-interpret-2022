@@ -226,14 +226,56 @@ int program(){
 
                     return SUCCES;
 
-                case KEYWORD_STRING:
+                case KEYWORD_STRING: // todo budeme delat string a return v declrlist??
                 case KEYWORD_RETURN:
                 case KEYWORD_NULL:
                 case KEYWORD_INT:
                 case KEYWORD_FLOAT:
                 case KEYWORD_FUNCTION:
+                    if((result = declrList()) != SUCCES){
+                        return result;
+                    }
+                    if((result = statList()) != SUCCES){
+                        return result;
+                    }
+
+                    if((sToken->type) != TYPE_END_OF_FILE){
+                        return SYN_ERROR;
+                    }
+
+                    generateInstruction();
+
+                    return SUCCES;
                 case KEYWORD_IF:
+                    if((result = declrList()) != SUCCES){
+                        return result;
+                    }
+                    if((result = statList()) != SUCCES){
+                        return result;
+                    }
+
+                    if((sToken->type) != TYPE_END_OF_FILE){
+                        return SYN_ERROR;
+                    }
+
+                    generateInstruction();
+
+                    return SUCCES;
                 case KEYWORD_ELSE:
+                    if((result = declrList()) != SUCCES){
+                        return result;
+                    }
+                    if((result = statList()) != SUCCES){
+                        return result;
+                    }
+
+                    if((sToken->type) != TYPE_END_OF_FILE){
+                        return SYN_ERROR;
+                    }
+
+                    generateInstruction();
+
+                    return SUCCES;
             }
         case TYPE_INITIAL:
         case TYPE_CONCATENATE:
