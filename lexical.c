@@ -6,6 +6,8 @@
 #include "lexical.h"
 #include "str.h"
 
+//todo ",",":"
+
 #define basicState 300 //beginning state waiting for the first character
 #define possibleCommentState 301 //state that found the '/' symbol and checks if comment will be one-line block, or won't be at all
 #define oneLineCommentState 302 //one line comment state waiting for '\n' to end else returns LEX_ERROR

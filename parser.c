@@ -10,6 +10,7 @@
 //todo fucntion stat = actual function of token type
 //todo function declrlist -> starts a type(checks if something is declared or not etc.) for all types that need it
 //todo function statlist that ends functions (checks for right bracket, semicolon, etc.) for all types that need it
+//todo statlist 1. void/string/float/int 2.lvinculum 3.
 
 TNode *tree;
 DLLElementPtr *list;
@@ -110,7 +111,7 @@ int declrList(){
                         return SUCCES;
                     }
             }
-
+        return SYN_ERROR;
 
     }
 }
