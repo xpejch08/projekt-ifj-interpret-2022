@@ -36,7 +36,14 @@ int declrList(){
 
     switch (sToken->type) {
         case TYPE_IDENTIFIER:
-
+            if(strCmpStr(sToken->content, "write")) {
+                getNextToken(sToken);
+                if(sToken->type != TYPE_LBRACKET){
+                    if(parameters(3) == SUCCES){
+                        generateInstruction(write);
+                        return SUCCES;
+                    }
+            }
             if(BVSSearch(tree, *sToken) == false){
                 BVSInsert(tree, *sToken);
             }
@@ -50,8 +57,8 @@ int declrList(){
                     if(sToken->type != TYPE_LBRACKET){
                         return SYN_ERROR;
                     }
-                    else{
-                        return SUCCES;
+                    else {
+                        return parameters(2);
                     }
                 case KEYWORD_VOID:
                     getNextToken(sToken);
@@ -88,14 +95,18 @@ int declrList(){
                     if(sToken->type != TYPE_LBRACKET){
                         return SYN_ERROR;
                     }else{
-                        return SUCCES;
+                        return parameters(2);
                     }
                 case KEYWORD_FUNCTION:
                     getNextToken(sToken);
-                    if(sToken->type != TYPE_IDENTIFIER){
+                    if(sToken->type != TYPE_IDENTIFIER) {
                         return SYN_ERROR;
-                    }else{
-                        return SUCCES;
+                    }
+                    getNextToken(sToken);
+                    if(sToken->type != TYPE_LBRACKET){
+                        return SYN_ERROR;
+                    }
+                        return parameters(1);
                     }
                 case KEYWORD_FLOAT:
                     getNextToken(sToken);
@@ -125,6 +136,20 @@ int statList(){
         return LEX_ERROR;
     }
     switch (sToken->type) {
+
+        case TYPE_COLON:
+
+            getNextToken(sToken);
+            if(sToken->type != KEYWORD_VOID)
+                return SEM_ERROR;
+            getNextToken(sToken);
+            if(sToken->type != TYPE_LVINCULUM)
+                return SEM_ERROR;
+
+            return declrList();
+
+
+                
         case TYPE_RVINCULUM:
             return SUCCES;
             break;
@@ -262,7 +287,7 @@ int program(){
 
                     if((sToken->type) != TYPE_END_OF_FILE){
                         return SYN_ERROR;
-                    }
+                    }d BVSInit(TRoot *SymTable); // TODO declere mistake wtf?
 
                     generateInstruction();
 

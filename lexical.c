@@ -211,6 +211,14 @@ int getNextToken(token *attr) {
                     attr->type = TYPE_SEMICOLON;
                     return SUCCES;
                 }
+                else if(character == ':') {
+                    attr->type = TYPE_COLON;
+                    return SUCCES;
+                }
+                else if(character == ',') {
+                    attr->type = TYPE_COMMA;
+                    return SUCCES;
+                }
                 else if(character == '{'){
                     attr->type = TYPE_LVINCULUM;
                     return SUCCES;

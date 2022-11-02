@@ -43,7 +43,9 @@ typedef enum{
     TYPE_RVINCULUM,
     TYPE_LBRACKET,
     TYPE_RBRACKET,
-    TYPE_SEMICOLON
+    TYPE_SEMICOLON,
+    TYPE_COLON,
+    TYPE_COMMA
 
 
 }tokenType;
