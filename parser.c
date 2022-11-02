@@ -124,6 +124,20 @@ int statList(){
         return LEX_ERROR;
     }
     switch (sToken->type) {
+
+        case TYPE_COLON:
+
+            getNextToken(sToken);
+            if(sToken->type != KEYWORD_VOID)
+                return SEM_ERROR;
+            getNextToken(sToken);
+            if(sToken->type != TYPE_LVINCULUM)
+                return SEM_ERROR;
+            declrList();
+            return SUCCES;
+
+
+                
         case TYPE_RVINCULUM:
             return SUCCES;
             break;
