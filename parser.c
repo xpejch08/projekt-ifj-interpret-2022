@@ -12,7 +12,9 @@
 //todo function statlist that ends functions (checks for right bracket, semicolon, etc.) for all types that need it
 //todo statlist 1. void/string/float/int 2.lvinculum 3.
 
-TNode *tree;
+TNode *insideFunction;
+TNode *functionNames;
+TNOde *mainTree;
 DLLElementPtr *list;
 int tokenId;
 token *sToken;
@@ -21,8 +23,9 @@ int incId = 1;
 
 
 //initializing tree
-BVSInit(tree);
-BVSInit(functions_names);
+BVSInit(mainTree);
+BVSInit(functionNames);
+BVSInit(insideFunction);
 
 void generateInstruction(){
 //todo define instructions in stack.h and write generateInstruction function
@@ -35,19 +38,31 @@ int stat(); // function declaration;
 int declrList(){
 
     switch (sToken->type) {
+        case TYPE_RVINCULUM:
+            return SUCCES;
         case TYPE_IDENTIFIER:
-            if(strCmpStr(sToken->content, "write")) {
+            if(strCmpConstStr(sToken->content.str, "write")) {
                 getNextToken(sToken);
-                if(sToken->type != TYPE_LBRACKET){
-                    if(parameters(3) == SUCCES){
+                if (sToken->type == TYPE_LBRACKET) {
+                    if (parameters(3, 1) == SUCCES) {
+                        if (getNextToken(sToken) != TYPE_SEMICOLON) {
+                            return SYN_ERROR;
+                        }
                         generateInstruction(write);
-                        return SUCCES;
+                        getNextToken(sToken);
+                        return declrList();
+                        else{
+                            return parameters(3, 1)
+                        }
                     }
+                    return SYN_ERROR;
+                } else {
+                    return SYN_ERROR;
+                }
             }
-            if(BVSSearch(tree, *sToken) == false){
+            if (BVSSearch(tree, *sToken) == false) {
                 BVSInsert(tree, *sToken);
-            }
-            else{
+            } else {
                 return SEM_ERROR;
             }
         case TYPE_KEYWORD:
@@ -58,7 +73,7 @@ int declrList(){
                         return SYN_ERROR;
                     }
                     else {
-                        return parameters(2);
+                        return parameters(2, 1);
                     }
                 case KEYWORD_VOID:
                     getNextToken(sToken);
@@ -95,7 +110,7 @@ int declrList(){
                     if(sToken->type != TYPE_LBRACKET){
                         return SYN_ERROR;
                     }else{
-                        return parameters(2);
+                        return parameters(2,1);
                     }
                 case KEYWORD_FUNCTION:
                     getNextToken(sToken);
@@ -106,7 +121,7 @@ int declrList(){
                     if(sToken->type != TYPE_LBRACKET){
                         return SYN_ERROR;
                     }
-                        return parameters(1);
+                        return parameters(1, 1);
                     }
                 case KEYWORD_FLOAT:
                     getNextToken(sToken);
@@ -140,12 +155,15 @@ int statList(){
         case TYPE_COLON:
 
             getNextToken(sToken);
-            if(sToken->type != KEYWORD_VOID)
-                return SEM_ERROR;
+            if(sToken->content != KEYWORD_VOID ||
+            sToken->content != KEYWORD_INT     ||
+            sToken->content !=KEYWORD_STRING   ||
+            sToken->content != KEYWORD_FLOAT)
+                return SYN_ERROR;
             getNextToken(sToken);
             if(sToken->type != TYPE_LVINCULUM)
-                return SEM_ERROR;
-
+                return SYN_ERROR;
+            getNextToken(sToken);
             return declrList();
 
 
@@ -188,45 +206,39 @@ int stat(){
     
  //todo
 }
-
-int parametrs(int option){
-    switch (option)
-    {
-    case 1: // kontrolujeme parametry funkce
-        getNextToken(sToken);
-        if(sToken->type == TYPE_RBRACKET){
-            return SUCCES;
-        }
-        else if(sToken->type == KEYWORD_INT ||
-                sToken->type == KEYWORD_FLOAT ||
-                sToken->type == KEYWORD_STRING
-        ){
-            getNextToken(sToken);
-            if(sToken->type == TYPE_VARIABLE){
-                generateInstruction();
-                BVSInsert(function, *sToken);
+int parametrs(int option, int repeat){
+        switch (option) {
+            case 1: // kontrolujeme parametry funkce
                 getNextToken(sToken);
-                if(sToken->type == TYPE_COMMA){
-                    parametrs(1);
-                }
-                else if(sToken == TYPE_RBRACKET){
+                if (sToken->type == TYPE_RBRACKET && repeat == 1) {
                     return SUCCES;
-                }
-                else{
+                } else if (sToken->content == KEYWORD_INT ||
+                           sToken->content == KEYWORD_FLOAT ||
+                           sToken->content == KEYWORD_STRING
+                        ) {
+                    getNextToken(sToken);
+                    if (sToken->type == TYPE_VARIABLE) {
+                        generateInstruction();
+                        BVSInsert(insideFunction, *sToken);
+                        getNextToken(sToken);
+                        if (sToken->type == TYPE_COMMA) {
+                            repeat++;
+                            parametrs(1, repeat);
+                        } else if (sToken->type == TYPE_RBRACKET) {
+                            return SUCCES;
+                        } else {
+                            return SYN_ERROR;
+                        }
+                    } else {
+                        return SYN_ERROR;
+                    }
+
+                } else {
                     return SYN_ERROR;
                 }
-            }
-            else{
-                return SYN_ERROR;
-            }
-
+            case 2: // kontrolujeme podminku ve while nebo if
+            case 3: // funkce write
         }
-        else{
-            return SYN_ERROR;
-        }   
-    case 2: // kontrolujeme podminku ve while nebo if
-    case 3: // funkce write
-    }
 }
 
 //function that calls function declr list and statlist depending on the type, also checks if there is end of file after
@@ -287,7 +299,7 @@ int program(){
 
                     if((sToken->type) != TYPE_END_OF_FILE){
                         return SYN_ERROR;
-                    }d BVSInit(TRoot *SymTable); // TODO declere mistake wtf?
+                    }
 
                     generateInstruction();
 
