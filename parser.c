@@ -90,7 +90,7 @@ int declrList(){
                     }
                 case KEYWORD_FUNCTION:
                     getNextToken(sToken);
-                    if(sToken->type != TYPE_VARIABLE){
+                    if(sToken->type != TYPE_IDENTIFIER){
                         return SYN_ERROR;
                     }else{
                         return SUCCES;
