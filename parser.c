@@ -22,6 +22,7 @@ int incId = 1;
 
 //initializing tree
 BVSInit(tree);
+BVSInit(functions_names);
 
 void generateInstruction(){
 //todo define instructions in stack.h and write generateInstruction function
@@ -161,6 +162,46 @@ int statList(){
 int stat(){
     
  //todo
+}
+
+int parametrs(int option){
+    switch (option)
+    {
+    case 1: // kontrolujeme parametry funkce
+        getNextToken(sToken);
+        if(sToken->type == TYPE_RBRACKET){
+            return SUCCES;
+        }
+        else if(sToken->type == KEYWORD_INT ||
+                sToken->type == KEYWORD_FLOAT ||
+                sToken->type == KEYWORD_STRING
+        ){
+            getNextToken(sToken);
+            if(sToken->type == TYPE_VARIABLE){
+                generateInstruction();
+                BVSInsert(function, *sToken);
+                getNextToken(sToken);
+                if(sToken->type == TYPE_COMMA){
+                    parametrs(1);
+                }
+                else if(sToken == TYPE_RBRACKET){
+                    return SUCCES;
+                }
+                else{
+                    return SYN_ERROR;
+                }
+            }
+            else{
+                return SYN_ERROR;
+            }
+
+        }
+        else{
+            return SYN_ERROR;
+        }   
+    case 2: // kontrolujeme podminku ve while nebo if
+    case 3: // funkce write
+    }
 }
 
 //function that calls function declr list and statlist depending on the type, also checks if there is end of file after
