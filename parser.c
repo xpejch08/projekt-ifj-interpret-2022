@@ -7,12 +7,10 @@
 #include "symtable.h"
 #include "code_gen.h"
 
-//todo think about using enum and redefining token structure
-//todo fucntion stat = actual function of token type
+//todo think about using enum and redefining token structure !!!
 //todo function declrlist -> starts a type(checks if something is declared or not etc.) for all types that need it
 //todo function statlist that ends functions (checks for right bracket, semicolon, etc.) for all types that need it
-//todo statlist 1. void/string/float/int 2.lvinculum 3.
-//todo generateinstruction -> function that inserts active instruction into instruction list
+//todo generateinstruction(idinstruukce, pointrprev, pointractive, pouinternanext) -> function that inserts active instruction into instruction list
 //todo TInst setactiveinstruction(const int *type, void *op1, void *op2, void *op3)
 
 TNode *insideFunction;
@@ -30,10 +28,6 @@ int incId = 1;
 BVSInit(mainTree);
 BVSInit(functionNames);
 BVSInit(insideFunction);
-
-void generateInstruction(){
-//todo define instructions in stack.h and write generateInstruction function
-}
 
 int stat(); // function declaration;
 
@@ -217,9 +211,9 @@ int parametrs(int option, int repeat){
                 getNextToken(sToken);
                 if (sToken->type == TYPE_RBRACKET && repeat == 1) {
                     return SUCCES;
-                } else if (sToken->content == KEYWORD_INT ||
-                           sToken->content == KEYWORD_FLOAT ||
-                           sToken->content == KEYWORD_STRING
+                } else if (sToken->content->keyword == KEYWORD_INT ||
+                           sToken->content->keyword == KEYWORD_FLOAT ||
+                           sToken->content->keyword == KEYWORD_STRING
                         ) {
                     getNextToken(sToken);
                     if (sToken->type == TYPE_VARIABLE) {
