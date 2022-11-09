@@ -246,6 +246,7 @@ int parametrs(int option, int repeat){
                 getNextToken(sToken);// funkce write
                 switch (sToken->type) {
                     case TYPE_VARIABLE:
+                        
                     case TYPE_STRING:
                         activeInstruction = setActiveInstruction(WRITE, *sToken->content->str, NULL, NULL);
                         return SUCCES;
