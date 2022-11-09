@@ -41,7 +41,7 @@ int declrList(){
         case TYPE_RVINCULUM:
             return SUCCES;
         case TYPE_IDENTIFIER:
-            if(strCmpConstStr(sToken->content.str, "write")) {
+            if(strCmpConstStr(sToken->content->str, "write")) {
                 getNextToken(sToken);
                 if (sToken->type == TYPE_LBRACKET) {
                     if (parameters(3, 1) == SUCCES) {
@@ -50,23 +50,22 @@ int declrList(){
                         }
                         generateInstruction(write);
                         getNextToken(sToken);
-                        return declrList();
-                        else{
-                            return parameters(3, 1)
-                        }
+                        return declrList();    
                     }
-                    return SYN_ERROR;
+                    else{
+                        return parameters(3, 1);
+                    }
                 } else {
                     return SYN_ERROR;
                 }
             }
-            if (BVSSearch(tree, *sToken) == false) {
-                BVSInsert(tree, *sToken);
+            if (BVSSearch(mainTree, *sToken) == false) {
+                BVSInsert(mainTree, *sToken);
             } else {
                 return SEM_ERROR;
             }
         case TYPE_KEYWORD:
-            switch (sToken->content.keyword) {
+            switch (sToken->content->keyword) {
                 case KEYWORD_WHILE:
                     getNextToken(sToken);
                     if(sToken->type != TYPE_LBRACKET){
@@ -137,7 +136,7 @@ int declrList(){
                     }else{
                         return SUCCES;
                     }
-            }
+            
         return SYN_ERROR;
 
     }
@@ -155,10 +154,10 @@ int statList(){
         case TYPE_COLON:
 
             getNextToken(sToken);
-            if(sToken->content != KEYWORD_VOID ||
-            sToken->content != KEYWORD_INT     ||
-            sToken->content !=KEYWORD_STRING   ||
-            sToken->content != KEYWORD_FLOAT)
+            if(sToken->content->keyword != KEYWORD_VOID    ||
+               sToken->content->keyword != KEYWORD_INT     ||
+               sToken->content->keyword != KEYWORD_STRING  ||
+               sToken->content->keyword != KEYWORD_FLOAT)
                 return SYN_ERROR;
             getNextToken(sToken);
             if(sToken->type != TYPE_LVINCULUM)
@@ -272,7 +271,7 @@ int program(){
         case TYPE_STRING:
         case TYPE_VARIABLE:
         case TYPE_KEYWORD:
-            switch (sToken->content.keyword) {
+            switch (sToken->content->keyword) {
                 case KEYWORD_WHILE:
                     if((result = declrList()) != SUCCES){
                         return result;

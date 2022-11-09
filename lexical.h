@@ -58,7 +58,7 @@ typedef union{
 }tokenContent;
 
 typedef struct{
-    tokenContent content;
+    tokenContent *content;
     tokenType type;
 }token;
 
