@@ -24,6 +24,7 @@ typedef struct
     void *addr1;
     void *addr2;
     void *addr3;
+    
 }TInst;
 
 typedef struct
