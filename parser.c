@@ -14,7 +14,7 @@
 
 TNode *insideFunction;
 TNode *functionNames;
-TNOde *mainTree;
+TNode *mainTree;
 DLLElementPtr *list;
 int tokenId;
 token *sToken;
@@ -248,7 +248,7 @@ int program(){
     int result;
     switch (sToken->type) {
         case TYPE_IDENTIFIER:
-            if((result = declrList()) == SYN_ERROR){
+            if((declrList()) == SYN_ERROR){
                 return SYN_ERROR;
             }
             if((result = statList()) != SUCCES){
@@ -380,10 +380,9 @@ int program(){
 }
 
 //function that initializes tree, list of instructions, token, reads first token and calls program() function
-int parse(TNode *BVS,DLLElementPtr *iList){
+int parse(DLLElementPtr *iList){
 
     int result;
-    tree = BVS;
     list = iList;
     //todo fix init token function
     initToken(sToken);
