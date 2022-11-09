@@ -17,13 +17,14 @@
 
 typedef struct TInstList instrList;
 typedef struct TNode tnode;
+typedef struct TInst activeInstruction;
 
-typedef struct 
+typedef struct
 {
     int instrID;
-    void *addr1;
-    void *addr2;
-    void *addr3;
+    void *leftOp;
+    void *rightOp;
+    void *result;
     
 }TInst;
 
@@ -40,6 +41,7 @@ typedef struct instrList
     TInst instruction;
 }TItemList;
 
+TInst setActiveInstruction( int instrID, void *leftOp, void *rightOp);
 // funkce inicializuje seznam instrukcí
 void instructionInit(TInstList *instrList);
 

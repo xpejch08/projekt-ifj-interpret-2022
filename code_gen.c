@@ -10,6 +10,17 @@ void instructionInit(TInstList *instrList)
     instrList->last = NULL;
 }
 
+TInst setActiveInstruction(int instrID, void *leftOp, void *rightOp)
+{
+    TInst *activeInstruction;
+    activeInstruction->instrID = instrID;
+    activeInstruction->leftOp = leftOp;
+    activeInstruction->rightOp = rightOp;
+    activeInstruction->result = NULL;
+    return *activeInstruction;
+
+}
+
 void instructionFree(TInstList *instrList)
 {   
 while(instrList->first != NULL)
