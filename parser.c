@@ -5,17 +5,21 @@
 #include "parser.h"
 #include "stack.h"
 #include "symtable.h"
+#include "code_gen.h"
 
 //todo think about using enum and redefining token structure
 //todo fucntion stat = actual function of token type
 //todo function declrlist -> starts a type(checks if something is declared or not etc.) for all types that need it
 //todo function statlist that ends functions (checks for right bracket, semicolon, etc.) for all types that need it
 //todo statlist 1. void/string/float/int 2.lvinculum 3.
+//todo generateinstruction -> function that inserts active instruction into instruction list
+//todo TInst setactiveinstruction(const int *type, void *op1, void *op2, void *op3)
 
 TNode *insideFunction;
 TNode *functionNames;
 TNode *mainTree;
 DLLElementPtr *list;
+TInst activeInstruction;
 int tokenId;
 token *sToken;
 
@@ -46,9 +50,11 @@ int declrList(){
                 if (sToken->type == TYPE_LBRACKET) {
                     if (parameters(3, 1) == SUCCES) {
                         if (getNextToken(sToken) != TYPE_SEMICOLON) {
+                            //instructionFree()
                             return SYN_ERROR;
                         }
-                        generateInstruction(write);
+                        generateInstruction(activeInstruction, adr1, NULL, NULL);
+                        //todo instructionFree()
                         getNextToken(sToken);
                         return declrList();    
                     }
@@ -236,7 +242,10 @@ int parametrs(int option, int repeat){
                     return SYN_ERROR;
                 }
             case 2: // kontrolujeme podminku ve while nebo if
-            case 3: // funkce write
+            case 3: // write
+                getNextToken(sToken);// funkce write
+                activeInstruction = setActiveInstruction(WRITE, *sToken->content->str, NULL, NULL);
+                return SUCCES;
         }
 }
 
@@ -385,6 +394,7 @@ int parse(DLLElementPtr *iList){
     list = iList;
     //todo fix init token function
     initToken(sToken);
+    instructionInit(instList);
     if((tokenId = getNextToken(sToken)) == LEX_ERROR){
         return LEX_ERROR;
     }

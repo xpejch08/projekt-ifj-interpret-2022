@@ -13,6 +13,7 @@
 #define POPS 406
 #define LTS 407
 #define GTS 408
+#define WRITE 409
 
 typedef struct TInstList instrList;
 typedef struct TNode tnode;
@@ -24,7 +25,6 @@ typedef struct
     void *addr2;
     void *addr3;
 }TInst;
-
 
 typedef struct
 {
