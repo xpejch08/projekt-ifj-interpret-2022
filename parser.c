@@ -244,8 +244,14 @@ int parametrs(int option, int repeat){
             case 2: // kontrolujeme podminku ve while nebo if
             case 3: // write
                 getNextToken(sToken);// funkce write
-                activeInstruction = setActiveInstruction(WRITE, *sToken->content->str, NULL, NULL);
-                return SUCCES;
+                switch (sToken->type) {
+                    case TYPE_VARIABLE:
+                    case TYPE_STRING:
+                        activeInstruction = setActiveInstruction(WRITE, *sToken->content->str, NULL, NULL);
+                        return SUCCES;
+                    case TYPE_INTEGER_NUMBER:
+                    case TYPE_DOUBLE_NUMBER:
+                }
         }
 }
 
