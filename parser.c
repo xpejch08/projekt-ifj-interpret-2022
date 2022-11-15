@@ -18,6 +18,7 @@ TNode *functionNames;
 TNode *mainTree;
 DLLElementPtr *list;
 
+int paramError;
 int tokenId;
 token *sToken;
 
@@ -30,6 +31,7 @@ BVSInit(functionNames);
 BVSInit(insideFunction);
 
 int stat(); // function declaration;
+int parameters(); // declaration because function is used before definition
 
 //check declare function, checks beginning of token type for example checks if there is a left bracket after while,
 // recursively calls itself
@@ -42,7 +44,8 @@ int declrList(){
             if(strCmpConstStr(sToken->content->str, "write")) {
                 getNextToken(sToken);
                 if (sToken->type == TYPE_LBRACKET) {
-                    if (parameters(3, 1) == SUCCES) {
+                    paramError = parameters(3,1)
+                    if (paramError == SUCCES) {
                         if (getNextToken(sToken) != TYPE_SEMICOLON) {
                             //instructionFree()
                             return SYN_ERROR;
@@ -53,12 +56,118 @@ int declrList(){
                         return declrList();    
                     }
                     else{
-                        return parameters(3, 1);
+                        return paramError;
                     }
                 } else {
                     return SYN_ERROR;
                 }
             }
+            if(strCmpConstStr(sToken->content->str, "reads")) {
+                getNextToken(sToken);
+                if (sToken->type == TYPE_LBRACKET) {
+                    paramError = parameters(caseReads, 1); //todo define parameters prarameters :D
+                    if (paramError == SUCCES) {
+                        if (getNextToken(sToken) != TYPE_SEMICOLON) {
+                            //instructionFree()
+                            return SYN_ERROR;
+                        }
+                        generateInstruction(activeInstruction, adr1, NULL, NULL);
+                        //todo instructionFree()
+                        getNextToken(sToken);
+                        return declrList();
+                    }
+                    else{
+                        return paramError;
+                    }
+                } else {
+                    return SYN_ERROR;
+                }
+            }
+            if(strCmpConstStr(sToken->content->str, "readi")) {
+                getNextToken(sToken);
+                if (sToken->type == TYPE_LBRACKET) {
+                    paramError = parameters(caseReadi, 1)//todo define parameters prarameters :D
+                    if (paramError == SUCCES) {
+                        if (getNextToken(sToken) != TYPE_SEMICOLON) {
+                            //instructionFree()
+                            return SYN_ERROR;
+                        }
+                        generateInstruction(activeInstruction, adr1, NULL, NULL);
+                        //todo instructionFree()
+                        getNextToken(sToken);
+                        return declrList();
+                    }
+                    else{
+                        return paramError;
+                    }
+                } else {
+                    return SYN_ERROR;
+                }
+            }
+            if(strCmpConstStr(sToken->content->str, "readf")) {
+                getNextToken(sToken);
+                if (sToken->type == TYPE_LBRACKET) {
+                    paramError = parameters(caseReadi, 1);//todo define parameters prarameters :D
+                    if (paramError == SUCCES) {
+                        if (getNextToken(sToken) != TYPE_SEMICOLON) {
+                            //instructionFree()
+                            return SYN_ERROR;
+                        }
+                        generateInstruction(activeInstruction, adr1, NULL, NULL);
+                        //todo instructionFree()
+                        getNextToken(sToken);
+                        return declrList();
+                    }
+                    else{
+                        return paramError;
+                    }
+                } else {
+                    return SYN_ERROR;
+                }
+            }
+            if(strCmpConstStr(sToken->content->str, "strlen")) {
+                getNextToken(sToken);
+                if (sToken->type == TYPE_LBRACKET) {
+                    paramError == parameters(caseStrlen, 1);//todo define parameters prarameters :D
+                    if (paramError == SUCCES) {
+                        if (getNextToken(sToken) != TYPE_SEMICOLON) {
+                            //instructionFree()
+                            return SYN_ERROR;
+                        }
+                        generateInstruction(activeInstruction, adr1, NULL, NULL);
+                        //todo instructionFree()
+                        getNextToken(sToken);
+                        return declrList();
+                    }
+                    else{
+                        return paramError;
+                    }
+                } else {
+                    return SYN_ERROR;
+                }
+            }
+            if(strCmpConstStr(sToken->content->str, "substring")) {
+                getNextToken(sToken);
+                if (sToken->type == TYPE_LBRACKET) {
+                    paramError = parameters(caseSubstring, 1); //todo define parameters prarameters :D
+                    if (paramError == SUCCES) {
+                        if (getNextToken(sToken) != TYPE_SEMICOLON) {
+                            //instructionFree()
+                            return SYN_ERROR;
+                        }
+                        generateInstruction(activeInstruction, adr1, NULL, NULL);
+                        //todo instructionFree()
+                        getNextToken(sToken);
+                        return declrList();
+                    }
+                    else{
+                        return paramError;
+                    }
+                } else {
+                    return SYN_ERROR;
+                }
+            }
+
             if (BVSSearch(mainTree, *sToken) == false) {
                 BVSInsert(mainTree, *sToken);
             } else {
@@ -383,7 +492,7 @@ int program(){
         case TYPE_END_OF_FILE:
         case TYPE_LBRACKET:
         case TYPE_RBRACKET:
-            return SYN_ERROR;
+                return SYN_ERROR;
         case TYPE_SEMICOLON:
         case TYPE_RVINCULUM:
         case TYPE_LVINCULUM:
