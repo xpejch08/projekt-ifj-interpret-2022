@@ -87,44 +87,34 @@ int hexaToDecimal(const char arr[]){
  */
 int keywordCmp(string *str, token *attr){
     if(strCmpConstStr(str, "else") == 0){
-        attr->type = TYPE_KEYWORD;
-        attr->content.keyword = KEYWORD_ELSE;
+        attr->type = KEYWORD_ELSE;
     }
     else if(strCmpConstStr(str, "if") == 0){
-        attr->type = TYPE_KEYWORD;
-        attr->content.keyword = KEYWORD_IF;
+        attr->type = KEYWORD_IF;
     }
     else if(strCmpConstStr(str, "function") == 0){
-        attr->type = TYPE_KEYWORD;
-        attr->content.keyword = KEYWORD_FUNCTION;
+        attr->type = KEYWORD_FUNCTION;
     }
     else if(strCmpConstStr(str, "float") == 0){
-        attr->type = TYPE_KEYWORD;
-        attr->content.keyword = KEYWORD_FLOAT;
+        attr->type = KEYWORD_FLOAT;
     }
     else if(strCmpConstStr(str, "int") == 0){
-        attr->type = TYPE_KEYWORD;
-        attr->content.keyword = KEYWORD_INT;
+        attr->type = KEYWORD_INT;
     }
     else if(strCmpConstStr(str, "null") == 0){
-        attr->type = TYPE_KEYWORD;
-        attr->content.keyword = KEYWORD_NULL;
+        attr->type = KEYWORD_NULL;
     }
     else if(strCmpConstStr(str, "return") == 0){
-        attr->type = TYPE_KEYWORD;
-        attr->content.keyword = KEYWORD_RETURN;
+        attr->type = KEYWORD_RETURN;
     }
     else if(strCmpConstStr(str, "string") == 0){
-        attr->type = TYPE_KEYWORD;
-        attr->content.keyword = KEYWORD_STRING;
+        attr->type = KEYWORD_STRING;
     }
     else if(strCmpConstStr(str, "void") == 0){
-        attr->type = TYPE_KEYWORD;
-        attr->content.keyword = KEYWORD_VOID;
-    }
+        attr->type = KEYWORD_VOID;
+        }
     else if(strCmpConstStr(str, "while") == 0){
-        attr->type = TYPE_KEYWORD;
-        attr->content.keyword = KEYWORD_WHILE;
+        attr->type = KEYWORD_WHILE;
     }
     else{
         attr->type = TYPE_IDENTIFIER;
@@ -310,6 +300,7 @@ int getNextToken(token *attr) {
                 else{
                     attr->type = TYPE_VARIABLE;
                     ungetc(character, source);
+                    break;
 
                 }
             case stringStartState:
