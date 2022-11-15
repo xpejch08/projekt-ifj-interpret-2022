@@ -4,48 +4,48 @@
 #include "str.h"
 #include "errors.h"
 
-typedef enum {
-    KEYWORD_ELSE, //100
-    KEYWORD_IF, //101
-    KEYWORD_FUNCTION, //102
-    KEYWORD_FLOAT, //103
-    KEYWORD_INT, //104
-    KEYWORD_NULL, //105
-    KEYWORD_RETURN,//106
-    KEYWORD_STRING, //107
-    KEYWORD_VOID, //108
-    KEYWORD_WHILE //109
-}keyword;
+#define   KEYWORD_ELSE          100
+#define   KEYWORD_IF            101
+#define   KEYWORD_FUNCTION      102
+#define   KEYWORD_FLOAT         103
+#define   KEYWORD_INT           104
+#define   KEYWORD_NULL          105
+#define   KEYWORD_RETURN        106
+#define   KEYWORD_STRING        107
+#define   KEYWORD_VOID          108
+#define   KEYWORD_WHILE         109
 
-typedef enum{
-    TYPE_INITIAL,
-    TYPE_KEYWORD,
-    TYPE_VARIABLE,
-    TYPE_INTEGER_NUMBER,
-    TYPE_DOUBLE_NUMBER,
-    TYPE_EXPONENT_NUMBER,
-    TYPE_IDENTIFIER,
-    TYPE_STRING,
-    TYPE_MULTIPLY,
-    TYPE_DIVIDE,
-    TYPE_ADDITION,
-    TYPE_SUBTRACTION,
-    TYPE_CONCATENATE,
-    TYPE_SMALLER_THAN,
-    TYPE_GREATER_THAN,
-    TYPE_SMALLER_OR_EQUAL,
-    TYPE_GREATER_OR_EQUAL,
-    TYPE_EQUAL,
-    TYPE_NOT_EQUAL,
-    TYPE_ASSIGN,
-    TYPE_END_OF_FILE,
-    TYPE_LVINCULUM,
-    TYPE_RVINCULUM,
-    TYPE_LBRACKET,
-    TYPE_RBRACKET,
-    TYPE_SEMICOLON,
-    TYPE_COLON,
-    TYPE_COMMA
+
+
+
+#define   TYPE_INITIAL           110
+#define   TYPE_KEYWORD           111
+#define   TYPE_VARIABLE          112
+#define   TYPE_INTEGER_NUMBER    113
+#define   TYPE_DOUBLE_NUMBER     114
+#define   TYPE_EXPONENT_NUMBER   115
+#define   TYPE_IDENTIFIER        116
+#define   TYPE_STRING            117
+#define   TYPE_MULTIPLY          118
+#define   TYPE_DIVIDE            119
+#define   TYPE_ADDITION          120
+#define   TYPE_SUBTRACTION       121
+#define   TYPE_CONCATENATE       122
+#define   TYPE_SMALLER_THAN      123
+#define   TYPE_GREATER_THAN      124
+#define   TYPE_SMALLER_OR_EQUAL  125
+#define   TYPE_GREATER_OR_EQUAL  126
+#define   TYPE_EQUAL             127
+#define   TYPE_NOT_EQUAL         128
+#define   TYPE_ASSIGN            129
+#define   TYPE_END_OF_FILE       130
+#define   TYPE_LVINCULUM         131
+#define   TYPE_RVINCULUM         132
+#define   TYPE_LBRACKET          133
+#define   TYPE_RBRACKET          134
+#define   TYPE_SEMICOLON         135
+#define   TYPE_COLON             136
+#define   TYPE_COMMA             137
 
 
 }tokenType;
@@ -54,12 +54,11 @@ typedef union{
     int integerNumber;
     double doubleNumber;
     string *str;
-    keyword keyword;
 }tokenContent;
 
 typedef struct{
     tokenContent *content;
-    tokenType type;
+    int type;
 }token;
 
 

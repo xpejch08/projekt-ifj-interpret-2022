@@ -8,34 +8,34 @@
 
 //todo ",",":"
 
-#define basicState 300 //beginning state waiting for the first character
-#define possibleCommentState 301 //state that found the '/' symbol and checks if comment will be one-line block, or won't be at all
-#define oneLineCommentState 302 //one line comment state waiting for '\n' to end else returns LEX_ERROR
-#define blockCommentState 303 //block comment state waiting for a '*' symbol that will jump to the next state waitForBlockCommentEnd
-#define waitForBlockCommentEnd 304 //waitForBlockCommentEnd checks if the '/' symbol followed after the '*' symbol then ends comment otherwise jumps back to blockCommentState
-#define keywordOrIdentifierStateBegin 305 //the $ symbol tells us the next token will be a variable
-#define keywordOrIdentifierState 306 //reading the variable
-#define identifierOrKeywordState 307 //the next token will be an identifier or a keyword
-#define numberState 308 //the next token will be a number, we don't know the specific data type yet //todo numberstate
-#define smallerThanOrEqualState 309
-#define greaterThanOrEqualState 310
-#define assignOrEqualState 311
-#define equalState 312
-#define stringStartState 313
-#define waitForStringEnd 314
-#define variableRead 315
-#define backslashState 316
-#define escapeHexaState 317
-#define endHexaState 318
-#define escapeOctaState 319
-#define waitOctaState 320
-#define endOctaState 321
-#define decimalState 322
-#define exponentState 323
-#define exponentPlusOrMinusState 324
-#define endExponentState 325
-#define notEqualState 326
-#define notEqualStateEnd 327
+#define basicState                      300 //beginning state waiting for the first character
+#define possibleCommentState            301 //state that found the '/' symbol and checks if comment will be one-line block, or won't be at all
+#define oneLineCommentState             302 //one line comment state waiting for '\n' to end else returns LEX_ERROR
+#define blockCommentState               303 //block comment state waiting for a '*' symbol that will jump to the next state waitForBlockCommentEnd
+#define waitForBlockCommentEnd          304 //waitForBlockCommentEnd checks if the '/' symbol followed after the '*' symbol then ends comment otherwise jumps back to blockCommentState
+#define keywordOrIdentifierStateBegin   305 //the $ symbol tells us the next token will be a variable
+#define keywordOrIdentifierState        306 //reading the variable
+#define identifierOrKeywordState        307 //the next token will be an identifier or a keyword
+#define numberState                     308 //the next token will be a number, we don't know the specific data type yet
+#define smallerThanOrEqualState         309
+#define greaterThanOrEqualState         310
+#define assignOrEqualState              311
+#define equalState                      312
+#define stringStartState                313
+#define waitForStringEnd                314
+#define variableRead                    315
+#define backslashState                  316
+#define escapeHexaState                 317
+#define endHexaState                    318
+#define escapeOctaState                 319
+#define waitOctaState                   320
+#define endOctaState                    321
+#define decimalState                    322
+#define exponentState                   323
+#define exponentPlusOrMinusState        324
+#define endExponentState                325
+#define notEqualState                   326
+#define notEqualStateEnd                327
 
 
 //todo token initialization, change returns of getNextToken function
