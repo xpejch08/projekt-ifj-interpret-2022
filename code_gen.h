@@ -3,21 +3,23 @@
 
 #include "stack.h"
 
-//Instr
-#define MOVS 400
-#define ADDS 401
-#define SUBS 402
-#define MULS 403
-#define DIVS 404
-#define PUSHS 405
-#define POPS 406
-#define LTS 407
-#define GTS 408
-#define WRITE 409
+#define COMPLETE 40
+#define INCOMPLETE 41
 
-typedef struct TInstList instrList;
-typedef struct TNode tnode;
-typedef struct TInst activeInstruction;
+//Instr
+#define MOVE 400
+#define ADD 401
+#define SUB 402
+#define MUL 403
+#define DIV 404
+#define IDIV 405
+#define PUSH 406
+#define POP 407
+#define LT 408
+#define GT 409
+#define WRITE 410
+
+
 
 typedef struct
 {
@@ -41,18 +43,16 @@ typedef struct instrList
     TInst instruction;
 }TItemList;
 
-TInst setActiveInstruction( int instrID, void *leftOp, void *rightOp);
+// funkce nastavi parametry instrukce
+ TInst *setActiveInstruction( int instrID, void *leftOp, void *rightOp);
 // funkce inicializuje seznam instrukcí
 void instructionInit(TInstList *instrList);
 
 //funkce uvolni instrukce ze seznamu
 void instructionFree(TInstList *instrList);
 
-// funkce vlozi instrukci na konec seznamu
-void instructionInsertLast(TInstList *instrList, TInst I);
-
-// funkce vlozi isntrukci na zacatek seznamu
-void instructionInsertFirst(TInstList *instrList, TInst I);
+// funkce vlozi instrukci za aktivni prvek seznamu
+void instructionInsertActive(TInstList *instrList, TInst *instruction);
 
 //funkce zaktivuje prvni instrukci
 void instructionActiveFirst(TInstList *instrList);
@@ -62,5 +62,8 @@ void instructionActiveNext(TInstList *instrList);
 
 // funkce vrati data instrukce
 TInst *instructionGetData(TInstList *instrList);
+
+void instructionArgs(TInstList *instrList, TInst *instruction);
+
 
 #endif
