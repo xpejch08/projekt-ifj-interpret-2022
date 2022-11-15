@@ -217,9 +217,9 @@ int parametrs(int option, int repeat){
                 getNextToken(sToken);
                 if (sToken->type == TYPE_RBRACKET && repeat == 1) {
                     return SUCCES;
-                } else if (sToken->content == KEYWORD_INT ||
-                           sToken->content == KEYWORD_FLOAT ||
-                           sToken->content == KEYWORD_STRING
+                } else if (sToken->content->keyword == KEYWORD_INT ||
+                           sToken->content->keyword == KEYWORD_FLOAT ||
+                           sToken->content->keyword == KEYWORD_STRING
                         ) {
                     getNextToken(sToken);
                     if (sToken->type == TYPE_VARIABLE) {
@@ -245,16 +245,82 @@ int parametrs(int option, int repeat){
                 getNextToken(sToken);
                 
             case 3: // write
-                getNextToken(sToken);// funkce write
+                getNextToken(sToken);
                 switch (sToken->type) {
                     case TYPE_VARIABLE:
-                        
+                        getNextToken(sToken);
+                        if(sToken->type == TYPE_RBRACKET){
+                            return SUCCES;
+                        }
+                        else if(sToken->type == TYPE_COMMA){
+                            repeat++;
+                            parametrs(3, repeat);
+                        }
+                        else{
+                            return SYN_ERROR;
+                        }
                     case TYPE_STRING:
-                        activeInstruction = setActiveInstruction(WRITE, *sToken->content->str, NULL, NULL);
-                        return SUCCES;
+                        getNextToken(sToken);
+                        if(sToken->type == TYPE_RBRACKET){
+                            return SUCCES;
+                        }
+                        else if(sToken->type == TYPE_COMMA){
+                            repeat++;
+                            parametrs(3, repeat);
+                        }
+                        else{
+                            return SYN_ERROR;
+                        }
                     case TYPE_INTEGER_NUMBER:
+                        getNextToken(sToken);
+                        if(sToken->type == TYPE_RBRACKET){
+                            return SUCCES;
+                        }
+                        else if(sToken->type == TYPE_COMMA){
+                            repeat++;
+                            parametrs(3, repeat);
+                        }
+                        else{
+                            return SYN_ERROR;
+                        }
                     case TYPE_DOUBLE_NUMBER:
+                        getNextToken(sToken);
+                        if(sToken->type == TYPE_RBRACKET){
+                            return SUCCES;
+                        }
+                        else if(sToken->type == TYPE_COMMA){
+                            repeat++;
+                            parametrs(3, repeat);
+                        }
+                        else{
+                            return SYN_ERROR;
+                        }
                 }
+            case 4: // readi
+                getNextToken(sToken);
+                if(sToken->type == TYPE_RBRACKET){
+                    return SUCCES;
+                }
+                else{
+                    return SYN_ERROR;
+                }
+            case 5: // reads
+                getNextToken(sToken);
+                if(sToken->type == TYPE_RBRACKET){
+                    return SUCCES;
+                }
+                else{
+                    return SYN_ERROR;
+                }
+            case 6: // readf
+                getNextToken(sToken);
+                if(sToken->type == TYPE_RBRACKET){
+                    return SUCCES;
+                }
+                else{
+                    return SYN_ERROR;
+                }
+            
         }
 }
 
