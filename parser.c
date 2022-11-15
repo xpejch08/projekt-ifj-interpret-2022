@@ -54,6 +54,7 @@ int declrList() {
                             //instructionFree()
                             return SYN_ERROR;
                         }
+                        setActiveInstruction();
                         generateInstruction(activeInstruction, adr1, NULL, NULL);
                         instructionFree(activeInstruction);
                         //todo instructionFree()
@@ -99,6 +100,7 @@ int declrList() {
                             //instructionFree()
                             return SYN_ERROR;
                         }
+                        activeInstruction = setactiveInstruction();
                         generateInstruction(activeInstruction, adr1, NULL, NULL);
                         getNextToken(sToken);
                         result = statlist();
@@ -273,6 +275,9 @@ int declrList() {
                     if(sToken->type != TYPE_LVINCULUM) {
                         return SYN_ERROR;
                     }
+                    if(getNextToken(sToken) == LEX_ERROR) {
+                        return LEX_ERROR;
+                    }
                     if(sToken->type == TYPE_RVINCULUM) {
                         result = statlist();
                         if (result != SUCCES) {
@@ -287,6 +292,9 @@ int declrList() {
                         }
                         if(sToken->type != TYPE_RVINCULUM) {
                             return SYN_ERROR;
+                        }
+                        if(getNextToken(sToken) == LEX_ERROR) {
+                            return LEX_ERROR;
                         }
                         result = statlist();
                         if (result != SUCCES) {
@@ -307,6 +315,9 @@ int declrList() {
                     return LEX_ERROR;
                 }
             if(sToken->type == TYPE_RVINCULUM) {
+                if(getNextToken(sToken) == LEX_ERROR) {
+                    return LEX_ERROR;
+                }
                 result = statlist();
                 if (result != SUCCES) {
                     return result;
@@ -373,10 +384,6 @@ int statList(){
 
                 
         case TYPE_RVINCULUM:
-            result = statList();
-            if(result != SUCCES){
-                return result;
-            }
             return SUCCES;
 
         case TYPE_VARIABLE:
@@ -400,7 +407,6 @@ int statList(){
                 return result;
             }
             return SUCCES;
-            return declrList();
         case TYPE_SEMICOLON:
             return SUCCES;
         case TYPE_RBRACKET:
@@ -638,8 +644,8 @@ int program(){
     int result;
     switch (sToken->type) {
         case TYPE_IDENTIFIER:
-            if((declrList()) != SUCCES){
-                return SUCCES;
+            if((result = declrList()) != SUCCES){
+                return result;
             }
             if((result = statList()) != SUCCES){
                 return result;
