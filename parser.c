@@ -32,7 +32,7 @@ BVSInit(insideFunction);
 
 int stat(); // function declaration;
 int statlist();
-int parameters(); // declaration because function is used before definition
+int parametrs(); // declaration because function is used before definition
 
 //check declare function, checks beginning of token type for example checks if there is a left bracket after while,
 // recursively calls itself
@@ -48,7 +48,7 @@ int declrList() {
             if (strCmpConstStr(sToken->content->str, "write")) {
                 getNextToken(sToken);
                 if (sToken->type == TYPE_LBRACKET) {
-                    paramError = parameters(caseWrite, 1);
+                    paramError = parametrs(PARAM_WRITE, 1);
                     if (paramError == SUCCES) {
                         if (getNextToken(sToken) != TYPE_SEMICOLON) {
                             //instructionFree()
@@ -73,7 +73,7 @@ int declrList() {
             if (strCmpConstStr(sToken->content->str, "reads")) {
                 getNextToken(sToken);
                 if (sToken->type == TYPE_LBRACKET) {
-                    paramError = parameters(caseReads, 1); //todo define parameters prarameters :D
+                    paramError = parametrs(PARAM_READS, 1); 
                     if (paramError == SUCCES) {
                         if (getNextToken(sToken) != TYPE_SEMICOLON) {
                             //instructionFree()
@@ -93,7 +93,7 @@ int declrList() {
             if (strCmpConstStr(sToken->content->str, "readi")) {
                 getNextToken(sToken);
                 if (sToken->type == TYPE_LBRACKET) {
-                    paramError = parameters(caseReadi, 1)//todo define parameters prarameters :D
+                    paramError = parametrs(PARAM_READI, 1)
                     if (paramError == SUCCES) {
                         if (getNextToken(sToken) != TYPE_SEMICOLON) {
                             //instructionFree()
@@ -116,7 +116,7 @@ int declrList() {
             if (strCmpConstStr(sToken->content->str, "readf")) {
                 getNextToken(sToken);
                 if (sToken->type == TYPE_LBRACKET) {
-                    paramError = parameters(caseReadi, 1);//todo define parameters prarameters :D
+                    paramError = parametrs(PARAM_READF, 1);
                     if (paramError == SUCCES) {
                         if (getNextToken(sToken) != TYPE_SEMICOLON) {
                             //instructionFree()
@@ -136,7 +136,7 @@ int declrList() {
             if (strCmpConstStr(sToken->content->str, "strlen")) {
                 getNextToken(sToken);
                 if (sToken->type == TYPE_LBRACKET) {
-                    paramError == parameters(caseStrlen, 1);//todo define parameters prarameters :D
+                    paramError == parametrs(PARAM_STRLEN, 1);
                     if (paramError == SUCCES) {
                         if (getNextToken(sToken) != TYPE_SEMICOLON) {
                             //instructionFree()
@@ -156,7 +156,7 @@ int declrList() {
             if (strCmpConstStr(sToken->content->str, "substring")) {
                 getNextToken(sToken);
                 if (sToken->type == TYPE_LBRACKET) {
-                    paramError = parameters(caseSubstring, 1); //todo define parameters prarameters :D
+                    paramError = parametrs(caseSubstring, 1); 
                     if (paramError == SUCCES) {
                         if (getNextToken(sToken) != TYPE_SEMICOLON) {
                             //instructionFree()
@@ -176,7 +176,7 @@ int declrList() {
             if (strCmpConstStr(sToken->content->str, "ord")) {
                 getNextToken(sToken);
                 if (sToken->type == TYPE_LBRACKET) {
-                    paramError = parameters(caseSubstring, 1); //todo define parameters prarameters :D
+                    paramError = parametrs(PARAM_SUBSTRING, 1); 
                     if (paramError == SUCCES) {
                         if (getNextToken(sToken) != TYPE_SEMICOLON) {
                             //instructionFree()
@@ -196,7 +196,7 @@ int declrList() {
             if (strCmpConstStr(sToken->content->str, "chr")) {
                 getNextToken(sToken);
                 if (sToken->type == TYPE_LBRACKET) {
-                    paramError = parameters(caseSubstring, 1); //todo define parameters prarameters :D
+                    paramError = parametrs(PARAM_CHR, 1); 
                     if (paramError == SUCCES) {
                         if (getNextToken(sToken) != TYPE_SEMICOLON) {
                             //instructionFree()
@@ -225,7 +225,7 @@ int declrList() {
             if (sToken->type != TYPE_LBRACKET) {
                 return SYN_ERROR;
             } else {
-                return parameters(2, 1);
+                return parametrs(PARAM_IF_WHILE, 1);
             }
         case KEYWORD_VOID:
             getNextToken(sToken);
@@ -261,8 +261,8 @@ int declrList() {
             if (sToken->type != TYPE_LBRACKET) {
                 return SYN_ERROR;
             } else {
-                paramError = parameters(2,1);
-                if(paramError != SUCCESS) {
+                paramError = parametrs(PARAM_IF_WHILE,1);
+                if(paramError != SUCCES) {
                      return paramError;
                 }
                 else {
@@ -335,7 +335,7 @@ int declrList() {
             if (sToken->type != TYPE_LBRACKET) {
                 return SYN_ERROR;
             }
-            return parameters(1, 1);
+            return parametrs(PARAM_FUNCTION, 1);
         case KEYWORD_FLOAT:
             getNextToken(sToken);
             if (sToken->type != TYPE_VARIABLE) {
@@ -469,7 +469,7 @@ int parametrs(int option, int repeat){
                         getNextToken(sToken);
                         if (sToken->type == TYPE_COMMA) {
                             repeat++;
-                            parametrs(1, repeat);
+                            parametrs(PARAM_FUNCTION, repeat);
                         } else if (sToken->type == TYPE_RBRACKET) {
                             return SUCCES;
                         } else {
@@ -495,7 +495,7 @@ int parametrs(int option, int repeat){
                         }
                         else if(sToken->type == TYPE_COMMA){
                             repeat++;
-                            parametrs(3, repeat);
+                            parametrs(PARAM_WRITE, repeat);
                         }
                         else{
                             return SYN_ERROR;
@@ -507,7 +507,7 @@ int parametrs(int option, int repeat){
                         }
                         else if(sToken->type == TYPE_COMMA){
                             repeat++;
-                            parametrs(3, repeat);
+                            parametrs(PARAM_WRITE, repeat);
                         }
                         else{
                             return SYN_ERROR;
@@ -519,7 +519,7 @@ int parametrs(int option, int repeat){
                         }
                         else if(sToken->type == TYPE_COMMA){
                             repeat++;
-                            parametrs(3, repeat);
+                            parametrs(PARAM_WRITE, repeat);
                         }
                         else{
                             return SYN_ERROR;
@@ -531,7 +531,7 @@ int parametrs(int option, int repeat){
                         }
                         else if(sToken->type == TYPE_COMMA){
                             repeat++;
-                            parametrs(3, repeat);
+                            parametrs(PARAM_WRITE, repeat);
                         }
                         else{
                             return SYN_ERROR;
@@ -561,7 +561,73 @@ int parametrs(int option, int repeat){
                 else{
                     return SYN_ERROR;
                 }
-            
+            case 7: // strlen
+                getNextToken(sToken);
+                if(sToken->type == KEYWORD_STRING){
+                    getNextToken(sToken);
+                    if(sToken->type == TYPE_VARIABLE){
+                        getNextToken(sToken);
+                        if(sToken->type == TYPE_RBRACKET){
+                            return SUCCES;
+                        }
+                    }
+                }
+                return SYN_ERROR;
+            case 8: // substring
+                getNextToken(sToken);
+                if(sToken->type == KEYWORD_STRING){
+                    getNextToken(sToken);
+                    if(sToken->type == TYPE_VARIABLE){
+                        getNextToken(sToken);
+                        if(sToken->type == TYPE_COMMA){
+                            getNextToken(sToken);
+                            if(sToken->type == KEYWORD_INT){
+                                getNextToken(sToken);
+                                if(sToken->type == TYPE_VARIABLE){
+                                    getNextToken(sToken);
+                                    if(sToken->type == TYPE_COMMA){
+                                        getNextToken(sToken);
+                                        if(sToken->type == KEYWORD_INT){
+                                            getNextToken(sToken);
+                                            if(sToken->type == TYPE_VARIABLE){
+                                                getNextToken(sToken);
+                                                if(sToken->type == TYPE_RBRACKET){
+                                                    return SUCCES;
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return SYN_ERROR;
+            case 9: // ord
+                getNextToken(sToken);
+                if(sToken->type == KEYWORD_STRING){
+                    getNextToken(sToken);
+                    if(sToken->type == TYPE_VARIABLE){
+                        getNextToken(sToken);
+                        if(sToken->type == TYPE_RBRACKET);{
+                            return SUCCES;
+                        }
+                    }
+                }
+                return SYN_ERROR;
+            case 10: //chr
+                getNextToken(sToken);
+                if(sToken->type == KEYWORD_INT){
+                    getNextToken(sToken);
+                    if(sToken->type == TYPE_VARIABLE){
+                        getNextToken(sToken);
+                        if(sToken->type == TYPE_RBRACKET){
+                            return SUCCES;
+                        }
+                    }
+                }
+                return SYN_ERROR
         }
 }
 
