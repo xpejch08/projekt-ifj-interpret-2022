@@ -3,6 +3,65 @@
 #include "code_gen.h"
 #include "lexical.h"
 
+
+TInst setActiveInstruction(int instrID ,void* leftOp, void* rightOp, void* result)
+{   
+    TInst activeInstruction;
+    if(instrID != NULL){
+        activeInstruction.instrID = instrID;
+    }
+    if(leftOp != NULL)
+    {
+        activeInstruction.leftOp = leftOp;
+    }
+    if(rightOp != NULL)
+    {
+        activeInstruction.rightOp = rightOp;
+    }
+    if(result != NULL)
+    {
+        activeInstruction.result = result;
+    }
+    return activeInstruction;
+}
+
+
+void sortInstructions(TInst* activeInstruction, TInst* activeInstruction2 ){
+
+    if(activeInstruction->instrID == MULS || activeInstruction->instrID == DIVS ){
+        return;
+    }
+    
+    if(activeInstruction->instrID == ADDS || activeInstruction->instrID == SUBS){
+        if(activeInstruction2->instrID == ADDS || activeInstruction2->instrID == SUBS)
+        {
+            return;
+        }
+        if(activeInstruction2)
+    }
+
+
+
+}
+
+
+void generateInstruction(TInst activeInstruction, int addrprev, int addract, int addrnext)
+{   
+
+if(addrprev == NULL)
+{
+    if(addract == NULL && addrnext == NULL && addrprev == NULL)
+    {
+        instructionInsertLast(list, activeInstruction);
+    }
+//TODO
+
+}
+
+
+
+}
+
 void instructionInit(TInstList *instrList)
 {
     instrList->active = NULL;
@@ -56,9 +115,9 @@ void instructionActiveNext(TInstList *instrList)
     if(instrList->first != NULL)
     {
         if(instrList->active->next != NULL)
-        {
+    {
         instrList->active = instrList->active->next;
-        }
+    }
     }
 }
 
@@ -75,14 +134,14 @@ void instructionArgs(TInstList *instrList, TInst *instruction)
     //TInst *instruction;
     instrList->active = instruction;
  if(instrList->active != NULL)
- {
+    {
      switch (instruction->instrID)
-     {
+        {
      case 400: // MOVE
      if(instruction->leftOp == NULL || instruction->rightOp == NULL)
      {
         return INCOMPLETE;
-     }
+        }
      else
       return COMPLETE;
 
@@ -98,7 +157,7 @@ void instructionArgs(TInstList *instrList, TInst *instruction)
              if(instruction->leftOp == NULL || instruction->rightOp == NULL)
             {
                 return INCOMPLETE;
-            }
+    }
      else
       return COMPLETE; 
 
@@ -123,20 +182,20 @@ void instructionArgs(TInstList *instrList, TInst *instruction)
        if(instruction.leftOp == NULL || instruction.rightOp == NULL)
             {
                 return INCOMPLETE;
-            }
+}
      else
       return COMPLETE;
 
      case 406: // PUSH
              if(instruction.leftOp == NULL || instruction.rightOp == NULL)
-            {
+{
                 return INCOMPLETE;
             }
      else
       return COMPLETE;
      case 407: // POP
              if(instruction.leftOp == NULL || instruction.rightOp == NULL)
-            {
+    {
                 return INCOMPLETE;
             }
      else
@@ -150,5 +209,5 @@ void instructionArgs(TInstList *instrList, TInst *instruction)
      default:
         break;
      }
- }
+    }
 }
