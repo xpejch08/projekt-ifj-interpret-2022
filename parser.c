@@ -17,7 +17,7 @@ TNode *insideFunction;
 TNode *functionNames;
 TNode *mainTree;
 DLLElementPtr *list;
-TInst activeInstruction;
+
 int tokenId;
 token *sToken;
 
@@ -236,10 +236,13 @@ int parametrs(int option, int repeat){
                     return SYN_ERROR;
                 }
             case 2: // kontrolujeme podminku ve while nebo if
+                getNextToken(sToken);
+                
             case 3: // write
                 getNextToken(sToken);// funkce write
                 switch (sToken->type) {
                     case TYPE_VARIABLE:
+                        
                     case TYPE_STRING:
                         activeInstruction = setActiveInstruction(WRITE, *sToken->content->str, NULL, NULL);
                         return SUCCES;
