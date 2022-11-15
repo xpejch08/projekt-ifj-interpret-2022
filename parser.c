@@ -94,7 +94,7 @@ int declrList() {
             if (strCmpConstStr(sToken->content->str, "readi")) {
                 getNextToken(sToken);
                 if (sToken->type == TYPE_LBRACKET) {
-                    paramError = parametrs(PARAM_READI, 1)
+                    paramError = parametrs(PARAM_READI, 1);
                     if (paramError == SUCCES) {
                         if (getNextToken(sToken) != TYPE_SEMICOLON) {
                             //instructionFree()
@@ -158,7 +158,7 @@ int declrList() {
             if (strCmpConstStr(sToken->content->str, "substring")) {
                 getNextToken(sToken);
                 if (sToken->type == TYPE_LBRACKET) {
-                    paramError = parametrs(caseSubstring, 1); 
+                    paramError = parametrs(PARAM_SUBSTRING, 1); 
                     if (paramError == SUCCES) {
                         if (getNextToken(sToken) != TYPE_SEMICOLON) {
                             //instructionFree()
@@ -370,10 +370,10 @@ int statList(){
         case TYPE_COLON:
 
             getNextToken(sToken);
-            if(sToken->content->keyword != KEYWORD_VOID    ||
-               sToken->content->keyword != KEYWORD_INT     ||
-               sToken->content->keyword != KEYWORD_STRING  ||
-               sToken->content->keyword != KEYWORD_FLOAT)
+            if(sToken->type != KEYWORD_VOID    ||
+               sToken->type != KEYWORD_INT     ||
+               sToken->type != KEYWORD_STRING  ||
+               sToken->type != KEYWORD_FLOAT)
                 return SYN_ERROR;
             getNextToken(sToken);
             if(sToken->type != TYPE_LVINCULUM)
@@ -464,9 +464,9 @@ int parametrs(int option, int repeat){
                 getNextToken(sToken);
                 if (sToken->type == TYPE_RBRACKET && repeat == 1) {
                     return SUCCES;
-                } else if (sToken->content->keyword == KEYWORD_INT ||
-                           sToken->content->keyword == KEYWORD_FLOAT ||
-                           sToken->content->keyword == KEYWORD_STRING
+                } else if (sToken->type == KEYWORD_INT ||
+                           sToken->type == KEYWORD_FLOAT ||
+                           sToken->type == KEYWORD_STRING
                         ) {
                     getNextToken(sToken);
                     if (sToken->type == TYPE_VARIABLE) {
@@ -633,7 +633,7 @@ int parametrs(int option, int repeat){
                         }
                     }
                 }
-                return SYN_ERROR
+                return SYN_ERROR;
         }
 }
 
@@ -668,7 +668,7 @@ int program(){
         case TYPE_STRING:
         case TYPE_VARIABLE:
         case TYPE_KEYWORD:
-            switch (sToken->content->keyword) {
+            switch (sToken->type) {
                 case KEYWORD_WHILE:
                     if((result = declrList()) != SUCCES){
                         return result;
@@ -782,7 +782,7 @@ int parse(DLLElementPtr *iList){
     list = iList;
     //todo fix init token function
     initToken(sToken);
-    instructionInit(instList);
+    instructionInit(list);
     if((tokenId = getNextToken(sToken)) == LEX_ERROR){
         return LEX_ERROR;
     }
