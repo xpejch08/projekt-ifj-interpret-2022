@@ -30,7 +30,7 @@ while(instrList->first != NULL)
 }
 }
 
-void instructionInsertActive(TInstList *instrList, TInst *instruction)
+void instructionInsertActive(TInstList *instrList, TInst instruction)
 {
     TItemList *newInst = malloc(sizeof(TItemList));
     if(newInst == NULL)

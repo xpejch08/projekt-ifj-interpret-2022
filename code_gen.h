@@ -52,7 +52,7 @@ void instructionInit(TInstList *instrList);
 void instructionFree(TInstList *instrList);
 
 // funkce vlozi instrukci za aktivni prvek seznamu
-void instructionInsertActive(TInstList *instrList, TInst *instruction);
+void instructionInsertActive(TInstList *instrList, TInst instruction);
 
 //funkce zaktivuje prvni instrukci
 void instructionActiveFirst(TInstList *instrList);
