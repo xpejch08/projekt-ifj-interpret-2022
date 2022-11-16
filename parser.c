@@ -127,7 +127,7 @@ int declrList() {
             if (strCmpConstStr(sToken->content->str, "readf")) {
                 getNextToken(sToken);
                 if (sToken->type == TYPE_LBRACKET) {
-                    paramError = parametrs(P}tokenType;ARAM_READF, 1);
+                    paramError = parametrs(PARAM_READF, 1);
                     if (paramError == SUCCES) {
                         if (getNextToken(sToken) != TYPE_SEMICOLON) {
                             //instructionFree()
@@ -139,9 +139,9 @@ int declrList() {
                         return SUCCES;
                     } else {
                         return paramError;
-                    }
-                } else {
-                    return SYN_ERROR;
+                    } else {
+                        return SYN_ERROR;
+                     }
                 }
             }
             if (strCmpConstStr(sToken->content->str, "strlen")) {
@@ -358,7 +358,7 @@ int declrList() {
                 return SYN_ERROR;
             }
             return parametrs(PARAM_FUNCTION, 1);
-        case KEYWORD_FLOAT:
+            case KEYWORD_FLOAT:
             getNextToken(sToken);
             if (sToken->type != TYPE_VARIABLE) {
                 return SYN_ERROR;
@@ -366,7 +366,7 @@ int declrList() {
                 return SUCCES;
             }
         }
-    }
+}
 //check after function, checks ending of token type for example checks if there is a right bracket after condition of
 // while, recursively calls itself
 //also calls main fynction stat
