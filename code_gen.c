@@ -4,6 +4,8 @@
 #include "lexical.h"
 
 
+//test
+
 TInst setActiveInstruction(int instrID ,void* leftOp, void* rightOp, void* result)
 {   
     TInst activeInstruction;
