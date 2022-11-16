@@ -13,7 +13,6 @@ void DLL_InsertFirst( DLList *list, token token ) {
 	DLLElementPtr insertingptr = malloc(sizeof(struct DLLElement));
 
 	if(insertingptr == NULL){
-		fprintf(stderr, "Chyba pri alokaci prvku");
         return INT_ERROR; 
 	}
     insertingptr->type = token.type;
@@ -34,7 +33,6 @@ void DLL_InsertLast( DLList *list, token token ) {
 	DLLElementPtr insertinglastptr = malloc(sizeof(struct DLLElement));
 
 	if(insertinglastptr == NULL){
-		fprintf(stderr, "Chyba pri alokaci prvku");
         return INT_ERROR; 
 	}
     insertinglastptr->content = token.content;
