@@ -27,20 +27,30 @@ TInst setActiveInstruction(int instrID ,void* leftOp, void* rightOp, void* resul
 
 
 void sortInstructions(TInst* activeInstruction, TInst* activeInstruction2 ){
-
+    
     if(activeInstruction->instrID == MULS || activeInstruction->instrID == DIVS ){
         return;
     }
     
     if(activeInstruction->instrID == ADDS || activeInstruction->instrID == SUBS){
-        if(activeInstruction2->instrID == ADDS || activeInstruction2->instrID == SUBS)
+        
+        if(activeInstruction2->instrID == MULS || activeInstruction2 == DIVS){
+
+            activeInstruction->rightOp = activeInstruction2->result;
+        }
+        else
         {
             return;
         }
-        if(activeInstruction2)
     }
+    if(activeInstruction->instrID == LTS || activeInstruction->instrID == GTS){
 
-
+        if(activeInstruction2->instrID == ADDS || activeInstruction2->instrID == SUBS || activeInstruction2->instrID == MULS || activeInstruction2->instrID == DIVS){
+            
+            activeInstruction->rightOp = activeInstruction2->result;
+        }
+    }
+    // TODO KONKATENACE ???
 
 }
 
@@ -54,7 +64,7 @@ if(addrprev == NULL)
     {
         instructionInsertLast(list, activeInstruction);
     }
-//TODO
+//TODO ?
 
 }
 
