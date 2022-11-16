@@ -48,8 +48,6 @@
 #define   TYPE_COMMA             137
 
 
-}tokenType;
-
 typedef union{
     int integerNumber;
     double doubleNumber;

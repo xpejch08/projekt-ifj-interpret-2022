@@ -46,15 +46,19 @@ int declrList() {
         case TYPE_IDENTIFIER:
 
             if (strCmpConstStr(sToken->content->str, "write")) {
-                getNextToken(sToken);
+                if(getNextToken(sToken) == LEX_ERROR){
+                    return  LEX_ERROR;
+                }
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_WRITE, 1);
                     if (paramError == SUCCES) {
-                        if (getNextToken(sToken) != TYPE_SEMICOLON) {
+                        if(getNextToken(sToken) == LEX_ERROR){
+                            return  LEX_ERROR;
+                        }
+                        if (sToken->type != TYPE_SEMICOLON) {
                             //instructionFree()
                             return SYN_ERROR;
                         }
-                        setActiveInstruction();
                         generateInstruction(activeInstruction, adr1, NULL, NULL);
                         instructionFree(activeInstruction);
                         //todo instructionFree()
@@ -92,15 +96,20 @@ int declrList() {
                 }
             }
             if (strCmpConstStr(sToken->content->str, "readi")) {
-                getNextToken(sToken);
+                if(getNextToken(sToken) == LEX_ERROR){
+                    return LEX_ERROR;
+                }
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_READI, 1);
                     if (paramError == SUCCES) {
-                        if (getNextToken(sToken) != TYPE_SEMICOLON) {
+                        if(getNextToken(sToken) == LEX_ERROR){
+                            return LEX_ERROR;
+                        }
+                        if (sToken->type != TYPE_SEMICOLON) {
                             //instructionFree()
                             return SYN_ERROR;
                         }
-                        activeInstruction = setactiveInstruction();
+                        activeInstruction = setActiveInstruction();
                         generateInstruction(activeInstruction, adr1, NULL, NULL);
                         getNextToken(sToken);
                         result = statlist();
@@ -118,7 +127,7 @@ int declrList() {
             if (strCmpConstStr(sToken->content->str, "readf")) {
                 getNextToken(sToken);
                 if (sToken->type == TYPE_LBRACKET) {
-                    paramError = parametrs(PARAM_READF, 1);
+                    paramError = parametrs(P}tokenType;ARAM_READF, 1);
                     if (paramError == SUCCES) {
                         if (getNextToken(sToken) != TYPE_SEMICOLON) {
                             //instructionFree()
@@ -259,7 +268,9 @@ int declrList() {
                 return SUCCES;
             }
         case KEYWORD_IF:
-            getNextToken(sToken);
+            if(getNextToken(sToken) == LEX_ERROR) {
+                return LEX_ERROR;
+            }
             if (sToken->type != TYPE_LBRACKET) {
                 return SYN_ERROR;
             } else {
@@ -387,11 +398,7 @@ int statList(){
             return SUCCES;
 
         case TYPE_VARIABLE:
-            if (BVSSearch(mainTree, *sToken) == false) {
-                BVSInsert(mainTree, *sToken);
-            } else {
-                return SEM_ERROR;
-            }
+            BVSInsert(mainTree, *sToken);
             activeInstruction = setActiveInstruction();
             getNextToken(sToken);
             result = statList();
@@ -454,7 +461,7 @@ int statList(){
 
 //stat function checks content of different types, for example condition of while or body of while, calls function
 //statlist -> statlist calls stat recursively
-int stat(){
+i
     
  //todo
 }
@@ -489,13 +496,18 @@ int parametrs(int option, int repeat){
                     return SYN_ERROR;
                 }
             case 2: // kontrolujeme podminku ve while nebo if
+
                 getNextToken(sToken);
                 
             case 3: // write
-                getNextToken(sToken);
+                if(getNextToken(sToken) == LEX_ERROR){
+                    return  LEX_ERROR;
+                }
                 switch (sToken->type) {
                     case TYPE_VARIABLE:
-                        getNextToken(sToken);
+                        if(getNextToken(sToken) == LEX_ERROR){
+                            return  LEX_ERROR;
+                        }
                         if(sToken->type == TYPE_RBRACKET){
                             return SUCCES;
                         }
@@ -507,7 +519,10 @@ int parametrs(int option, int repeat){
                             return SYN_ERROR;
                         }
                     case TYPE_STRING:
-                        getNextToken(sToken);
+                        setActiveInstruction(WRITE, *sToken, NULL, NULL, NULL);
+                        if(getNextToken(sToken) == LEX_ERROR){
+                            return  LEX_ERROR;
+                        }
                         if(sToken->type == TYPE_RBRACKET){
                             return SUCCES;
                         }

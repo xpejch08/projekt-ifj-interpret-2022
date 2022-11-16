@@ -47,7 +47,7 @@ void setSourceFile(FILE *f){
 
 void initToken(token *token){
     token->type = TYPE_INITIAL;
-    strInit(token->content.str);
+    token->content = NULL;
 }
 int octaToDecimal(const char *arr){
     int octal = atoi(arr);
@@ -136,6 +136,7 @@ int getNextToken(token *attr) {
     char *endptr;
     char hexaEscape[2];
     char octaEscape[3];
+    initToken(attr);
     strInit(attr->content.str);
 
     strClean(attr->content.str);

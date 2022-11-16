@@ -7,7 +7,7 @@
 TInst setActiveInstruction(int instrID ,void* leftOp, void* rightOp, void* result)
 {   
     TInst activeInstruction;
-    if(instrID != NULL){
+    if(instrID != 0){
         activeInstruction.instrID = instrID;
     }
     if(leftOp != NULL)
