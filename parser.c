@@ -465,18 +465,24 @@ int statList(){
 int parametrs(int option, int repeat){
         switch (option) {
             case 1: // kontrolujeme parametry funkce
-                getNextToken(sToken);
+                if(getNextToken(sToken) == LEX_ERROR){
+                            return  LEX_ERROR;
+                        }
                 if (sToken->type == TYPE_RBRACKET && repeat == 1) {
                     return SUCCES;
                 } else if (sToken->type == KEYWORD_INT ||
                            sToken->type == KEYWORD_FLOAT ||
                            sToken->type == KEYWORD_STRING
                         ) {
-                    getNextToken(sToken);
+                    if(getNextToken(sToken) == LEX_ERROR){
+                            return  LEX_ERROR;
+                        }
                     if (sToken->type == TYPE_VARIABLE) {
                         generateInstruction();
                         BVSInsert(insideFunction, *sToken);
-                        getNextToken(sToken);
+                        if(getNextToken(sToken) == LEX_ERROR){
+                            return  LEX_ERROR;
+                        }
                         if (sToken->type == TYPE_COMMA) {
                             repeat++;
                             parametrs(PARAM_FUNCTION, repeat);
@@ -502,11 +508,22 @@ int parametrs(int option, int repeat){
                             return  LEX_ERROR;
                         }
                         if(sToken->type == TYPE_CONCATENATE || 
-                           sToken->type == TYPE_ADDITION    || /////////////// 
-                           sToken->type == TYPE_ASSIGN      ||
-                           sToken->type ==    
+                           sToken->type == TYPE_ADDITION    || ///////////////  CHANGE TO ===
+                           sToken->type == TYPE_ASSIGN      || ///////////////  CHANGE TO !==
+                           sToken->type == TYPE_EQUAL       ||
+                           sToken->type == TYPE_NOT_EQUAL    
                         ){
-
+                            parametrs(PARAM_IF_WHILE, repeat);
+                        }
+                        else if(sToken->type == TYPE_RBRACKET){
+                            repeat--;
+                            if(repeat == 0){
+                                return SUCCES;
+                            }
+                            parametrs(PARAM_IF_WHILE, repeat);
+                        }
+                        else{
+                            return SYN_ERROR;
                         }
                     case TYPE_VARIABLE:
                         if(getNextToken(sToken) == LEX_ERROR){
@@ -604,7 +621,9 @@ int parametrs(int option, int repeat){
                             return SYN_ERROR;
                         }
                     case TYPE_INTEGER_NUMBER:
-                        getNextToken(sToken);
+                        if(getNextToken(sToken) == LEX_ERROR){
+                            return  LEX_ERROR;
+                        }
                         if(sToken->type == TYPE_RBRACKET){
                             return SUCCES;
                         }
@@ -616,7 +635,9 @@ int parametrs(int option, int repeat){
                             return SYN_ERROR;
                         }
                     case TYPE_DOUBLE_NUMBER:
-                        getNextToken(sToken);
+                        if(getNextToken(sToken) == LEX_ERROR){
+                            return  LEX_ERROR;
+                        }
                         if(sToken->type == TYPE_RBRACKET){
                             return SUCCES;
                         }
@@ -637,7 +658,9 @@ int parametrs(int option, int repeat){
                     return SYN_ERROR;
                 }
             case 5: // reads
-                getNextToken(sToken);
+                if(getNextToken(sToken) == LEX_ERROR){
+                            return  LEX_ERROR;
+                        }
                 if(sToken->type == TYPE_RBRACKET){
                     return SUCCES;
                 }
@@ -645,7 +668,9 @@ int parametrs(int option, int repeat){
                     return SYN_ERROR;
                 }
             case 6: // readf
-                getNextToken(sToken);
+                if(getNextToken(sToken) == LEX_ERROR){
+                            return  LEX_ERROR;
+                        }
                 if(sToken->type == TYPE_RBRACKET){
                     return SUCCES;
                 }
@@ -653,26 +678,42 @@ int parametrs(int option, int repeat){
                     return SYN_ERROR;
                 }
             case 7: // strlen
-                getNextToken(sToken);
+                if(getNextToken(sToken) == LEX_ERROR){
+                            return  LEX_ERROR;
+                        }
                 if(sToken->type == TYPE_VARIABLE){
-                    getNextToken(sToken);
+                    if(getNextToken(sToken) == LEX_ERROR){
+                            return  LEX_ERROR;
+                        }
                     if(sToken->type == TYPE_RBRACKET){
                         return SUCCES;
                     }
                 }
                 return SYN_ERROR;
             case 8: // substring
-                getNextToken(sToken);
+                if(getNextToken(sToken) == LEX_ERROR){
+                    return  LEX_ERROR;
+                }
                 if(sToken->type == TYPE_VARIABLE){
-                    getNextToken(sToken);
+                    if(getNextToken(sToken) == LEX_ERROR){
+                        return  LEX_ERROR;
+                    }
                     if(sToken->type == TYPE_COMMA){
-                        getNextToken(sToken);
+                        if(getNextToken(sToken) == LEX_ERROR){
+                            return  LEX_ERROR;
+                        }
                         if(sToken->type == TYPE_VARIABLE){
-                            getNextToken(sToken);
+                            if(getNextToken(sToken) == LEX_ERROR){
+                                return  LEX_ERROR;
+                            }   
                             if(sToken->type == TYPE_COMMA){
-                                getNextToken(sToken);
+                                if(getNextToken(sToken) == LEX_ERROR){
+                                    return  LEX_ERROR;
+                                }
                                 if(sToken->type == TYPE_VARIABLE){
-                                    getNextToken(sToken);
+                                    if(getNextToken(sToken) == LEX_ERROR){
+                                        return  LEX_ERROR;
+                                    }
                                     if(sToken->type == TYPE_RBRACKET){
                                         return SUCCES;
                                     }
@@ -683,9 +724,13 @@ int parametrs(int option, int repeat){
                 }                    
                 return SYN_ERROR;
             case 9: // ord
-                getNextToken(sToken);
+                if(getNextToken(sToken) == LEX_ERROR){
+                    return  LEX_ERROR;
+                }
                 if(sToken->type == TYPE_VARIABLE){
-                    getNextToken(sToken);
+                    if(getNextToken(sToken) == LEX_ERROR){
+                        return  LEX_ERROR;
+                    }
                     if(sToken->type == TYPE_RBRACKET);{
                         return SUCCES;
                     }
@@ -693,9 +738,13 @@ int parametrs(int option, int repeat){
                 
                 return SYN_ERROR;
             case 10: //chr
-                getNextToken(sToken);
+                if(getNextToken(sToken) == LEX_ERROR){
+                    return  LEX_ERROR;
+                }
                 if(sToken->type == TYPE_VARIABLE){
-                    getNextToken(sToken);
+                    if(getNextToken(sToken) == LEX_ERROR){
+                        return  LEX_ERROR;
+                    }
                     if(sToken->type == TYPE_RBRACKET){
                         return SUCCES;
                     }
