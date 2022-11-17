@@ -381,7 +381,7 @@ int getNextToken(token *attr) {
                     state = waitOctaState;
                 }
                 else{
-                    strAddChar(attr->content.str, 92);
+                    strAddChar(attr->content->str, 92);
                     strAddChar(attr->content.str, character);
                     state = waitForStringEnd;
                 }

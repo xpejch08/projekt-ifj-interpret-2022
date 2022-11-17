@@ -18,12 +18,13 @@ TNode *BVSCreate(token token){
     newPtr->leftPtr = NULL;
     newPtr->rightPtr = NULL;
     newPtr->type = token.type;
-    newPtr->content = token.content;
+    newPtr->content = *token.content;
 
     return newPtr;
 }
 
-TNode *BVSInsert(TNode *rootPtr, token token){
+TNode *BVSInsert(TNode *rootPtr, token token
+){
     if(rootPtr == NULL){
         return BVSCreate(token);
     }

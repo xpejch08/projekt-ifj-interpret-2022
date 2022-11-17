@@ -16,7 +16,7 @@ void DLL_InsertFirst( DLList *list, token token ) {
         return INT_ERROR; 
 	}
     insertingptr->type = token.type;
-    insertingptr->content = token.content;  
+    insertingptr->content = *token.content;  
     insertingptr->previousElement = NULL; 
 
 	if(list->firstElement == NULL){ 
@@ -35,7 +35,7 @@ void DLL_InsertLast( DLList *list, token token ) {
 	if(insertinglastptr == NULL){
         return INT_ERROR; 
 	}
-    insertinglastptr->content = token.content;
+    insertinglastptr->content = *token.content;
     insertinglastptr->type = token.type;
     insertinglastptr->nextElement = NULL;
 	if(list->firstElement == NULL) 
