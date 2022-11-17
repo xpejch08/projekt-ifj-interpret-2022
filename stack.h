@@ -4,7 +4,7 @@
 #include "lexical.h"
 
 typedef struct DLLElement {
-	tokenType type;
+	int type;
     tokenContent content;
 	struct DLLElement *previousElement;
 	struct DLLElement *nextElement;

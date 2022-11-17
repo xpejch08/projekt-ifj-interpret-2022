@@ -7,11 +7,11 @@
 #include "str.h"
 
 typedef struct tnode{
-    tokenType type;
     tokenContent content;
     struct tnode *leftPtr;
     struct tnode *rightPtr;
     string key;
+    int type;
 }TNode;
 
 typedef struct troot{
