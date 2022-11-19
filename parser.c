@@ -1,11 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include "lexical.h"
-#include "str.h"
 #include "parser.h"
-#include "stack.h"
-#include "symtable.h"
-#include "code_gen.h"
 
 //todo think about using enum and redefining token structure !!!
 //todo function declrlist -> starts a type(checks if something is declared or not etc.) for all types that need it
@@ -31,7 +26,6 @@ BVSInit(mainTree);
 BVSInit(functionNames);
 BVSInit(insideFunction);
 
-int stat(); // function declaration;
 int statlist();
 int parametrs(); // declaration because function is used before definition
 
@@ -227,7 +221,7 @@ int declrList() {
                 }
             }
 
-            if (BVSSearch(mainTree, *sToken) == false) {
+            if (BVSSearch(mainTree, *sToken) == NULL) {
                 BVSInsert(mainTree, *sToken);
             } else {
                 return SEM_ERROR;
@@ -400,7 +394,7 @@ int statList(){
             return SUCCES;
 
         case TYPE_VARIABLE:
-            BVSInsert(mainTree, *sToken);
+            BVSInsert(mainTree, *sToken, 0, 0);
             activeInstruction = setActiveInstruction();
             getNextToken(sToken);
             result = statList();
@@ -511,7 +505,7 @@ int parametrs(int option, int repeat){
                         }
                     if (sToken->type == TYPE_VARIABLE) {
                         generateInstruction();
-                        BVSInsert(insideFunction, *sToken);
+                        BVSInsert(insideFunction, *sToken, 0, 0);
                         if(getNextToken(sToken) == LEX_ERROR){
                             return  LEX_ERROR;
                         }
