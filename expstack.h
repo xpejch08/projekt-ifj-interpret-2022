@@ -6,30 +6,28 @@
 typedef struct StackElement {
 	
     PrtableSymbolsEnum symbol;
-	//struct stack *previousElement;
+	DataTypeEnum datatype;
 	struct StackElement *nextElement;
 } *StackElementPtr;
 
 typedef struct ExpStack{
 	StackElementPtr top;
-} stack;
+} Stack;
 
 
-void stackInit( stack *stack );
+void stackInit(Stack *stack );
 
-void stackInsertFirst( stack *stack, token token );
+int stackPush( Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum datatype );
 
-int stackPush( stack *stack, PrtableSymbolsEnum symbol );
+int stackInsertAfterTop( Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum datatype );
 
-int stackPop( stack *stack, int n ); //kolikrat popnout
+int stackPop( Stack *stack, int n ); //kolikrat popnout
 
-StackElementPtr stackGetTopSymbol( stack *stack );
+StackElementPtr stackGetTopSymbol( Stack *stack );
 
-int insertAfterTop( stack *stack, PrtableSymbolsEnum symbol );
+StackElementPtr stackGetTopTerminal( Stack *stack );
 
-StackElementPtr stackGetTopTerminal( stack *stack );
-
-void stackDispose( stack *stack );
+void stackDispose( Stack *stack );
 
 
 

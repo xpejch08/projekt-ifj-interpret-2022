@@ -6,6 +6,7 @@
 
 #include "expression.h"
 #include "lexical.h"
+#include "symtable.h"
 #include "code_gen.h"
 #include "expstack.h"
 #include "str.h"
@@ -30,7 +31,7 @@ typedef enum
 {
     S, // shift (<)  dej vstup a "<" na zasobnik"
     E, // equal (=)  dej vstup na zasobnik
-    R, // reduce (>) hledej na zasobniku "<" a pak pop
+    R, // reduce (>) hledej na zasobniku "<" a pak pocaď pop
     X  // nic ( )    chyba
 } PrtableActionsEnum;
 
@@ -46,6 +47,7 @@ int prtable[8][8] = {
 /*i*/    { R , R , R , R , X , R , X , X },
 /*$*/    { S , S , S , S , S , X , S , X }
 };
+
 
 //prevest tokeny na symboly prtable
 static PrtableSymbolsEnum prtableTokenToSymbol(token *sToken)
@@ -137,17 +139,168 @@ int countSymbols()
     while (elem != NULL)
     {
         if(elem->symbol == STOPPER){
+            elem = elem->nextElement;
             return count;
             //TODO MAM HLAD AF
         }
         else{
-            count++;
             elem = elem->nextElement;
+            count++;
         }
         
     }
-    return count;
+    return NULL;
 
+}
+
+/*PRAVIDLA PRECEDENCNI ANALYZY, z prave strany budeme tvořit levou stranu
+* E -> E === E 
+* E -> E !== E
+* E -> E < E
+* E -> E > E
+* E -> E <= E
+* E -> E >= E
+* E -> E + E
+* E -> E - E
+* E -> E . E
+* E -> E * E
+* E -> E / E
+* E -> (E)
+* E -> i
+*/
+
+PrtableRulesEnum pickRule(StackElementPtr op1, StackElementPtr op2, StackElementPtr op3)
+{
+    if (op1->symbol != NULL && op2->symbol != NULL && op3->symbol != NULL){
+        if (op1->symbol == NON_TERMINAL && op2->symbol == EQUAL && op3->symbol == NON_TERMINAL)
+            return RULE_EQUAL;
+        else if (op1->symbol == NON_TERMINAL && op2->symbol == NOT_EQUAL && op3->symbol == NON_TERMINAL)
+            return RULE_NOT_EQUAL;
+        else if (op1->symbol == NON_TERMINAL && op2->symbol == SMALLER_THAN && op3->symbol == NON_TERMINAL)
+            return RULE_SMALLER_THAN;
+        else if (op1->symbol == NON_TERMINAL && op2->symbol == GREATER_THAN && op3->symbol == NON_TERMINAL)
+            return RULE_GREATER_THAN;
+        else if (op1->symbol == NON_TERMINAL && op2->symbol == SMALLER_OR_EQUAL && op3->symbol == NON_TERMINAL)
+            return RULE_SMALLER_OR_EQUAL;
+        else if (op1->symbol == NON_TERMINAL && op2->symbol == GREATER_OR_EQUAL && op3->symbol == NON_TERMINAL)
+            return RULE_GREATER_OR_EQUAL;
+        else if (op1->symbol == NON_TERMINAL && op2->symbol == ADDITION && op3->symbol == NON_TERMINAL)
+            return RULE_ADDITION;
+        else if (op1->symbol == NON_TERMINAL && op2->symbol == SUBTRACTION && op3->symbol == NON_TERMINAL)
+            return RULE_SUBTRACTION;
+        else if (op1->symbol == NON_TERMINAL && op2->symbol == CONCATENATE && op3->symbol == NON_TERMINAL)
+            return RULE_CONCATENATE;
+        else if (op1->symbol == NON_TERMINAL && op2->symbol == MULTIPLY && op3->symbol == NON_TERMINAL)
+            return RULE_MULTIPLY;
+        else if (op1->symbol == NON_TERMINAL && op2->symbol == DIVIDE && op3->symbol == NON_TERMINAL)
+            return RULE_DIVIDE;
+        else if (op1->symbol == LBRACKET && op2->symbol == NON_TERMINAL && op3->symbol == RBRACKET)
+            return RULE_BRACKETS;
+        else 
+            return RULE_ERROR;
+    }
+    if (op1->symbol != NULL && op2->symbol == NULL && op3->symbol == NULL){
+        if (op1->symbol == IDENTIFIER || op1->symbol == INT || op1->symbol == FLOAT || op1->symbol == STRING)
+            return RULE_I;
+        else
+            return RULE_ERROR;
+        
+    }
+    return RULE_ERROR;
+}   
+
+
+
+DataTypeEnum getDataType(token *sToken){
+    if (sToken->type == TYPE_INTEGER_NUMBER)
+        return DATATYPE_INT;
+    else if (sToken->type == TYPE_DOUBLE_NUMBER || sToken->type == TYPE_EXPONENT_NUMBER)
+        return DATATYPE_FLOAT;
+    else if (sToken->type == TYPE_STRING)
+        return DATATYPE_STRING;
+    else if (sToken->type == TYPE_IDENTIFIER)
+        if(sToken->content->integerNumber == NULL && sToken->content->floatNumber == NULL && sToken->content->str == NULL)
+            return DATATYPE_ERROR;
+        else if(sToken->content->integerNumber != NULL && sToken->content->floatNumber == NULL && sToken->content->str == NULL)
+            return DATATYPE_INT;
+        else if(sToken->content->floatNumber != NULL && sToken->content->integerNumber == NULL && sToken->content->str == NULL)
+            return DATATYPE_FLOAT;
+        else if(sToken->content->str != NULL && sToken->content->integerNumber == NULL && sToken->content->floatNumber == NULL)
+            return DATATYPE_STRING;
+        else
+            return DATATYPE_ERROR;
+    
+}   
+
+int checkTypeForRule(PrtableRulesEnum rule, StackElementPtr op1, StackElementPtr op2, StackElementPtr op3, DataTypeEnum* resulttype)
+{
+    if(rule != RULE_I || rule != RULE_BRACKETS)
+        if(op1->datatype == DATATYPE_ERROR || op3->datatype == DATATYPE_ERROR)
+            return SEM_UNDEFINED_ERROR;
+
+    switch(rule)
+    {
+        case RULE_EQUAL:
+        case RULE_NOT_EQUAL:
+        case RULE_SMALLER_THAN:
+        case RULE_GREATER_THAN:
+        case RULE_SMALLER_OR_EQUAL:
+        case RULE_GREATER_OR_EQUAL:
+            *resulttype = DATATYPE_INT;
+                return 0;
+        case CONCATENATE:
+                //RETYPE IF op1 or op3 NOT A STRING v codegenu? asi
+                *resulttype = DATATYPE_STRING;
+                return 0;
+
+            return 0;
+        case RULE_ADDITION:
+        case RULE_SUBTRACTION:
+        case RULE_MULTIPLY:
+            if (op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_INT)
+                *resulttype = DATATYPE_INT;
+                return 0;
+            if(op1->datatype == DATATYPE_FLOAT && op3->datatype == DATATYPE_FLOAT)
+                *resulttype = DATATYPE_FLOAT;
+                return 0;
+            if ( op1->datatype == DATATYPE_FLOAT && op3->datatype == DATATYPE_INT)
+                *resulttype = DATATYPE_FLOAT;
+                return 0;
+            if ( op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_FLOAT)
+                *resulttype = DATATYPE_FLOAT;
+                return 0;
+            return 1; //neco je undefined nebo string
+        case RULE_DIVIDE:
+            *resulttype = DATATYPE_FLOAT;
+            if (op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_INT)
+                *resulttype = DATATYPE_FLOAT;
+                return 0;
+            if(op1->datatype == DATATYPE_FLOAT && op3->datatype == DATATYPE_FLOAT)
+                *resulttype = DATATYPE_FLOAT;
+                return 0;
+            if ( op1->datatype == DATATYPE_FLOAT && op3->datatype == DATATYPE_INT)
+                *resulttype = DATATYPE_FLOAT;
+                return 0;
+            if ( op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_FLOAT)
+                *resulttype = DATATYPE_FLOAT;
+                return 0;
+            return 1; //neco je undefined nebo string
+        
+
+        case RULE_I:
+            if(op1->datatype != DATATYPE_ERROR)
+                *resulttype == op1->datatype;
+            else
+                return SEM_UNDEFINED_ERROR;
+        case RULE_BRACKETS:
+            if(op2->datatype != DATATYPE_ERROR)
+                *resulttype == op2->datatype;
+            else
+                return SEM_UNDEFINED_ERROR;
+        default:
+            return 1;
+        
+    }
 }
 
 

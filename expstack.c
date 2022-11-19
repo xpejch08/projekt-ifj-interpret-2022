@@ -4,19 +4,20 @@
 #include "expstack.h"
 #include "expression.h"
 
-void stackInit(stack *stack) {
+void stackInit(Stack *stack) {
 	stack->top = NULL;
 }
-int stackPush(stack *stack, PrtableSymbolsEnum symbol) {
+int stackPush(Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum datatype) {
 	StackElementPtr newElement = malloc(sizeof(struct StackElement));
 	if (newElement == NULL) {
 		return 1;
 	}
 	newElement->symbol = symbol;
+	newElement->datatype = datatype;
 	newElement->nextElement = stack->top;
 	stack->top = newElement;
 }
-int stackPop(stack *stack, int n) {
+int stackPop(Stack *stack, int n) {
 	for (int i = 0; i<n; i++){
 		if (stack->top == NULL){
 			return 1;
@@ -27,7 +28,7 @@ int stackPop(stack *stack, int n) {
 		return 0;
 	}
 }
-StackElementPtr stackGetTopTerminal(stack *stack) {
+StackElementPtr stackGetTopTerminal(Stack *stack) {
 	for(StackElementPtr elem = stack->top; elem != NULL; elem = elem->nextElement ){
 		if (elem->symbol < STOPPER){
 			return elem;
@@ -37,7 +38,7 @@ StackElementPtr stackGetTopTerminal(stack *stack) {
 	return NULL;
 }
 
-int stackGetTopTerminalIndex(stack *stack, PrtableSymbolsEnum symbol) {
+int stackInsertAfterTop(Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum datatype) {
 	
 	StackElementPtr previousElement = NULL;
 
@@ -48,6 +49,7 @@ int stackGetTopTerminalIndex(stack *stack, PrtableSymbolsEnum symbol) {
 				return 1;
 			}
 			newElement->symbol = symbol;
+			newElement->datatype = datatype;
 			if (previousElement != NULL){
 				newElement->nextElement = previousElement->nextElement;
 				previousElement->nextElement = newElement;
@@ -64,13 +66,14 @@ int stackGetTopTerminalIndex(stack *stack, PrtableSymbolsEnum symbol) {
 	return 1;
 }
 
-StackElementPtr stackGetTopSymbol(stack *stack) {
+StackElementPtr stackGetTopSymbol(Stack *stack) {
 	return stack->top;
 }
 
-void stackDispose(stack *stack){
-	
+void stackDispose(Stack *stack){
+
 	while (1){
 		stackPop(stack, 1);
 	}
 }
+

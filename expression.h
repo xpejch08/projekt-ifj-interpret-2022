@@ -1,10 +1,10 @@
 //HEADER pro "expression.c"
-//ifndef pro zaruceni idempotence
 #ifndef EXPRESSION_H 
 #define EXPRESSION_H
 
 #include "parser.h"
-
+#include "expstack.h"
+#include "lexical.h"
 //s
 
 typedef enum{
@@ -25,11 +25,17 @@ typedef enum{
     IDENTIFIER,
     LBRACKET,
     RBRACKET,
+    DOLLAR,
     STOPPER,
-    NON_TERMINAL,
-    DOLLAR
+    NON_TERMINAL
 } PrtableSymbolsEnum;
 
+typedef enum{
+    DATATYPE_INT,
+    DATATYPE_FLOAT,
+    DATATYPE_STRING,
+    DATATYPE_ERROR
+}DataTypeEnum;
 
 typedef enum {
 
