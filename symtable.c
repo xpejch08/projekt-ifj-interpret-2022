@@ -9,39 +9,36 @@ void BVSInit(TRoot *SymTable){
     SymTable->rootPtr = NULL;
 }
 
-TNode *BVSCreate(token token){
+void BVSCreate(token token, int param, int return_value){
     TNode *newPtr = malloc(sizeof(struct tnode));
     if(newPtr == NULL){
-        fprintf(stderr, "Chyba pri alokaci prvku");
         return INT_ERROR; 
     }
     newPtr->leftPtr = NULL;
     newPtr->rightPtr = NULL;
     newPtr->type = token.type;
     newPtr->content = *token.content;
-
-    return newPtr;
+    newPtr->parameters = param;
+    newPtr->return_type = return_value;
 }
 
-TNode *BVSInsert(TNode *rootPtr, token token
-){
+void BVSInsert(TNode *rootPtr, token token, int param, int return_value){
     if(rootPtr == NULL){
-        return BVSCreate(token);
+        BVSCreate(token, param, return_value);
     }
     else{
         if((strCmpStr(&(token.content), &(rootPtr->content))) < 0){
-            rootPtr->leftPtr = BVSInsert(rootPtr->leftPtr, token);
+            BVSInsert(rootPtr->leftPtr, token, param, return_value);
         }
         else if((strCmpStr(&(token.content), &(rootPtr->content))) > 0){
-            rootPtr->rightPtr = BVSInsert(rootPtr->rightPtr, token);
+            BVSInsert(rootPtr->rightPtr, token, param, return_value);
         }
-        return rootPtr;
     }
 }
 
-bool BVSSearch(TNode *rootPtr, token token){
+TNode *BVSSearch(TNode *rootPtr, token token){
     if(rootPtr == NULL){
-        return false;
+        return NULL;
     }
     else{
         if((strCmpStr(&(token.content), &(rootPtr->content))) < 0){
@@ -50,7 +47,7 @@ bool BVSSearch(TNode *rootPtr, token token){
         else if((strCmpStr(&(token.content), &(rootPtr->content))) < 0){
             rootPtr->rightPtr = BVSSearch(rootPtr->rightPtr, token);
         }
-        return true;
+        return rootPtr;
     }
 }
 

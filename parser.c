@@ -18,6 +18,7 @@ TNode *functionNames;
 TNode *mainTree;
 DLLElementPtr *list;
 
+bool *in_function = false;
 int paramError;
 int tokenId;
 token *sToken;
@@ -139,10 +140,11 @@ int declrList() {
                         return SUCCES;
                     } else {
                         return paramError;
-                    } else {
+                    }
+                } else {
                         return SYN_ERROR;
                      }
-                }
+                
             }
             if (strCmpConstStr(sToken->content->str, "strlen")) {
                 getNextToken(sToken);
@@ -358,7 +360,7 @@ int declrList() {
                 return SYN_ERROR;
             }
             return parametrs(PARAM_FUNCTION, 1);
-            case KEYWORD_FLOAT:
+        case KEYWORD_FLOAT:
             getNextToken(sToken);
             if (sToken->type != TYPE_VARIABLE) {
                 return SYN_ERROR;
@@ -464,13 +466,43 @@ int statList(){
 
 int parametrs(int option, int repeat){
         switch (option) {
-            case 1: // kontrolujeme parametry funkce
+            case PARAM_FUNCTION: // kontrolujeme parametry funkce
                 if(getNextToken(sToken) == LEX_ERROR){
+                    return  LEX_ERROR;
+                }
+                if(sToken->type == TYPE_RBRACKET && repeat == 1) {
+                    if(getNextToken(sToken) == LEX_ERROR){
+                        return  LEX_ERROR;
+                    }
+                    if(sToken->type == TYPE_COLON){
+                        if(getNextToken(sToken) == LEX_ERROR){
                             return  LEX_ERROR;
                         }
-                if (sToken->type == TYPE_RBRACKET && repeat == 1) {
-                    return SUCCES;
-                } else if (sToken->type == KEYWORD_INT ||
+                        if(sToken->type == KEYWORD_FLOAT){
+                            // zapsat semantic
+                            return SUCCES;
+                        }
+                        else if(sToken->type == KEYWORD_INT){
+                            // zapsat semantic
+                            return SUCCES;
+                        }
+                        else if(sToken->type == KEYWORD_STRING){
+                            // zapsat semantic
+                            return SUCCES;
+                        }
+                        else if(sToken->type == KEYWORD_VOID){
+                            // zapsat semantic
+                            return SUCCES;
+                        }
+                        else{
+                            return SYN_ERROR;
+                        }        
+                    }
+                    else{
+                        return SYN_ERROR;
+                    }
+                }
+                else if (sToken->type == KEYWORD_INT     ||
                            sToken->type == KEYWORD_FLOAT ||
                            sToken->type == KEYWORD_STRING
                         ) {
@@ -487,18 +519,47 @@ int parametrs(int option, int repeat){
                             repeat++;
                             parametrs(PARAM_FUNCTION, repeat);
                         } else if (sToken->type == TYPE_RBRACKET) {
-                            return SUCCES;
+                            if(getNextToken(sToken) == LEX_ERROR){
+                                return  LEX_ERROR;
+                            }
+                            if(sToken->type == TYPE_COLON){
+                                if(getNextToken(sToken) == LEX_ERROR){
+                                    return  LEX_ERROR;
+                                }
+                                if(sToken->type == KEYWORD_FLOAT){
+                                    // zapsat semantic
+                                    return SUCCES;
+                                }
+                                else if(sToken->type == KEYWORD_INT){
+                                    // zapsat semantic
+                                    return SUCCES;
+                                }
+                                else if(sToken->type == KEYWORD_STRING){
+                                    // zapsat semantic
+                                    return SUCCES;
+                                }
+                                else if(sToken->type == KEYWORD_VOID){
+                                    // zapsat semantic
+                                    return SUCCES;
+                                }
+                                else{
+                                    return SYN_ERROR;
+                                }        
+                            }
+                            else{
+                                return SYN_ERROR;
+                            }
                         } else {
                             return SYN_ERROR;
                         }
                     } else {
                         return SYN_ERROR;
                     }
-
-                } else {
+                } 
+                else{
                     return SYN_ERROR;
                 }
-            case 2: // kontrolujeme podminku ve while nebo if
+            case PARAM_IF_WHILE: // kontrolujeme podminku ve while nebo if
                 if(getNextToken(sToken) == LEX_ERROR){
                     return  LEX_ERROR;
                 }
@@ -508,8 +569,8 @@ int parametrs(int option, int repeat){
                             return  LEX_ERROR;
                         }
                         if(sToken->type == TYPE_CONCATENATE || 
-                           sToken->type == TYPE_ADDITION    || ///////////////  CHANGE TO ===
-                           sToken->type == TYPE_ASSIGN      || ///////////////  CHANGE TO !==
+                           sToken->type == TYPE_ADDITION    || ///////////////  CHANGE TO === !!!
+                           sToken->type == TYPE_ASSIGN      || ///////////////  CHANGE TO !== !!!
                            sToken->type == TYPE_EQUAL       ||
                            sToken->type == TYPE_NOT_EQUAL    
                         ){
@@ -586,7 +647,7 @@ int parametrs(int option, int repeat){
                 }
                 return SYN_ERROR;
                 
-            case 3: // write
+            case PARAM_WRITE: // write
                 if(getNextToken(sToken) == LEX_ERROR){
                     return  LEX_ERROR;
                 }
@@ -649,35 +710,37 @@ int parametrs(int option, int repeat){
                             return SYN_ERROR;
                         }
                 }
-            case 4: // readi
-                getNextToken(sToken);
-                if(sToken->type == TYPE_RBRACKET){
-                    return SUCCES;
-                }
-                else{
-                    return SYN_ERROR;
-                }
-            case 5: // reads
+            case PARAM_READI: // readi
                 if(getNextToken(sToken) == LEX_ERROR){
-                            return  LEX_ERROR;
-                        }
+                    return  LEX_ERROR;
+                }
                 if(sToken->type == TYPE_RBRACKET){
                     return SUCCES;
                 }
                 else{
                     return SYN_ERROR;
                 }
-            case 6: // readf
+            case PARAM_READS: // reads
                 if(getNextToken(sToken) == LEX_ERROR){
-                            return  LEX_ERROR;
-                        }
+                    return  LEX_ERROR;
+                }
                 if(sToken->type == TYPE_RBRACKET){
                     return SUCCES;
                 }
                 else{
                     return SYN_ERROR;
                 }
-            case 7: // strlen
+            case PARAM_READF: // readf
+                if(getNextToken(sToken) == LEX_ERROR){
+                    return  LEX_ERROR;
+                }
+                if(sToken->type == TYPE_RBRACKET){
+                    return SUCCES;
+                }
+                else{
+                    return SYN_ERROR;
+                }
+            case PARAM_STRLEN: // strlen
                 if(getNextToken(sToken) == LEX_ERROR){
                             return  LEX_ERROR;
                         }
@@ -690,7 +753,7 @@ int parametrs(int option, int repeat){
                     }
                 }
                 return SYN_ERROR;
-            case 8: // substring
+            case PARAM_SUBSTRING: // substring
                 if(getNextToken(sToken) == LEX_ERROR){
                     return  LEX_ERROR;
                 }
@@ -723,7 +786,7 @@ int parametrs(int option, int repeat){
                     }
                 }                    
                 return SYN_ERROR;
-            case 9: // ord
+            case PARAM_ORD: // ord
                 if(getNextToken(sToken) == LEX_ERROR){
                     return  LEX_ERROR;
                 }
@@ -737,7 +800,7 @@ int parametrs(int option, int repeat){
                 }
                 
                 return SYN_ERROR;
-            case 10: //chr
+            case PARAM_CHR: //chr
                 if(getNextToken(sToken) == LEX_ERROR){
                     return  LEX_ERROR;
                 }
