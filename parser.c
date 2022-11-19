@@ -581,6 +581,16 @@ int parametrs(int option, int repeat){
                             return SYN_ERROR;
                         }
                     case TYPE_VARIABLE:
+                        if(in_function){
+                            if(BVSSearch(insideFunction, *sToken) == NULL){
+                                return SEM_UNDEFINED_ERROR;
+                            }
+                        }    
+                        else{
+                            if(BVSSearch(mainTree, *sToken) == NULL){
+                                return SEM_UNDEFINED_ERROR;
+                            }
+                        }
                         if(getNextToken(sToken) == LEX_ERROR){
                             return  LEX_ERROR;
                         }
@@ -640,7 +650,6 @@ int parametrs(int option, int repeat){
                         parametrs(PARAM_IF_WHILE, repeat);
                 }
                 return SYN_ERROR;
-                
             case PARAM_WRITE: // write
                 if(getNextToken(sToken) == LEX_ERROR){
                     return  LEX_ERROR;
@@ -951,7 +960,6 @@ int program(){
 
 //function that initializes tree, list of instructions, token, reads first token and calls program() function
 int parse(DLLElementPtr *iList){
-
     int result;
     list = iList;
     //todo fix init token function
