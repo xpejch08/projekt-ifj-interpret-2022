@@ -14,6 +14,8 @@ TNode *mainTree;
 DLLElementPtr *list;
 
 bool *in_function = false;
+int *param_count;
+int *ret_value;
 int paramError;
 int tokenId;
 token *sToken;
@@ -345,10 +347,15 @@ int declrList() {
                 return SUCCES;
             }
         case KEYWORD_FUNCTION:
+            in_function = true;
             getNextToken(sToken);
             if (sToken->type != TYPE_IDENTIFIER) {
                 return SYN_ERROR;
             }
+            if(BVSSearch(functionNames, *sToken) != NULL){ // redefinace funkce
+                return SEM_DEFINE_ERROR;
+            }
+            BVSInsert(functionNames, *sToken, param_count, ret_value);
             getNextToken(sToken);
             if (sToken->type != TYPE_LBRACKET) {
                 return SYN_ERROR;
@@ -468,24 +475,25 @@ int parametrs(int option, int repeat){
                     if(getNextToken(sToken) == LEX_ERROR){
                         return  LEX_ERROR;
                     }
+                    param_count = 0;
                     if(sToken->type == TYPE_COLON){
                         if(getNextToken(sToken) == LEX_ERROR){
                             return  LEX_ERROR;
                         }
                         if(sToken->type == KEYWORD_FLOAT){
-                            // zapsat semantic
+                            ret_value = KEYWORD_FLOAT;
                             return SUCCES;
                         }
                         else if(sToken->type == KEYWORD_INT){
-                            // zapsat semantic
+                            ret_value = KEYWORD_INT;
                             return SUCCES;
                         }
                         else if(sToken->type == KEYWORD_STRING){
-                            // zapsat semantic
+                            ret_value = KEYWORD_STRING;
                             return SUCCES;
                         }
                         else if(sToken->type == KEYWORD_VOID){
-                            // zapsat semantic
+                            ret_value = KEYWORD_VOID;
                             return SUCCES;
                         }
                         else{
@@ -513,6 +521,7 @@ int parametrs(int option, int repeat){
                             repeat++;
                             parametrs(PARAM_FUNCTION, repeat);
                         } else if (sToken->type == TYPE_RBRACKET) {
+                            param_count = repeat;
                             if(getNextToken(sToken) == LEX_ERROR){
                                 return  LEX_ERROR;
                             }
@@ -521,19 +530,19 @@ int parametrs(int option, int repeat){
                                     return  LEX_ERROR;
                                 }
                                 if(sToken->type == KEYWORD_FLOAT){
-                                    // zapsat semantic
+                                    ret_value = KEYWORD_FLOAT;
                                     return SUCCES;
                                 }
                                 else if(sToken->type == KEYWORD_INT){
-                                    // zapsat semantic
+                                    ret_value = KEYWORD_INT;
                                     return SUCCES;
                                 }
                                 else if(sToken->type == KEYWORD_STRING){
-                                    // zapsat semantic
+                                    ret_value = KEYWORD_STRING;
                                     return SUCCES;
                                 }
                                 else if(sToken->type == KEYWORD_VOID){
-                                    // zapsat semantic
+                                    ret_value = KEYWORD_VOID;
                                     return SUCCES;
                                 }
                                 else{
