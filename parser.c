@@ -29,7 +29,6 @@ function_save *fun_id;
 
 int incId = 1;
 
-
 //initializing tree
 BVSInit(mainTree);               ///////////// wtf?    
 BVSInit_function(functionNames); ///////////// wtf?
@@ -234,6 +233,7 @@ int declrList() {
             //todo bvssearch nust be true
             if (BVSSearch(mainTree, *sToken)) {
                 BVSInsert(mainTree, *sToken);
+                setActiveInstruction(LABEL, sToken, NULL, NULL);
             } else {
                 return SEM_ERROR;
             }
@@ -1043,6 +1043,7 @@ int program(){
                 case KEYWORD_INT:
                 case KEYWORD_FLOAT:
                 case KEYWORD_FUNCTION:
+                setActiveInstruction(CREATEFRAME, NULL, NULL, NULL);
                     if((result = declrList()) != SUCCES){
                         return result;
                     }
@@ -1053,7 +1054,6 @@ int program(){
                     if((sToken->type) != TYPE_END_OF_FILE){
                         return SYN_ERROR;
                     }
-
                     generateInstruction();
 
                     return SUCCES;
