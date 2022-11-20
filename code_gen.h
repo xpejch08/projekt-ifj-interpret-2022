@@ -19,6 +19,10 @@
 #define GT 409
 #define WRITE 410
 
+#define CREATEFRAME 411
+#define LABEL 412
+#define JUMP 413
+
 
 
 typedef struct
@@ -44,7 +48,7 @@ typedef struct instrList
 }TItemList;
 
 // funkce nastavi parametry instrukce
- TInst *setActiveInstruction( int instrID, void *leftOp, void *rightOp);
+ TInst setActiveInstruction( int instrID, void* leftOp, void* rightOp, void* result);
 // funkce inicializuje seznam instrukcí
 void instructionInit(TInstList *instrList);
 
