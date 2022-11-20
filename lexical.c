@@ -6,7 +6,7 @@
 #include "lexical.h"
 #include "str.h"
 
-//todo ",",":"
+//todo ===, !==
 
 #define basicState                      300 //beginning state waiting for the first character
 #define possibleCommentState            301 //state that found the '/' symbol and checks if comment will be one-line block, or won't be at all
@@ -45,12 +45,9 @@ void setSourceFile(FILE *f){
     source = f;
 }
 
-void initToken(token *token){
-    token->type = TYPE_INITIAL;
-    token->content = NULL;
-}
-int octaToDecimal(const char *arr){
-    int octal = atoi(arr);
+
+int octaToDecimal(char *arr){
+    int octal =  atoi(arr);
     int rightmost;
     int decimal;
     int position;
@@ -112,13 +109,13 @@ int keywordCmp(string *str, token *attr){
     }
     else if(strCmpConstStr(str, "void") == 0){
         attr->type = KEYWORD_VOID;
-        }
+    }
     else if(strCmpConstStr(str, "while") == 0){
         attr->type = KEYWORD_WHILE;
     }
     else{
         attr->type = TYPE_IDENTIFIER;
-        strCopyStr(attr->content.str, str);
+        strCpyStr(attr->content.str, str);
     }
     return SUCCES;
 
@@ -129,6 +126,22 @@ int keywordCmp(string *str, token *attr){
  * @param attr token sent to parser
  * @return returns different LEX_ERROR if something goes wrong else returns 0
  */
+int prefix(token *str){
+    if(strInit(str->content.str) == 1){
+        return INT_ERROR;
+    }
+    strClean(str->content.str);
+    char prefix[30] = "<?php\ndeclare(strict_types=1);";
+    int i = 0;
+    while(i<30){
+        strAddChar(str->content.str, (char) fgetc(stdin));
+        i++;
+    }
+    if(strCmpConstStr(str->content.str, prefix) != 0){
+        return INT_ERROR;
+    }
+    return 0;
+}
 
 int getNextToken(token *attr) {
     int state = basicState;
@@ -136,14 +149,18 @@ int getNextToken(token *attr) {
     char *endptr;
     char hexaEscape[2];
     char octaEscape[3];
-    initToken(attr);
-    strInit(attr->content.str);
 
+    if(source == NULL){
+        return INT_ERROR;
+    }
+
+
+    strInit(attr->content.str);
     strClean(attr->content.str);
 
     while(1){
         /** reading value from stdin **/
-        character = (char) getc(source);
+        character = (char) fgetc(stdin);
 
         switch (state){
 
@@ -160,7 +177,8 @@ int getNextToken(token *attr) {
                     state = variableRead;
                 }
                 else if(isalpha(character) || character == '_'){
-                    state = identifierOrKeywordState;
+                    state = keywordOrIdentifierStateBegin;
+                    ungetc(character, stdin);
                 }
                 else if(isdigit(character)){
                     state = numberState;
@@ -232,6 +250,9 @@ int getNextToken(token *attr) {
                 else if(character == '='){
                     state = assignOrEqualState;
                 }
+                else if(character == '"'){
+                    state = waitForStringEnd;
+                }
                 break;
                 /** if character is a comment **/
             case possibleCommentState :
@@ -277,11 +298,13 @@ int getNextToken(token *attr) {
                 if(character == EOF){
                     return LEX_ERROR;
                 }
+                break;
             case keywordOrIdentifierStateBegin:
                 if(isalpha(character) || character == '_'){
                     (char) tolower(character);
                     strAddChar(attr->content.str, character);
                     state = keywordOrIdentifierState;
+                    break;
                 }
             case keywordOrIdentifierState:
                 if(isalnum(character) || character == '_'){
@@ -291,35 +314,28 @@ int getNextToken(token *attr) {
                 else{
                     ungetc(character, source);
                     keywordCmp(attr->content.str, attr);
+                    return SUCCES;
 
                 }
                 break;
             case variableRead:
                 if(!(isspace(character))) {
                     strAddChar(attr->content.str, character);
+                    break;
                 }
                 else{
                     attr->type = TYPE_VARIABLE;
                     ungetc(character, source);
-                    break;
+                    return SUCCES;
 
                 }
-            case stringStartState:
-                if(character == '"'){
-                    state = waitForStringEnd;
-                }
-                else{
-                    return LEX_ERROR;
-                }
-                break;
             case waitForStringEnd:
                 if(character > 31 && character != 92 ) {
                     if (character == '"') {
                         attr->type = TYPE_STRING;
-                        ungetc(character, source);
                         return SUCCES;
                     }
-                    else {
+                    else if(character != EOF){
                         strAddChar(attr->content.str, character);
 
                     }
@@ -332,6 +348,7 @@ int getNextToken(token *attr) {
                 else{
                     return LEX_ERROR;
                 }
+                break;
             case backslashState:
                 if(character == 'x'){
                     state = escapeHexaState;
@@ -343,16 +360,19 @@ int getNextToken(token *attr) {
                     character = '\t';
                     strAddChar(attr->content.str, character);
                     state = waitForStringEnd;
+                    break;
                 }
                 else if(character == 'n'){
                     character = '\n';
                     strAddChar(attr->content.str, character);
                     state = waitForStringEnd;
+                    break;
                 }
                 else {
                     strAddChar(attr->content.str, 92);
                     strAddChar(attr->content.str, character);
                     state = waitForStringEnd;
+                    break;
                 }
             case escapeHexaState:
                 if(isxdigit(character)){
@@ -364,6 +384,7 @@ int getNextToken(token *attr) {
                     strAddChar(attr->content.str, 'x');
                     strAddChar(attr->content.str, character);
                     state = waitForStringEnd;
+                    break;
                 }
             case endHexaState:
                 if(isxdigit(character)){
@@ -374,37 +395,44 @@ int getNextToken(token *attr) {
                 else{
                     strAddChar(attr->content.str, character);
                     state = waitForStringEnd;
+                    break;
                 }
             case escapeOctaState:
                 if(isdigit(character)){
                     strncat(octaEscape, &character, 1);
                     state = waitOctaState;
+                    break;
                 }
                 else{
-                    strAddChar(attr->content->str, 92);
+                    strAddChar(attr->content.str, 92);
                     strAddChar(attr->content.str, character);
                     state = waitForStringEnd;
+                    break;
                 }
             case waitOctaState:
                 if(isdigit(character)){
                     strncat(octaEscape, &character, 1);
                     state = endOctaState;
+                    break;
 
                 }
                 else{
                     strAddChar(attr->content.str, character);
                     state = waitForStringEnd;
+                    break;
                 }
             case endOctaState:
                 if(isdigit(character)){
                     strncat(octaEscape, &character, 1);
                     strAddChar(attr->content.str, (char) octaToDecimal(octaEscape));
                     state = waitForStringEnd;
+                    break;
 
                 }
                 else{
                     strAddChar(attr->content.str, character);
                     state = waitForStringEnd;
+                    break;
                 }
             case numberState:
                 if(isdigit(character)){
@@ -435,7 +463,8 @@ int getNextToken(token *attr) {
                 }
                 else if(isspace(character)){
                     attr->type = TYPE_DOUBLE_NUMBER;
-                    attr->content.doubleNumber = strtod(attr->content.str->str, &endptr);
+                    attr->content = strtod(attr->content.str->str, &endptr);
+                    return SUCCES;
                 }
             case exponentPlusOrMinusState:
                 if(character == '+' || character == '-' || isdigit(character) == 1){
@@ -454,22 +483,27 @@ int getNextToken(token *attr) {
                 else{
                     return LEX_ERROR;
                 }
+                break;
 
             case smallerThanOrEqualState:
                 if(character == '='){
                     attr->type = TYPE_SMALLER_OR_EQUAL;
+                    return SUCCES;
                 }
                 else{
                     ungetc(character, source);
                     attr->type = TYPE_SMALLER_THAN;
+                    return SUCCES;
                 }
             case greaterThanOrEqualState:
                 if(character == '='){
                     attr->type = TYPE_GREATER_OR_EQUAL;
+                    return SUCCES;
                 }
                 else{
                     ungetc(character, source);
                     attr->type = TYPE_GREATER_THAN;
+                    return SUCCES;
 
                 }
             case assignOrEqualState:
@@ -489,6 +523,7 @@ int getNextToken(token *attr) {
                 else{
                     return LEX_ERROR;
                 }
+                break;
             case notEqualState:
                 if(character == '='){
                     state = notEqualStateEnd;
@@ -496,6 +531,7 @@ int getNextToken(token *attr) {
                 else{
                     return LEX_ERROR;
                 }
+                break;
             case notEqualStateEnd:
                 if(character == '='){
                     attr->type = TYPE_NOT_EQUAL;
@@ -503,6 +539,7 @@ int getNextToken(token *attr) {
                 else{
                     return LEX_ERROR;
                 }
+                break;
 
 
 
@@ -510,4 +547,23 @@ int getNextToken(token *attr) {
 
     }
 
+}
+
+int main(void){
+    setSourceFile(stdin);
+    token init;
+    string initStr;
+    initStr.str = NULL;
+    initStr.length = 0;
+    initStr.alloc = 0;
+    init.type = 110;
+    init.content.str = &initStr;
+    token *sToken;
+    sToken = &init;
+    fopen("testIn.txt", "r");
+    prefix(sToken);
+    for (int i = 0; i < 20; ++i) {
+        getNextToken(sToken);
+        printf("%d\n", sToken->type);
+    }
 }

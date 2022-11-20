@@ -12,7 +12,7 @@
  * @return 1 if malloc throws an error 0 if everything works correctly
  */
 int strInit(string *s){
-    if (!((s->str) = (char*) malloc(oneCharInc))){
+    if ((s->str = (char*) malloc(oneCharInc)) == NULL){
         return 1;
     }
     s->str[0] = '\0';
@@ -27,8 +27,6 @@ int strInit(string *s){
  */
 void strFree(string *s){
     free(s->str);
-    s->length = 0;
-    s->alloc = 0;
 }
 
 /**
@@ -37,8 +35,8 @@ void strFree(string *s){
  */
 void strClean(string *s){
 
-    s->length = 0;
     s->str[s->length] = '\0';
+    s->length = 0;
 }
 
 /**
