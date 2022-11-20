@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 #include "parser.h"
 
 //todo think about using enum and redefining token structure !!!
@@ -13,12 +14,12 @@ TNode *functionNames;
 TNode *mainTree;
 DLLElementPtr *list;
 
+
 bool *in_function = false;
-int *param_count;
-int *ret_value;
 int paramError;
 int tokenId;
 token *sToken;
+function_save *fun_id;
 
 int incId = 1;
 
@@ -355,7 +356,7 @@ int declrList() {
             if(BVSSearch(functionNames, *sToken) != NULL){ // redefinace funkce
                 return SEM_DEFINE_ERROR;
             }
-            BVSInsert(functionNames, *sToken, param_count, ret_value);
+            fun_id->content = sToken->content->str;
             getNextToken(sToken);
             if (sToken->type != TYPE_LBRACKET) {
                 return SYN_ERROR;
@@ -401,7 +402,7 @@ int statList(){
             return SUCCES;
 
         case TYPE_VARIABLE:
-            BVSInsert(mainTree, *sToken, 0, 0);
+            BVSInsert(mainTree, *sToken);
             activeInstruction = setActiveInstruction();
             getNextToken(sToken);
             result = statList();
@@ -475,25 +476,25 @@ int parametrs(int option, int repeat){
                     if(getNextToken(sToken) == LEX_ERROR){
                         return  LEX_ERROR;
                     }
-                    param_count = 0;
+                    fun_id->param_count = 0;
                     if(sToken->type == TYPE_COLON){
                         if(getNextToken(sToken) == LEX_ERROR){
                             return  LEX_ERROR;
                         }
                         if(sToken->type == KEYWORD_FLOAT){
-                            ret_value = KEYWORD_FLOAT;
+                            fun_id->ret_value = KEYWORD_FLOAT;
                             return SUCCES;
                         }
                         else if(sToken->type == KEYWORD_INT){
-                            ret_value = KEYWORD_INT;
+                            fun_id->ret_value = KEYWORD_INT;
                             return SUCCES;
                         }
                         else if(sToken->type == KEYWORD_STRING){
-                            ret_value = KEYWORD_STRING;
+                            fun_id->ret_value = KEYWORD_STRING;
                             return SUCCES;
                         }
                         else if(sToken->type == KEYWORD_VOID){
-                            ret_value = KEYWORD_VOID;
+                            fun_id->ret_value = KEYWORD_VOID;
                             return SUCCES;
                         }
                         else{
@@ -513,7 +514,7 @@ int parametrs(int option, int repeat){
                         }
                     if (sToken->type == TYPE_VARIABLE) {
                         generateInstruction();
-                        BVSInsert(insideFunction, *sToken, 0, 0);
+                        BVSInsert(insideFunction, *sToken);
                         if(getNextToken(sToken) == LEX_ERROR){
                             return  LEX_ERROR;
                         }
@@ -521,7 +522,7 @@ int parametrs(int option, int repeat){
                             repeat++;
                             parametrs(PARAM_FUNCTION, repeat);
                         } else if (sToken->type == TYPE_RBRACKET) {
-                            param_count = repeat;
+                            fun_id->param_count = repeat;
                             if(getNextToken(sToken) == LEX_ERROR){
                                 return  LEX_ERROR;
                             }
@@ -530,19 +531,19 @@ int parametrs(int option, int repeat){
                                     return  LEX_ERROR;
                                 }
                                 if(sToken->type == KEYWORD_FLOAT){
-                                    ret_value = KEYWORD_FLOAT;
+                                    fun_id->ret_value = KEYWORD_FLOAT;
                                     return SUCCES;
                                 }
                                 else if(sToken->type == KEYWORD_INT){
-                                    ret_value = KEYWORD_INT;
+                                    fun_id->ret_value = KEYWORD_INT;
                                     return SUCCES;
                                 }
                                 else if(sToken->type == KEYWORD_STRING){
-                                    ret_value = KEYWORD_STRING;
+                                    fun_id->ret_value = KEYWORD_STRING;
                                     return SUCCES;
                                 }
                                 else if(sToken->type == KEYWORD_VOID){
-                                    ret_value = KEYWORD_VOID;
+                                    fun_id->ret_value = KEYWORD_VOID;
                                     return SUCCES;
                                 }
                                 else{

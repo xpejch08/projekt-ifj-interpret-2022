@@ -18,6 +18,11 @@
 #define PARAM_ORD 808
 #define PARAM_CHR 809
 
+typedef struct{
+    string *content;
+    int param_count;
+    int ret_value;
+}function_save;
 
 int declrList();
 int statList();

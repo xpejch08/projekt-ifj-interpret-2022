@@ -5,19 +5,31 @@
 #include "stack.h"
 #include "errors.h"
 #include "str.h"
+#include "parser.h"
+#include "symtable.h"
 
 typedef struct tnode{
     tokenContent content;
     struct tnode *leftPtr;
     struct tnode *rightPtr;
-    int parameters;
-    int return_type;
     int type;
 }TNode;
 
 typedef struct troot{
     TNode *rootPtr;
 }TRoot;
+
+typedef struct tnodef{
+    string *content;
+    struct tnodef *leftPtr;
+    struct tnodef *rightPtr;
+    int parameters;
+    int return_type;
+}TNodef;
+
+typedef struct trootf{
+    TNodef *rootPtr;
+}TRootf;
 
 /**
  * @brief function function initializes new symtable
@@ -29,14 +41,14 @@ typedef struct troot{
  * @param token token from which we put data
  * @return returns newly created node
  */
-void BVSCreate(token token, int param, int return_value);
+void BVSCreate(token token);
 /**
  * @brief function inserts node to binary tree based on its ASCII value
  * @param rootPtr pointer on node
  * @param token token from which we put data
  * @return returns 0 if successful
  */
-void BVSInsert(TNode *rootPtr, token token, int param, int return_value);
+void BVSInsert(TNode *rootPtr, token token);
 /**
  * @brief function search if we have already declared 
  * @param rootPtr pointer on node

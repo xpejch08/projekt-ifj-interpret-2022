@@ -8,8 +8,8 @@
 void BVSInit(TRoot *SymTable){
     SymTable->rootPtr = NULL;
 }
-
-void BVSCreate(token token, int param, int return_value){
+/////////////////// VARIABLE //////////////////////
+void BVSCreate(token token){
     TNode *newPtr = malloc(sizeof(struct tnode));
     if(newPtr == NULL){
         return INT_ERROR; 
@@ -18,20 +18,18 @@ void BVSCreate(token token, int param, int return_value){
     newPtr->rightPtr = NULL;
     newPtr->type = token.type;
     newPtr->content = *token.content;
-    newPtr->parameters = param;
-    newPtr->return_type = return_value;
 }
 
-void BVSInsert(TNode *rootPtr, token token, int param, int return_value){
+void BVSInsert(TNode *rootPtr, token token){
     if(rootPtr == NULL){
-        BVSCreate(token, param, return_value);
+        BVSCreate(token);
     }
     else{
         if((strCmpStr(&(token.content), &(rootPtr->content))) < 0){
-            BVSInsert(rootPtr->leftPtr, token, param, return_value);
+            BVSInsert(rootPtr->leftPtr, token);
         }
         else if((strCmpStr(&(token.content), &(rootPtr->content))) > 0){
-            BVSInsert(rootPtr->rightPtr, token, param, return_value);
+            BVSInsert(rootPtr->rightPtr, token);
         }
     }
 }
@@ -59,4 +57,56 @@ void BVSFree(TRoot *SymTable, TNode *rootPtr){
     }
     free(SymTable);
 }
+//////////////////////////////////////////
+///////////////FUNCTION//////////////////
 
+void BVSCreatef(function_save token){
+    TNodef *newPtr = malloc(sizeof(struct tnodef));
+    if(newPtr == NULL){
+        return INT_ERROR; 
+    }
+    newPtr->leftPtr = NULL;
+    newPtr->rightPtr = NULL;
+    newPtr->content = token.content;
+    newPtr->parameters = token.param_count;
+    newPtr->return_type = token.ret_value;
+}
+
+void BVSInsertf(TNodef *rootPtr, function_save token){
+    if(rootPtr == NULL){
+        BVSCreatef(token);
+    }
+    else{
+        if((strCmpStr(&(token.content), &(rootPtr->content))) < 0){
+            BVSInsertf(rootPtr->leftPtr, token);
+        }
+        else if((strCmpStr(&(token.content), &(rootPtr->content))) > 0){
+            BVSInsertf(rootPtr->rightPtr, token);
+        }
+    }
+}
+
+TNodef *BVSSearchf(TNodef *rootPtr, token token){
+    if(rootPtr == NULL){
+        return NULL;
+    }
+    else{
+        if((strCmpStr(&(token.content), &(rootPtr->content))) < 0){
+            rootPtr->leftPtr = BVSSearchf(rootPtr->leftPtr, token);
+        }
+        else if((strCmpStr(&(token.content), &(rootPtr->content))) < 0){
+            rootPtr->rightPtr = BVSSearchf(rootPtr->rightPtr, token);
+        }
+        return rootPtr;
+    }
+}
+
+void BVSFreef(TRootf *SymTable, TNodef *rootPtr){
+    if(rootPtr != NULL){
+        BVSFreef(SymTable ,rootPtr->rightPtr);
+        BVSFreef(SymTable, rootPtr->leftPtr);
+        free(rootPtr);
+    }
+    free(SymTable);
+}
+//////////////////////////////////////////
