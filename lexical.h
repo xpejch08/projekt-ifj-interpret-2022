@@ -46,16 +46,18 @@
 #define   TYPE_SEMICOLON         135
 #define   TYPE_COLON             136
 #define   TYPE_COMMA             137
+#define   TYPE_SAME_DATA         138
+#define   TYPE_NOT_SAME_DATA     139
 
 
 typedef union{
-    int *integerNumber;
-    float *floatNumber;
+    int integerNumber;
+    double doubleNumber;
     string *str;
 }tokenContent;
 
 typedef struct{
-    tokenContent *content;
+    tokenContent content;
     int type;
 }token;
 
@@ -63,4 +65,5 @@ typedef struct{
 void setSourceFile(FILE *f);
 int getNextToken(token *attr);
 void initToken(token *attr);
+
 #endif

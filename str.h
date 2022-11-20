@@ -12,7 +12,7 @@ void strFree(string *str);
 
 void strClean(string *str);
 int strAddChar(string *str, char c);
-int strCopyStr(string *str1, string *str2);
+int strCpyStr(string *str1, string *str2);
 int strCmpStr(string *str1, string *str2);
 int strCmpConstStr(string *str1, char *str2);
 
