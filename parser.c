@@ -451,7 +451,12 @@ int statList(){
             return SUCCES;
 
         case TYPE_VARIABLE:
-            BVSInsert(mainTree, *sToken);
+            if(in_function){
+                BVSInsert(insideFunction, *sToken);
+            }    
+            else{
+                BVSInsert(mainTree, *sToken);
+            }
             activeInstruction = setActiveInstruction();
             getNextToken(sToken);
             result = statList();
