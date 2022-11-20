@@ -50,7 +50,7 @@ int declrList() {
             return SUCCES;
         case TYPE_IDENTIFIER:
 
-            if (strCmpConstStr(sToken->content->str, "write")) {
+            if (strCmpConstStr(sToken->content.str, "write")) {
                 if(getNextToken(sToken) == LEX_ERROR){
                     return  LEX_ERROR;
                 }
@@ -80,7 +80,7 @@ int declrList() {
                     return SYN_ERROR;
                 }
             }
-            if (strCmpConstStr(sToken->content->str, "reads")) {
+            if (strCmpConstStr(sToken->content.str, "reads")) {
                 getNextToken(sToken);
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_READS, 1); 
@@ -100,7 +100,7 @@ int declrList() {
                     return SYN_ERROR;
                 }
             }
-            if (strCmpConstStr(sToken->content->str, "readi")) {
+            if (strCmpConstStr(sToken->content.str, "readi")) {
                 if(getNextToken(sToken) == LEX_ERROR){
                     return LEX_ERROR;
                 }
@@ -121,7 +121,9 @@ int declrList() {
                         if(result != SUCCES){
                             return result;
                         }
-                        return SUCCES;
+                        else {
+                            return SUCCES;
+                        }
                     } else {
                         return paramError;
                     }
@@ -129,7 +131,7 @@ int declrList() {
                     return SYN_ERROR;
                 }
             }
-            if (strCmpConstStr(sToken->content->str, "readf")) {
+            if (strCmpConstStr(sToken->content.str, "readf")) {
                 getNextToken(sToken);
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_READF, 1);
@@ -149,7 +151,7 @@ int declrList() {
                      }
                 }
             }
-            if (strCmpConstStr(sToken->content->str, "strlen")) {
+            if (strCmpConstStr(sToken->content.str, "strlen")) {
                 getNextToken(sToken);
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError == parametrs(PARAM_STRLEN, 1);
@@ -169,7 +171,7 @@ int declrList() {
                     return SYN_ERROR;
                 }
             }
-            if (strCmpConstStr(sToken->content->str, "substring")) {
+            if (strCmpConstStr(sToken->content.str, "substring")) {
                 getNextToken(sToken);
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_SUBSTRING, 1); 
@@ -189,7 +191,7 @@ int declrList() {
                     return SYN_ERROR;
                 }
             }
-            if (strCmpConstStr(sToken->content->str, "ord")) {
+            if (strCmpConstStr(sToken->content.str, "ord")) {
                 getNextToken(sToken);
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_SUBSTRING, 1); 
@@ -209,7 +211,7 @@ int declrList() {
                     return SYN_ERROR;
                 }
             }
-            if (strCmpConstStr(sToken->content->str, "chr")) {
+            if (strCmpConstStr(sToken->content.str, "chr")) {
                 getNextToken(sToken);
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_CHR, 1); 
@@ -229,20 +231,65 @@ int declrList() {
                     return SYN_ERROR;
                 }
             }
-
-            if (BVSSearch(mainTree, *sToken) == false) {
-                BVSInsert(mainTree, *sToken);
+            //todo bvssearch nust be true
+            if (BVSSearch(mainTree, *sToken)) {
+                BVSInsert(mainTree, *sToken, 20, 20);
             } else {
                 return SEM_ERROR;
             }
+        case TYPE_FUNCTIONDECLARE:
+            if(BVSSearch(mainTree, *sToken) == false){
+                return SEM_ERROR;
+            }
+            else{
+                BVSInsert(mainTree, *sToken, 20, 20);
+            }
 
         case KEYWORD_WHILE:
-            getNextToken(sToken);
+            if((result = getNextToken(sToken)) != SUCCES) {
+                return result;
+            }
             if (sToken->type != TYPE_LBRACKET) {
                 return SYN_ERROR;
-            } else {
-                return parametrs(PARAM_IF_WHILE, 1);
             }
+            else {
+                    if((result = getNextToken(sToken)) != SUCCES) {
+                        return result;
+                    }
+                    if(sToken->type != TYPE_LVINCULUM) {
+                        return SYN_ERROR;
+                    }
+                    if(getNextToken(sToken) == LEX_ERROR) {
+                        return LEX_ERROR;
+                    }
+                    if(sToken->type == TYPE_RVINCULUM) {
+                        result = statlist();
+                        if (result != SUCCES) {
+                            return result;
+                        }
+                        return SUCCES;
+                    }
+                    else {
+                        result = statlist();
+                        if (result != SUCCES) {
+                            return result;
+                        }
+                        if(sToken->type != TYPE_RVINCULUM) {
+                            return SYN_ERROR;
+                        }
+                        if(getNextToken(sToken) == LEX_ERROR) {
+                            return LEX_ERROR;
+                        }
+                        result = statlist();
+                        if (result != SUCCES) {
+                            return result;
+                        }
+                        return SUCCES;
+                    }
+                }
+
+
+
         case KEYWORD_VOID:
             getNextToken(sToken);
             if (sToken->type != TYPE_LBRACKET) {
@@ -353,23 +400,6 @@ int declrList() {
                 }
                 return SUCCES;
             }
-        case KEYWORD_FUNCTION:
-            getNextToken(sToken);
-            if (sToken->type != TYPE_IDENTIFIER) {
-                return SYN_ERROR;
-            }
-            getNextToken(sToken);
-            if (sToken->type != TYPE_LBRACKET) {
-                return SYN_ERROR;
-            }
-            return parametrs(PARAM_FUNCTION, 1);
-            case KEYWORD_FLOAT:
-            getNextToken(sToken);
-            if (sToken->type != TYPE_VARIABLE) {
-                return SYN_ERROR;
-            } else {
-                return SUCCES;
-            }
         }
 }
 //check after function, checks ending of token type for example checks if there is a right bracket after condition of
@@ -421,8 +451,10 @@ int statList(){
             return SUCCES;
         case TYPE_SEMICOLON:
             return SUCCES;
+
         case TYPE_RBRACKET:
             return SUCCES;
+
         case TYPE_ASSIGN:
             activeInstruction = setActiveInstruction();
             getNextToken(sToken);
@@ -431,18 +463,39 @@ int statList(){
                 return result;
             }
             return SUCCES;
+
         case KEYWORD_IF:
             result = declrList();
             if(result != SUCCES){
                 return result;
             }
             return SUCCES;
+
         case KEYWORD_ELSE:
             result = declrList();
             if(result != SUCCES){
                 return result;
             }
             return SUCCES;
+
+        case KEYWORD_WHILE:
+            result = declrList();
+            if(result != SUCCES){
+                return result;
+            }
+            return SUCCES;
+
+        case KEYWORD_FUNCTION:
+            if((result = getNextToken(sToken)) != SUCCES){
+                return result;
+            }
+            sToken->type = TYPE_FUNCTIONDECLARE;
+            result = declrList();
+            if(result != SUCCES){
+                return result;
+            }
+            return SUCCES;
+
         case TYPE_ADDITION:
         case TYPE_MULTIPLY:
         case TYPE_DIVIDE:
@@ -459,6 +512,7 @@ int statList(){
         case TYPE_DOUBLE_NUMBER:
         case TYPE_EXPONENT_NUMBER:
         case TYPE_NOT_EQUAL:
+            ;
     }
     //todo statList
 }
@@ -466,10 +520,8 @@ int statList(){
 
 //stat function checks content of different types, for example condition of while or body of while, calls function
 //statlist -> statlist calls stat recursively
-i
     
  //todo
-}
 int parametrs(int option, int repeat){
         switch (option) {
             case 1: // kontrolujeme parametry funkce
