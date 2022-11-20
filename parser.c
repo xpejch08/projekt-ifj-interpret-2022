@@ -31,8 +31,8 @@ int incId = 1;
 
 
 //initializing tree
-BVSInit(mainTree);
-BVSInit(functionNames);
+BVSInit(mainTree);               ///////////// wtf?    
+BVSInit_function(functionNames); ///////////// wtf?
 BVSInit(insideFunction);
 
 int stat(); // function declaration;

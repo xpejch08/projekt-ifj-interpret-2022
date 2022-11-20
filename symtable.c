@@ -5,10 +5,12 @@
 #include <string.h>
 #include "symtable.h"
 
+////////////VARIABLE///////////////////////////
+
 void BVSInit(TRoot *SymTable){
     SymTable->rootPtr = NULL;
 }
-/////////////////// VARIABLE //////////////////////
+
 void BVSCreate(token token){
     TNode *newPtr = malloc(sizeof(struct tnode));
     if(newPtr == NULL){
@@ -59,6 +61,10 @@ void BVSFree(TRoot *SymTable, TNode *rootPtr){
 }
 //////////////////////////////////////////
 ///////////////FUNCTION//////////////////
+
+void BVSInit_function(TRootf *SymTable){
+    SymTable->rootPtr = NULL;
+}
 
 void BVSCreate_function(function_save token){
     TNodef *newPtr = malloc(sizeof(struct tnodef));
