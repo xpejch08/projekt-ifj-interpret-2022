@@ -1,11 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
-<<<<<<< HEAD
-#include <string.h>
-=======
 #include "lexical.h"
 #include "str.h"
->>>>>>> e24de9c01ed4d4cdf4927c6b470dfbbc0fcf141f
 #include "parser.h"
 #include "stack.h"
 #include "symtable.h"
@@ -24,13 +20,10 @@ DLLElementPtr *list;
 
 
 bool *in_function = false;
-<<<<<<< HEAD
-=======
 int *param_count;
 int *ret_value;
 bool canParseEnd = false;
 
->>>>>>> e24de9c01ed4d4cdf4927c6b470dfbbc0fcf141f
 int paramError;
 int tokenId;
 token *sToken;
