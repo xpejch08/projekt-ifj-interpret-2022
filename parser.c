@@ -20,8 +20,6 @@ DLLElementPtr *list;
 
 
 bool *in_function = false;
-int *param_count;
-int *ret_value;
 bool canParseEnd = false;
 
 int paramError;
@@ -146,13 +144,13 @@ int declrList() {
                         //todo instructionFree()
                         getNextToken(sToken);
                         return SUCCES;
-                    } else {
+                    }else{
                         return paramError;
-                    } else {
+                    } 
+            }else {
                         return SYN_ERROR;
-                     }
-                }
             }
+                }
             if (strCmpConstStr(sToken->content.str, "strlen")) {
                 getNextToken(sToken);
                 if (sToken->type == TYPE_LBRACKET) {
@@ -235,18 +233,14 @@ int declrList() {
             }
             //todo bvssearch nust be true
             if (BVSSearch(mainTree, *sToken)) {
-                BVSInsert(mainTree, *sToken, 20, 20);
+                BVSInsert(mainTree, *sToken);
             } else {
                 return SEM_ERROR;
             }
         case TYPE_FUNCTIONDECLARE:
-            if(BVSSearch(mainTree, *sToken) == false){
+            if(BVSSearch_function(mainTree, *sToken) != NULL){
                 return SEM_ERROR;
             }
-            else{
-                BVSInsert(mainTree, *sToken, 20, 20);
-            }
-
         case KEYWORD_WHILE:
             if((result = getNextToken(sToken)) != SUCCES) {
                 return result;
@@ -402,17 +396,16 @@ int declrList() {
                 }
                 return SUCCES;
             }
-<<<<<<< HEAD
         case KEYWORD_FUNCTION:
             in_function = true;
             getNextToken(sToken);
             if (sToken->type != TYPE_IDENTIFIER) {
                 return SYN_ERROR;
             }
-            if(BVSSearch(functionNames, *sToken) != NULL){ // redefinace funkce
+            if(BVSSearch_function(functionNames, *sToken) != NULL){ // redefinace funkce
                 return SEM_DEFINE_ERROR;
             }
-            fun_id->content = sToken->content->str;
+            fun_id->content = sToken->content.str;
             getNextToken(sToken);
             if (sToken->type != TYPE_LBRACKET) {
                 return SYN_ERROR;
@@ -425,8 +418,6 @@ int declrList() {
             } else {
                 return SUCCES;
             }
-=======
->>>>>>> e24de9c01ed4d4cdf4927c6b470dfbbc0fcf141f
         }
 }
 //check after function, checks ending of token type for example checks if there is a right bracket after condition of
@@ -518,6 +509,7 @@ int statList(){
             }
             sToken->type = TYPE_FUNCTIONDECLARE;
             result = declrList();
+            BVSInsert_function(functionNames, fun_id);
             if(result != SUCCES){
                 return result;
             }
@@ -551,7 +543,6 @@ int statList(){
  //todo
 int parametrs(int option, int repeat){
         switch (option) {
-<<<<<<< HEAD
             case PARAM_FUNCTION: // kontrolujeme parametry funkce
                 if(getNextToken(sToken) == LEX_ERROR){
                     return  LEX_ERROR;
@@ -590,32 +581,22 @@ int parametrs(int option, int repeat){
                     }
                 }
                 else if (sToken->type == KEYWORD_INT     ||
-=======
-            case 1: // kontrolujeme parametry funkce
-                getNextToken(sToken);
-                if (sToken->type == TYPE_RBRACKET && repeat == 1) {
-                    return SUCCES;
-                } else if (sToken->type == KEYWORD_INT ||
->>>>>>> e24de9c01ed4d4cdf4927c6b470dfbbc0fcf141f
                            sToken->type == KEYWORD_FLOAT ||
                            sToken->type == KEYWORD_STRING
                         ) {
-                    getNextToken(sToken);
+                    if(getNextToken(sToken) == LEX_ERROR){
+                            return  LEX_ERROR;
+                        }
                     if (sToken->type == TYPE_VARIABLE) {
                         generateInstruction();
                         BVSInsert(insideFunction, *sToken);
-<<<<<<< HEAD
                         if(getNextToken(sToken) == LEX_ERROR){
                             return  LEX_ERROR;
                         }
-=======
-                        getNextToken(sToken);
->>>>>>> e24de9c01ed4d4cdf4927c6b470dfbbc0fcf141f
                         if (sToken->type == TYPE_COMMA) {
                             repeat++;
                             parametrs(PARAM_FUNCTION, repeat);
                         } else if (sToken->type == TYPE_RBRACKET) {
-<<<<<<< HEAD
                             fun_id->param_count = repeat;
                             if(getNextToken(sToken) == LEX_ERROR){
                                 return  LEX_ERROR;
@@ -647,9 +628,6 @@ int parametrs(int option, int repeat){
                             else{
                                 return SYN_ERROR;
                             }
-=======
-                            return SUCCES;
->>>>>>> e24de9c01ed4d4cdf4927c6b470dfbbc0fcf141f
                         } else {
                             return SYN_ERROR;
                         }
@@ -661,15 +639,117 @@ int parametrs(int option, int repeat){
                     return SYN_ERROR;
                 }
             case 2: // kontrolujeme podminku ve while nebo if
-
-                getNextToken(sToken);
-                
+                if(getNextToken(sToken) == LEX_ERROR){
+                    return  LEX_ERROR;
+                }
+                switch(sToken->type){
+                    case TYPE_STRING:
+                        if(getNextToken(sToken) == LEX_ERROR){
+                            return  LEX_ERROR;
+                        }
+                        if(sToken->type == TYPE_CONCATENATE || 
+                           sToken->type == TYPE_EQUAL       ||
+                           sToken->type == TYPE_NOT_EQUAL    
+                        ){
+                            parametrs(PARAM_IF_WHILE, repeat);
+                        }
+                        else if(sToken->type == TYPE_RBRACKET){
+                            repeat--;
+                            if(repeat == 0){
+                                return SUCCES;
+                            }
+                            parametrs(PARAM_IF_WHILE, repeat);
+                        }
+                        else{
+                            return SYN_ERROR;
+                        } 
+                    case TYPE_VARIABLE:
+                        if(in_function){
+                            if(BVSSearch(insideFunction, *sToken) == NULL){
+                                return SEM_UNDEFINED_ERROR;
+                            }
+                        }    
+                        else{
+                            if(BVSSearch(mainTree, *sToken) == NULL){
+                                return SEM_UNDEFINED_ERROR;
+                            }
+                        }
+                        if(getNextToken(sToken) == LEX_ERROR){
+                            return  LEX_ERROR;
+                        }
+                        if(sToken->type == TYPE_MULTIPLY         ||
+                           sToken->type == TYPE_DIVIDE           ||
+                           sToken->type == TYPE_ADDITION         ||
+                           sToken->type == TYPE_SUBTRACTION      ||
+                           sToken->type == TYPE_SMALLER_THAN     ||
+                           sToken->type == TYPE_GREATER_THAN     ||
+                           sToken->type == TYPE_GREATER_OR_EQUAL ||
+                           sToken->type == TYPE_SMALLER_OR_EQUAL
+                        ){
+                            parametrs(PARAM_IF_WHILE, repeat);    
+                        }
+                        else if(sToken->type == TYPE_RBRACKET){
+                            repeat--;
+                            if(repeat == 0){
+                                return SUCCES;
+                            }
+                            parametrs(PARAM_IF_WHILE, repeat);
+                        }
+                        else{
+                            return SYN_ERROR;
+                        }
+                    case TYPE_RBRACKET:
+                        repeat--;
+                        if(repeat == 0){
+                            return SUCCES;
+                        }
+                        if(getNextToken(sToken) == LEX_ERROR){
+                            return  LEX_ERROR;
+                        }
+                        if(sToken->type == TYPE_MULTIPLY         ||
+                           sToken->type == TYPE_DIVIDE           ||
+                           sToken->type == TYPE_ADDITION         ||
+                           sToken->type == TYPE_SUBTRACTION      ||
+                           sToken->type == TYPE_SMALLER_THAN     ||
+                           sToken->type == TYPE_GREATER_THAN     ||
+                           sToken->type == TYPE_GREATER_OR_EQUAL ||
+                           sToken->type == TYPE_SMALLER_OR_EQUAL
+                        ){
+                            parametrs(PARAM_IF_WHILE, repeat);    
+                        }
+                        else if(sToken->type == TYPE_RBRACKET){
+                            repeat--;
+                            if(repeat == 0){
+                                return SUCCES;
+                            }
+                            parametrs(PARAM_IF_WHILE, repeat);
+                        }
+                        else{
+                            return SYN_ERROR;
+                        }
+                        
+                    case TYPE_LBRACKET:
+                        repeat++;
+                        parametrs(PARAM_IF_WHILE, repeat);
+                }
+                return SYN_ERROR;
+                        
             case 3: // write
                 if(getNextToken(sToken) == LEX_ERROR){
                     return  LEX_ERROR;
                 }
                 switch (sToken->type) {
                     case TYPE_VARIABLE:
+                        if(in_function){
+                            if(BVSSearch(insideFunction, *sToken) == NULL){
+                                return SEM_UNDEFINED_ERROR;
+                            }
+                        }
+                        else{
+                            if(BVSSearch(mainTree, *sToken) == NULL){
+                                return SEM_UNDEFINED_ERROR;
+                            }
+                        }
                         if(getNextToken(sToken) == LEX_ERROR){
                             return  LEX_ERROR;
                         }
@@ -724,7 +804,9 @@ int parametrs(int option, int repeat){
                         }
                 }
             case 4: // readi
-                getNextToken(sToken);
+                if(getNextToken(sToken) == LEX_ERROR){
+                    return  LEX_ERROR;
+                }
                 if(sToken->type == TYPE_RBRACKET){
                     return SUCCES;
                 }
@@ -732,7 +814,9 @@ int parametrs(int option, int repeat){
                     return SYN_ERROR;
                 }
             case 5: // reads
-                getNextToken(sToken);
+                if(getNextToken(sToken) == LEX_ERROR){
+                    return  LEX_ERROR;
+                }
                 if(sToken->type == TYPE_RBRACKET){
                     return SUCCES;
                 }
@@ -740,7 +824,9 @@ int parametrs(int option, int repeat){
                     return SYN_ERROR;
                 }
             case 6: // readf
-                getNextToken(sToken);
+                if(getNextToken(sToken) == LEX_ERROR){
+                    return  LEX_ERROR;
+                }
                 if(sToken->type == TYPE_RBRACKET){
                     return SUCCES;
                 }
@@ -748,41 +834,84 @@ int parametrs(int option, int repeat){
                     return SYN_ERROR;
                 }
             case 7: // strlen
-                getNextToken(sToken);
-                if(sToken->type == KEYWORD_STRING){
-                    getNextToken(sToken);
-                    if(sToken->type == TYPE_VARIABLE){
-                        getNextToken(sToken);
-                        if(sToken->type == TYPE_RBRACKET){
-                            return SUCCES;
+                if(getNextToken(sToken) == LEX_ERROR){
+                    return  LEX_ERROR;
+                }
+                if(sToken->type == TYPE_VARIABLE){
+                    if(in_function){
+                        if(BVSSearch(insideFunction, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
                         }
+                    }
+                    else{
+                        if(BVSSearch(mainTree, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
+                        }
+                    }
+                    if(getNextToken(sToken) == LEX_ERROR){
+                        return  LEX_ERROR;
+                    }
+                    if(sToken->type == TYPE_RBRACKET){
+                        return SUCCES;
                     }
                 }
                 return SYN_ERROR;
             case 8: // substring
-                getNextToken(sToken);
-                if(sToken->type == KEYWORD_STRING){
-                    getNextToken(sToken);
-                    if(sToken->type == TYPE_VARIABLE){
-                        getNextToken(sToken);
-                        if(sToken->type == TYPE_COMMA){
-                            getNextToken(sToken);
-                            if(sToken->type == KEYWORD_INT){
-                                getNextToken(sToken);
+                if(getNextToken(sToken) == LEX_ERROR){
+                    return  LEX_ERROR;
+                }
+                if(sToken->type == TYPE_VARIABLE){
+                    if(in_function){
+                            if(BVSSearch(insideFunction, *sToken) == NULL){
+                                return SEM_UNDEFINED_ERROR;
+                            }
+                        }
+                        else{
+                            if(BVSSearch(mainTree, *sToken) == NULL){
+                                return SEM_UNDEFINED_ERROR;
+                            }
+                        }
+                    if(getNextToken(sToken) == LEX_ERROR){
+                        return  LEX_ERROR;
+                    }
+                    if(sToken->type == TYPE_COMMA){
+                        if(getNextToken(sToken) == LEX_ERROR){
+                            return  LEX_ERROR;
+                        }
+                        if(sToken->type == TYPE_VARIABLE){
+                            if(in_function){
+                                if(BVSSearch(insideFunction, *sToken) == NULL){
+                                    return SEM_UNDEFINED_ERROR;
+                                }
+                            }
+                            else{
+                                if(BVSSearch(mainTree, *sToken) == NULL){
+                                    return SEM_UNDEFINED_ERROR;
+                                }
+                            }
+                            if(getNextToken(sToken) == LEX_ERROR){
+                                return  LEX_ERROR;
+                            }
+                            if(sToken->type == TYPE_COMMA){
+                                if(getNextToken(sToken) == LEX_ERROR){
+                                    return  LEX_ERROR;
+                                }
                                 if(sToken->type == TYPE_VARIABLE){
-                                    getNextToken(sToken);
-                                    if(sToken->type == TYPE_COMMA){
-                                        getNextToken(sToken);
-                                        if(sToken->type == KEYWORD_INT){
-                                            getNextToken(sToken);
-                                            if(sToken->type == TYPE_VARIABLE){
-                                                getNextToken(sToken);
-                                                if(sToken->type == TYPE_RBRACKET){
-                                                    return SUCCES;
-                                                }
-                                            }
+                                    if(in_function){
+                                        if(BVSSearch(insideFunction, *sToken) == NULL){
+                                            return SEM_UNDEFINED_ERROR;
                                         }
-
+                                    }
+                                    else{
+                                        if(BVSSearch(mainTree, *sToken) == NULL){
+                                            return SEM_UNDEFINED_ERROR;
+                                        }
+                                    }
+                                    if(getNextToken(sToken) == LEX_ERROR){
+                                        return  LEX_ERROR;
+                                    }
+                                    if(sToken->type == TYPE_RBRACKET){
+                                        return SUCCES;
                                     }
                                 }
                             }
@@ -791,26 +920,48 @@ int parametrs(int option, int repeat){
                 }
                 return SYN_ERROR;
             case 9: // ord
-                getNextToken(sToken);
-                if(sToken->type == KEYWORD_STRING){
-                    getNextToken(sToken);
-                    if(sToken->type == TYPE_VARIABLE){
-                        getNextToken(sToken);
-                        if(sToken->type == TYPE_RBRACKET);{
-                            return SUCCES;
+                if(getNextToken(sToken) == LEX_ERROR){
+                    return  LEX_ERROR;
+                }
+                if(sToken->type == TYPE_VARIABLE){
+                    if(in_function){
+                        if(BVSSearch(insideFunction, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
                         }
+                    }
+                    else{
+                        if(BVSSearch(mainTree, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
+                        }
+                    }
+                    if(getNextToken(sToken) == LEX_ERROR){
+                        return  LEX_ERROR;
+                    }
+                    if(sToken->type == TYPE_RBRACKET);{
+                        return SUCCES;
                     }
                 }
                 return SYN_ERROR;
             case 10: //chr
-                getNextToken(sToken);
-                if(sToken->type == KEYWORD_INT){
-                    getNextToken(sToken);
-                    if(sToken->type == TYPE_VARIABLE){
-                        getNextToken(sToken);
-                        if(sToken->type == TYPE_RBRACKET){
-                            return SUCCES;
+                if(getNextToken(sToken) == LEX_ERROR){
+                     return  LEX_ERROR;
+                }
+                if(sToken->type == TYPE_VARIABLE){
+                    if(in_function){
+                        if(BVSSearch(insideFunction, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
                         }
+                    }
+                    else{
+                        if(BVSSearch(mainTree, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
+                        }
+                    }
+                    if(getNextToken(sToken) == LEX_ERROR){
+                        return  LEX_ERROR;
+                    }                
+                    if(sToken->type == TYPE_RBRACKET){
+                        return SUCCES;
                     }
                 }
                 return SYN_ERROR;

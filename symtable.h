@@ -63,4 +63,5 @@ TNode *BVSSearch(TNode *rootPtr, token token);
  */
 void BVSFree(TRoot *SymTable, TNode *rootPtr);
 
+void BVSInsert_function(TNodef *rootPtr, function_save token);
 #endif
