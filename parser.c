@@ -974,7 +974,7 @@ int parametrs(int option, int repeat){
                 }
                 return SYN_ERROR;
             case PARAM_RETURN:
-
+                
         }
 }
 
