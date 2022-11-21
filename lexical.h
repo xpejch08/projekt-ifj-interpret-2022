@@ -51,7 +51,7 @@
 
 typedef union{
     int integerNumber;
-    double doubleNumber;
+    float doubleNumber;
     string *str;
 }tokenContent;
 
