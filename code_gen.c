@@ -4,6 +4,7 @@
 #include "lexical.h"
 
 
+
 //test
 
 TInst setActiveInstruction(void* instrID ,void* symb1, void* symb2, void* var, int uniqueNumber)
@@ -12,13 +13,17 @@ TInst setActiveInstruction(void* instrID ,void* symb1, void* symb2, void* var, i
     if(instrID != 0){
         activeInstruction.instrID = instrID;
     }
+    char tmp1;
+    char tmp2;
     if(symb1 != NULL)
     {
-        activeInstruction.symb1 = symb1;
+        itoa(symb1, tmp1, 10);
+        activeInstruction.symb1 = tmp1;
     }
     if(symb2 != NULL)
     {
-        activeInstruction.symb2 = symb2;
+        itoa(symb1, tmp2, 10); 
+        activeInstruction.symb2 = tmp2;
     }
     if(var != NULL)
     {
@@ -135,6 +140,11 @@ TInst *instructionGetData(TInstList *instrList)
 
 void instructionPrint(TInstList *instrList)
 {   
+    char tmp[100];
+    itoa(instrList->active->activeInstruction.symb1, tmp, 10);
+    itoa(instrList->active->activeInstruction.symb2, tmp, 10);
+
+    
     if(instrList->first != NULL)
     {
         while(instrList->active != NULL)
