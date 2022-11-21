@@ -839,6 +839,16 @@ int parametrs(int option, int repeat){
                 }
                 switch (sToken->type) {
                     case TYPE_VARIABLE:
+                        if(in_function){
+                            if(BVSSearch(insideFunction, *sToken) == NULL){
+                                return SEM_UNDEFINED_ERROR;
+                            }
+                        }    
+                        else{
+                            if(BVSSearch(mainTree, *sToken) == NULL){
+                                return SEM_UNDEFINED_ERROR;
+                            }
+                        }
                         if(getNextToken(sToken) == LEX_ERROR){
                             return  LEX_ERROR;
                         }
