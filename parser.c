@@ -18,8 +18,6 @@ TNode *functionNames;
 TNode *mainTree;
 DLLElementPtr *list;
 
-int *param_count;
-int *ret_value;
 bool in_function = false;
 bool canParseEnd = false;
 bool returnCount = false;
