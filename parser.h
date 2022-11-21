@@ -17,6 +17,7 @@
 #define PARAM_SUBSTRING 807
 #define PARAM_ORD 808
 #define PARAM_CHR 809
+#define PARAM_RETURN 810
 
 typedef struct{
     string *content;
