@@ -22,6 +22,9 @@ DLLElementPtr *list;
 bool *in_function = false;
 bool canParseEnd = false;
 
+int unique = 0;
+int ifCounter = 0;
+
 int paramError;
 int tokenId;
 token *sToken;

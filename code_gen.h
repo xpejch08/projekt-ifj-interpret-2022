@@ -3,27 +3,33 @@
 
 #include "stack.h"
 
-#define COMPLETE 40
-#define INCOMPLETE 41
 
 //Instr
-#define MOVE 400
-#define ADD 401
-#define SUB 402
-#define MUL 403
-#define DIV 404
-#define IDIV 405
-#define PUSH 406
-#define POP 407
-#define LT 408
-#define GT 409
-#define WRITE 410
+#define MOVE "MOVE"
+#define ADD "ADD"
+#define SUB "SUB
+#define MUL "MUL"
+#define DIV "DIV"
+#define IDIV "IDIV"
+#define PUSH "PUSH"
+#define POP "POP"
+#define LT "LT
+#define GT "GT"
+#define WRITE "WRITE"
+#define READ "READ"
 
-#define CREATEFRAME 411
-#define LABEL 412
-#define JUMP 413
+#define CREATEFRAME "CRATEFRAME"
+#define LABEL "LABEL"
+#define JUMP "JUMP"
+#define JUMPIFEQ "JUMPIFEQ"
+#define JUMPIFNEQ "JUMPIFNEQ"
+#define EXIT "EXIT"
 
+#define STRING 440
+#define INT 441
+#define FLOAT 442
 
+#define STRLEN "STRLEN"
 
 typedef struct
 {
