@@ -6,7 +6,7 @@
 
 //test
 
-TInst setActiveInstruction(int instrID ,void* leftOp, void* rightOp, void* result)
+TInst setActiveInstruction(void* instrID ,void* leftOp, void* rightOp, void* result)
 {   
     TInst activeInstruction;
     if(instrID != 0){
@@ -70,8 +70,6 @@ if(addrprev == NULL)
 
 }
 
-
-
 }
 
 void instructionInit(TInstList *instrList)
@@ -81,15 +79,6 @@ void instructionInit(TInstList *instrList)
     instrList->last = NULL;
 }
 
-TInst *setActiveInstruction(int instrID, void *leftOp, void *rightOp)
-{
-    TInst *activeInstruction;
-    activeInstruction->instrID = instrID;
-    activeInstruction->leftOp = leftOp;
-    activeInstruction->rightOp = rightOp;
-    activeInstruction->result = NULL;
-    return activeInstruction;
-}
 
 void instructionFree(TInstList *instrList)
 {   
@@ -106,7 +95,7 @@ void instructionInsertActive(TInstList *instrList, TInst instruction)
     TItemList *newInst = malloc(sizeof(TItemList));
     if(newInst == NULL)
     {
-        fprintf(stderr,"Chyba alokace prvku");
+
         return INT_ERROR;
     }
     newInst->instruction = instruction;
@@ -138,5 +127,46 @@ TInst *instructionGetData(TInstList *instrList)
     if(instrList->active != NULL)
     {
         return &(instrList->active->instruction);
+    }
+}
+
+void instructionPrint(TInstList *instrList)
+{   
+    if(instrList->first != NULL)
+    {
+        while(instrList->active != NULL)
+        {
+            if(instrList->active->activeInstruction.leftOp == NULL &&
+             instrList->active->activeInstruction.rightOp == NULL &&
+              instrList->active->activeInstruction.result == NULL)
+            {
+                printf("%s\n", instrList->active->activeInstruction.instrID);
+            }
+
+            if(instrList->active->activeInstruction.leftOp != NULL &&
+             instrList->active->activeInstruction.rightOp == NULL &&
+              instrList->active->activeInstruction.result == NULL)
+            {
+                printf("%s %s\n", instrList->active->activeInstruction.instrID, instrList->active->activeInstruction.leftOp);
+            }
+
+            if(instrList->active->activeInstruction.leftOp != NULL &&
+             instrList->active->activeInstruction.rightOp != NULL &&
+              instrList->active->activeInstruction.result== NULL)
+            {
+                printf("%s %s %s\n", instrList->active->activeInstruction.instrID,
+                 instrList->active->activeInstruction.leftOp, instrList->active->activeInstruction.rightOp);
+            }
+
+            if(instrList->active->activeInstruction.leftOp != NULL &&
+             instrList->active->activeInstruction.rightOp != NULL &&
+              instrList->active->activeInstruction.result != NULL)
+            {
+                printf("%s %s %s %s\n", instrList->active->activeInstruction.instrID,
+                 instrList->active->activeInstruction.leftOp, instrList->active->activeInstruction.rightOp,
+                  instrList->active->activeInstruction.result);
+            }
+            instrList->active = instrList->active->next;
+        }
     }
 }
