@@ -98,7 +98,7 @@ void instructionInsertActive(TInstList *instrList, TInst instruction)
 
         return INT_ERROR;
     }
-    newInst->instruction = instruction;
+    newInst->activeInstruction = instruction;
     if (instrList->first != NULL)
     {
     instrList->active->next = newInst;
@@ -126,7 +126,7 @@ TInst *instructionGetData(TInstList *instrList)
 {
     if(instrList->active != NULL)
     {
-        return &(instrList->active->instruction);
+        return &(instrList->active->activeInstruction);
     }
 }
 

@@ -33,10 +33,10 @@
 
 typedef struct
 {
-    int instrID;
-    void *leftOp;
-    void *rightOp;
-    void *result;
+    void *instrID;
+    void *symb1;
+    void *symb2;
+    void *var;
     
 }TInst;
 
@@ -54,7 +54,7 @@ typedef struct instrList
 }TItemList;
 
 // funkce nastavi parametry instrukce
- TInst setActiveInstruction(void* instrID, void* leftOp, void* rightOp, void* result);
+ TInst setActiveInstruction(void* instrID, void* symb1, void* symb2, void* var);
 // funkce inicializuje seznam instrukcí
 void instructionInit(TInstList *instrList);
 
