@@ -70,7 +70,7 @@ int declrList() {
                             //instructionFree()
                             return SYN_ERROR;
                         }
-                        generateInstruction(activeInstruction, adr1, NULL, NULL);
+                        
                         instructionFree(activeInstruction);
                         //todo instructionFree()
                         canParseEnd = true;
@@ -103,7 +103,7 @@ int declrList() {
                             //instructionFree()
                             return SYN_ERROR;
                         }
-                        generateInstruction(activeInstruction, adr1, NULL, NULL);
+                       
                         //todo instructionFree()
                         canParseEnd = true;
 
@@ -134,8 +134,7 @@ int declrList() {
                             //instructionFree()
                             return SYN_ERROR;
                         }
-                        activeInstruction = setActiveInstruction();
-                        generateInstruction(activeInstruction, adr1, NULL, NULL);
+
                         canParseEnd = true;
 
                         if((result = getNextToken(sToken)) != SUCCES){
@@ -168,7 +167,7 @@ int declrList() {
                             //instructionFree()
                             return SYN_ERROR;
                         }
-                        generateInstruction(activeInstruction, adr1, NULL, NULL);
+                        
                         //todo instructionFree()
                         canParseEnd = true;
 
@@ -196,7 +195,6 @@ int declrList() {
                             //instructionFree()
                             return SYN_ERROR;
                         }
-                        generateInstruction(activeInstruction, adr1, NULL, NULL);
                         //todo instructionFree()
                         canParseEnd = true;
 
@@ -225,7 +223,6 @@ int declrList() {
                             //instructionFree()
                             return SYN_ERROR;
                         }
-                        generateInstruction(activeInstruction, adr1, NULL, NULL);
                         //todo instructionFree()
                         canParseEnd = true;
 
@@ -254,7 +251,6 @@ int declrList() {
                             //instructionFree()
                             return SYN_ERROR;
                         }
-                        generateInstruction(activeInstruction, adr1, NULL, NULL);
                         //todo instructionFree()
                         canParseEnd = true;
 
@@ -282,7 +278,6 @@ int declrList() {
                             //instructionFree()
                             return SYN_ERROR;
                         }
-                        generateInstruction(activeInstruction, adr1, NULL, NULL);
                         //todo instructionFree()
                         canParseEnd = true;
 
@@ -577,7 +572,6 @@ int statList(){
 
         case TYPE_VARIABLE:
             BVSInsert(mainTree, *sToken);
-            activeInstruction = setActiveInstruction();
             getNextToken(sToken);
             result = statList();
             if(result != SUCCES){
@@ -677,7 +671,7 @@ int parametrs(int option, int repeat){
                         ) {
                     getNextToken(sToken);
                     if (sToken->type == TYPE_VARIABLE) {
-                        generateInstruction();
+                        
                         BVSInsert(insideFunction, *sToken);
                         getNextToken(sToken);
                         if (sToken->type == TYPE_COMMA) {
@@ -719,7 +713,6 @@ int parametrs(int option, int repeat){
                             return SYN_ERROR;
                         }
                     case TYPE_STRING:
-                        setActiveInstruction(WRITE, *sToken, NULL, NULL, NULL);
                         if(getNextToken(sToken) == LEX_ERROR){
                             return  LEX_ERROR;
                         }
