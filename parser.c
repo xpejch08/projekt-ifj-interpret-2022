@@ -593,7 +593,7 @@ int statList(){
             return SUCCES;
 
         case TYPE_ASSIGN:
-            activeInstruction = setActiveInstruction();
+           
             getNextToken(sToken);
             result = statList();
             if(result != SUCCES){
