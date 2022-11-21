@@ -685,7 +685,9 @@ int parametrs(int option, int repeat){
                         else{
                             return SYN_ERROR;
                         }
-
+                    }
+                    else{
+                        return SYN_ERROR;
                     }
                 } else if (sToken->type == KEYWORD_INT ||
                            sToken->type == KEYWORD_FLOAT ||
@@ -723,13 +725,16 @@ int parametrs(int option, int repeat){
                                 else{
                                     return SYN_ERROR;
                                 }
+                            }
+                            else{
+                                return SYN_ERROR;
+                            }
                         } else {
                             return SYN_ERROR;
                         }
                     } else {
                         return SYN_ERROR;
-                    }
-
+                        }
                 } else {
                     return SYN_ERROR;
                 }
@@ -742,9 +747,7 @@ int parametrs(int option, int repeat){
                         if(getNextToken(sToken) == LEX_ERROR){
                             return  LEX_ERROR;
                         }
-                        if(sToken->type == TYPE_CONCATENATE || 
-                           sToken->type == TYPE_ADDITION    || ///////////////  CHANGE TO === !!!
-                           sToken->type == TYPE_ASSIGN      || ///////////////  CHANGE TO !== !!!
+                        if(sToken->type == TYPE_CONCATENATE ||
                            sToken->type == TYPE_EQUAL       ||
                            sToken->type == TYPE_NOT_EQUAL    
                         ){
