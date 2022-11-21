@@ -50,11 +50,11 @@ typedef struct
 typedef struct instrList
 {
     struct instrList *next;
-    TInst instruction;
+    TInst activeInstruction;
 }TItemList;
 
 // funkce nastavi parametry instrukce
- TInst setActiveInstruction( int instrID, void* leftOp, void* rightOp, void* result);
+ TInst setActiveInstruction(void* instrID, void* leftOp, void* rightOp, void* result);
 // funkce inicializuje seznam instrukcí
 void instructionInit(TInstList *instrList);
 
@@ -74,6 +74,8 @@ void instructionActiveNext(TInstList *instrList);
 TInst *instructionGetData(TInstList *instrList);
 
 void instructionArgs(TInstList *instrList, TInst *instruction);
+
+void instructionPrint(TInstList *instrList);
 
 
 #endif
