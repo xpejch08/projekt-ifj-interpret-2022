@@ -69,7 +69,6 @@ int declrList() {
                             return SYN_ERROR;
                         }
                         
-                        
                         //todo instructionFree()
                         canParseEnd = true;
 

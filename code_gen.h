@@ -37,6 +37,7 @@ typedef struct
     void *symb1;
     void *symb2;
     void *var;
+    int uniqueNumber;
     
 }TInst;
 

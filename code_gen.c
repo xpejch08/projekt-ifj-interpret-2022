@@ -6,23 +6,27 @@
 
 //test
 
-TInst setActiveInstruction(void* instrID ,void* leftOp, void* rightOp, void* result)
+TInst setActiveInstruction(void* instrID ,void* symb1, void* symb2, void* var, int uniqueNumber)
 {   
     TInst activeInstruction;
     if(instrID != 0){
         activeInstruction.instrID = instrID;
     }
-    if(leftOp != NULL)
+    if(symb1 != NULL)
     {
-        activeInstruction.leftOp = leftOp;
+        activeInstruction.symb1 = symb1;
     }
-    if(rightOp != NULL)
+    if(symb2 != NULL)
     {
-        activeInstruction.rightOp = rightOp;
+        activeInstruction.symb2 = symb2;
     }
-    if(result != NULL)
+    if(var != NULL)
     {
-        activeInstruction.result = result;
+        activeInstruction.var = var;
+    }
+    if(uniqueNumber != NULL)
+    {
+        activeInstruction.uniqueNumber = uniqueNumber;
     }
     return activeInstruction;
 }
@@ -95,7 +99,6 @@ void instructionInsertActive(TInstList *instrList, TInst instruction)
     TItemList *newInst = malloc(sizeof(TItemList));
     if(newInst == NULL)
     {
-
         return INT_ERROR;
     }
     newInst->activeInstruction = instruction;
@@ -136,35 +139,44 @@ void instructionPrint(TInstList *instrList)
     {
         while(instrList->active != NULL)
         {
-            if(instrList->active->activeInstruction.leftOp == NULL &&
-             instrList->active->activeInstruction.rightOp == NULL &&
-              instrList->active->activeInstruction.result == NULL)
+            if(instrList->active->activeInstruction.symb1 == NULL &&
+             instrList->active->activeInstruction.symb2 == NULL &&
+              instrList->active->activeInstruction.var == NULL)
             {
                 printf("%s\n", instrList->active->activeInstruction.instrID);
             }
 
-            if(instrList->active->activeInstruction.leftOp != NULL &&
-             instrList->active->activeInstruction.rightOp == NULL &&
-              instrList->active->activeInstruction.result == NULL)
+            if(instrList->active->activeInstruction.symb1 != NULL &&
+             instrList->active->activeInstruction.symb2 == NULL &&
+              instrList->active->activeInstruction.var == NULL &&
+              instrList->active->activeInstruction.uniqueNumber != NULL)
             {
-                printf("%s %s\n", instrList->active->activeInstruction.instrID, instrList->active->activeInstruction.leftOp);
+                printf("%s %s%d\n", instrList->active->activeInstruction.instrID,instrList->active->activeInstruction.symb1,
+                 instrList->active->activeInstruction.uniqueNumber);
+            }
+             if(instrList->active->activeInstruction.symb1 != NULL &&
+             instrList->active->activeInstruction.symb2 == NULL &&
+              instrList->active->activeInstruction.var == NULL &&
+              instrList->active->activeInstruction.uniqueNumber == NULL)
+            {
+                printf("%s %s\n", instrList->active->activeInstruction.instrID,instrList->active->activeInstruction.symb1);
             }
 
-            if(instrList->active->activeInstruction.leftOp != NULL &&
-             instrList->active->activeInstruction.rightOp != NULL &&
-              instrList->active->activeInstruction.result== NULL)
+            if(instrList->active->activeInstruction.symb1 != NULL &&
+             instrList->active->activeInstruction.symb2 == NULL &&
+              instrList->active->activeInstruction.var != NULL)
             {
                 printf("%s %s %s\n", instrList->active->activeInstruction.instrID,
-                 instrList->active->activeInstruction.leftOp, instrList->active->activeInstruction.rightOp);
+                 instrList->active->activeInstruction.var, instrList->active->activeInstruction.symb1);
             }
 
-            if(instrList->active->activeInstruction.leftOp != NULL &&
-             instrList->active->activeInstruction.rightOp != NULL &&
-              instrList->active->activeInstruction.result != NULL)
+            if(instrList->active->activeInstruction.symb1 != NULL &&
+             instrList->active->activeInstruction.symb2 != NULL &&
+              instrList->active->activeInstruction.var != NULL)
             {
                 printf("%s %s %s %s\n", instrList->active->activeInstruction.instrID,
-                 instrList->active->activeInstruction.leftOp, instrList->active->activeInstruction.rightOp,
-                  instrList->active->activeInstruction.result);
+                 instrList->active->activeInstruction.var, instrList->active->activeInstruction.symb1,
+                  instrList->active->activeInstruction.symb2);
             }
             instrList->active = instrList->active->next;
         }
