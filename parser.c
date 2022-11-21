@@ -22,11 +22,11 @@ int *param_count;
 int *ret_value;
 bool in_function = false;
 bool canParseEnd = false;
+bool returnCount = false;
 
 int unique = 0;
 int ifCounter = 0;
 
-int paramError;
 int tokenId;
 token *sToken;
 
@@ -46,6 +46,7 @@ int parametrs(); // declaration because function is used before definition
 // recursively calls itself
 int declrList() {
 
+    int paramError;
     int result;
 
     switch (sToken->type) {
@@ -54,8 +55,10 @@ int declrList() {
         case TYPE_IDENTIFIER:
 
             if (strCmpConstStr(sToken->content.str, "write")) {
-                if(getNextToken(sToken) == LEX_ERROR){
-                    return  LEX_ERROR;
+                canParseEnd = false;
+
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
                 }
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_WRITE, 1);
@@ -70,7 +73,11 @@ int declrList() {
                         generateInstruction(activeInstruction, adr1, NULL, NULL);
                         instructionFree(activeInstruction);
                         //todo instructionFree()
-                        getNextToken(sToken);
+                        canParseEnd = true;
+
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
                         result = statlist();
                         if(result != SUCCES) {
                             return result;
@@ -84,7 +91,11 @@ int declrList() {
                 }
             }
             if (strCmpConstStr(sToken->content.str, "reads")) {
-                getNextToken(sToken);
+                canParseEnd = false;
+
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
+                }
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_READS, 1); 
                     if (paramError == SUCCES) {
@@ -94,7 +105,11 @@ int declrList() {
                         }
                         generateInstruction(activeInstruction, adr1, NULL, NULL);
                         //todo instructionFree()
-                        getNextToken(sToken);
+                        canParseEnd = true;
+
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
                         return SUCCES;
                     } else {
                         return paramError;
@@ -104,8 +119,10 @@ int declrList() {
                 }
             }
             if (strCmpConstStr(sToken->content.str, "readi")) {
-                if(getNextToken(sToken) == LEX_ERROR){
-                    return LEX_ERROR;
+                canParseEnd = false;
+
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
                 }
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_READI, 1);
@@ -119,7 +136,11 @@ int declrList() {
                         }
                         activeInstruction = setActiveInstruction();
                         generateInstruction(activeInstruction, adr1, NULL, NULL);
-                        getNextToken(sToken);
+                        canParseEnd = true;
+
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
                         result = statlist();
                         if(result != SUCCES){
                             return result;
@@ -135,7 +156,11 @@ int declrList() {
                 }
             }
             if (strCmpConstStr(sToken->content.str, "readf")) {
-                getNextToken(sToken);
+                canParseEnd = false;
+
+                if ((result = getNextToken(sToken)) != SUCCES) {
+                    return result;
+                }
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_READF, 1);
                     if (paramError == SUCCES) {
@@ -145,18 +170,25 @@ int declrList() {
                         }
                         generateInstruction(activeInstruction, adr1, NULL, NULL);
                         //todo instructionFree()
-                        getNextToken(sToken);
+                        canParseEnd = true;
+
+                        if ((result = getNextToken(sToken)) != SUCCES) {
+                            return result;
+                        }
                         return SUCCES;
                     } else {
                         return paramError;
                     }
-            }else {
-                        return SYN_ERROR;
-            }
+                } else {
+                    return SYN_ERROR;
                 }
             }
             if (strCmpConstStr(sToken->content.str, "strlen")) {
-                getNextToken(sToken);
+                canParseEnd = false;
+
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
+                }
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError == parametrs(PARAM_STRLEN, 1);
                     if (paramError == SUCCES) {
@@ -166,7 +198,11 @@ int declrList() {
                         }
                         generateInstruction(activeInstruction, adr1, NULL, NULL);
                         //todo instructionFree()
-                        getNextToken(sToken);
+                        canParseEnd = true;
+
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
                         return SUCCES;
                     } else {
                         return paramError;
@@ -176,7 +212,12 @@ int declrList() {
                 }
             }
             if (strCmpConstStr(sToken->content.str, "substring")) {
-                getNextToken(sToken);
+                canParseEnd = false;
+
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
+                }
+
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_SUBSTRING, 1); 
                     if (paramError == SUCCES) {
@@ -186,7 +227,11 @@ int declrList() {
                         }
                         generateInstruction(activeInstruction, adr1, NULL, NULL);
                         //todo instructionFree()
-                        getNextToken(sToken);
+                        canParseEnd = true;
+
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
                         return SUCCES;
                     } else {
                         return paramError;
@@ -196,7 +241,12 @@ int declrList() {
                 }
             }
             if (strCmpConstStr(sToken->content.str, "ord")) {
-                getNextToken(sToken);
+                canParseEnd = false;
+
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
+                }
+
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_SUBSTRING, 1); 
                     if (paramError == SUCCES) {
@@ -206,7 +256,11 @@ int declrList() {
                         }
                         generateInstruction(activeInstruction, adr1, NULL, NULL);
                         //todo instructionFree()
-                        getNextToken(sToken);
+                        canParseEnd = true;
+
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
                         return SUCCES;
                     } else {
                         return paramError;
@@ -216,7 +270,11 @@ int declrList() {
                 }
             }
             if (strCmpConstStr(sToken->content.str, "chr")) {
-                getNextToken(sToken);
+                canParseEnd = false;
+
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
+                }
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_CHR, 1); 
                     if (paramError == SUCCES) {
@@ -226,7 +284,11 @@ int declrList() {
                         }
                         generateInstruction(activeInstruction, adr1, NULL, NULL);
                         //todo instructionFree()
-                        getNextToken(sToken);
+                        canParseEnd = true;
+
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
                         return SUCCES;
                     } else {
                         return paramError;
@@ -237,11 +299,31 @@ int declrList() {
             }
             //todo bvssearch nust be true
             if (BVSSearch(mainTree, *sToken)) {
+                canParseEnd = false;
                 BVSInsert(mainTree, *sToken);
-                setActiveInstruction(LABEL, sToken, NULL, NULL);
+
+                paramError = parametrs(PARAM_FUNCTION, 1);
+                if(paramError == SUCCES){
+
+                    if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
+                    }
+                    if(sToken->type != TYPE_SEMICOLON){
+                        return SYN_ERROR;
+                    }
+                    //todo nevim kam to patří správně
+                    setActiveInstruction(LABEL, sToken, NULL, NULL);
+                    result = statlist();
+                    if(result != SUCCES){
+                        return result;
+                    }
+                    return SUCCES;
+                }
+
             } else {
                 return SEM_ERROR;
             }
+
         case TYPE_FUNCTIONDECLARE:
             if(BVSSearch_function(mainTree, *sToken) != NULL){
                 return SEM_ERROR;
