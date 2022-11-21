@@ -662,7 +662,31 @@ int parametrs(int option, int repeat){
             case PARAM_FUNCTION: // kontrolujeme parametry funkce
                 getNextToken(sToken);
                 if (sToken->type == TYPE_RBRACKET && repeat == 1) {
-                    return SUCCES;
+                    fun_id->param_count = 0;
+                    getNextToken(sToken);
+                    if(sToken->type == TYPE_COLON){
+                        getNextToken(sToken);
+                        if(sToken->type == KEYWORD_VOID){
+                            fun_id->ret_value = KEYWORD_VOID;
+                            return SUCCES;
+                        }
+                        else if(sToken->type == KEYWORD_FLOAT){
+                            fun_id->ret_value = KEYWORD_FLOAT;
+                            return SUCCES;
+                        }
+                        else if(sToken->type == KEYWORD_INT){
+                            fun_id->ret_value = KEYWORD_INT;
+                            return SUCCES;
+                        }
+                        else if(sToken->type == KEYWORD_STRING){
+                            fun_id->ret_value = KEYWORD_STRING;
+                            return SUCCES;
+                        }
+                        else{
+                            return SYN_ERROR;
+                        }
+
+                    }
                 } else if (sToken->type == KEYWORD_INT ||
                            sToken->type == KEYWORD_FLOAT ||
                            sToken->type == KEYWORD_STRING
@@ -676,7 +700,29 @@ int parametrs(int option, int repeat){
                             repeat++;
                             parametrs(PARAM_FUNCTION, repeat);
                         } else if (sToken->type == TYPE_RBRACKET) {
-                            return SUCCES;
+                            fun_id->param_count = repeat;
+                            getNextToken(sToken);
+                            if(sToken->type == TYPE_COLON){
+                                getNextToken(sToken);
+                                if(sToken->type == KEYWORD_VOID){
+                                    fun_id->ret_value = KEYWORD_VOID;
+                                    return SUCCES;
+                                }
+                                else if(sToken->type == KEYWORD_FLOAT){
+                                    fun_id->ret_value = KEYWORD_FLOAT;
+                                    return SUCCES;
+                                }
+                                else if(sToken->type == KEYWORD_INT){
+                                    fun_id->ret_value = KEYWORD_INT;
+                                    return SUCCES;
+                                }
+                                else if(sToken->type == KEYWORD_STRING){
+                                    fun_id->ret_value = KEYWORD_STRING;
+                                    return SUCCES;
+                                }
+                                else{
+                                    return SYN_ERROR;
+                                }
                         } else {
                             return SYN_ERROR;
                         }
