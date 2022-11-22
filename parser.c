@@ -928,6 +928,16 @@ int parametrs(int option, int repeat){
             case PARAM_STRLEN: // strlen
                 getNextToken(sToken);
                 if(sToken->type == TYPE_VARIABLE){
+                    if(in_function){
+                        if(BVSSearch(insideFunction, *sToken) == NULL){
+                                return SEM_UNDEFINED_ERROR;
+                        }
+                    }    
+                    else{
+                        if(BVSSearch(mainTree, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
+                        }
+                    }
                     getNextToken(sToken);
                     if(sToken->type == TYPE_RBRACKET){
                         return SUCCES;
@@ -937,14 +947,44 @@ int parametrs(int option, int repeat){
             case PARAM_SUBSTRING: // substring
                 getNextToken(sToken);
                 if(sToken->type == TYPE_VARIABLE){
+                    if(in_function){
+                        if(BVSSearch(insideFunction, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
+                        }
+                    }    
+                    else{
+                        if(BVSSearch(mainTree, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
+                        }
+                    }
                    getNextToken(sToken);
                     if(sToken->type == TYPE_COMMA){
                         getNextToken(sToken);
                          if(sToken->type == TYPE_VARIABLE){
+                            if(in_function){
+                                if(BVSSearch(insideFunction, *sToken) == NULL){
+                                    return SEM_UNDEFINED_ERROR;
+                                }
+                            }    
+                            else{
+                                if(BVSSearch(mainTree, *sToken) == NULL){
+                                    return SEM_UNDEFINED_ERROR;
+                                }
+                            }
                             getNextToken(sToken);
                              if(sToken->type == TYPE_COMMA){
                                 getNextToken(sToken);
                                 if(sToken->type == TYPE_VARIABLE){
+                                    if(in_function){
+                                        if(BVSSearch(insideFunction, *sToken) == NULL){
+                                            return SEM_UNDEFINED_ERROR;
+                                        }
+                                    }    
+                                    else{
+                                        if(BVSSearch(mainTree, *sToken) == NULL){
+                                            return SEM_UNDEFINED_ERROR;
+                                        }
+                                    }
                                     getNextToken(sToken);
                                     if(sToken->type == TYPE_RBRACKET){
                                         return SUCCES;
@@ -958,6 +998,16 @@ int parametrs(int option, int repeat){
             case PARAM_ORD: // ord
                 getNextToken(sToken);
                 if(sToken->type == TYPE_VARIABLE){
+                    if(in_function){
+                        if(BVSSearch(insideFunction, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
+                        }
+                    }    
+                    else{
+                        if(BVSSearch(mainTree, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
+                        }
+                    }
                     getNextToken(sToken);
                     if(sToken->type == TYPE_RBRACKET);{
                         return SUCCES;
@@ -967,6 +1017,16 @@ int parametrs(int option, int repeat){
             case PARAM_CHR: //chr
                 getNextToken(sToken);
                 if(sToken->type == TYPE_VARIABLE){
+                    if(in_function){
+                        if(BVSSearch(insideFunction, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
+                        }
+                    }    
+                    else{
+                        if(BVSSearch(mainTree, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
+                        }
+                    }
                     getNextToken(sToken);
                     if(sToken->type == TYPE_RBRACKET){
                         return SUCCES;
