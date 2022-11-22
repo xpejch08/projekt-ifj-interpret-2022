@@ -34,7 +34,7 @@ int incId = 1;
 
 //initializing tree
 BVSInit(mainTree);
-BVSInit(functionNames);
+BVSInit_function(functionNames);
 BVSInit(insideFunction);
 
 int stat(); // function declaration;
@@ -291,7 +291,7 @@ int declrList() {
                 }
             }
             //todo bvssearch nust be true
-            if (BVSSearch(mainTree, *sToken)) {
+            if (BVSSearch(functionNames, *sToken) != NULL) {
                 canParseEnd = false;
                 BVSInsert(mainTree, *sToken);
 
@@ -321,10 +321,7 @@ int declrList() {
             if(BVSSearch_function(functionNames, *sToken) != NULL){
                 return SEM_ERROR;
             }
-            else{
-                BVSInsert_function(functionNames, *fun_id);
-            }
-
+            fun_id->content = sToken->content.str;
             if((result = getNextToken(sToken)) != SUCCES) {
                 return result;
             }
@@ -333,7 +330,8 @@ int declrList() {
             }
             else{
                 in_function = true;
-                paramError = parametrs(PARAM_IF_WHILE, 1);
+                paramError = parametrs(PARAM_FUNCTION, 1);
+                BVSInsert_function(functionNames, *fun_id);
                 if (paramError != SUCCES) {
                     return paramError;
                 }
