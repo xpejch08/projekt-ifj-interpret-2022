@@ -830,6 +830,12 @@ int parametrs(int option, int repeat, token *sToken){
                 case TYPE_LBRACKET:
                     repeat++;
                     return parametrs(PARAM_IF_WHILE, repeat, sToken);
+                case KEYWORD_NULL:
+                    
+                case TYPE_INTEGER_NUMBER:
+                    
+                case TYPE_DOUBLE_NUMBER:
+                    return parametrs(PARAM_IF_WHILE, repeat, sToken);
             }
             return SYN_ERROR;
         case PARAM_WRITE: // write
