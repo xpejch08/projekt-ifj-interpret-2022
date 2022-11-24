@@ -348,7 +348,7 @@ int declrList() {
                 }
                 returnCount = false;
                 in_function = false;
-                BVSDispose(functionNames);
+                BVSDispose(insideFunction);
                 result = statlist();
                 if(result != SUCCES){
                     return result;
@@ -686,7 +686,7 @@ int parametrs(int option, int repeat){
                         return  result;
                     }
                     if (sToken->type == TYPE_VARIABLE) {   
-                        BVSInsert(insideFunction, *sToken);
+                        BVSInsert(insideFunction->rootPtr, *sToken);
                         if((result = getNextToken(sToken)) != SUCCES){
                             return  result;
                         }
@@ -761,12 +761,12 @@ int parametrs(int option, int repeat){
                         } 
                     case TYPE_VARIABLE:
                         if(in_function){
-                            if(BVSSearch(insideFunction, *sToken) == NULL){
+                            if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
                                 return SEM_UNDEFINED_ERROR;
                             }
                         }    
                         else{
-                            if(BVSSearch(mainTree, *sToken) == NULL){
+                            if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
                                 return SEM_UNDEFINED_ERROR;
                             }
                         }
@@ -836,12 +836,12 @@ int parametrs(int option, int repeat){
                 switch (sToken->type) {
                     case TYPE_VARIABLE:
                         if(in_function){
-                            if(BVSSearch(insideFunction, *sToken) == NULL){
+                            if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
                                 return SEM_UNDEFINED_ERROR;
                             }
                         }    
                         else{
-                            if(BVSSearch(mainTree, *sToken) == NULL){
+                            if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
                                 return SEM_UNDEFINED_ERROR;
                             }
                         }
@@ -859,33 +859,7 @@ int parametrs(int option, int repeat){
                             return SYN_ERROR;
                         }
                     case TYPE_STRING:
-                        if((result = getNextToken(sToken)) != SUCCES){
-                            return  result;
-                        }
-                        if(sToken->type == TYPE_RBRACKET){
-                            return SUCCES;
-                        }
-                        else if(sToken->type == TYPE_COMMA){
-                            repeat++;
-                            return parametrs(PARAM_WRITE, repeat);
-                        }
-                        else{
-                            return SYN_ERROR;
-                        }
                     case TYPE_INTEGER_NUMBER:
-                        if((result = getNextToken(sToken)) != SUCCES){
-                            return  result;
-                        }
-                        if(sToken->type == TYPE_RBRACKET){
-                            return SUCCES;
-                        }
-                        else if(sToken->type == TYPE_COMMA){
-                            repeat++;
-                            return parametrs(PARAM_WRITE, repeat);
-                        }
-                        else{
-                            return SYN_ERROR;
-                        }
                     case TYPE_DOUBLE_NUMBER:
                         if((result = getNextToken(sToken)) != SUCCES){
                             return  result;
@@ -903,25 +877,7 @@ int parametrs(int option, int repeat){
                 }
                 return SYN_ERROR;
             case PARAM_READI: // readi
-                if((result = getNextToken(sToken)) != SUCCES){
-                    return  result;
-                }
-                if(sToken->type == TYPE_RBRACKET){
-                    return SUCCES;
-                }
-                else{
-                    return SYN_ERROR;
-                }
             case PARAM_READS: // reads
-                if((result = getNextToken(sToken)) != SUCCES){
-                    return  result;
-                }
-                if(sToken->type == TYPE_RBRACKET){
-                    return SUCCES;
-                }
-                else{
-                    return SYN_ERROR;
-                }
             case PARAM_READF: // readf
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
@@ -938,12 +894,12 @@ int parametrs(int option, int repeat){
                 }
                 if(sToken->type == TYPE_VARIABLE){
                     if(in_function){
-                        if(BVSSearch(insideFunction, *sToken) == NULL){
+                        if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
                                 return SEM_UNDEFINED_ERROR;
                         }
                     }    
                     else{
-                        if(BVSSearch(mainTree, *sToken) == NULL){
+                        if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
                             return SEM_UNDEFINED_ERROR;
                         }
                     }
@@ -961,12 +917,12 @@ int parametrs(int option, int repeat){
                 }
                 if(sToken->type == TYPE_VARIABLE){
                     if(in_function){
-                        if(BVSSearch(insideFunction, *sToken) == NULL){
+                        if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
                             return SEM_UNDEFINED_ERROR;
                         }
                     }    
                     else{
-                        if(BVSSearch(mainTree, *sToken) == NULL){
+                        if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
                             return SEM_UNDEFINED_ERROR;
                         }
                     }
@@ -979,12 +935,12 @@ int parametrs(int option, int repeat){
                         }
                         if(sToken->type == TYPE_VARIABLE){
                             if(in_function){
-                                if(BVSSearch(insideFunction, *sToken) == NULL){
+                                if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
                                     return SEM_UNDEFINED_ERROR;
                                 }
                             }    
                             else{
-                                if(BVSSearch(mainTree, *sToken) == NULL){
+                                if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
                                     return SEM_UNDEFINED_ERROR;
                                 }
                             }
@@ -997,12 +953,12 @@ int parametrs(int option, int repeat){
                                 }
                                 if(sToken->type == TYPE_VARIABLE){
                                     if(in_function){
-                                        if(BVSSearch(insideFunction, *sToken) == NULL){
+                                        if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
                                             return SEM_UNDEFINED_ERROR;
                                         }
                                     }    
                                     else{
-                                        if(BVSSearch(mainTree, *sToken) == NULL){
+                                        if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
                                             return SEM_UNDEFINED_ERROR;
                                         }
                                     }
@@ -1019,28 +975,6 @@ int parametrs(int option, int repeat){
                 }
                 return SYN_ERROR;
             case PARAM_ORD: // ord
-                if((result = getNextToken(sToken)) != SUCCES){
-                    return  result;
-                }
-                if(sToken->type == TYPE_VARIABLE){
-                    if(in_function){
-                        if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
-                            return SEM_UNDEFINED_ERROR;
-                        }
-                    }    
-                    else{
-                        if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
-                            return SEM_UNDEFINED_ERROR;
-                        }
-                    }
-                    if((result = getNextToken(sToken)) != SUCCES){
-                        return  result;
-                    }
-                    if(sToken->type == TYPE_RBRACKET){
-                        return SUCCES;
-                    }
-                }
-                return SYN_ERROR;
             case PARAM_CHR: //chr
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
@@ -1077,12 +1011,12 @@ int parametrs(int option, int repeat){
                         return SUCCES;    
                     case TYPE_VARIABLE:
                         if(in_function){
-                            if(BVSSearch(insideFunction, *sToken) == NULL){
+                            if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
                                 return SEM_UNDEFINED_ERROR;
                             }
                         }    
                         else{
-                            if(BVSSearch(mainTree, *sToken) == NULL){
+                            if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
                                 return SEM_UNDEFINED_ERROR;
                             }
                         }
@@ -1098,29 +1032,7 @@ int parametrs(int option, int repeat){
                             return SYN_ERROR;
                         }
                     case TYPE_INTEGER_NUMBER:
-                        if((result = getNextToken(sToken)) != SUCCES){
-                            return  result;
-                        }
-                        if(sToken->type == TYPE_RBRACKET){
-                            return SUCCES;
-                        }else if(sToken->type == TYPE_COMMA){
-                            repeat++;
-                            return parametrs(PARAM_FUNCTION_CALL, repeat);
-                        }else{
-                            return SYN_ERROR;
-                        }
                     case TYPE_DOUBLE_NUMBER:
-                        if((result = getNextToken(sToken)) != SUCCES){
-                            return  result;
-                        }
-                        if(sToken->type == TYPE_RBRACKET){
-                            return SUCCES;
-                        }else if(sToken->type == TYPE_COMMA){
-                            repeat++;
-                            return parametrs(PARAM_FUNCTION_CALL, repeat);
-                        }else{
-                            return SYN_ERROR;
-                        }
                     case TYPE_STRING:
                         if((result = getNextToken(sToken)) != SUCCES){
                             return  result;
@@ -1136,140 +1048,9 @@ int parametrs(int option, int repeat){
                 }
                 return SYN_ERROR; 
         }
+     return SYN_ERROR;
 }
 
-//function that calls function declr list and statlist depending on the type, also checks if there is end of file after
-// or not
-int program(){
-
-    int result;
-    switch (sToken->type) {
-        case TYPE_IDENTIFIER:
-            if((result = declrList()) != SUCCES){
-                return result;
-            }
-            if((result = statList()) != SUCCES){
-                return result;
-            }
-
-            if((sToken->type) != TYPE_END_OF_FILE){
-                return SYN_ERROR;
-            }
-
-
-            return SUCCES;
-
-
-        case TYPE_NOT_EQUAL:
-            return SYN_ERROR;
-        case TYPE_EXPONENT_NUMBER:
-        case TYPE_DOUBLE_NUMBER:
-        case TYPE_INTEGER_NUMBER:
-        case TYPE_STRING:
-        case TYPE_VARIABLE:
-        case TYPE_KEYWORD:
-            switch (sToken->type) {
-                case KEYWORD_WHILE:
-                    if((result = declrList()) != SUCCES){
-                        return result;
-                    }
-                    if((result = statList()) != SUCCES){
-                        return result;
-                    }
-
-                    if((sToken->type) != TYPE_END_OF_FILE){
-                        return SYN_ERROR;
-                    }
-
-
-                    return SUCCES;
-
-                case KEYWORD_VOID:
-                    if((result = declrList()) != SUCCES){
-                        return result;
-                    }
-                    if((result = statList()) != SUCCES){
-                        return result;
-                    }
-
-                    if((sToken->type) != TYPE_END_OF_FILE){
-                        return SYN_ERROR;
-                    }
-
-
-                    return SUCCES;
-
-                case KEYWORD_STRING: // todo budeme delat string a return v declrlist??
-                case KEYWORD_RETURN:
-                case KEYWORD_NULL:
-                case KEYWORD_INT:
-                case KEYWORD_FLOAT:
-                case KEYWORD_FUNCTION:
-                    if((result = declrList()) != SUCCES){
-                        return result;
-                    }
-                    if((result = statList()) != SUCCES){
-                        return result;
-                    }
-
-                    if((sToken->type) != TYPE_END_OF_FILE){
-                        return SYN_ERROR;
-                    }
-
-
-                    return SUCCES;
-                case KEYWORD_IF:
-                    if((result = declrList()) != SUCCES){
-                        return result;
-                    }
-                    if((result = statList()) != SUCCES){
-                        return result;
-                    }
-
-                    if((sToken->type) != TYPE_END_OF_FILE){
-                        return SYN_ERROR;
-                    }
-
-
-                    return SUCCES;
-                case KEYWORD_ELSE:
-                    if((result = declrList()) != SUCCES){
-                        return result;
-                    }
-                    if((result = statList()) != SUCCES){
-                        return result;
-                    }
-
-                    if((sToken->type) != TYPE_END_OF_FILE){
-                        return SYN_ERROR;
-                    }
-
-
-                    return SUCCES;
-            }
-        case TYPE_INITIAL:
-        case TYPE_CONCATENATE:
-        case TYPE_EQUAL:
-        case TYPE_GREATER_OR_EQUAL:
-        case TYPE_GREATER_THAN:
-        case TYPE_SMALLER_OR_EQUAL:
-        case TYPE_SMALLER_THAN:
-        case TYPE_SUBTRACTION:
-        case TYPE_DIVIDE:
-        case TYPE_MULTIPLY:
-        case TYPE_ADDITION:
-        case TYPE_ASSIGN:
-            return SYN_ERROR;    
-        case TYPE_END_OF_FILE:
-        case TYPE_LBRACKET:
-        case TYPE_RBRACKET:
-                return SYN_ERROR;
-        case TYPE_SEMICOLON:
-        case TYPE_RVINCULUM:
-        case TYPE_LVINCULUM:
-        break;
-    }
-}
 
 //function that initializes tree, list of instructions, token, reads first token and calls program() function
 int parse(void){
