@@ -13,9 +13,9 @@
 //todo generateinstruction(idinstruukce, pointrprev, pointractive, pouinternanext) -> function that inserts active instruction into instruction list
 //todo TInst setactiveinstruction(const int *type, void *op1, void *op2, void *op3)
 
-TRoot *insideFunction;
-TRootf *functionNames;
-TRoot *mainTree;
+TRoot *insideFunction = NULL;
+TRootf *functionNames = NULL;
+TRoot *mainTree = NULL;
 DLLElementPtr *list;
 
 bool in_function = false;
