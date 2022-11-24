@@ -184,7 +184,7 @@ int declrList() {
                     return  result;
                 }
                 if (sToken->type == TYPE_LBRACKET) {
-                    paramError == parametrs(PARAM_STRLEN, 1);
+                    paramError = parametrs(PARAM_STRLEN, 1);
                     if (paramError == SUCCES) {
                         if (getNextToken(sToken) != TYPE_SEMICOLON) {
                             //instructionFree()
@@ -1028,7 +1028,7 @@ int parametrs(int option, int repeat){
                 }
                 return SYN_ERROR;
             case PARAM_RETURN:
-                
+               break; 
         }
 }
 
@@ -1050,7 +1050,6 @@ int program(){
                 return SYN_ERROR;
             }
 
-            generateInstruction();
 
             return SUCCES;
 
@@ -1076,7 +1075,6 @@ int program(){
                         return SYN_ERROR;
                     }
 
-                    generateInstruction();
 
                     return SUCCES;
 
@@ -1092,7 +1090,6 @@ int program(){
                         return SYN_ERROR;
                     }
 
-                    generateInstruction();
 
                     return SUCCES;
 
@@ -1113,7 +1110,6 @@ int program(){
                         return SYN_ERROR;
                     }
 
-                    generateInstruction();
 
                     return SUCCES;
                 case KEYWORD_IF:
@@ -1128,7 +1124,6 @@ int program(){
                         return SYN_ERROR;
                     }
 
-                    generateInstruction();
 
                     return SUCCES;
                 case KEYWORD_ELSE:
@@ -1143,7 +1138,6 @@ int program(){
                         return SYN_ERROR;
                     }
 
-                    generateInstruction();
 
                     return SUCCES;
             }
@@ -1167,6 +1161,7 @@ int program(){
         case TYPE_SEMICOLON:
         case TYPE_RVINCULUM:
         case TYPE_LVINCULUM:
+        break;
     }
 }
 
