@@ -25,7 +25,12 @@ int main(void){
     
     sToken = &init;
     fopen("testIn.txt", "r");
-    prefix(sToken);
+    int res = prefix(sToken);
+    if(res != 0)
+    {
+        printf("%d", res);
+        return res;
+    }
     return parse();
 }
 
