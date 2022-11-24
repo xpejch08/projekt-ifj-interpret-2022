@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <malloc.h>
+//#include <malloc.h>
 #include <stdbool.h>
 #include <string.h>
 #include "symtable.h"
+
 
 ////////////VARIABLE///////////////////////////
 
@@ -14,7 +15,8 @@ void BVSInit(TRoot *SymTable){
 void BVSCreate(token token){
     TNode *newPtr = malloc(sizeof(struct tnode));
     if(newPtr == NULL){
-        return INT_ERROR; 
+        fprintf(stderr, "99");
+        return; 
     }
     newPtr->leftPtr = NULL;
     newPtr->rightPtr = NULL;
@@ -69,7 +71,8 @@ void BVSInit_function(TRootf *SymTable){
 void BVSCreate_function(function_save token){
     TNodef *newPtr = malloc(sizeof(struct tnodef));
     if(newPtr == NULL){
-        return INT_ERROR; 
+        fprintf(stderr, "99");
+        return; 
     }
     newPtr->leftPtr = NULL;
     newPtr->rightPtr = NULL;

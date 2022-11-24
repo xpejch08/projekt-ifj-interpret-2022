@@ -3,6 +3,9 @@
 
 #include "lexical.h"
 #include "expression.h"
+#include "symtable.h"
+#include "parser.h"
+/*
 typedef struct StackElement {
 	
     PrtableSymbolsEnum symbol;
@@ -32,3 +35,4 @@ void stackDispose( Stack *stack );
 
 
 #endif
+*/

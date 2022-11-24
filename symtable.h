@@ -31,6 +31,12 @@ typedef struct tnodef{
 typedef struct trootf{
     TNodef *rootPtr;
 }TRootf;
+
+typedef struct{
+    string *content;
+    int param_count;
+    int ret_value;
+}function_save;
 //////////////////////////////
 /**
  * @brief function function initializes new symtable for variables

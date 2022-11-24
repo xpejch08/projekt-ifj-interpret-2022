@@ -20,11 +20,7 @@
 #define PARAM_RETURN       810
 #define PARAM_FUNCTON_CALL 811
 
-typedef struct{
-    string *content;
-    int param_count;
-    int ret_value;
-}function_save;
+
 
 int declrList();
 int statList();

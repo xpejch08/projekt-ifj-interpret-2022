@@ -11,7 +11,7 @@
 #include "expstack.h"
 #include "str.h"
 
-
+/*
 
 //indexy prtable
 typedef enum
@@ -362,4 +362,4 @@ int action(mainTree){
 }
 
 
-
+*/

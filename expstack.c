@@ -3,7 +3,7 @@
 #include <malloc.h>
 #include "expstack.h"
 #include "expression.h"
-
+/*
 void stackInit(Stack *stack) {
 	stack->top = NULL;
 }
@@ -76,4 +76,4 @@ void stackDispose(Stack *stack){
 		stackPop(stack, 1);
 	}
 }
-
+*/

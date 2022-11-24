@@ -6,7 +6,7 @@
 #include "expstack.h"
 #include "lexical.h"
 //s
-
+/*
 typedef enum{
     EQUAL, //TODO!!!!!!! : SPATNA LEXICAL!
     NOT_EQUAL, ///TODO -||-
@@ -81,3 +81,4 @@ typedef enum {
 
 
 #endif
+*/
