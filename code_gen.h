@@ -25,9 +25,9 @@
 #define JUMPIFNEQ "JUMPIFNEQ"
 #define EXIT "EXIT"
 
-#define STRING 440
-#define INT 441
-#define FLOAT 442
+#define STRING_TYPE 440
+#define INT_TYPE 441
+#define FLOAT_TYPE 442
 
 #define STRLEN "STRLEN"
 
@@ -55,7 +55,7 @@ typedef struct instrList
 }TItemList;
 
 // funkce nastavi parametry instrukce
- TInst setActiveInstruction(void* instrID, void* symb1, void* symb2, void* var);
+ TInst setActiveInstruction(void* instrID, void* symb1, void* symb2, void* var, int uniqueNumber);
 // funkce inicializuje seznam instrukcí
 void instructionInit(TInstList *instrList);
 
