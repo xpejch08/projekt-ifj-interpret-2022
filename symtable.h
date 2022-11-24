@@ -49,13 +49,13 @@ void BVSInit(TRoot *SymTable); // TODO declere mistake wtf??
  * @param token token from which we put data
  * @return returns newly created node
  */
-void BVSCreate(TNode *rootPtr,token token);
+void BVSCreate(TNode *rootPtr, token token);
 /**
  * @brief function inserts variables to binary tree based on its ASCII value
  * @param rootPtr pointer on node
  * @param token token from which we put data
  */
-void BVSInsert(TNode *rootPtr, token token);
+void BVSInsert(TRoot *root, token token);
 /**
  * @brief function search if we have already declared variable
  * @param rootPtr pointer on node
@@ -107,6 +107,7 @@ void BVSDisposeNode(TNode *SymTable);
 void BVSFreeNode(TNode *SymTable);
 
 void BVSFreeFunctionNode(TNodef *SymTable);
+
 
 
 #endif

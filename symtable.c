@@ -25,16 +25,25 @@ void BVSCreate(TNode *rootPtr, token token){
     rootPtr = newPtr;
 }
 
-void BVSInsert(TNode *rootPtr, token token){
-    if(rootPtr == NULL){
-        BVSCreate(rootPtr, token);
+void BVSInsert(TRoot *root, token token){
+    if(root->rootPtr == NULL){
+        TNode *newPtr = (TNode *) malloc(sizeof(struct tnode));
+        if(newPtr == NULL){
+            fprintf(stderr, "99");
+            return;
+        }
+        newPtr->leftPtr = NULL;
+        newPtr->rightPtr = NULL;
+        newPtr->type = token.type;
+        newPtr->content = token.content;
+        root->rootPtr = newPtr;
     }
     else{
-        if((strCmpStr(token.content.str, rootPtr->content.str)) < 0){
-            BVSInsert(rootPtr->leftPtr, token);
+        if((strCmpStr(token.content.str, root->rootPtr->content.str)) < 0){
+            BVSInsert(root, token);
         }
-        else if((strCmpStr(token.content.str, rootPtr->content.str)) > 0){
-            BVSInsert(rootPtr->rightPtr, token);
+        else if((strCmpStr(token.content.str, root->rootPtr->content.str)) > 0){
+            BVSInsert(root, token);
         }
     }
 }
