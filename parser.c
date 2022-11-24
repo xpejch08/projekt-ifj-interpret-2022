@@ -1003,7 +1003,7 @@ int parametrs(int option, int repeat){
                         }
                     }
                     getNextToken(sToken);
-                    if(sToken->type == TYPE_RBRACKET);{
+                    if(sToken->type == TYPE_RBRACKET){
                         return SUCCES;
                     }
                 }

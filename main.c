@@ -15,7 +15,6 @@ int main(void){
 
     setSourceFile(stdin);
     token init;
-    function_save i;
     string initStr;
     initStr.str = NULL;
     initStr.length = 0;
@@ -23,6 +22,7 @@ int main(void){
     init.type = 110;
     init.content.str = &initStr;
     token *sToken;
+    function_save *fun_id;
     sToken = &init;
     //fopen("testIn.txt", "r");
     //prefix(sToken);

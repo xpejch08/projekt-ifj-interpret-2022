@@ -1,12 +1,12 @@
 #ifndef SYMTABLE_H
 #define SYMTABLE_H
 
+#include "parser.h"
 #include "lexical.h"
 #include "stack.h"
 #include "errors.h"
 #include "str.h"
-#include "parser.h"
-
+#include "symtable.h"
 /////////VARIABLE//////////
 typedef struct tnode{
     tokenContent content;
