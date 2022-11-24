@@ -352,6 +352,7 @@ int declrList() {
                 }
                 returnCount = false;
                 in_function = false;
+                BVSDispose(in_function);
                 result = statlist();
                 if(result != SUCCES){
                     return result;
@@ -1088,6 +1089,16 @@ int parametrs(int option, int repeat){
                         ///////////////////////////////////////////////////////////// check parametru
                         return SUCCES;    
                     case TYPE_VARIABLE:
+                        if(in_function){
+                            if(BVSSearch(insideFunction, *sToken) == NULL){
+                                return SEM_UNDEFINED_ERROR;
+                            }
+                        }    
+                        else{
+                            if(BVSSearch(mainTree, *sToken) == NULL){
+                                return SEM_UNDEFINED_ERROR;
+                            }
+                        }
                         if((result = getNextToken(sToken)) != SUCCES){
                             return  result;
                         }
@@ -1292,6 +1303,9 @@ int parse(void){
         result = program();
        printf("EXIT %d", result);
     }
+    BVSFree(mainTree);
+    BVSFree(insideFunction);
+    BVSFree_function(functionNames);
     //todo freeToken() funtcion
     return result;
 }
