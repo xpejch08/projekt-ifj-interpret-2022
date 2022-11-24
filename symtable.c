@@ -53,6 +53,15 @@ TNode *BVSSearch(TNode *rootPtr, token token){
     }
 }
 
+void BVSDispose(TRoot *SymTable, TNode *rootPtr){
+    if(rootPtr != NULL){
+        BVSFree(SymTable ,rootPtr->rightPtr);
+        BVSFree(SymTable, rootPtr->leftPtr);
+        rootPtr = NULL;
+    }
+    SymTable = NULL;
+}
+
 void BVSFree(TRoot *SymTable, TNode *rootPtr){
     if(rootPtr != NULL){
         BVSFree(SymTable ,rootPtr->rightPtr);

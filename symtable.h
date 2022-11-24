@@ -63,6 +63,12 @@ void BVSInsert(TNode *rootPtr, token token);
  */
 TNode *BVSSearch(TNode *rootPtr, token token);
 /**
+ * @brief function dispose whole symtable
+ * @param rootPtr pointer on node
+ * @param SymTable pointer on SymTable
+ */
+void BVSDispose(Troot *Symtable, TNode *rootPtr);
+/**
  * @brief function free all nodes in SymTable
  * @param rootPtr pointer on node
  * @param SymTable pointer on SymTable

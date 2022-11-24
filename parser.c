@@ -292,7 +292,7 @@ int declrList() {
                 canParseEnd = false;
                 BVSInsert(mainTree, *sToken);
 
-                paramError = parametrs(PARAM_FUNCTION, 1); //////////////////////// change to new case in parametrs fun
+                paramError = parametrs(PARAM_FUNCTION_CALL, 1); 
                 if(paramError == SUCCES){
 
                     if((result = getNextToken(sToken)) != SUCCES){
@@ -895,6 +895,7 @@ int parametrs(int option, int repeat){
                             return SYN_ERROR;
                         }
                 }
+                return SYN_ERROR;
             case PARAM_READI: // readi
                 getNextToken(sToken);
                 if(sToken->type == TYPE_RBRACKET){
@@ -1028,7 +1029,56 @@ int parametrs(int option, int repeat){
                 }
                 return SYN_ERROR;
             case PARAM_RETURN:
-               break; 
+               break;
+            case PARAM_FUNCTION_CALL: ////////////////////////////////////////////////////////////// jeste dodelat case PARAM_FUNCTION_CALL
+                getNextToken(sToken);
+                switch (sToken->type) 
+                {
+                    case TYPE_RBRACKET:
+                        ///////////////////////////////////////////////////////////// check parametru
+                        return SUCCES;    
+                    case TYPE_VARIABLE:
+                        getNextToken(sToken);
+                        if(sToken->type == TYPE_RBRACKET){
+                            return SUCCES;
+                        }else if(sToken->type == TYPE_COMMA){
+                            repeat++;
+                            parametrs(PARAM_FUNCTION_CALL, repeat);
+                        }else{
+                            return SYN_ERROR;
+                        }
+                    case TYPE_INTEGER_NUMBER:
+                        getNextToken(sToken);
+                        if(sToken->type == TYPE_RBRACKET){
+                            return SUCCES;
+                        }else if(sToken->type == TYPE_COMMA){
+                            repeat++;
+                            parametrs(PARAM_FUNCTION_CALL, repeat);
+                        }else{
+                            return SYN_ERROR;
+                        }
+                    case TYPE_DOUBLE_NUMBER:
+                        getNextToken(sToken);
+                        if(sToken->type == TYPE_RBRACKET){
+                            return SUCCES;
+                        }else if(sToken->type == TYPE_COMMA){
+                            repeat++;
+                            parametrs(PARAM_FUNCTION_CALL, repeat);
+                        }else{
+                            return SYN_ERROR;
+                        }
+                    case TYPE_STRING:
+                        getNextToken(sToken);
+                        if(sToken->type == TYPE_RBRACKET){
+                            return SUCCES;
+                        }else if(sToken->type == TYPE_COMMA){
+                            repeat++;
+                            parametrs(PARAM_FUNCTION_CALL, repeat);
+                        }else{
+                            return SYN_ERROR;
+                        }
+                }
+                return SYN_ERROR; 
         }
 }
 
