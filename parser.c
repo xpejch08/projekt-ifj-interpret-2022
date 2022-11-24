@@ -283,7 +283,7 @@ int declrList(token *sToken) {
             //todo bvssearch nust be true
             if (BVSSearch_function(functionNames->rootPtr, *sToken) != NULL) {
                 canParseEnd = false;
-                BVSInsert(mainTree->rootPtr, *sToken);
+                BVSInsert(mainTree, *sToken);
 
                 paramError = parametrs(PARAM_FUNCTION_CALL, 1, sToken);
                 if(paramError == SUCCES){
@@ -687,7 +687,7 @@ int parametrs(int option, int repeat, token *sToken){
                     return  result;
                 }
                 if (sToken->type == TYPE_VARIABLE) {
-                    BVSInsert(insideFunction->rootPtr, *sToken);
+                    BVSInsert(mainTree, *sToken);
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
