@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "code_gen.h"
 #include "lexical.h"
-
+/*
 
 
 //test
@@ -35,7 +35,6 @@ TInst setActiveInstruction(void* instrID ,void* symb1, void* symb2, void* var, i
     }
     return activeInstruction;
 }
-
 
 void sortInstructions(TInst* activeInstruction, TInst* activeInstruction2 ){
     
@@ -192,3 +191,4 @@ void instructionPrint(TInstList *instrList)
         }
     }
 }
+*/
