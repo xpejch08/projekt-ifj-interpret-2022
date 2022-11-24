@@ -652,14 +652,21 @@ int statList(){
     
  //todo
 int parametrs(int option, int repeat){
+        int result;
         switch (option) {
             case PARAM_FUNCTION: // kontrolujeme parametry funkce
-                getNextToken(sToken);
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
+                }
                 if (sToken->type == TYPE_RBRACKET && repeat == 1) {
                     fun_id->param_count = 0;
-                    getNextToken(sToken);
+                    if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
+                    }
                     if(sToken->type == TYPE_COLON){
-                        getNextToken(sToken);
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
                         if(sToken->type == KEYWORD_VOID){
                             fun_id->ret_value = KEYWORD_VOID;
                             return SUCCES;
@@ -687,19 +694,26 @@ int parametrs(int option, int repeat){
                            sToken->type == KEYWORD_FLOAT ||
                            sToken->type == KEYWORD_STRING
                         ) {
-                    getNextToken(sToken);
-                    if (sToken->type == TYPE_VARIABLE) {
-                        
+                    if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
+                    }
+                    if (sToken->type == TYPE_VARIABLE) {   
                         BVSInsert(insideFunction, *sToken);
-                        getNextToken(sToken);
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
                         if (sToken->type == TYPE_COMMA) {
                             repeat++;
-                            parametrs(PARAM_FUNCTION, repeat);
+                            return parametrs(PARAM_FUNCTION, repeat);
                         } else if (sToken->type == TYPE_RBRACKET) {
                             fun_id->param_count = repeat;
-                            getNextToken(sToken);
+                            if((result = getNextToken(sToken)) != SUCCES){
+                                return  result;
+                            }
                             if(sToken->type == TYPE_COLON){
-                                getNextToken(sToken);
+                                if((result = getNextToken(sToken)) != SUCCES){
+                                    return  result;
+                                }
                                 if(sToken->type == KEYWORD_VOID){
                                     fun_id->ret_value = KEYWORD_VOID;
                                     return SUCCES;
@@ -733,26 +747,26 @@ int parametrs(int option, int repeat){
                     return SYN_ERROR;
                 }
             case PARAM_IF_WHILE: // kontrolujeme podminku ve while nebo if
-                if(getNextToken(sToken) == LEX_ERROR){
-                    return  LEX_ERROR;
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
                 }
                 switch(sToken->type){
                     case TYPE_STRING:
-                        if(getNextToken(sToken) == LEX_ERROR){
-                            return  LEX_ERROR;
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
                         }
                         if(sToken->type == TYPE_CONCATENATE ||
                            sToken->type == TYPE_EQUAL       ||
                            sToken->type == TYPE_NOT_EQUAL    
                         ){
-                            parametrs(PARAM_IF_WHILE, repeat);
+                            return parametrs(PARAM_IF_WHILE, repeat);
                         }
                         else if(sToken->type == TYPE_RBRACKET){
                             repeat--;
                             if(repeat == 0){
                                 return SUCCES;
                             }
-                            parametrs(PARAM_IF_WHILE, repeat);
+                            return parametrs(PARAM_IF_WHILE, repeat);
                         }
                         else{
                             return SYN_ERROR;
@@ -768,8 +782,8 @@ int parametrs(int option, int repeat){
                                 return SEM_UNDEFINED_ERROR;
                             }
                         }
-                        if(getNextToken(sToken) == LEX_ERROR){
-                            return  LEX_ERROR;
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
                         }
                         if(sToken->type == TYPE_MULTIPLY         ||
                            sToken->type == TYPE_DIVIDE           ||
@@ -780,14 +794,14 @@ int parametrs(int option, int repeat){
                            sToken->type == TYPE_GREATER_OR_EQUAL ||
                            sToken->type == TYPE_SMALLER_OR_EQUAL
                         ){
-                            parametrs(PARAM_IF_WHILE, repeat);    
+                            return parametrs(PARAM_IF_WHILE, repeat);    
                         }
                         else if(sToken->type == TYPE_RBRACKET){
                             repeat--;
                             if(repeat == 0){
                                 return SUCCES;
                             }
-                            parametrs(PARAM_IF_WHILE, repeat);
+                            return parametrs(PARAM_IF_WHILE, repeat);
                         }
                         else{
                             return SYN_ERROR;
@@ -797,8 +811,8 @@ int parametrs(int option, int repeat){
                         if(repeat == 0){
                             return SUCCES;
                         }
-                        if(getNextToken(sToken) == LEX_ERROR){
-                            return  LEX_ERROR;
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
                         }
                         if(sToken->type == TYPE_MULTIPLY         ||
                            sToken->type == TYPE_DIVIDE           ||
@@ -809,14 +823,14 @@ int parametrs(int option, int repeat){
                            sToken->type == TYPE_GREATER_OR_EQUAL ||
                            sToken->type == TYPE_SMALLER_OR_EQUAL
                         ){
-                            parametrs(PARAM_IF_WHILE, repeat);    
+                            return parametrs(PARAM_IF_WHILE, repeat);    
                         }
                         else if(sToken->type == TYPE_RBRACKET){
                             repeat--;
                             if(repeat == 0){
                                 return SUCCES;
                             }
-                            parametrs(PARAM_IF_WHILE, repeat);
+                            return parametrs(PARAM_IF_WHILE, repeat);
                         }
                         else{
                             return SYN_ERROR;
@@ -824,12 +838,12 @@ int parametrs(int option, int repeat){
                         
                     case TYPE_LBRACKET:
                         repeat++;
-                        parametrs(PARAM_IF_WHILE, repeat);
+                        return parametrs(PARAM_IF_WHILE, repeat);
                 }
                 return SYN_ERROR;
             case PARAM_WRITE: // write
-                if(getNextToken(sToken) == LEX_ERROR){
-                    return  LEX_ERROR;
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
                 }
                 switch (sToken->type) {
                     case TYPE_VARIABLE:
@@ -843,53 +857,57 @@ int parametrs(int option, int repeat){
                                 return SEM_UNDEFINED_ERROR;
                             }
                         }
-                        if(getNextToken(sToken) == LEX_ERROR){
-                            return  LEX_ERROR;
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
                         }
                         if(sToken->type == TYPE_RBRACKET){
                             return SUCCES;
                         }
                         else if(sToken->type == TYPE_COMMA){
                             repeat++;
-                            parametrs(PARAM_WRITE, repeat);
+                            return parametrs(PARAM_WRITE, repeat);
                         }
                         else{
                             return SYN_ERROR;
                         }
                     case TYPE_STRING:
-                        if(getNextToken(sToken) == LEX_ERROR){
-                            return  LEX_ERROR;
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
                         }
                         if(sToken->type == TYPE_RBRACKET){
                             return SUCCES;
                         }
                         else if(sToken->type == TYPE_COMMA){
                             repeat++;
-                            parametrs(PARAM_WRITE, repeat);
+                            return parametrs(PARAM_WRITE, repeat);
                         }
                         else{
                             return SYN_ERROR;
                         }
                     case TYPE_INTEGER_NUMBER:
-                        getNextToken(sToken);
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
                         if(sToken->type == TYPE_RBRACKET){
                             return SUCCES;
                         }
                         else if(sToken->type == TYPE_COMMA){
                             repeat++;
-                            parametrs(PARAM_WRITE, repeat);
+                            return parametrs(PARAM_WRITE, repeat);
                         }
                         else{
                             return SYN_ERROR;
                         }
                     case TYPE_DOUBLE_NUMBER:
-                        getNextToken(sToken);
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
                         if(sToken->type == TYPE_RBRACKET){
                             return SUCCES;
                         }
                         else if(sToken->type == TYPE_COMMA){
                             repeat++;
-                            parametrs(PARAM_WRITE, repeat);
+                            return parametrs(PARAM_WRITE, repeat);
                         }
                         else{
                             return SYN_ERROR;
@@ -897,7 +915,9 @@ int parametrs(int option, int repeat){
                 }
                 return SYN_ERROR;
             case PARAM_READI: // readi
-                getNextToken(sToken);
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
+                }
                 if(sToken->type == TYPE_RBRACKET){
                     return SUCCES;
                 }
@@ -905,7 +925,9 @@ int parametrs(int option, int repeat){
                     return SYN_ERROR;
                 }
             case PARAM_READS: // reads
-                getNextToken(sToken);
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
+                }
                 if(sToken->type == TYPE_RBRACKET){
                     return SUCCES;
                 }
@@ -913,7 +935,9 @@ int parametrs(int option, int repeat){
                     return SYN_ERROR;
                 }
             case PARAM_READF: // readf
-                getNextToken(sToken);
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
+                }
                 if(sToken->type == TYPE_RBRACKET){
                     return SUCCES;
                 }
@@ -921,7 +945,9 @@ int parametrs(int option, int repeat){
                     return SYN_ERROR;
                 }
             case PARAM_STRLEN: // strlen
-                getNextToken(sToken);
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
+                }
                 if(sToken->type == TYPE_VARIABLE){
                     if(in_function){
                         if(BVSSearch(insideFunction, *sToken) == NULL){
@@ -933,14 +959,18 @@ int parametrs(int option, int repeat){
                             return SEM_UNDEFINED_ERROR;
                         }
                     }
-                    getNextToken(sToken);
+                    if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
+                    }
                     if(sToken->type == TYPE_RBRACKET){
                         return SUCCES;
                     }
                 }
                 return SYN_ERROR;
             case PARAM_SUBSTRING: // substring
-                getNextToken(sToken);
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
+                }
                 if(sToken->type == TYPE_VARIABLE){
                     if(in_function){
                         if(BVSSearch(insideFunction, *sToken) == NULL){
@@ -952,10 +982,14 @@ int parametrs(int option, int repeat){
                             return SEM_UNDEFINED_ERROR;
                         }
                     }
-                   getNextToken(sToken);
+                   if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
+                    }
                     if(sToken->type == TYPE_COMMA){
-                        getNextToken(sToken);
-                         if(sToken->type == TYPE_VARIABLE){
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
+                        if(sToken->type == TYPE_VARIABLE){
                             if(in_function){
                                 if(BVSSearch(insideFunction, *sToken) == NULL){
                                     return SEM_UNDEFINED_ERROR;
@@ -966,9 +1000,13 @@ int parametrs(int option, int repeat){
                                     return SEM_UNDEFINED_ERROR;
                                 }
                             }
-                            getNextToken(sToken);
-                             if(sToken->type == TYPE_COMMA){
-                                getNextToken(sToken);
+                            if((result = getNextToken(sToken)) != SUCCES){
+                                return  result;
+                            }
+                            if(sToken->type == TYPE_COMMA){
+                                if((result = getNextToken(sToken)) != SUCCES){
+                                    return  result;
+                                }
                                 if(sToken->type == TYPE_VARIABLE){
                                     if(in_function){
                                         if(BVSSearch(insideFunction, *sToken) == NULL){
@@ -980,7 +1018,9 @@ int parametrs(int option, int repeat){
                                             return SEM_UNDEFINED_ERROR;
                                         }
                                     }
-                                    getNextToken(sToken);
+                                    if((result = getNextToken(sToken)) != SUCCES){
+                                        return  result;
+                                    }
                                     if(sToken->type == TYPE_RBRACKET){
                                         return SUCCES;
                                     }
@@ -991,7 +1031,9 @@ int parametrs(int option, int repeat){
                 }
                 return SYN_ERROR;
             case PARAM_ORD: // ord
-                getNextToken(sToken);
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
+                }
                 if(sToken->type == TYPE_VARIABLE){
                     if(in_function){
                         if(BVSSearch(insideFunction, *sToken) == NULL){
@@ -1003,14 +1045,18 @@ int parametrs(int option, int repeat){
                             return SEM_UNDEFINED_ERROR;
                         }
                     }
-                    getNextToken(sToken);
+                    if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
+                    }
                     if(sToken->type == TYPE_RBRACKET){
                         return SUCCES;
                     }
                 }
                 return SYN_ERROR;
             case PARAM_CHR: //chr
-                getNextToken(sToken);
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
+                }
                 if(sToken->type == TYPE_VARIABLE){
                     if(in_function){
                         if(BVSSearch(insideFunction, *sToken) == NULL){
@@ -1022,7 +1068,9 @@ int parametrs(int option, int repeat){
                             return SEM_UNDEFINED_ERROR;
                         }
                     }
-                    getNextToken(sToken);
+                    if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
+                    }
                     if(sToken->type == TYPE_RBRACKET){
                         return SUCCES;
                     }
@@ -1031,49 +1079,59 @@ int parametrs(int option, int repeat){
             case PARAM_RETURN:
                break;
             case PARAM_FUNCTION_CALL: ////////////////////////////////////////////////////////////// jeste dodelat case PARAM_FUNCTION_CALL
-                getNextToken(sToken);
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
+                }
                 switch (sToken->type) 
                 {
                     case TYPE_RBRACKET:
                         ///////////////////////////////////////////////////////////// check parametru
                         return SUCCES;    
                     case TYPE_VARIABLE:
-                        getNextToken(sToken);
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
                         if(sToken->type == TYPE_RBRACKET){
                             return SUCCES;
                         }else if(sToken->type == TYPE_COMMA){
                             repeat++;
-                            parametrs(PARAM_FUNCTION_CALL, repeat);
+                            return parametrs(PARAM_FUNCTION_CALL, repeat);
                         }else{
                             return SYN_ERROR;
                         }
                     case TYPE_INTEGER_NUMBER:
-                        getNextToken(sToken);
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
                         if(sToken->type == TYPE_RBRACKET){
                             return SUCCES;
                         }else if(sToken->type == TYPE_COMMA){
                             repeat++;
-                            parametrs(PARAM_FUNCTION_CALL, repeat);
+                            return parametrs(PARAM_FUNCTION_CALL, repeat);
                         }else{
                             return SYN_ERROR;
                         }
                     case TYPE_DOUBLE_NUMBER:
-                        getNextToken(sToken);
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
                         if(sToken->type == TYPE_RBRACKET){
                             return SUCCES;
                         }else if(sToken->type == TYPE_COMMA){
                             repeat++;
-                            parametrs(PARAM_FUNCTION_CALL, repeat);
+                            return parametrs(PARAM_FUNCTION_CALL, repeat);
                         }else{
                             return SYN_ERROR;
                         }
                     case TYPE_STRING:
-                        getNextToken(sToken);
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
                         if(sToken->type == TYPE_RBRACKET){
                             return SUCCES;
                         }else if(sToken->type == TYPE_COMMA){
                             repeat++;
-                            parametrs(PARAM_FUNCTION_CALL, repeat);
+                            return parametrs(PARAM_FUNCTION_CALL, repeat);
                         }else{
                             return SYN_ERROR;
                         }
