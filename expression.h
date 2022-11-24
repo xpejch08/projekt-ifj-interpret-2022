@@ -6,7 +6,7 @@
 //#include "expstack.h"
 #include "lexical.h"
 #include "symtable.h"
-#include "parser.c"
+
 //s
 
 typedef enum{

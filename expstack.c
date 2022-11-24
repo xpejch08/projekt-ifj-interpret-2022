@@ -16,6 +16,7 @@ int stackPush(Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum datatype) {
 	newElement->datatype = datatype;
 	newElement->nextElement = stack->top;
 	stack->top = newElement;
+	return 0;
 }
 int stackPop(Stack *stack, int n) {
 	for (int i = 0; i<n; i++){
@@ -25,8 +26,9 @@ int stackPop(Stack *stack, int n) {
 		StackElementPtr deletingElement = stack->top;
 		stack->top = deletingElement->nextElement;
 		free(deletingElement);
-		return 0;
+		
 	}
+	return 0;
 }
 StackElementPtr stackGetTopTerminal(Stack *stack) {
 	for(StackElementPtr elem = stack->top; elem != NULL; elem = elem->nextElement ){
