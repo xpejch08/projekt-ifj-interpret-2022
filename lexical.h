@@ -19,6 +19,7 @@
 
 
 #define   TYPE_INITIAL           110
+#define   TYPE_KEYWORD           111
 #define   TYPE_VARIABLE          112
 #define   TYPE_INTEGER_NUMBER    113
 #define   TYPE_DOUBLE_NUMBER     114
@@ -49,8 +50,8 @@
 
 
 typedef union{
-    string * integerNumber;
-    string * doubleNumber;
+    string *integerNumber;
+    string *doubleNumber;
     string *str;
 }tokenContent;
 
