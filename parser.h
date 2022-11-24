@@ -22,9 +22,9 @@
 
 
 
-int declrList();
-int statlist();
-int parametrs(int option, int repeat);
+int declrList(token *sToken);
+int statlist(token *sToken);
+int parametrs(int option, int repeat, token *sToken);
 int program();
 int parse();
 
