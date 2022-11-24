@@ -463,7 +463,7 @@ int getNextToken(token *attr) {
                 }
                 else if(isspace(character)){
                     attr->type = TYPE_DOUBLE_NUMBER;
-                    attr->content = strtod(attr->content.str->str, &endptr);
+                    attr->content.doubleNumber = strtod(attr->content.str->str, &endptr);
                     return SUCCES;
                 }
             case exponentPlusOrMinusState:
