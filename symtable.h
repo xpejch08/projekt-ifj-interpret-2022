@@ -43,6 +43,7 @@ typedef struct{
  * @param SymTable pointer to main root
  */
 void BVSInit(TRoot *SymTable); // TODO declere mistake wtf??
+
 /**
  * @brief function creates new node in SymTable
  * @param token token from which we put data

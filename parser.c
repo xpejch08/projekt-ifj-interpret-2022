@@ -277,7 +277,7 @@ int declrList() {
                         canParseEnd = true;
 
                         if((result = getNextToken(sToken)) != SUCCES){
-                            return  result;
+                            return result;
                         }
                         return SUCCES;
                     } else {

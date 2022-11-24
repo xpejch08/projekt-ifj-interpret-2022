@@ -6,7 +6,8 @@
 #include "lexical.h"
 #include "str.h"
 
-//todo ===, !==
+//todo hexa escape octa escape
+
 
 #define basicState                      300 //beginning state waiting for the first character
 #define possibleCommentState            301 //state that found the '/' symbol and checks if comment will be one-line block, or won't be at all
@@ -147,7 +148,9 @@ int getNextToken(token *attr) {
     int state = basicState;
     char character;
     char *endptr;
-    char hexaEscape[2];
+    char hexaEscape1 = '0';
+    char hexaEscape2 = '0';
+    char hexaEscape3 = '0';
     char octaEscape[3];
 
     if(source == NULL){
@@ -181,6 +184,7 @@ int getNextToken(token *attr) {
                     ungetc(character, stdin);
                 }
                 else if(isdigit(character)){
+                    ungetc(character, stdin);
                     state = numberState;
                 }
                 else if(character == '*'){
@@ -335,7 +339,11 @@ int getNextToken(token *attr) {
                         attr->type = TYPE_STRING;
                         return SUCCES;
                     }
-                    else if(character != EOF){
+                    else if(character == 36){
+                        return LEX_ERROR;
+
+                    }
+                    else if((character != EOF)){
                         strAddChar(attr->content.str, character);
 
                     }
@@ -351,10 +359,15 @@ int getNextToken(token *attr) {
                 break;
             case backslashState:
                 if(character == 'x'){
+                    strAddChar(attr->content.str, '\\');
+                    strAddChar(attr->content.str, 'x');
                     state = escapeHexaState;
+                    break;
                 }
                 else if(isdigit(character)){
+                    hexaEscape1 = character;
                     state = escapeOctaState;
+                    break;
                 }
                 else if(character == 't') {
                     character = '\t';
@@ -368,16 +381,29 @@ int getNextToken(token *attr) {
                     state = waitForStringEnd;
                     break;
                 }
+                else if(character == '"'){
+                    character = '\"';
+                    strAddChar(attr->content.str, character);
+                    state = waitForStringEnd;
+                    break;
+                }
+                else if(character == '$'){
+                    strAddChar(attr->content.str, '\\');
+                    character = '$';
+                    strAddChar(attr->content.str, character);
+                    state = waitForStringEnd;
+                    break;
+                }
                 else {
                     strAddChar(attr->content.str, 92);
-                    strAddChar(attr->content.str, character);
                     state = waitForStringEnd;
                     break;
                 }
             case escapeHexaState:
                 if(isxdigit(character)){
-                    strncat(hexaEscape, &character, 1);
+                    strAddChar(attr->content.str, character);
                     state = endHexaState;
+                    break;
                 }
                 else{
                     strAddChar(attr->content.str, 92);
@@ -388,52 +414,47 @@ int getNextToken(token *attr) {
                 }
             case endHexaState:
                 if(isxdigit(character)){
-                    strncat(hexaEscape, &character, 1);
-                    strAddChar(attr->content.str, (char) hexaToDecimal(hexaEscape));
+                    strAddChar(attr->content.str, character);
+                    state = waitForStringEnd;
+                    break;
 
                 }
                 else{
+                    strAddChar(attr->content.str, 92);
+                    strAddChar(attr->content.str, 'x');
                     strAddChar(attr->content.str, character);
                     state = waitForStringEnd;
                     break;
                 }
             case escapeOctaState:
                 if(isdigit(character)){
-                    strncat(octaEscape, &character, 1);
+                    hexaEscape2 = character;
                     state = waitOctaState;
                     break;
                 }
                 else{
-                    strAddChar(attr->content.str, 92);
+                    strAddChar(attr->content.str, '\\');
+                    strAddChar(attr->content.str, hexaEscape1);
+                    strAddChar(attr->content.str, hexaEscape2);
                     strAddChar(attr->content.str, character);
                     state = waitForStringEnd;
                     break;
                 }
             case waitOctaState:
                 if(isdigit(character)){
-                    strncat(octaEscape, &character, 1);
-                    state = endOctaState;
-                    break;
-
-                }
-                else{
+                    strAddChar(attr->content.str, hexaEscape1);
+                    strAddChar(attr->content.str, hexaEscape2);
                     strAddChar(attr->content.str, character);
-                    state = waitForStringEnd;
-                    break;
-                }
-            case endOctaState:
-                if(isdigit(character)){
-                    strncat(octaEscape, &character, 1);
-                    strAddChar(attr->content.str, (char) octaToDecimal(octaEscape));
                     state = waitForStringEnd;
                     break;
 
                 }
                 else{
-                    strAddChar(attr->content.str, character);
+
                     state = waitForStringEnd;
-                    break;
+
                 }
+
             case numberState:
                 if(isdigit(character)){
                     strAddChar(attr->content.str, character);
@@ -444,12 +465,12 @@ int getNextToken(token *attr) {
                 }
                 else if(character == 'e' || character == 'E'){
                     strAddChar(attr->content.str, character);
-                    state = exponentState;
+                    state = exponentPlusOrMinusState;
                 }
                 else{
                     ungetc(character, source);
                     attr->type = TYPE_INTEGER_NUMBER;
-                    attr->content.integerNumber = atoi(attr->content.str->str);
+                    strCpyStr(attr->content.integerNumber, attr->content.str);
                     return SUCCES;
                 }
                 break;
@@ -463,13 +484,14 @@ int getNextToken(token *attr) {
                 }
                 else if(isspace(character)){
                     attr->type = TYPE_DOUBLE_NUMBER;
-                    attr->content.doubleNumber = strtod(attr->content.str->str, &endptr);
+                    strCpyStr(attr->content.doubleNumber, attr->content.str);
                     return SUCCES;
                 }
             case exponentPlusOrMinusState:
                 if(character == '+' || character == '-' || isdigit(character) == 1){
                     strAddChar(attr->content.str, character);
                     state = endExponentState;
+                    break;
                 }
             case endExponentState:
                 if(isdigit(character)){
@@ -548,5 +570,3 @@ int getNextToken(token *attr) {
     }
 
 }
-
-
