@@ -212,7 +212,7 @@ PrtableRulesEnum pickRule(StackElementPtr op1, StackElementPtr op2, StackElement
 
 //TNode* data;
 TRoot *mainTree; //nejak zaridit aby to byl STEJNY treee jako se pouziva v parser.c
-DataTypeEnum getDataType(token *sToken){
+DataTypeEnum getDataType(token *sToken, TRoot *mainTree){
     if (sToken->type == TYPE_INTEGER_NUMBER){
         return DATATYPE_INT;
     }else if (sToken->type == TYPE_DOUBLE_NUMBER || sToken->type == TYPE_EXPONENT_NUMBER){

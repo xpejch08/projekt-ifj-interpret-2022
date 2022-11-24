@@ -1,5 +1,0 @@
-function main(int $year): void{
-    write("Hello", year);
-}
-main(22);
-main(33);

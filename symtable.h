@@ -49,7 +49,7 @@ void BVSInit(TRoot *SymTable); // TODO declere mistake wtf??
  * @param token token from which we put data
  * @return returns newly created node
  */
-void BVSCreate(token token);
+void BVSCreate(TNode *rootPtr,token token);
 /**
  * @brief function inserts variables to binary tree based on its ASCII value
  * @param rootPtr pointer on node
@@ -77,7 +77,7 @@ void BVSFree(TRoot *SymTable);
  * @brief function function initializes new symtable for functions
  * @param SymTable pointer to main root
  */
-void BVSInit_function(TRootf *SymTable); // 
+void BVSInit_function(TRootf *SymTable); //
 /**
  * @brief function creates new function in SymTable
  * @param token token from which we put data

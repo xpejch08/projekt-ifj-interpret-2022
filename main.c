@@ -16,16 +16,21 @@ int main(void){
     setSourceFile(stdin);
     token init;
     string initStr;
+
     initStr.str = NULL;
     initStr.length = 0;
     initStr.alloc = 0;
     init.type = 110;
     init.content.str = &initStr;
     token *sToken;
-    
+
     sToken = &init;
-    fopen("testIn.txt", "r");
-    prefix(sToken);
+    int res = prefix(sToken);
+    if(res != 0)
+    {
+        printf("%d\n", res);
+        return res;
+    }
     return parse();
 }
 
