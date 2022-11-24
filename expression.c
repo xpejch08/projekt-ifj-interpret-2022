@@ -50,6 +50,7 @@ int prtable[8][8] = {
 
 
 //prevest tokeny na symboly prtable
+/*
 static PrtableSymbolsEnum prtableTokenToSymbol(token *sToken)
 {
     switch (sToken->type)
@@ -93,7 +94,7 @@ static PrtableSymbolsEnum prtableTokenToSymbol(token *sToken)
         default:
             return DOLLAR;
     }
-}
+}*/
 
 //prevest symboly na prislusny index prtable
 static PrtableIndexEnum prtableSymbolToIndex(PrtableSymbolsEnum symb)
@@ -320,7 +321,10 @@ int checkTypeForRule(PrtableRulesEnum rule, StackElementPtr op1, StackElementPtr
 }
 
 int reduceExpression(){
-
+    
+    PrtableIndexEnum ok = prtableSymbolToIndex(EQUAL); ///TESTTT
+    //printf("%d",ok);
+    ok++;
     StackElementPtr op1 = NULL;
     StackElementPtr op2 = NULL;
     StackElementPtr op3 = NULL;
@@ -371,5 +375,11 @@ int action(mainTree){ HODNE TODO
  
 }*/
 
+
+
+    
+
+
+    
 
 
