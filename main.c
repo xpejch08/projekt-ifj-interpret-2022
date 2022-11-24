@@ -28,7 +28,7 @@ int main(void){
     int res = prefix(sToken);
     if(res != 0)
     {
-        printf("%d", res);
+        printf("%d\n", res);
         return res;
     }
     return parse();
