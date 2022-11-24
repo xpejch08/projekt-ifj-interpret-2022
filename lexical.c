@@ -47,21 +47,7 @@ void setSourceFile(FILE *f){
 }
 
 
-int octaToDecimal(char *arr){
-    int octal =  atoi(arr);
-    int rightmost;
-    int decimal;
-    int position = 0;
 
-    while(octal > 0){
-        rightmost = octal / 10;
-        octal = octal / 10;
-
-        //  decimal = decimal + rightmost * (int) pow(8, position);
-        position++;
-    }
-    return decimal;
-}
 int hexaToDecimal(const char arr[]){
     int decimal = 0;
     for(int i = 0; i< 2; i++){
