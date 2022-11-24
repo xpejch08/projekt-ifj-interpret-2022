@@ -46,7 +46,7 @@
 #define   TYPE_SEMICOLON         135
 #define   TYPE_COLON             136
 #define   TYPE_COMMA             137
-#define   TYPE_FUNCTIONDECLARE      138
+#define   TYPE_FUNCTIONDECLARE   138
 
 
 typedef union{

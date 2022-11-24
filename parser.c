@@ -292,7 +292,7 @@ int declrList() {
                 canParseEnd = false;
                 BVSInsert(mainTree, *sToken);
 
-                paramError = parametrs(PARAM_FUNCTION, 1);
+                paramError = parametrs(PARAM_FUNCTION, 1); //////////////////////// change to new case in parametrs fun
                 if(paramError == SUCCES){
 
                     if((result = getNextToken(sToken)) != SUCCES){
