@@ -3,9 +3,7 @@
 #include "lexical.h"
 #include "str.h"
 #include "parser.h"
-#include "stack.h"
 #include "symtable.h"
-#include "code_gen.h"
 
 //todo think about using enum and redefining token structure !!!
 //todo function declrlist -> starts a type(checks if something is declared or not etc.) for all types that need it
@@ -34,9 +32,7 @@ int incId = 1;
 
 
 
-int stat(); // function declaration;
-int statlist();
-int parametrs(); // declaration because function is used before definition
+int statlist(); // declaration because function is used before definition
 
 //check declare function, checks beginning of token type for example checks if there is a left bracket after while,
 // recursively calls itself
