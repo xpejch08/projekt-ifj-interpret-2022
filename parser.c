@@ -13,8 +13,8 @@
 //todo generateinstruction(idinstruukce, pointrprev, pointractive, pouinternanext) -> function that inserts active instruction into instruction list
 //todo TInst setactiveinstruction(const int *type, void *op1, void *op2, void *op3)
 
-TRoot *insideFunction;
-TRootf *functionNames;
+TRoot *insideFunction = NULL;
+TRootf *functionNames = NULL;
 TRoot *mainTree;
 DLLElementPtr *list;
 
@@ -1171,6 +1171,7 @@ int program(){
         case TYPE_SEMICOLON:
         case TYPE_RVINCULUM:
         case TYPE_LVINCULUM:
+            ;
     }
 }
 
