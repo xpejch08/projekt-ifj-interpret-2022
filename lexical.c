@@ -51,7 +51,7 @@ int octaToDecimal(char *arr){
     int octal =  atoi(arr);
     int rightmost;
     int decimal;
-    int position;
+    int position = 0;
 
     while(octal > 0){
         rightmost = octal / 10;
