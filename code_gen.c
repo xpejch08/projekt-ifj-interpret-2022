@@ -49,7 +49,7 @@ void sortInstructions(TInst* activeInstruction, TInst* activeInstruction2 ){
 
             activeInstruction->rightOp = activeInstruction2->result;
         }
-        else
+        else;
         {
             return;
         }
