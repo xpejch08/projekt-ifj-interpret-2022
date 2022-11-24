@@ -19,7 +19,6 @@
 
 
 #define   TYPE_INITIAL           110
-#define   TYPE_KEYWORD           111
 #define   TYPE_VARIABLE          112
 #define   TYPE_INTEGER_NUMBER    113
 #define   TYPE_DOUBLE_NUMBER     114
@@ -46,12 +45,13 @@
 #define   TYPE_SEMICOLON         135
 #define   TYPE_COLON             136
 #define   TYPE_COMMA             137
-#define   TYPE_FUNCTIONDECLARE   138
+#define   TYPE_SAME_DATA         138
+#define   TYPE_NOT_SAME_DATA     139
 
 
 typedef union{
-    int integerNumber;
-    float doubleNumber;
+    string *integerNumber;
+    string *doubleNumber;
     string *str;
 }tokenContent;
 

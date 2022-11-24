@@ -284,9 +284,9 @@ int declrList() {
                 }
             }
             //todo bvssearch nust be true
-            if (BVSSearch(functionNames, *sToken) != NULL) {
+            if (BVSSearch_function(functionNames->rootPtr, *sToken) != NULL) {
                 canParseEnd = false;
-                BVSInsert(mainTree, *sToken);
+                BVSInsert(mainTree->rootPtr, *sToken);
 
                 paramError = parametrs(PARAM_FUNCTION_CALL, 1); 
                 if(paramError == SUCCES){
@@ -310,7 +310,7 @@ int declrList() {
             }
 
         case TYPE_FUNCTIONDECLARE:
-            if(BVSSearch_function(functionNames, *sToken) != NULL){
+            if(BVSSearch_function(functionNames->rootPtr, *sToken) != NULL){
                 return SEM_ERROR;
             }
             fun_id->content = sToken->content.str;
@@ -323,7 +323,7 @@ int declrList() {
             else{
                 in_function = true;
                 paramError = parametrs(PARAM_FUNCTION, 1);
-                BVSInsert_function(functionNames, *fun_id);
+                BVSInsert_function(functionNames->rootPtr, *fun_id);
                 if (paramError != SUCCES) {
                     return paramError;
                 }
@@ -348,7 +348,7 @@ int declrList() {
                 }
                 returnCount = false;
                 in_function = false;
-                BVSDispose(in_function);
+                BVSDispose(functionNames);
                 result = statlist();
                 if(result != SUCCES){
                     return result;
@@ -528,16 +528,19 @@ int declrList() {
                 return SUCCES;
             }
         }
+    return SYN_ERROR;
 }
 //check after function, checks ending of token type for example checks if there is a right bracket after condition of
 // while, recursively calls itself
 //also calls main fynction stat
 int statList(){
+
     int result;
     result = getNextToken(sToken);
     if(result == LEX_ERROR){
         return LEX_ERROR;
     }
+
     switch (sToken->type) {
 
         case TYPE_COLON:
@@ -560,7 +563,7 @@ int statList(){
             return SUCCES;
 
         case TYPE_VARIABLE:
-            BVSInsert(mainTree, *sToken);
+            BVSInsert(mainTree->rootPtr, *sToken);
             getNextToken(sToken);
             result = statList();
             if(result != SUCCES){
@@ -575,9 +578,8 @@ int statList(){
                 return result;
             }
             return SUCCES;
-        case TYPE_SEMICOLON:
-            return SUCCES;
 
+        case TYPE_SEMICOLON:
         case TYPE_RBRACKET:
             return SUCCES;
 
@@ -591,19 +593,7 @@ int statList(){
             return SUCCES;
 
         case KEYWORD_IF:
-            result = declrList();
-            if(result != SUCCES){
-                return result;
-            }
-            return SUCCES;
-
         case KEYWORD_ELSE:
-            result = declrList();
-            if(result != SUCCES){
-                return result;
-            }
-            return SUCCES;
-
         case KEYWORD_WHILE:
             result = declrList();
             if(result != SUCCES){
@@ -638,7 +628,8 @@ int statList(){
         case TYPE_DOUBLE_NUMBER:
         case TYPE_EXPONENT_NUMBER:
         case TYPE_NOT_EQUAL:
-            ;
+            return SYN_ERROR;
+
     }
     //todo statList
 }
@@ -1033,12 +1024,12 @@ int parametrs(int option, int repeat){
                 }
                 if(sToken->type == TYPE_VARIABLE){
                     if(in_function){
-                        if(BVSSearch(insideFunction, *sToken) == NULL){
+                        if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
                             return SEM_UNDEFINED_ERROR;
                         }
                     }    
                     else{
-                        if(BVSSearch(mainTree, *sToken) == NULL){
+                        if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
                             return SEM_UNDEFINED_ERROR;
                         }
                     }
@@ -1056,12 +1047,12 @@ int parametrs(int option, int repeat){
                 }
                 if(sToken->type == TYPE_VARIABLE){
                     if(in_function){
-                        if(BVSSearch(insideFunction, *sToken) == NULL){
+                        if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
                             return SEM_UNDEFINED_ERROR;
                         }
                     }    
                     else{
-                        if(BVSSearch(mainTree, *sToken) == NULL){
+                        if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
                             return SEM_UNDEFINED_ERROR;
                         }
                     }
