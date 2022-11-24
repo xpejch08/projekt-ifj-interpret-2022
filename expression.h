@@ -3,10 +3,12 @@
 #define EXPRESSION_H
 
 #include "parser.h"
-#include "expstack.h"
+//#include "expstack.h"
 #include "lexical.h"
+#include "symtable.h"
+#include "parser.c"
 //s
-/*
+
 typedef enum{
     EQUAL, //TODO!!!!!!! : SPATNA LEXICAL!
     NOT_EQUAL, ///TODO -||-
@@ -55,30 +57,32 @@ typedef enum {
     RULE_ERROR
 } PrtableRulesEnum;
 
+//EXPSTACK FUNKCE
+typedef struct StackElement {
+	
+    PrtableSymbolsEnum symbol;
+	DataTypeEnum datatype;
+	struct StackElement *nextElement;
+} *StackElementPtr;
+
+typedef struct ExpStack{
+	StackElementPtr top;
+} Stack;
 
 
+void stackInit(Stack *stack );
 
+int stackPush( Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum datatype );
 
+int stackInsertAfterTop( Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum datatype );
 
+int stackPop( Stack *stack, int n ); //kolikrat popnout
 
+StackElementPtr stackGetTopSymbol( Stack *stack );
 
+StackElementPtr stackGetTopTerminal( Stack *stack );
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void stackDispose( Stack *stack );
 
 
 #endif
-*/

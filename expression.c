@@ -8,10 +8,10 @@
 #include "lexical.h"
 #include "symtable.h"
 #include "code_gen.h"
-#include "expstack.h"
+//#include "expstack.h"
 #include "str.h"
 
-/*
+
 
 //indexy prtable
 typedef enum
@@ -132,7 +132,7 @@ static PrtableIndexEnum prtableSymbolToIndex(PrtableSymbolsEnum symb)
 }
 
 struct ExpStack stack;
-int countSymbols()
+int countSymbols() //pocet symbolu ve stacku nez prijde "<"
 {
     StackElementPtr elem = stackGetTopSymbol(&stack);
     int count = 0;
@@ -149,7 +149,7 @@ int countSymbols()
         }
         
     }
-    return NULL;
+    return -1;
 
 }
 
@@ -171,7 +171,7 @@ int countSymbols()
 
 PrtableRulesEnum pickRule(StackElementPtr op1, StackElementPtr op2, StackElementPtr op3)
 {
-    if (op1->symbol != NULL && op2->symbol != NULL && op3->symbol != NULL){
+    if (&op1->symbol != NULL && &op2->symbol != NULL && &op3->symbol != NULL){
         if (op1->symbol == NON_TERMINAL && op2->symbol == EQUAL && op3->symbol == NON_TERMINAL)
             return RULE_EQUAL;
         else if (op1->symbol == NON_TERMINAL && op2->symbol == NOT_EQUAL && op3->symbol == NON_TERMINAL)
@@ -199,7 +199,7 @@ PrtableRulesEnum pickRule(StackElementPtr op1, StackElementPtr op2, StackElement
         else 
             return RULE_ERROR;
     }
-    if (op1->symbol != NULL && op2->symbol == NULL && op3->symbol == NULL){
+    if (&op1->symbol != NULL && &op2->symbol == NULL && &op3->symbol == NULL){
         if (op1->symbol == IDENTIFIER || op1->symbol == SINT || op1->symbol == SFLOAT || op1->symbol == SSTRING)
             return RULE_I;
         else
@@ -210,33 +210,33 @@ PrtableRulesEnum pickRule(StackElementPtr op1, StackElementPtr op2, StackElement
 }   
 
 
-TNode* datatype;
-TRoot *mainTree = NULL;
+//TNode* data;
+TRoot *mainTree; //nejak zaridit aby to byl STEJNY treee jako se pouziva v parser.c
 DataTypeEnum getDataType(token *sToken){
-    if (sToken->type == TYPE_INTEGER_NUMBER)
+    if (sToken->type == TYPE_INTEGER_NUMBER){
         return DATATYPE_INT;
-    else if (sToken->type == TYPE_DOUBLE_NUMBER || sToken->type == TYPE_EXPONENT_NUMBER)
+    }else if (sToken->type == TYPE_DOUBLE_NUMBER || sToken->type == TYPE_EXPONENT_NUMBER){
         return DATATYPE_FLOAT;
-    else if (sToken->type == TYPE_STRING)
+    }else if (sToken->type == TYPE_STRING){
         return DATATYPE_STRING;
-    else if (sToken->type == TYPE_IDENTIFIER)
-        datatype = BVSSearch(mainTree, *sToken);
-        if (&datatype->content != NULL){
-            return &datatype->content; 
-        }
-    else
-        return DATATYPE_ERROR;
+    }else if (sToken->type == TYPE_IDENTIFIER){
+        TNode* data = BVSSearch(mainTree->rootPtr, *sToken);
         
-        
-        
-        /* if(sToken->content.integerNumber == NULL && &(sToken->content.doubleNumber) == NULL && sToken->content.str == NULL)
+        if(data->content.integerNumber == NULL && data->content.doubleNumber == NULL && data->content.str == NULL)
             return DATATYPE_ERROR;
-        else if(sToken->content.integerNumber != NULL && &(sToken->content.doubleNumber) == NULL && sToken->content.str == NULL)
+        else if(data->content.integerNumber != NULL && data->content.doubleNumber == NULL && data->content.str == NULL)
             return DATATYPE_INT;
-        else if(&(sToken->content.doubleNumber) != NULL && sToken->content.integerNumber == NULL && sToken->content.str == NULL)
+        else if(data->content.doubleNumber != NULL && data->content.integerNumber == NULL && data->content.str == NULL)
             return DATATYPE_FLOAT;
-        else if(sToken->content.str != NULL && sToken->content.integerNumber == NULL && &(sToken->content.doubleNumber) == NULL)
-            return DATATYPE_STRING;*/
+        else if(data->content.str != NULL && data->content.integerNumber == NULL && data->content.doubleNumber == NULL)
+            return DATATYPE_STRING;
+
+
+    }
+    return DATATYPE_ERROR;
+        
+        
+        
     
 }   
 
@@ -265,44 +265,52 @@ int checkTypeForRule(PrtableRulesEnum rule, StackElementPtr op1, StackElementPtr
         case RULE_ADDITION:
         case RULE_SUBTRACTION:
         case RULE_MULTIPLY:
-            if (op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_INT)
+            if (op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_INT){
                 *resulttype = DATATYPE_INT;
                 return 0;
-            if(op1->datatype == DATATYPE_FLOAT && op3->datatype == DATATYPE_FLOAT)
+            }
+            if(op1->datatype == DATATYPE_FLOAT && op3->datatype == DATATYPE_FLOAT){
                 *resulttype = DATATYPE_FLOAT;
                 return 0;
-            if ( op1->datatype == DATATYPE_FLOAT && op3->datatype == DATATYPE_INT)
+            }
+            if ( op1->datatype == DATATYPE_FLOAT && op3->datatype == DATATYPE_INT){
                 *resulttype = DATATYPE_FLOAT;
                 return 0;
-            if ( op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_FLOAT)
+            }
+            if ( op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_FLOAT){
                 *resulttype = DATATYPE_FLOAT;
                 return 0;
+            }
             return 1; //neco je undefined nebo string
         case RULE_DIVIDE:
             *resulttype = DATATYPE_FLOAT;
-            if (op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_INT)
+            if (op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_INT){
                 *resulttype = DATATYPE_FLOAT;
                 return 0;
-            if(op1->datatype == DATATYPE_FLOAT && op3->datatype == DATATYPE_FLOAT)
+            }
+            if(op1->datatype == DATATYPE_FLOAT && op3->datatype == DATATYPE_FLOAT){
                 *resulttype = DATATYPE_FLOAT;
                 return 0;
-            if ( op1->datatype == DATATYPE_FLOAT && op3->datatype == DATATYPE_INT)
+            }
+            if ( op1->datatype == DATATYPE_FLOAT && op3->datatype == DATATYPE_INT){
                 *resulttype = DATATYPE_FLOAT;
                 return 0;
-            if ( op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_FLOAT)
+            }
+            if ( op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_FLOAT){
                 *resulttype = DATATYPE_FLOAT;
                 return 0;
+            }
             return 1; //neco je undefined nebo string
         
 
         case RULE_I:
             if(op1->datatype != DATATYPE_ERROR)
-                *resulttype == op1->datatype;
+                *resulttype = op1->datatype;
             else
                 return SEM_UNDEFINED_ERROR;
         case RULE_BRACKETS:
             if(op2->datatype != DATATYPE_ERROR)
-                *resulttype == op2->datatype;
+                *resulttype = op2->datatype;
             else
                 return SEM_UNDEFINED_ERROR;
         default:
@@ -346,10 +354,12 @@ int reduceExpression(){
 
     stackPop(&stack, countSymbols() + 1);
     stackPush(&stack, NON_TERMINAL, resulttype);
+    return 0;
 }
 
-StackElementPtr stacktop;
-int action(mainTree){
+
+/*StackElementPtr stacktop;
+int action(mainTree){ HODNE TODO
 
     stackInit(&stack);
 
@@ -359,7 +369,7 @@ int action(mainTree){
 
     
  
-}
+}*/
 
 
-*/
+
