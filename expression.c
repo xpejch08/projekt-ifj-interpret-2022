@@ -242,7 +242,7 @@ DataTypeEnum getDataType(token *sToken, TRoot *mainTree){
 
 int checkTypeForRule(PrtableRulesEnum rule, StackElementPtr op1, StackElementPtr op2, StackElementPtr op3, DataTypeEnum* resulttype)
 {
-    if(rule != RULE_I || rule != RULE_BRACKETS)
+    if(rule != RULE_I && rule != RULE_BRACKETS)
         if(op1->datatype == DATATYPE_ERROR || op3->datatype == DATATYPE_ERROR)
             return SEM_UNDEFINED_ERROR;
 
