@@ -30,7 +30,7 @@ int declrList();
 int statList();
 int parametrs(int option, int repeat);
 int program();
-int parse(DLLElementPtr *iList);
+int parse(void);
 
 
 #endif //PROJEKT_IFJ_INTERPRET_2022_PARSER_H

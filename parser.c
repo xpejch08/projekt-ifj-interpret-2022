@@ -1181,7 +1181,7 @@ int parse(void){
     
     //todo fix init token function
     initToken(sToken);
-    instructionInit(list);
+    
     if((tokenId = getNextToken(sToken)) == LEX_ERROR){
         return LEX_ERROR;
     }
