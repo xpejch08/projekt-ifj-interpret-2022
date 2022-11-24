@@ -13,8 +13,8 @@
 //todo generateinstruction(idinstruukce, pointrprev, pointractive, pouinternanext) -> function that inserts active instruction into instruction list
 //todo TInst setactiveinstruction(const int *type, void *op1, void *op2, void *op3)
 
-TRoot *insideFunction = NULL;
-TRootf *functionNames = NULL;
+TRoot *insideFunction;
+TRootf *functionNames;
 TRoot *mainTree;
 DLLElementPtr *list;
 
@@ -33,9 +33,9 @@ int incId = 1;
 
 
 //initializing tree
-BVSInit(mainTree);
-BVSInit_function(functionNames);
-BVSInit(insideFunction);
+void BVSInit(mainTree);
+void BVSInit_function(functionNames);
+void BVSInit(insideFunction);
 
 int stat(); // function declaration;
 int statlist();
@@ -305,7 +305,7 @@ int declrList() {
                         return SYN_ERROR;
                     }
                     //todo nevim kam to patří správně
-                    
+                    setActiveInstruction(LABEL, sToken, NULL, NULL);
                     result = statlist();
                     if(result != SUCCES){
                         return result;
@@ -1171,7 +1171,6 @@ int program(){
         case TYPE_SEMICOLON:
         case TYPE_RVINCULUM:
         case TYPE_LVINCULUM:
-            ;
     }
 }
 
@@ -1188,7 +1187,8 @@ int parse(DLLElementPtr *iList){
     }
     else{
         result = program();
-        printf("EXIT %d", result);
+        //instructionInsertActive(list,setActiveInstruction(EXIT, NULL, NULL, NULL, NULL));
+        instructionPrint(list);
     }
     //todo freeToken() funtcion
     return result;
