@@ -12,21 +12,22 @@ void BVSInit(TRoot *SymTable){
     SymTable->rootPtr = NULL;
 }
 
-void BVSCreate(token token){
+void BVSCreate(TNode *rootPtr, token token){
     TNode *newPtr = malloc(sizeof(struct tnode));
     if(newPtr == NULL){
         fprintf(stderr, "99");
-        return; 
+        return;
     }
     newPtr->leftPtr = NULL;
     newPtr->rightPtr = NULL;
     newPtr->type = token.type;
     newPtr->content = token.content;
+    rootPtr = newPtr;
 }
 
 void BVSInsert(TNode *rootPtr, token token){
     if(rootPtr == NULL){
-        BVSCreate(token);
+        BVSCreate(rootPtr, token);
     }
     else{
         if((strCmpStr(token.content.str, rootPtr->content.str)) < 0){
@@ -54,14 +55,14 @@ TNode *BVSSearch(TNode *rootPtr, token token){
 }
 
 void BVSDisposeNode(TNode *SymTable){
-        SymTable->leftPtr = NULL;
-        SymTable->rightPtr = NULL;
-        SymTable = NULL;
+    SymTable->leftPtr = NULL;
+    SymTable->rightPtr = NULL;
+    SymTable = NULL;
 }
 
 void BVSFreeNode(TNode *SymTable){
-        free(SymTable->rightPtr);
-        free(SymTable->leftPtr);
+    free(SymTable->rightPtr);
+    free(SymTable->leftPtr);
 }
 
 void BVSDispose(TRoot *SymTable){
@@ -93,7 +94,7 @@ void BVSCreate_function(function_save token){
     TNodef *newPtr = malloc(sizeof(struct tnodef));
     if(newPtr == NULL){
         fprintf(stderr, "99");
-        return; 
+        return;
     }
     newPtr->leftPtr = NULL;
     newPtr->rightPtr = NULL;
@@ -132,8 +133,8 @@ TNodef *BVSSearch_function(TNodef *rootPtr, token token){
 }
 
 void BVSFreeFunctionNode(TNodef *SymTable){
-        free(SymTable->rightPtr);
-        free(SymTable->leftPtr);
+    free(SymTable->rightPtr);
+    free(SymTable->leftPtr);
 }
 
 void BVSFree_function(TRootf *SymTable){

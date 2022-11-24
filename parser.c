@@ -34,18 +34,7 @@ int incId = 1;
 
 //check declare function, checks beginning of token type for example checks if there is a left bracket after while,
 // recursively calls itself
-int declrList() {
-    token init;
-    string initStr;
-
-    initStr.str = NULL;
-    initStr.length = 0;
-    initStr.alloc = 0;
-    init.type = 110;
-    init.content.str = &initStr;
-    token *sToken;
-    sToken = &init;
-
+int declrList(token *sToken) {
     int paramError;
     int result;
 
@@ -54,7 +43,7 @@ int declrList() {
             return SUCCES;
         case TYPE_IDENTIFIER:
 
-            if (strCmpConstStr(sToken->content.str, "write")) {
+            if (strCmpConstStr(sToken->content.str, "write") == 0) {
                 canParseEnd = false;
 
                 if((result = getNextToken(sToken)) != SUCCES){
@@ -77,7 +66,7 @@ int declrList() {
                         if((result = getNextToken(sToken)) != SUCCES){
                             return  result;
                         }
-                        result = statlist();
+                        result = statlist(sToken);
                         if(result != SUCCES) {
                             return result;
                         }
@@ -89,7 +78,7 @@ int declrList() {
                     return SYN_ERROR;
                 }
             }
-            if (strCmpConstStr(sToken->content.str, "reads")) {
+            if (strCmpConstStr(sToken->content.str, "reads") == 0) {
                 canParseEnd = false;
 
                 if((result = getNextToken(sToken)) != SUCCES){
@@ -117,7 +106,7 @@ int declrList() {
                     return SYN_ERROR;
                 }
             }
-            if (strCmpConstStr(sToken->content.str, "readi")) {
+            if (strCmpConstStr(sToken->content.str, "readi") == 0) {
                 canParseEnd = false;
 
                 if((result = getNextToken(sToken)) != SUCCES){
@@ -139,7 +128,7 @@ int declrList() {
                         if((result = getNextToken(sToken)) != SUCCES){
                             return  result;
                         }
-                        result = statlist();
+                        result = statlist(sToken);
                         if(result != SUCCES){
                             return result;
                         }
@@ -153,7 +142,7 @@ int declrList() {
                     return SYN_ERROR;
                 }
             }
-            if (strCmpConstStr(sToken->content.str, "readf")) {
+            if (strCmpConstStr(sToken->content.str, "readf") == 0) {
                 canParseEnd = false;
 
                 if ((result = getNextToken(sToken)) != SUCCES) {
@@ -181,7 +170,7 @@ int declrList() {
                     return SYN_ERROR;
                 }
             }
-            if (strCmpConstStr(sToken->content.str, "strlen")) {
+            if (strCmpConstStr(sToken->content.str, "strlen") == 0) {
                 canParseEnd = false;
 
                 if((result = getNextToken(sToken)) != SUCCES){
@@ -208,7 +197,7 @@ int declrList() {
                     return SYN_ERROR;
                 }
             }
-            if (strCmpConstStr(sToken->content.str, "substring")) {
+            if (strCmpConstStr(sToken->content.str, "substring") == 0) {
                 canParseEnd = false;
 
                 if((result = getNextToken(sToken)) != SUCCES){
@@ -236,7 +225,7 @@ int declrList() {
                     return SYN_ERROR;
                 }
             }
-            if (strCmpConstStr(sToken->content.str, "ord")) {
+            if (strCmpConstStr(sToken->content.str, "ord") == 0) {
                 canParseEnd = false;
 
                 if((result = getNextToken(sToken)) != SUCCES){
@@ -264,7 +253,7 @@ int declrList() {
                     return SYN_ERROR;
                 }
             }
-            if (strCmpConstStr(sToken->content.str, "chr")) {
+            if (strCmpConstStr(sToken->content.str, "chr") == 0) {
                 canParseEnd = false;
 
                 if((result = getNextToken(sToken)) != SUCCES){
@@ -306,7 +295,7 @@ int declrList() {
                         return SYN_ERROR;
                     }
                     //todo nevim kam to patří správně
-                    result = statlist();
+                    result = statlist(sToken);
                     if(result != SUCCES){
                         return result;
                     }
@@ -344,7 +333,7 @@ int declrList() {
                     }
 
                 }
-                result = statlist();
+                result = statlist(sToken);
                 if(result != SUCCES){
                     return result;
                 }
@@ -357,7 +346,7 @@ int declrList() {
                 returnCount = false;
                 in_function = false;
                 BVSDispose(insideFunction);
-                result = statlist();
+                result = statlist(sToken);
                 if(result != SUCCES){
                     return result;
                 }
@@ -370,7 +359,7 @@ int declrList() {
                 return  paramError;
             }else if(in_function == true){
                 returnCount = true;
-                result = statlist();
+                result = statlist(sToken);
                 if(result != SUCCES){
                     return result;
                 }
@@ -398,14 +387,14 @@ int declrList() {
                     return LEX_ERROR;
                 }
                 if(sToken->type == TYPE_RVINCULUM) {
-                    result = statlist();
+                    result = statlist(sToken);
                     if (result != SUCCES) {
                         return result;
                     }
                     return SUCCES;
                 }
                 else {
-                    result = statlist();
+                    result = statlist(sToken);
                     if (result != SUCCES) {
                         return result;
                     }
@@ -415,7 +404,7 @@ int declrList() {
                     if(getNextToken(sToken) == LEX_ERROR) {
                         return LEX_ERROR;
                     }
-                    result = statlist();
+                    result = statlist(sToken);
                     if (result != SUCCES) {
                         return result;
                     }
@@ -477,14 +466,14 @@ int declrList() {
                         return LEX_ERROR;
                     }
                     if(sToken->type == TYPE_RVINCULUM) {
-                        result = statlist();
+                        result = statlist(sToken);
                         if (result != SUCCES) {
                             return result;
                         }
                         return SUCCES;
                     }
                     else {
-                        result = statlist();
+                        result = statlist(sToken);
                         if (result != SUCCES) {
                             return result;
                         }
@@ -494,7 +483,7 @@ int declrList() {
                         if(getNextToken(sToken) == LEX_ERROR) {
                             return LEX_ERROR;
                         }
-                        result = statlist();
+                        result = statlist(sToken);
                         if (result != SUCCES) {
                             return result;
                         }
@@ -516,20 +505,20 @@ int declrList() {
                 if(getNextToken(sToken) == LEX_ERROR) {
                     return LEX_ERROR;
                 }
-                result = statlist();
+                result = statlist(sToken);
                 if (result != SUCCES) {
                     return result;
                 }
                 return SUCCES;
             }else {
-                result = statlist();
+                result = statlist(sToken);
                 if (result != SUCCES) {
                     return result;
                 }
                 if (sToken->type != TYPE_RVINCULUM) {
                     return SYN_ERROR;
                 }
-                result = statlist();
+                result = statlist(sToken);
                 if (result != SUCCES) {
                     return result;
                 }
@@ -541,23 +530,9 @@ int declrList() {
 //check after function, checks ending of token type for example checks if there is a right bracket after condition of
 // while, recursively calls itself
 //also calls main fynction stat
-int statlist(){
-    token init;
-    string initStr;
-
-    initStr.str = NULL;
-    initStr.length = 0;
-    initStr.alloc = 0;
-    init.type = 110;
-    init.content.str = &initStr;
-    token *sToken;
-    sToken = &init;
+int statlist(token *sToken){
 
     int result;
-    result = getNextToken(sToken);
-    if(result == LEX_ERROR){
-        return LEX_ERROR;
-    }
 
     switch (sToken->type) {
 
@@ -573,7 +548,7 @@ int statlist(){
             if(sToken->type != TYPE_LVINCULUM)
                 return SYN_ERROR;
             getNextToken(sToken);
-            return declrList();
+            return declrList(sToken);
 
 
 
@@ -583,15 +558,21 @@ int statlist(){
         case TYPE_VARIABLE:
             BVSInsert(mainTree->rootPtr, *sToken);
             getNextToken(sToken);
-            result = statlist();
+            result = statlist(sToken);
             if(result != SUCCES){
                 return result;
             }
             return SUCCES;
 
         case TYPE_END_OF_FILE:
+            if(canParseEnd == true){
+                return SUCCES;
+            }
+            else{
+                return SYN_ERROR;
+            }
         case TYPE_IDENTIFIER:
-            result = declrList();
+            result = declrList(sToken);
             if(result != SUCCES){
                 return result;
             }
@@ -604,7 +585,7 @@ int statlist(){
         case TYPE_ASSIGN:
 
             getNextToken(sToken);
-            result = statlist();
+            result = statlist(sToken);
             if(result != SUCCES){
                 return result;
             }
@@ -613,7 +594,7 @@ int statlist(){
         case KEYWORD_IF:
         case KEYWORD_ELSE:
         case KEYWORD_WHILE:
-            result = declrList();
+            result = declrList(sToken);
             if(result != SUCCES){
                 return result;
             }
@@ -624,7 +605,7 @@ int statlist(){
                 return result;
             }
             sToken->type = TYPE_FUNCTIONDECLARE;
-            result = declrList();
+            result = declrList(sToken);
             if(result != SUCCES){
                 return result;
             }
@@ -1084,6 +1065,7 @@ int parametrs(int option, int repeat){
 
 //function that initializes tree, list of instructions, token, reads first token and calls program() function
 int parse(void){
+    canParseEnd = true;
     setSourceFile(stdin);
     token init;
     string initStr;
@@ -1114,7 +1096,7 @@ int parse(void){
         return LEX_ERROR;
     }
     else{
-        result = statlist();
+        result = statlist(sToken);
         printf("EXIT %d", result);
     }
     //   BVSFree(mainTree);
