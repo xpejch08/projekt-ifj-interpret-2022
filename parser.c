@@ -16,7 +16,7 @@
 TRoot *insideFunction = NULL;
 TRootf *functionNames = NULL;
 TRoot *mainTree = NULL;
-DLLElementPtr *list;
+
 
 bool in_function = false;
 bool canParseEnd = false;
@@ -1171,14 +1171,14 @@ int program(){
 }
 
 //function that initializes tree, list of instructions, token, reads first token and calls program() function
-int parse(DLLElementPtr *iList){
+int parse(void){
     //initializing tree
     BVSInit(mainTree);
     BVSInit_function(functionNames);
     BVSInit(insideFunction);
 
     int result;
-    list = iList;
+    
     //todo fix init token function
     initToken(sToken);
     instructionInit(list);

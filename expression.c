@@ -211,7 +211,7 @@ PrtableRulesEnum pickRule(StackElementPtr op1, StackElementPtr op2, StackElement
 
 
 TNode* datatype;
-TRoot mainTree;
+TRoot *mainTree = NULL;
 DataTypeEnum getDataType(token *sToken){
     if (sToken->type == TYPE_INTEGER_NUMBER)
         return DATATYPE_INT;
@@ -220,7 +220,7 @@ DataTypeEnum getDataType(token *sToken){
     else if (sToken->type == TYPE_STRING)
         return DATATYPE_STRING;
     else if (sToken->type == TYPE_IDENTIFIER)
-        datatype = BVSSearch(mainTree.rootPtr, *sToken);
+        datatype = BVSSearch(mainTree, *sToken);
         if (&datatype->content != NULL){
             return &datatype->content; 
         }
@@ -354,6 +354,8 @@ int action(mainTree){
     stackInit(&stack);
 
     stackPush(&stack, DOLLAR, DATATYPE_ERROR);
+
+    
 
     
  
