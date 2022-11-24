@@ -302,7 +302,6 @@ int declrList() {
                         return SYN_ERROR;
                     }
                     //todo nevim kam to patří správně
-                    setActiveInstruction(LABEL, sToken, NULL, NULL);
                     result = statlist();
                     if(result != SUCCES){
                         return result;
