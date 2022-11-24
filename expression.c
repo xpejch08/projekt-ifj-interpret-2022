@@ -171,7 +171,7 @@ int countSymbols() //pocet symbolu ve stacku nez prijde "<"
 
 PrtableRulesEnum pickRule(StackElementPtr op1, StackElementPtr op2, StackElementPtr op3)
 {
-    if (&op1->symbol != NULL && &op2->symbol != NULL && &op3->symbol != NULL){
+    if (&(op1->symbol) != NULL && &(op2->symbol) != NULL && &(op3->symbol) != NULL){
         if (op1->symbol == NON_TERMINAL && op2->symbol == EQUAL && op3->symbol == NON_TERMINAL)
             return RULE_EQUAL;
         else if (op1->symbol == NON_TERMINAL && op2->symbol == NOT_EQUAL && op3->symbol == NON_TERMINAL)
@@ -199,7 +199,7 @@ PrtableRulesEnum pickRule(StackElementPtr op1, StackElementPtr op2, StackElement
         else 
             return RULE_ERROR;
     }
-    if (&op1->symbol != NULL && &op2->symbol == NULL && &op3->symbol == NULL){
+    if (&(op1->symbol) != NULL && &(op2->symbol) == NULL && &(op3->symbol) == NULL){
         if (op1->symbol == IDENTIFIER || op1->symbol == SINT || op1->symbol == SFLOAT || op1->symbol == SSTRING)
             return RULE_I;
         else
