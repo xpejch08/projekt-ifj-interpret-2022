@@ -26,7 +26,7 @@ typedef enum
     INDEX_DOLLAR  // $ :          $
 } PrtableIndexEnum;
 
-//symboly prtable
+//akce prtable
 typedef enum
 {
     S, // shift (<)  dej vstup a "<" na zasobnik"
@@ -81,13 +81,13 @@ static PrtableSymbolsEnum prtableTokenToSymbol(token *sToken)
         case TYPE_RBRACKET:
             return RBRACKET;
         case TYPE_INTEGER_NUMBER:
-            return INT;
+            return SINT;
         case TYPE_DOUBLE_NUMBER:
-            return FLOAT;
+            return SFLOAT;
         case TYPE_EXPONENT_NUMBER:
-            return FLOAT;
+            return SFLOAT;
         case TYPE_STRING:
-            return STRING;
+            return SSTRING;
         case TYPE_IDENTIFIER:
             return IDENTIFIER;
         default:
@@ -119,9 +119,9 @@ static PrtableIndexEnum prtableSymbolToIndex(PrtableSymbolsEnum symb)
             return INDEX_LEFTBR;
         case RBRACKET:
             return INDEX_RIGHTBR;
-        case INT:
-        case FLOAT:
-        case STRING:
+        case SINT:
+        case SFLOAT:
+        case SSTRING:
         case IDENTIFIER:
             return INDEX_DATA;
         default:
@@ -141,7 +141,7 @@ int countSymbols()
         if(elem->symbol == STOPPER){
             elem = elem->nextElement;
             return count;
-            //TODO MAM HLAD AF
+            
         }
         else{
             elem = elem->nextElement;
@@ -200,7 +200,7 @@ PrtableRulesEnum pickRule(StackElementPtr op1, StackElementPtr op2, StackElement
             return RULE_ERROR;
     }
     if (op1->symbol != NULL && op2->symbol == NULL && op3->symbol == NULL){
-        if (op1->symbol == IDENTIFIER || op1->symbol == INT || op1->symbol == FLOAT || op1->symbol == STRING)
+        if (op1->symbol == IDENTIFIER || op1->symbol == SINT || op1->symbol == SFLOAT || op1->symbol == SSTRING)
             return RULE_I;
         else
             return RULE_ERROR;
@@ -210,7 +210,8 @@ PrtableRulesEnum pickRule(StackElementPtr op1, StackElementPtr op2, StackElement
 }   
 
 
-
+TNode* datatype;
+TRoot mainTree;
 DataTypeEnum getDataType(token *sToken){
     if (sToken->type == TYPE_INTEGER_NUMBER)
         return DATATYPE_INT;
@@ -219,16 +220,23 @@ DataTypeEnum getDataType(token *sToken){
     else if (sToken->type == TYPE_STRING)
         return DATATYPE_STRING;
     else if (sToken->type == TYPE_IDENTIFIER)
-        if(sToken->content->integerNumber == NULL && sToken->content->floatNumber == NULL && sToken->content->str == NULL)
+        datatype = BVSSearch(mainTree.rootPtr, *sToken);
+        if (&datatype->content != NULL){
+            return &datatype->content; 
+        }
+    else
+        return DATATYPE_ERROR;
+        
+        
+        
+        /* if(sToken->content.integerNumber == NULL && &(sToken->content.doubleNumber) == NULL && sToken->content.str == NULL)
             return DATATYPE_ERROR;
-        else if(sToken->content->integerNumber != NULL && sToken->content->floatNumber == NULL && sToken->content->str == NULL)
+        else if(sToken->content.integerNumber != NULL && &(sToken->content.doubleNumber) == NULL && sToken->content.str == NULL)
             return DATATYPE_INT;
-        else if(sToken->content->floatNumber != NULL && sToken->content->integerNumber == NULL && sToken->content->str == NULL)
+        else if(&(sToken->content.doubleNumber) != NULL && sToken->content.integerNumber == NULL && sToken->content.str == NULL)
             return DATATYPE_FLOAT;
-        else if(sToken->content->str != NULL && sToken->content->integerNumber == NULL && sToken->content->floatNumber == NULL)
-            return DATATYPE_STRING;
-        else
-            return DATATYPE_ERROR;
+        else if(sToken->content.str != NULL && sToken->content.integerNumber == NULL && &(sToken->content.doubleNumber) == NULL)
+            return DATATYPE_STRING;*/
     
 }   
 
@@ -302,5 +310,54 @@ int checkTypeForRule(PrtableRulesEnum rule, StackElementPtr op1, StackElementPtr
         
     }
 }
+
+int reduceExpression(){
+
+    StackElementPtr op1 = NULL;
+    StackElementPtr op2 = NULL;
+    StackElementPtr op3 = NULL;
+    DataTypeEnum resulttype = DATATYPE_ERROR;
+    PrtableRulesEnum rule = RULE_ERROR;
+
+
+
+    if(countSymbols() == 1)
+    {
+        op1 = stack.top;
+        rule = pickRule(op1, NULL, NULL);
+    }    
+    else if(countSymbols() == 3)
+    {
+        op1 = stack.top;
+        op2 = op1->nextElement;
+        op3 = op2->nextElement;
+        rule = pickRule(op1, op2, op3);
+    }
+    else
+        return 1;
+
+    if(rule == RULE_ERROR)
+        return 1;
+    
+    if(checkTypeForRule(rule, op1, op2, op3, &resulttype) != 0 )
+        return checkTypeForRule(rule, op1, op2, op3, &resulttype);
+    
+    //generate operaci (pomoci rule)
+
+    stackPop(&stack, countSymbols() + 1);
+    stackPush(&stack, NON_TERMINAL, resulttype);
+}
+
+StackElementPtr stacktop;
+int action(mainTree){
+
+    stackInit(&stack);
+
+    stackPush(&stack, DOLLAR, DATATYPE_ERROR);
+
+    
+ 
+}
+
 
 
