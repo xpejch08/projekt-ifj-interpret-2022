@@ -64,5 +64,6 @@ typedef struct{
 void setSourceFile(FILE *f);
 int getNextToken(token *attr);
 void initToken(token *attr);
+int prefix(token *str);
 
 #endif

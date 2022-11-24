@@ -23,7 +23,7 @@
 
 
 int declrList();
-int statList();
+int statlist();
 int parametrs(int option, int repeat);
 int program();
 int parse(void);

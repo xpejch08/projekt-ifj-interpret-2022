@@ -147,11 +147,10 @@ int prefix(token *str){
 int getNextToken(token *attr) {
     int state = basicState;
     char character;
-    char *endptr;
     char hexaEscape1 = '0';
     char hexaEscape2 = '0';
-    char hexaEscape3 = '0';
-    char octaEscape[3];
+    //char hexaEscape3 = '0'; //todo
+    //char octaEscape[3];
 
     if(source == NULL){
         return INT_ERROR;
@@ -305,14 +304,14 @@ int getNextToken(token *attr) {
                 break;
             case keywordOrIdentifierStateBegin:
                 if(isalpha(character) || character == '_'){
-                    (char) tolower(character);
+                   character =  (char) tolower(character);
                     strAddChar(attr->content.str, character);
                     state = keywordOrIdentifierState;
                     break;
                 }
             case keywordOrIdentifierState:
                 if(isalnum(character) || character == '_'){
-                    (char) tolower(character);
+                    character = (char) tolower(character);
                     strAddChar(attr->content.str, character);
                 }
                 else{

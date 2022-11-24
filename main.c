@@ -24,8 +24,8 @@ int main(void){
     token *sToken;
     
     sToken = &init;
-    //fopen("testIn.txt", "r");
-    //prefix(sToken);
+    fopen("testIn.txt", "r");
+    prefix(sToken);
     return parse();
 }
 

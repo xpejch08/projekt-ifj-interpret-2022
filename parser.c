@@ -31,8 +31,7 @@ int incId = 1;
 
 
 
-
-int statlist(); // declaration because function is used before definition
+ // declaration because function is used before definition
 
 //check declare function, checks beginning of token type for example checks if there is a left bracket after while,
 // recursively calls itself
@@ -631,6 +630,7 @@ int statList(){
             return SYN_ERROR;
 
     }
+    return SYN_ERROR;
     //todo statList
 }
 
@@ -1062,7 +1062,6 @@ int parse(void){
     int result;
     
     //todo fix init token function
-    initToken(sToken);
     
     if((tokenId = getNextToken(sToken)) == LEX_ERROR){
         return LEX_ERROR;

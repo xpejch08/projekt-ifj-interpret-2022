@@ -3,7 +3,7 @@ SOURCE	= parser.c symtable.c lexical.c str.c main.c
 HEADER	= parser.h symtable.h lexical.h errors.h str.h
 OUT	= main 
 CC	 = gcc
-FLAGS	 = -g -c -Wall
+FLAGS	 = -g -c -Wall -lm
 LFLAGS	 = 
 
 all: $(OBJS)
