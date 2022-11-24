@@ -1,7 +1,7 @@
 OBJS	= parser.o symtable.o lexical.o str.o main.o
 SOURCE	= parser.c symtable.c lexical.c str.c main.c
 HEADER	= parser.h symtable.h lexical.h errors.h str.h
-OUT	= 
+OUT	= main 
 CC	 = gcc
 FLAGS	 = -g -c -Wall
 LFLAGS	 = 
