@@ -1187,7 +1187,7 @@ int parse(DLLElementPtr *iList){
     }
     else{
         result = program();
-        printf("EXIT %d", 0);
+        printf("EXIT %d", result);
     }
     //todo freeToken() funtcion
     return result;
