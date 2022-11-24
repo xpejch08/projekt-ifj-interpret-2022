@@ -26,7 +26,7 @@ int declrList();
 int statlist();
 int parametrs(int option, int repeat);
 int program();
-int parse(void);
+int parse();
 
 
 #endif //PROJEKT_IFJ_INTERPRET_2022_PARSER_H

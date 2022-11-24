@@ -532,7 +532,7 @@ int declrList() {
 //check after function, checks ending of token type for example checks if there is a right bracket after condition of
 // while, recursively calls itself
 //also calls main fynction stat
-int statList(){
+int statlist(){
 
     int result;
     result = getNextToken(sToken);
@@ -564,7 +564,7 @@ int statList(){
         case TYPE_VARIABLE:
             BVSInsert(mainTree->rootPtr, *sToken);
             getNextToken(sToken);
-            result = statList();
+            result = statlist();
             if(result != SUCCES){
                 return result;
             }
@@ -585,7 +585,7 @@ int statList(){
         case TYPE_ASSIGN:
            
             getNextToken(sToken);
-            result = statList();
+            result = statlist();
             if(result != SUCCES){
                 return result;
             }
@@ -1067,7 +1067,7 @@ int parse(void){
         return LEX_ERROR;
     }
     else{
-        result = program();
+        result = statlist();
        printf("EXIT %d", result);
     }
     BVSFree(mainTree);

@@ -1,35 +1,38 @@
-OBJS	= parser.o symtable.o lexical.o str.o main.o
-SOURCE	= parser.c symtable.c lexical.c str.c main.c
-HEADER	= parser.h symtable.h lexical.h errors.h str.h
-OUT	= main 
+OBJS	= main.o lexical.o parser.o semantic.o stack.o str.o symtable.o
+SOURCE	= main.c lexical.c parser.c semantic.c stack.c str.c symtable.c
+HEADER	= errors.h lexical.h parser.h semantic.h stack.h str.h symtable.h
+OUT	= interpret.o
 CC	 = gcc
-FLAGS	 = -g -c -Wall -lm
-LFLAGS	 = 
+FLAGS	 = -g -c -Wall
+LFLAGS	 = -lm
 
 all: $(OBJS)
 	$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)
 
-parser.o: parser.c
-	$(CC) $(FLAGS) parser.c -std=c99
-
-symtable.o: symtable.c
-	$(CC) $(FLAGS) symtable.c -std=c99
-
-#expression.o: expression.c
-#$(CC) $(FLAGS) expression.c -std=c99
-
-#expstack.o: expstack.c
-#$(CC) $(FLAGS) expstack.c -std=c99
+main.o: main.c
+	$(CC) $(FLAGS) main.c -std=c99
 
 lexical.o: lexical.c
 	$(CC) $(FLAGS) lexical.c -std=c99
 
+parser.o: parser.c
+	$(CC) $(FLAGS) parser.c -std=c99
+
+semantic.o: semantic.c
+	$(CC) $(FLAGS) semantic.c -std=c99
+
+stack.o: stack.c
+	$(CC) $(FLAGS) stack.c -std=c99
+
 str.o: str.c
 	$(CC) $(FLAGS) str.c -std=c99
 
-main.o: main.c
-	$(CC) $(FLAGS) main.c -std=c99
+symtable.o: symtable.c
+	$(CC) $(FLAGS) symtable.c -std=c99
 
 
 clean:
 	rm -f $(OBJS) $(OUT)
+
+run: $(OUT)
+	./$(OUT)

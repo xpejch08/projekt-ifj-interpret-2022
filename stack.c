@@ -9,7 +9,7 @@ void DLL_Init( DLList *list ) {
 	list->lastElement = NULL;
 }
 
-void DLL_InsertFirst( DLList *list, token token ) {
+int DLL_InsertFirst( DLList *list, token token ) {
 	DLLElementPtr insertingptr = malloc(sizeof(struct DLLElement));
 
 	if(insertingptr == NULL){
@@ -27,9 +27,11 @@ void DLL_InsertFirst( DLList *list, token token ) {
 		list->firstElement->previousElement = insertingptr;
 	}
 	list->firstElement = insertingptr;
+
+    return SUCCES;
 }
 
-void DLL_InsertLast( DLList *list, token token ) {
+int DLL_InsertLast( DLList *list, token token ) {
 	DLLElementPtr insertinglastptr = malloc(sizeof(struct DLLElement));
 
 	if(insertinglastptr == NULL){
@@ -47,6 +49,7 @@ void DLL_InsertLast( DLList *list, token token ) {
 		list->lastElement->nextElement = insertinglastptr; 
 	}
 	list->lastElement = insertinglastptr;
+    return SUCCES;
 }
 
 void DLL_Free( DLList *list ) {
