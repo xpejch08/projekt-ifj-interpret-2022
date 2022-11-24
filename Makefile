@@ -1,6 +1,6 @@
-OBJS	= parse.o symtable.o expression.o expstack.o lexical.o str.o main.o
-SOURCE	= parse.c symtable.c expression.c expstack.c lexical.c str.c main.c
-HEADER	= parse.h symtable.h expression.h expstack.h lexical.h errors.h str.h
+OBJS	= parser.o symtable.o expression.o expstack.o lexical.o str.o main.o
+SOURCE	= parser.c symtable.c expression.c expstack.c lexical.c str.c main.c
+HEADER	= parser.h symtable.h expression.h expstack.h lexical.h errors.h str.h
 OUT	= 
 CC	 = gcc
 FLAGS	 = -g -c -Wall
@@ -9,8 +9,8 @@ LFLAGS	 =
 all: $(OBJS)
 	$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)
 
-parse.o: parse.c
-	$(CC) $(FLAGS) parse.c -std=c99
+parser.o: parser.c
+	$(CC) $(FLAGS) parser.c -std=c99
 
 symtable.o: symtable.c
 	$(CC) $(FLAGS) symtable.c -std=c99
