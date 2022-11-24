@@ -15,6 +15,7 @@ int main(void){
 
     setSourceFile(stdin);
     token init;
+    function_save i;
     string initStr;
     initStr.str = NULL;
     initStr.length = 0;

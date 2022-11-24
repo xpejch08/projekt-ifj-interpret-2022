@@ -7,13 +7,13 @@
 //Instr
 #define MOVE "MOVE"
 #define ADD "ADD"
-#define SUB "SUB
+#define SUB "SUB"
 #define MUL "MUL"
 #define DIV "DIV"
 #define IDIV "IDIV"
 #define PUSH "PUSH"
 #define POP "POP"
-#define LT "LT
+#define LT "LT"
 #define GT "GT"
 #define WRITE "WRITE"
 #define READ "READ"
