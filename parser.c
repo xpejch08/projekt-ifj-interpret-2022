@@ -32,10 +32,7 @@ function_save *fun_id;
 int incId = 1;
 
 
-//initializing tree
-void BVSInit(mainTree);
-void BVSInit_function(functionNames);
-void BVSInit(insideFunction);
+
 
 int stat(); // function declaration;
 int statlist();
@@ -1176,6 +1173,10 @@ int program(){
 
 //function that initializes tree, list of instructions, token, reads first token and calls program() function
 int parse(DLLElementPtr *iList){
+    //initializing tree
+    BVSInit(mainTree);
+    BVSInit_function(functionNames);
+    BVSInit(insideFunction);
 
     int result;
     list = iList;
