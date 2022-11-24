@@ -57,7 +57,7 @@ int octaToDecimal(char *arr){
         rightmost = octal / 10;
         octal = octal / 10;
 
-        decimal = decimal + rightmost * (int) pow(8, position);
+        //  decimal = decimal + rightmost * (int) pow(8, position);
         position++;
     }
     return decimal;
@@ -139,7 +139,7 @@ int prefix(token *str){
         i++;
     }
     if(strCmpConstStr(str->content.str, prefix) != 0){
-        return SYN_ERROR;
+        return INT_ERROR;
     }
     return 0;
 }
@@ -304,7 +304,7 @@ int getNextToken(token *attr) {
                 break;
             case keywordOrIdentifierStateBegin:
                 if(isalpha(character) || character == '_'){
-                   character =  (char) tolower(character);
+                    character =  (char) tolower(character);
                     strAddChar(attr->content.str, character);
                     state = keywordOrIdentifierState;
                     break;

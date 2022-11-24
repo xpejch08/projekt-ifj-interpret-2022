@@ -1097,7 +1097,7 @@ int parse(void){
     }
     else{
         result = statlist(sToken);
-        printf("EXIT %d", result);
+        printf("EXIT prdel %d", result);
     }
     //   BVSFree(mainTree);
     //   BVSFree(insideFunction);
