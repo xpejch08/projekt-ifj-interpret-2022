@@ -102,11 +102,11 @@ TNodef *BVSSearch_function(TNodef *rootPtr, token token);
  */
 void BVSFree_function(TRootf *SymTable);
 
-void BVSDisposeNode(TNode *SymTable);
+void BVSDisposeNode(TNode *rootPtr);
 
-void BVSFreeNode(TNode *SymTable);
+void BVSFreeNode(TNode *rootPtr);
 
-void BVSFreeFunctionNode(TNodef *SymTable);
+void BVSFreeFunctionNode(TNodef *rootPtr);
 
 
 

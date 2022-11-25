@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 #include "lexical.h"
 #include "str.h"
 #include "parser.h"
@@ -20,6 +21,7 @@ bool in_function = false;
 bool canParseEnd = false;
 bool returnCount = false;
 
+string *call_function_save;
 int unique = 0;
 int ifCounter = 0;
 
@@ -1007,8 +1009,11 @@ int parametrs(int option, int repeat, token *sToken){
                 }
             }
             return SYN_ERROR;
-        case PARAM_RETURN:
-            break;
+        case PARAM_RETURN: ///////////////////////////////////////////////////////////////// check return 
+            if((result = getNextToken(sToken)) != SUCCES){
+                return  result;
+            }
+            return SUCCES;
         case PARAM_FUNCTION_CALL: ////////////////////////////////////////////////////////////// jeste dodelat case PARAM_FUNCTION_CALL
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
