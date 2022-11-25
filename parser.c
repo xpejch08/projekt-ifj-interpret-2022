@@ -1101,9 +1101,9 @@ int parse(void){
         result = statlist(sToken);
         printf("EXIT %d", result);
     }
-    //   BVSFree(mainTree);
-    //   BVSFree(insideFunction);
-    //   BVSFree_function(functionNames);
+    BVSFree(mainTree);
+    BVSFree(insideFunction);
+    BVSFree_function(functionNames);
     //todo freeToken() funtcion
     return result;
 }

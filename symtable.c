@@ -63,15 +63,15 @@ TNode *BVSSearch(TNode *rootPtr, token token){
     }
 }
 
-void BVSDisposeNode(TNode *SymTable){
-    SymTable->leftPtr = NULL;
-    SymTable->rightPtr = NULL;
-    SymTable = NULL;
+void BVSDisposeNode(TNode *rootPtr){
+    rootPtr->leftPtr = NULL;
+    rootPtr->rightPtr = NULL;
+    rootPtr = NULL;
 }
 
-void BVSFreeNode(TNode *SymTable){
-    free(SymTable->rightPtr);
-    free(SymTable->leftPtr);
+void BVSFreeNode(TNode *rootPtr){
+    free(rootPtr->rightPtr);
+    free(rootPtr->leftPtr);
 }
 
 void BVSDispose(TRoot *SymTable){
@@ -141,9 +141,9 @@ TNodef *BVSSearch_function(TNodef *rootPtr, token token){
     }
 }
 
-void BVSFreeFunctionNode(TNodef *SymTable){
-    free(SymTable->rightPtr);
-    free(SymTable->leftPtr);
+void BVSFreeFunctionNode(TNodef *rootPtr){
+    free(rootPtr->rightPtr);
+    free(rootPtr->leftPtr);
 }
 
 void BVSFree_function(TRootf *SymTable){
