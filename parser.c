@@ -21,7 +21,7 @@ bool in_function = false;
 bool canParseEnd = false;
 bool returnCount = false;
 
-string *call_function_save;
+TNodef *call_function_save;
 int unique = 0;
 int ifCounter = 0;
 
@@ -285,8 +285,14 @@ int declrList(token *sToken) {
             //todo bvssearch nust be true
             if (BVSSearch_function(functionNames->rootPtr, *sToken) != NULL) {
                 canParseEnd = false;
-                BVSInsert(mainTree, *sToken);
-
+                call_function_save = BVSSearch_function(functionNames->rootPtr, *sToken);
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
+                }
+                if(sToken->type != TYPE_LBRACKET){
+                    return SYN_ERROR;
+                }    
+                
                 paramError = parametrs(PARAM_FUNCTION_CALL, 1, sToken);
                 if(paramError == SUCCES){
 
@@ -1013,6 +1019,7 @@ int parametrs(int option, int repeat, token *sToken){
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
+
             return SUCCES;
         case PARAM_FUNCTION_CALL: ////////////////////////////////////////////////////////////// jeste dodelat case PARAM_FUNCTION_CALL
             if((result = getNextToken(sToken)) != SUCCES){
@@ -1021,7 +1028,7 @@ int parametrs(int option, int repeat, token *sToken){
             switch (sToken->type)
             {
                 case TYPE_RBRACKET:
-                    ///////////////////////////////////////////////////////////// check parametru
+                    
                     return SUCCES;
                 case TYPE_VARIABLE:
                     if(in_function){
