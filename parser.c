@@ -1021,15 +1021,20 @@ int parametrs(int option, int repeat, token *sToken){
             }
 
             return SUCCES;
-        case PARAM_FUNCTION_CALL: ////////////////////////////////////////////////////////////// jeste dodelat case PARAM_FUNCTION_CALL
+        case PARAM_FUNCTION_CALL: ////////////////////////////////////////////////////////////// veresit zavorky
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
             switch (sToken->type)
             {
                 case TYPE_RBRACKET:
-                    
-                    return SUCCES;
+                    if(repeat == 1){
+                        if(call_function_save->parameters == 0){
+                            return SUCCES;
+                        }else{
+                            return SEM_COUNT_ERROR;
+                        }
+                    } 
                 case TYPE_VARIABLE:
                     if(in_function){
                         if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
@@ -1045,12 +1050,15 @@ int parametrs(int option, int repeat, token *sToken){
                         return  result;
                     }
                     if(sToken->type == TYPE_RBRACKET){
-                        return SUCCES;
+                        if(repeat == call_function_save->parameters){
+                            return SUCCES;
+                        }
+                        return SEM_COUNT_ERROR;
                     }else if(sToken->type == TYPE_COMMA){
                         repeat++;
                         return parametrs(PARAM_FUNCTION_CALL, repeat, sToken);
-                    }else{
-                        return SYN_ERROR;
+                    }else if(sToken->type == TYPE_ADDITION || TYPE_DIVIDE || TYPE_MULTIPLY || TYPE_SUBTRACTION){
+                        return parametrs(PARAM_FUNCTION_CALL, repeat, sToken);
                     }
                 case TYPE_INTEGER_NUMBER:
                 case TYPE_DOUBLE_NUMBER:
@@ -1059,7 +1067,10 @@ int parametrs(int option, int repeat, token *sToken){
                         return  result;
                     }
                     if(sToken->type == TYPE_RBRACKET){
-                        return SUCCES;
+                        if(repeat == call_function_save->parameters){
+                            return SUCCES;
+                        }
+                        return SEM_COUNT_ERROR;
                     }else if(sToken->type == TYPE_COMMA){
                         repeat++;
                         return parametrs(PARAM_FUNCTION_CALL, repeat, sToken);
