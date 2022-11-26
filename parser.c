@@ -21,10 +21,10 @@ bool in_function = false;
 bool canParseEnd = false;
 bool returnCount = false;
 
-TNodef *call_function_save;
+TNodef *call_function_save; //////////////////////////////// new
+ 
 int unique = 0;
 int ifCounter = 0;
-
 int tokenId;
 function_save *fun_id;
 
@@ -299,9 +299,7 @@ int declrList(token *sToken) {
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
-                    if(sToken->type != TYPE_SEMICOLON){
-                        return SYN_ERROR;
-                    }
+                   
                     //todo nevim kam to patří správně
                     result = statlist(sToken);
                     if(result != SUCCES){
@@ -315,6 +313,9 @@ int declrList(token *sToken) {
             }
 
         case TYPE_FUNCTIONDECLARE:
+            if(in_function){
+                return SYN_ERROR;
+            }
             if(BVSSearch_function(functionNames->rootPtr, *sToken) != NULL){
                 return SEM_ERROR;
             }
@@ -1015,12 +1016,67 @@ int parametrs(int option, int repeat, token *sToken){
                 }
             }
             return SYN_ERROR;
-        case PARAM_RETURN: ///////////////////////////////////////////////////////////////// check return 
+        case PARAM_RETURN: 
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
-
-            return SUCCES;
+            switch(sToken->type){
+                case TYPE_IDENTIFIER:
+                    if(BVSSearch_function(functionNames->rootPtr, *sToken) == NULL){
+                        return SEM_DEFINE_ERROR;
+                    }
+                case TYPE_STRING:
+                    if(fun_id->ret_value != KEYWORD_STRING){
+                        return SEM_COUNT_ERROR;
+                    }
+                    if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
+                    }
+                    if(sToken->type == TYPE_CONCATENATE){
+                        repeat++;
+                        return parametrs(PARAM_RETURN, repeat, sToken);
+                    }else if(sToken->type == TYPE_SEMICOLON){
+                        return SUCCES;
+                    }
+                    return SYN_ERROR;
+                case TYPE_INTEGER_NUMBER:
+                    if(fun_id->ret_value != KEYWORD_INT){
+                        return SEM_COUNT_ERROR;
+                    }
+                    if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
+                    }
+                    if(sToken->type == TYPE_ADDITION || 
+                       sToken->type == TYPE_DIVIDE   || 
+                       sToken->type == TYPE_MULTIPLY || 
+                       sToken->type == TYPE_SUBTRACTION
+                    ){
+                        repeat++;
+                        return parametrs(PARAM_RETURN, repeat, sToken);
+                    }else if(sToken->type == TYPE_SEMICOLON){
+                        return SUCCES;
+                    }
+                    return SYN_ERROR;
+                case TYPE_DOUBLE_NUMBER:
+                    if(fun_id->ret_value != KEYWORD_FLOAT){
+                        return SEM_COUNT_ERROR;
+                    }
+                    if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
+                    }
+                    if(sToken->type == TYPE_ADDITION || 
+                       sToken->type == TYPE_DIVIDE   || 
+                       sToken->type == TYPE_MULTIPLY || 
+                       sToken->type == TYPE_SUBTRACTION
+                    ){
+                        repeat++;
+                        return parametrs(PARAM_RETURN, repeat, sToken);
+                    }else if(sToken->type == TYPE_SEMICOLON){
+                        return SUCCES;
+                    }
+                    return SYN_ERROR;
+            }
+            return SYN_ERROR;
         case PARAM_FUNCTION_CALL: ////////////////////////////////////////////////////////////// veresit zavorky
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
@@ -1057,7 +1113,11 @@ int parametrs(int option, int repeat, token *sToken){
                     }else if(sToken->type == TYPE_COMMA){
                         repeat++;
                         return parametrs(PARAM_FUNCTION_CALL, repeat, sToken);
-                    }else if(sToken->type == TYPE_ADDITION || TYPE_DIVIDE || TYPE_MULTIPLY || TYPE_SUBTRACTION){
+                    }else if(sToken->type == TYPE_ADDITION || 
+                             sToken->type == TYPE_DIVIDE   || 
+                             sToken->type == TYPE_MULTIPLY || 
+                             sToken->type == TYPE_SUBTRACTION
+                             ){
                         return parametrs(PARAM_FUNCTION_CALL, repeat, sToken);
                     }
                 case TYPE_INTEGER_NUMBER:
