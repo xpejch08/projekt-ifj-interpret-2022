@@ -1016,7 +1016,7 @@ int parametrs(int option, int repeat, token *sToken){
                 }
             }
             return SYN_ERROR;
-        case PARAM_RETURN: 
+        case PARAM_RETURN: // function return value
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
@@ -1024,6 +1024,35 @@ int parametrs(int option, int repeat, token *sToken){
                 case TYPE_IDENTIFIER:
                     if(BVSSearch_function(functionNames->rootPtr, *sToken) == NULL){
                         return SEM_DEFINE_ERROR;
+                    }
+                    TNodef *tmp = BVSSearch_function(functionNames->rootPtr, *sToken);
+                    if(tmp->return_type != fun_id->ret_value){
+                        return SEM_COUNT_ERROR;
+                    }
+                    call_function_save = BVSSearch_function(functionNames->rootPtr, *sToken);
+                    if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
+                    }   
+                    if(sToken->type != TYPE_LBRACKET){
+                        return SYN_ERROR;
+                    }
+                    result = parametrs(PARAM_FUNCTION_CALL, 1, sToken);
+                    if(result != SUCCES){
+                        return result;
+                    }
+                    if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
+                    }   
+                    if(sToken->type == TYPE_SEMICOLON){
+                        return SUCCES;
+                    }else if(sToken->type == TYPE_ADDITION || 
+                       sToken->type == TYPE_DIVIDE   || 
+                       sToken->type == TYPE_MULTIPLY || 
+                       sToken->type == TYPE_SUBTRACTION
+                    ){
+                        return parametrs(PARAM_RETURN, repeat, sToken);
+                    }else{
+                        return SYN_ERROR;
                     }
                 case TYPE_STRING:
                     if(fun_id->ret_value != KEYWORD_STRING){
@@ -1085,7 +1114,7 @@ int parametrs(int option, int repeat, token *sToken){
                     return SYN_ERROR;
             }
             return SYN_ERROR;
-        case PARAM_FUNCTION_CALL: ////////////////////////////////////////////////////////////// veresit zavorky
+        case PARAM_FUNCTION_CALL: // calling function
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
