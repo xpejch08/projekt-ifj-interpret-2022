@@ -1075,6 +1075,14 @@ int parametrs(int option, int repeat, token *sToken){
                         return SUCCES;
                     }
                     return SYN_ERROR;
+                case TYPE_SEMICOLON:
+                    if(repeat == 1){
+                        if(fun_id->ret_value == KEYWORD_VOID){
+                            return SUCCES;
+                        }
+                        return SEM_COUNT_ERROR;
+                    }
+                    return SYN_ERROR;
             }
             return SYN_ERROR;
         case PARAM_FUNCTION_CALL: ////////////////////////////////////////////////////////////// veresit zavorky
