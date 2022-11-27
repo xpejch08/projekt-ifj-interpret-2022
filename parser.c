@@ -317,7 +317,7 @@ int declrList(token *sToken) {
                 return SYN_ERROR;
             }
             if(BVSSearch_function(functionNames->rootPtr, *sToken) != NULL){
-                return SEM_ERROR;
+                return SEM_DEFINE_ERROR;
             }
             fun_id->content = sToken->content.str;
             if((result = getNextToken(sToken)) != SUCCES) {
@@ -852,7 +852,32 @@ int parametrs(int option, int repeat, token *sToken){
                 case TYPE_INTEGER_NUMBER:
                     
                 case TYPE_DOUBLE_NUMBER:
-                    return parametrs(PARAM_IF_WHILE, repeat, sToken);
+                    if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
+                    }
+                    if(sToken->type == TYPE_MULTIPLY         ||
+                       sToken->type == TYPE_DIVIDE           ||
+                       sToken->type == TYPE_ADDITION         ||
+                       sToken->type == TYPE_SUBTRACTION      ||
+                       sToken->type == TYPE_SMALLER_THAN     ||
+                       sToken->type == TYPE_GREATER_THAN     ||
+                       sToken->type == TYPE_GREATER_OR_EQUAL ||
+                       sToken->type == TYPE_SMALLER_OR_EQUAL ||
+                       sToken->type == TYPE_EQUAL            ||
+                       sToken->type == TYPE_NOT_EQUAL
+                            ){
+                        return parametrs(PARAM_IF_WHILE, repeat, sToken);
+                    }
+                    else if(sToken->type == TYPE_RBRACKET){
+                        repeat--;
+                        if(repeat == 0){
+                            return SUCCES;
+                        }
+                        return parametrs(PARAM_IF_WHILE, repeat, sToken);
+                    }
+                    else{
+                        return SYN_ERROR;
+                    }
             }
             return SYN_ERROR;
         case PARAM_WRITE: // write
@@ -1229,6 +1254,7 @@ int parse(void){
         result = statlist(sToken);
         printf("EXIT %d", result);
     }
+    fprintf(stderr, "--%d--", result);
     BVSFree(mainTree);
     BVSFree(insideFunction);
     BVSFree_function(functionNames);
