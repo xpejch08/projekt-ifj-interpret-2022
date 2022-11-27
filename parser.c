@@ -24,7 +24,7 @@ bool returnCount = false;
 TNodef *call_function_save; //////////////////////////////// new
  
 int unique = 0;
-int ifCounter = 0;
+int condCounter = 0;
 int tokenId;
 function_save *fun_id;
 
@@ -379,6 +379,9 @@ int declrList(token *sToken) {
 
 
         case KEYWORD_WHILE:
+            unique++;
+            condCounter = unique;
+            printf("%s @while%d", LABEL, condCounter);
             if((result = getNextToken(sToken)) != SUCCES) {
                 return result;
             }
@@ -453,6 +456,8 @@ int declrList(token *sToken) {
                 return SUCCES;
             }
         case KEYWORD_IF:
+            unique+= 1;
+            condCounter = unique;
             if(getNextToken(sToken) == LEX_ERROR) {
                 return LEX_ERROR;
             }
@@ -501,6 +506,8 @@ int declrList(token *sToken) {
                 }
             }
         case KEYWORD_ELSE:
+            printf("%s @else%d", LABEL, condCounter);
+            condCounter--;
             if(getNextToken(sToken) == LEX_ERROR) {
                 return LEX_ERROR;
             }
@@ -762,6 +769,7 @@ int parametrs(int option, int repeat, token *sToken){
                     else if(sToken->type == TYPE_RBRACKET){
                         repeat--;
                         if(repeat == 0){
+                            printf("%s @else%d", JUMPIFNEQ, condCounter);
                             return SUCCES;
                         }
                         return parametrs(PARAM_IF_WHILE, repeat, sToken);

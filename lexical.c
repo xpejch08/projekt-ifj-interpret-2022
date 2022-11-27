@@ -125,7 +125,7 @@ int prefix(token *str){
         i++;
     }
     if(strCmpConstStr(str->content.str, prefix) != 0){
-        return INT_ERROR;
+        return SYN_ERROR;
     }
     return 0;
 }
