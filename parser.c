@@ -286,6 +286,7 @@ int declrList(token *sToken) {
             if (BVSSearch_function(functionNames->rootPtr, *sToken) != NULL) {
                 canParseEnd = false;
                 call_function_save = BVSSearch_function(functionNames->rootPtr, *sToken);
+                printf("%s @function%s\n", JUMP, sToken->content.str);
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
@@ -319,6 +320,7 @@ int declrList(token *sToken) {
             if(BVSSearch_function(functionNames->rootPtr, *sToken) != NULL){
                 return SEM_DEFINE_ERROR;
             }
+            printf("%s @function%s\n", LABEL, sToken->content.str);
             fun_id->content = sToken->content.str;
             if((result = getNextToken(sToken)) != SUCCES) {
                 return result;
@@ -381,7 +383,7 @@ int declrList(token *sToken) {
         case KEYWORD_WHILE:
             unique++;
             condCounter = unique;
-            printf("%s @while%d", LABEL, condCounter);
+            printf("%s @while%d\n", LABEL, condCounter);
             if((result = getNextToken(sToken)) != SUCCES) {
                 return result;
             }
@@ -506,7 +508,7 @@ int declrList(token *sToken) {
                 }
             }
         case KEYWORD_ELSE:
-            printf("%s @else%d", LABEL, condCounter);
+            printf("%s @else%d\n", LABEL, condCounter);
             condCounter--;
             if(getNextToken(sToken) == LEX_ERROR) {
                 return LEX_ERROR;
