@@ -17,6 +17,7 @@ TRootf *functionNames;
 TRoot *mainTree;
 
 DLList *list;
+token *tmpToken;
 
 bool in_function = false;
 bool canParseEnd = false;
@@ -585,6 +586,7 @@ int statlist(token *sToken, function_save *fun_id){
 
         case TYPE_VARIABLE:
             BVSInsert(mainTree, *sToken);
+            tmpToken->content = sToken->content;
             getNextToken(sToken);
             result = statlist(sToken, fun_id);
             if(result != SUCCES){
@@ -949,8 +951,50 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             }
             return SYN_ERROR;
         case PARAM_READI: // readi
+            if(in_function){
+            printf("%s LF@&%s %s\n", READ,tmpToken->content.str->str,INT_TYPE);
+                //BVSSearch(insideFunction, *tmpToken)->content.integerNumber = INT_TYPE;
+                
+            }
+            else{
+            printf("%s GF@&%s %s\n", READ,tmpToken->content.str->str,INT_TYPE);
+            }
+            if((result = getNextToken(sToken)) != SUCCES){
+                return  result;
+            }
+            if(sToken->type == TYPE_RBRACKET){
+                return SUCCES;
+            }
+            else{
+                return SYN_ERROR;
+            }
         case PARAM_READS: // reads
+         if(in_function){
+            printf("%s LF@&%s %s\n", READ,tmpToken->content.str->str,STRING_TYPE);
+                //BVSSearch(insideFunction, *tmpToken)->content.integerNumber = INT_TYPE;
+                
+            }
+            else{
+            printf("%s GF@&%s %s\n", READ,tmpToken->content.str->str,STRING_TYPE);
+            }
+            if((result = getNextToken(sToken)) != SUCCES){
+                return  result;
+            }
+            if(sToken->type == TYPE_RBRACKET){
+                return SUCCES;
+            }
+            else{
+                return SYN_ERROR;
+            }
         case PARAM_READF: // readf
+            if(in_function){
+            printf("%s LF@&%s %s\n", READ,tmpToken->content.str->str,FLOAT_TYPE);
+                //BVSSearch(insideFunction, *tmpToken)->content.integerNumber = INT_TYPE; 
+            }
+            else{
+            printf("%s GF@&%s %s\n", READ,tmpToken->content.str->str,FLOAT_TYPE);
+            }
+
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }

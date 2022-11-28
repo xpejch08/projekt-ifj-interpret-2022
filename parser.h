@@ -45,9 +45,9 @@
 #define JUMPIFNEQ "JUMPIFNEQ"
 #define EXIT "EXIT"
 
-#define STRING_TYPE 440
-#define INT_TYPE 441
-#define FLOAT_TYPE 442
+#define STRING_TYPE "string"
+#define INT_TYPE "int"
+#define FLOAT_TYPE "float"
 #define NIL "nil@nil"
 
 #define STRLEN "STRLEN"
