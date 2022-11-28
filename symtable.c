@@ -65,22 +65,22 @@ TNode *BVSSearch(TNode *rootPtr, token token){
 
 void BVSDisposeNode(TNode *rootPtr){
     if(rootPtr != NULL){
-        BVSFreeFunctionNode(rootPtr->leftPtr);
-        BVSFreeFunctionNode(rootPtr->rightPtr);
+        BVSDisposeNode(rootPtr->leftPtr);
+        BVSDisposeNode(rootPtr->rightPtr);
         rootPtr = NULL;
     }
 }
 
 void BVSFreeNode(TNode *rootPtr){
     if(rootPtr != NULL){
-        BVSFreeFunctionNode(rootPtr->leftPtr);
-        BVSFreeFunctionNode(rootPtr->rightPtr);
+        BVSFreeNode(rootPtr->leftPtr);
+        BVSFreeNode(rootPtr->rightPtr);
         free(rootPtr);
     }
 }
 
 void BVSDispose(TRoot *SymTable){
-    BVSDispose(SymTable->rootPtr);
+    BVSDisposeNode(SymTable->rootPtr);
     SymTable = NULL;
 }
 
