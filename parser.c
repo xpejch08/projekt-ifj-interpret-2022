@@ -410,6 +410,7 @@ int declrList(token *sToken, function_save *fun_id) {
                     return LEX_ERROR;
                 }
                 if(sToken->type == TYPE_RVINCULUM) {
+                    printf("%s &while%d\n", JUMP, condCounter);
                     result = statlist(sToken, fun_id);
                     if (result != SUCCES) {
                         return result;
