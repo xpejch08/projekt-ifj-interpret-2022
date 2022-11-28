@@ -1259,8 +1259,6 @@ int parse(void){
     TRoot initInside;
     TRootf initNames;
 
-    DLList *list;
-
     mainTree = &initMain;
     functionNames = &initNames;
     insideFunction = &initInside;
