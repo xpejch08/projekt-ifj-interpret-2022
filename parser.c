@@ -16,6 +16,8 @@ TRoot *insideFunction;
 TRootf *functionNames;
 TRoot *mainTree;
 
+DLList *list;
+
 bool in_function = false;
 bool canParseEnd = false;
 bool returnCount = false;
@@ -905,10 +907,15 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                             return SEM_UNDEFINED_ERROR;
                         }
                     }
+                    DLL_InsertLast(list, *sToken);
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
                     if(sToken->type == TYPE_RBRACKET){
+                        printf("%s ", WRITE);
+                        DLL_Print(list);
+                        printf("\n");
+                        DLL_Free(list);
                         return SUCCES;
                     }
                     else if(sToken->type == TYPE_COMMA){
@@ -921,10 +928,15 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 case TYPE_STRING:
                 case TYPE_INTEGER_NUMBER:
                 case TYPE_DOUBLE_NUMBER:
+                    DLL_InsertLast(list, *sToken);
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
                     if(sToken->type == TYPE_RBRACKET){
+                        printf("%s ", WRITE);
+                        DLL_Print(list);
+                        printf("\n");
+                        DLL_Free(list);
                         return SUCCES;
                     }
                     else if(sToken->type == TYPE_COMMA){
@@ -1248,6 +1260,7 @@ int parse(void){
     TRoot initInside;
     TRootf initNames;
 
+    DLList *list;
 
     mainTree = &initMain;
     functionNames = &initNames;
@@ -1258,7 +1271,8 @@ int parse(void){
     BVSInit_function(functionNames);
     
     int result;
-
+    
+    DLL_Init(list);
     //todo fix init token function
 
     if((tokenId = getNextToken(sToken)) == LEX_ERROR){

@@ -65,3 +65,15 @@ void DLL_Free( DLList *list ) {
 	}while(deletingElement != NULL);
 	
 }
+void DLL_Print(DLList *list)
+{
+	if(list->firstElement != NULL)
+	{
+		list->activeElement = list->firstElement;
+		while(list->activeElement != NULL)
+		{
+			printf("%s ", list->activeElement->content.str->str);
+			list->activeElement = list->activeElement->nextElement;
+		}
+	}
+}
