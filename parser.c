@@ -285,11 +285,8 @@ int declrList(token *sToken, function_save *fun_id) {
             if (BVSSearch_function(functionNames->rootPtr, *sToken) != NULL) {
                 canParseEnd = false;
                 call_function_save = BVSSearch_function(functionNames->rootPtr, *sToken);
-<<<<<<< HEAD
-=======
                 printf("%s &function%s\n", JUMP, sToken->content.str);
                 printf("%s &return%s\n", LABEL, sToken->content.str);
->>>>>>> a3f888d (return call in f)
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
@@ -323,11 +320,6 @@ int declrList(token *sToken, function_save *fun_id) {
             if(BVSSearch_function(functionNames->rootPtr, *sToken) != NULL){
                 return SEM_DEFINE_ERROR;
             }
-<<<<<<< HEAD
-            fprintf(stderr,"udo");
-            fun_id->content = sToken->content.str;
-            fprintf(stderr,"dos");
-=======
             fun_id->content = sToken->content.str;
             printf("%s &function%send\n", JUMP, fun_id->content);
             printf("%s &function%s\n", LABEL, fun_id->content);
@@ -336,7 +328,6 @@ int declrList(token *sToken, function_save *fun_id) {
             printf("%s LF@&return_val\n", DEFVAR);
             printf("%s LF@&return_val %s\n", MOVE, NIL);
             
->>>>>>> a3f888d (return call in f)
             if((result = getNextToken(sToken)) != SUCCES) {
                 return result;
             }
@@ -399,11 +390,7 @@ int declrList(token *sToken, function_save *fun_id) {
         case KEYWORD_WHILE:
             unique++;
             condCounter = unique;
-<<<<<<< HEAD
-            printf("%s @while%d", LABEL, condCounter);
-=======
             printf("%s &while%d\n", LABEL, condCounter);
->>>>>>> a3f888d (return call in f)
             if((result = getNextToken(sToken)) != SUCCES) {
                 return result;
             }
@@ -528,11 +515,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
             }
         case KEYWORD_ELSE:
-<<<<<<< HEAD
-            printf("%s @else%d", LABEL, condCounter);
-=======
             printf("%s &else%d\n", LABEL, condCounter);
->>>>>>> a3f888d (return call in f)
             condCounter--;
             if(getNextToken(sToken) == LEX_ERROR) {
                 return LEX_ERROR;
