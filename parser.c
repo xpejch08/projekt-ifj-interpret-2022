@@ -285,8 +285,8 @@ int declrList(token *sToken, function_save *fun_id) {
             if (BVSSearch_function(functionNames->rootPtr, *sToken) != NULL) {
                 canParseEnd = false;
                 call_function_save = BVSSearch_function(functionNames->rootPtr, *sToken);
-                printf("%s &function%s\n", JUMP, sToken->content.str);
-                printf("%s &return%s\n", LABEL, sToken->content.str);
+                printf("%s &function%s\n", JUMP, sToken->content.str->str);
+                printf("%s &return%s\n", LABEL, sToken->content.str->str);
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
@@ -320,9 +320,9 @@ int declrList(token *sToken, function_save *fun_id) {
             if(BVSSearch_function(functionNames->rootPtr, *sToken) != NULL){
                 return SEM_DEFINE_ERROR;
             }
-            fun_id->content = sToken->content.str;
-            printf("%s &function%send\n", JUMP, fun_id->content);
-            printf("%s &function%s\n", LABEL, fun_id->content);
+            fun_id->content->str = sToken->content.str->str;
+            printf("%s &function%send\n", JUMP, fun_id->content->str);
+            printf("%s &function%s\n", LABEL, fun_id->content->str);
             printf("%s\n", CREATEFRAME);
             printf("%s\n", PUSHFRAME);
             printf("%s LF@&return_val\n", DEFVAR);
@@ -362,7 +362,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
                 returnCount = false;
                 in_function = false;
-                printf("%s &function%send\n", LABEL, fun_id->content);
+                printf("%s &function%send\n", LABEL, fun_id->content->str);
                 BVSDispose(insideFunction);
                 result = statlist(sToken, fun_id);
                 if(result != SUCCES){
