@@ -1247,7 +1247,7 @@ int parse(void){
     initStr.alloc = 0;
     init.type = 110;
     init.content.str = &initStr;
-    initek.content->str = &initStr;
+    initek.content = &initStr;
     initek.param_count = 0;
     initek.ret_value = 0;
     token *sToken;
