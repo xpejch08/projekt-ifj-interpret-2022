@@ -151,7 +151,5 @@ void BVSFree_function(TRootf *SymTable){
     free(SymTable);
 }
 
-void Initson(function_save *fun_id){
-    fun_id = NULL;
-}
+
 //////////////////////////////////////////

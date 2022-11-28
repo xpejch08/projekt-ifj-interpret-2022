@@ -104,7 +104,7 @@ void BVSFreeNode(TNode *rootPtr);
 
 void BVSFreeFunctionNode(TNodef *rootPtr);
 
-void Initson(function_save *token);
+
 
 
 #endif

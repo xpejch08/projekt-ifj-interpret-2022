@@ -1236,6 +1236,9 @@ int parse(void){
     initStr.alloc = 0;
     init.type = 110;
     init.content.str = &initStr;
+    initek.content->str = &initStr;
+    initek.param_count = 0;
+    initek.ret_value = 0;
     token *sToken;
     sToken = &init;
     function_save *fun_id;
@@ -1253,7 +1256,7 @@ int parse(void){
     BVSInit(insideFunction);
     BVSInit(mainTree);
     BVSInit_function(functionNames);
-    Initson(fun_id);
+    
     int result;
 
     //todo fix init token function
