@@ -32,7 +32,7 @@ typedef struct trootf{
     TNodef *rootPtr;
 }TRootf;
 
-typedef struct{
+typedef struct functionf{
     string *content;
     int param_count;
     int ret_value;
