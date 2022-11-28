@@ -20,7 +20,39 @@
 #define PARAM_RETURN        810
 #define PARAM_FUNCTION_CALL 811
 
+//instructions
+//-----------------------------------//
+#define MOVE "MOVE"
+#define ADD "ADD"
+#define SUB "SUB"
+#define MUL "MUL"
+#define DIV "DIV"
+#define IDIV "IDIV"
+#define PUSH "PUSH"
+#define POP "POP"
+#define LT "LT"
+#define GT "GT"
+#define WRITE "WRITE"
+#define READ "READ"
 
+#define CREATEFRAME "CRATEFRAME"
+#define PUSHFRAME "PUSHFRAME"
+#define POPFRAME "POPFRAME"
+#define DEFVAR "DEFVAR"
+#define LABEL "LABEL"
+#define JUMP "JUMP"
+#define JUMPIFEQ "JUMPIFEQ"
+#define JUMPIFNEQ "JUMPIFNEQ"
+#define EXIT "EXIT"
+
+#define STRING_TYPE 440
+#define INT_TYPE 441
+#define FLOAT_TYPE 442
+#define NIL "nil@nil"
+
+#define STRLEN "STRLEN"
+
+//-------------------------------------//
 
 int declrList(token *sToken, function_save *fun_id);
 int statlist(token *sToken, function_save *fun_id);

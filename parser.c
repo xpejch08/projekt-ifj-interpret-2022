@@ -355,6 +355,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
                 returnCount = false;
                 in_function = false;
+                printf("%s &function%send\n", LABEL, fun_id->content);
                 BVSDispose(insideFunction);
                 result = statlist(sToken, fun_id);
                 if(result != SUCCES){
@@ -770,7 +771,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     else if(sToken->type == TYPE_RBRACKET){
                         repeat--;
                         if(repeat == 0){
-                            printf("%s @else%d", JUMPIFNEQ, condCounter);
+                            printf("%s &else%d", JUMPIFNEQ, condCounter);
                             return SUCCES;
                         }
                         return parametrs(PARAM_IF_WHILE, repeat, sToken, fun_id);
