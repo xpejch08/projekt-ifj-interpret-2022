@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "symtable.h"
+#include "parser.h"
 
 
 ////////////VARIABLE///////////////////////////

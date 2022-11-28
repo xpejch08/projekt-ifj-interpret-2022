@@ -51,16 +51,12 @@
 #define NIL "nil@nil"
 
 #define STRLEN "STRLEN"
-typedef struct functionf{
-    string *content;
-    int param_count;
-    int ret_value;
-}function_save;
+
 //-------------------------------------//
 
 int declrList(token *sToken, function_save *fun_id);
 int statlist(token *sToken, function_save *fun_id);
-int parametrs(int option, int repeat, token *sToken,function_save *fun_id);
+int parametrs(int option, int repeat, token *sToken, function_save *fun_id);
 int program();
 int parse();
 

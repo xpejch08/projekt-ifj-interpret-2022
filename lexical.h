@@ -56,6 +56,12 @@ typedef union{
 }tokenContent;
 
 typedef struct{
+    string *content;
+    int param_count;
+    int ret_value;
+}function_save;
+
+typedef struct{
     tokenContent content;
     int type;
 }token;
