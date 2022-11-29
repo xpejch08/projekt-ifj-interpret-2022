@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <malloc.h>
+//#include <malloc.h>
 #include <stdbool.h>
 #include <string.h>
 #include "symtable.h"
@@ -22,18 +22,14 @@ void BVSCreate(TNode *rootPtr, token token){
     newPtr->leftPtr = NULL;
     newPtr->rightPtr = NULL;
     newPtr->type = token.type;
-    newPtr->name = token.content.str;
+    newPtr->name = token.content.str; 
+    newPtr->name->str = token.content.str->str;
     rootPtr = newPtr;
 }
 
 void BVSInsert(TRoot *root, token token){
     if(root->rootPtr == NULL){
-        TNode *newPtr = (TNode *) malloc(sizeof(struct tnode));
-        if(newPtr == NULL){
-            fprintf(stderr, "99");
-            return;
-        }
-        BVSCreate(root->rootPtr, token);
+            BVSCreate(root->rootPtr, token);
     }
     else{
         if((strCmpStr(token.content.str, root->rootPtr->name)) < 0){
@@ -101,6 +97,7 @@ void BVSCreate_function(function_save token){
     newPtr->leftPtr = NULL;
     newPtr->rightPtr = NULL;
     newPtr->content = token.content;
+    newPtr->content->str = token.content->str;
     newPtr->parameters = token.param_count;
     newPtr->return_type = token.ret_value;
 }
@@ -159,5 +156,7 @@ void post(TNode *tree){
         post(tree->leftPtr);
         post(tree->rightPtr);
         fprintf(stderr,"CONTENT: %s      TYPE: %d\n", tree->name->str, tree->type);
+    }else{
+        fprintf(stderr, "SADDDDDDDDDDDDD");
     }
 }
