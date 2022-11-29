@@ -53,6 +53,8 @@
 #define STRLEN "STRLEN"
 #define SUBSTRING "GETCHAR"
 #define CONCAT "CONCAT"
+#define INT2CHAR "INT2CHAR"
+#define STRI2INT "STRI2INT"
 
 //-------------------------------------//
 
