@@ -582,7 +582,7 @@ int getNextToken(token *attr) {
                     }
                 }
                 else{
-                    return LEX_ERROR
+                    return LEX_ERROR;
                 }
                 break;
             case notEqualStateEnd:

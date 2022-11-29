@@ -156,7 +156,5 @@ void post(TNode *tree){
         post(tree->leftPtr);
         post(tree->rightPtr);
         fprintf(stderr,"CONTENT: %s      TYPE: %d\n", tree->name->str, tree->type);
-    }else{
-        fprintf(stderr, "SADDDDDDDDDDDDD");
     }
 }

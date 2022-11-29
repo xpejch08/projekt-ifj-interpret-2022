@@ -530,7 +530,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
             }
         case KEYWORD_ELSE:
-            canParseEnd = false
+            canParseEnd = false;
             printf("%s $else%d\n", LABEL, condCounter);
             condCounter--;
             if(getNextToken(sToken) == LEX_ERROR) {
@@ -601,6 +601,7 @@ int statlist(token *sToken, function_save *fun_id){
 
         case TYPE_VARIABLE:
             BVSInsert(mainTree, *sToken);
+            postorder(mainTree);
             printf("%s GF@&%s\n", DEFVAR, (sToken->content.str->str)+1);
             tmpToken = sToken;
             if((result = getNextToken(sToken)) != SUCCES){
