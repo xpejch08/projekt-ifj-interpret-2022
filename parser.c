@@ -901,6 +901,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     else if(sToken->type == TYPE_RBRACKET){
                         repeat--;
                         if(repeat == 0){
+                            printf("%s $else%d\n", JUMPIFNEQ, condCounter);
                             return SUCCES;
                         }
                         return parametrs(PARAM_IF_WHILE, repeat, sToken, fun_id);
