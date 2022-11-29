@@ -588,7 +588,7 @@ int statlist(token *sToken, function_save *fun_id){
         case TYPE_VARIABLE:
             BVSInsert(mainTree, *sToken);
             printf("%s GF@&%s\n", DEFVAR, (sToken->content.str->str)+1);
-            tmpToken->content = sToken->content;
+            tmpToken = sToken;
             if((result = getNextToken(sToken)) != SUCCES){
                 return result;
             }
