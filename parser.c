@@ -313,7 +313,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
 
             } else {
-                return SEM_ERROR;
+                return SEM_DEFINE_ERROR;
             }
 
         case TYPE_FUNCTIONDECLARE:
@@ -588,7 +588,9 @@ int statlist(token *sToken, function_save *fun_id){
             BVSInsert(mainTree, *sToken);
             printf("%s GF@&%s\n", DEFVAR, sToken->content.str->str);
             tmpToken->content = sToken->content;
-            getNextToken(sToken);
+            if((result = getNextToken(sToken)) != SUCCES){
+                return result;
+            }
             result = statlist(sToken, fun_id);
             if(result != SUCCES){
                 return result;
