@@ -65,14 +65,39 @@ void DLL_Free( DLList *list ) {
 	}while(deletingElement != NULL);
 	
 }
-void DLL_Print(DLList *list)
+void DLL_PrintLocal(DLList *list)
 {
 	if(list->firstElement != NULL)
 	{
 		list->activeElement = list->firstElement;
 		while(list->activeElement != NULL)
 		{
+			if(list->activeElement->type == TYPE_VARIABLE)
+			{
+			printf("LF@&%s ", list->activeElement->content.str->str);
+			}
+			else{
 			printf("%s ", list->activeElement->content.str->str);
+			}
+			list->activeElement = list->activeElement->nextElement;
+		}
+	}
+}
+
+void DLL_PrintGlobal(DLList *list)
+{
+	if(list->firstElement != NULL)
+	{
+		list->activeElement = list->firstElement;
+		while(list->activeElement != NULL)
+		{
+			if(list->activeElement->type == TYPE_VARIABLE)
+			{
+			printf("GF@&%s ", list->activeElement->content.str->str);
+			}
+			else{
+			printf("%s ", list->activeElement->content.str->str);
+			}
 			list->activeElement = list->activeElement->nextElement;
 		}
 	}

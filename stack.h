@@ -24,6 +24,8 @@ int DLL_InsertLast( DLList *list, token token );
 
 void DLL_Free( DLList *list );
 
-void DLL_Print(DLList *list);
+void DLL_PrintLocal(DLList *list);
+
+void DLL_PrintGlobal(DLList *list);
 
 #endif

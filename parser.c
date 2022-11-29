@@ -586,6 +586,7 @@ int statlist(token *sToken, function_save *fun_id){
 
         case TYPE_VARIABLE:
             BVSInsert(mainTree, *sToken);
+            printf("%s GF@&%s\n", DEFVAR, sToken->content.str->str);
             tmpToken->content = sToken->content;
             getNextToken(sToken);
             result = statlist(sToken, fun_id);
@@ -916,7 +917,12 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         return  result;
                     }
                     if(sToken->type == TYPE_RBRACKET){
-                        DLL_Print(list);
+                        if(!in_function){
+                            DLL_PrintGlobal(list);
+                        }
+                        else{
+                            DLL_PrintLocal(list);
+                        }
                         printf("\n");
                         DLL_Free(list);
                         return SUCCES;
@@ -936,7 +942,13 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         return  result;
                     }
                     if(sToken->type == TYPE_RBRACKET){
-                        DLL_Print(list);
+                        if(!in_function)
+                        {
+                            DLL_PrintGlobal(list);
+                        }
+                        else{
+                            DLL_PrintLocal(list);
+                        }
                         printf("\n");
                         DLL_Free(list);
                         return SUCCES;
