@@ -36,6 +36,7 @@
 #define endExponentState                325
 #define notEqualState                   326
 #define notEqualStateEnd                327
+#define epilogState                     328
 
 
 //todo token initialization, change returns of getNextToken function
@@ -255,6 +256,9 @@ int getNextToken(token *attr) {
 
                 else if(character == '>'){
                     state = smallerThanOrEqualState;
+                }
+                else if(character == '?'){
+                    state = epilogState;
                 }
                 else if(character == '!'){
                     state = notEqualState;
@@ -564,6 +568,21 @@ int getNextToken(token *attr) {
                 }
                 else{
                     return LEX_ERROR;
+                }
+                break;
+            case epilogState:
+                if(character == '>'){
+                    getNextToken(attr);
+                    if(attr->type == TYPE_END_OF_FILE) {
+                        attr->type = TYPE_EPILOG;
+                        return SUCCES;
+                    }
+                    else{
+                        return LEX_ERROR;
+                    }
+                }
+                else{
+                    return LEX_ERROR
                 }
                 break;
             case notEqualStateEnd:

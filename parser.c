@@ -277,6 +277,9 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
             }
             //todo bvssearch nust be true
+            /**
+             * @brief case for declaring a function
+             */
             if (BVSSearch_function(functionNames->rootPtr, *sToken) != NULL) {
                 canParseEnd = false;
                 call_function_save = BVSSearch_function(functionNames->rootPtr, *sToken);
@@ -291,12 +294,13 @@ int declrList(token *sToken, function_save *fun_id) {
                 
                 paramError = parametrs(PARAM_FUNCTION_CALL, 1, sToken, fun_id);
                 if(paramError == SUCCES){
-
+                    canParseEnd = true;
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
                    
                     //todo nevim kam to patří správně
+
                     result = statlist(sToken, fun_id);
                     if(result != SUCCES){
                         return result;
@@ -309,6 +313,7 @@ int declrList(token *sToken, function_save *fun_id) {
             }
 
         case TYPE_FUNCTIONDECLARE:
+            canParseEnd = false;
             if(in_function){
                 return SYN_ERROR;
             }
@@ -345,6 +350,7 @@ int declrList(token *sToken, function_save *fun_id) {
                     }
 
                 }
+
                 result = statlist(sToken, fun_id);
                 if(result != SUCCES){
                     return result;
@@ -355,6 +361,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 if((sToken->type != TYPE_RVINCULUM) || returnCount != true){
                     return SYN_ERROR;
                 }
+                canParseEnd = true;
                 returnCount = false;
                 in_function = false;
                 printf("%s $%send\n", LABEL, fun_id->content->str);
@@ -367,11 +374,13 @@ int declrList(token *sToken, function_save *fun_id) {
             }
 
         case KEYWORD_RETURN :
+            canParseEnd = false;
             paramError = parametrs(PARAM_RETURN, 1, sToken, fun_id);
             if(paramError != SUCCES){
                 return  paramError;
             }else if(in_function == true){
                 returnCount = true;
+                canParseEnd = true;
                 result = statlist(sToken, fun_id);
                 if(result != SUCCES){
                     return result;
@@ -383,6 +392,7 @@ int declrList(token *sToken, function_save *fun_id) {
 
 
         case KEYWORD_WHILE:
+            canParseEnd = false;
             unique++;
             condCounter = unique;
             printf("%s $while%d\n", LABEL, condCounter);
@@ -407,6 +417,7 @@ int declrList(token *sToken, function_save *fun_id) {
                     return LEX_ERROR;
                 }
                 if(sToken->type == TYPE_RVINCULUM) {
+                    canParseEnd = true;
                     printf("%s $while%d\n", JUMP, condCounter);
                     result = statlist(sToken, fun_id);
                     if (result != SUCCES) {
@@ -422,6 +433,7 @@ int declrList(token *sToken, function_save *fun_id) {
                     if(sToken->type != TYPE_RVINCULUM) {
                         return SYN_ERROR;
                     }
+                    canParseEnd = true;
                     if(getNextToken(sToken) == LEX_ERROR) {
                         return LEX_ERROR;
                     }
@@ -467,6 +479,7 @@ int declrList(token *sToken, function_save *fun_id) {
         case KEYWORD_IF:
             unique+= 1;
             condCounter = unique;
+            canParseEnd = true;
             if(getNextToken(sToken) == LEX_ERROR) {
                 return LEX_ERROR;
             }
@@ -489,6 +502,7 @@ int declrList(token *sToken, function_save *fun_id) {
                         return LEX_ERROR;
                     }
                     if(sToken->type == TYPE_RVINCULUM) {
+                        canParseEnd = true;
                         result = statlist(sToken, fun_id);
                         if (result != SUCCES) {
                             return result;
@@ -503,6 +517,7 @@ int declrList(token *sToken, function_save *fun_id) {
                         if(sToken->type != TYPE_RVINCULUM) {
                             return SYN_ERROR;
                         }
+                        canParseEnd = true;
                         if(getNextToken(sToken) == LEX_ERROR) {
                             return LEX_ERROR;
                         }
@@ -515,6 +530,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
             }
         case KEYWORD_ELSE:
+            canParseEnd = false
             printf("%s $else%d\n", LABEL, condCounter);
             condCounter--;
             if(getNextToken(sToken) == LEX_ERROR) {
@@ -527,6 +543,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 return LEX_ERROR;
             }
             if(sToken->type == TYPE_RVINCULUM) {
+                canParseEnd = true;
                 if(getNextToken(sToken) == LEX_ERROR) {
                     return LEX_ERROR;
                 }
@@ -543,6 +560,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 if (sToken->type != TYPE_RVINCULUM) {
                     return SYN_ERROR;
                 }
+                canParseEnd = true;
                 result = statlist(sToken, fun_id);
                 if (result != SUCCES) {
                     return result;
@@ -614,7 +632,9 @@ int statlist(token *sToken, function_save *fun_id){
 
         case TYPE_ASSIGN:
 
-            getNextToken(sToken);
+            if((result = getNextToken(sToken)) != SUCCES){
+                return result;
+            }
             result = statlist(sToken, fun_id);
             if(result != SUCCES){
                 return result;
