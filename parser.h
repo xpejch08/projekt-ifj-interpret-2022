@@ -52,6 +52,7 @@
 
 #define STRLEN "STRLEN"
 #define SUBSTRING "GETCHAR"
+#define CONCAT "CONCAT"
 
 //-------------------------------------//
 

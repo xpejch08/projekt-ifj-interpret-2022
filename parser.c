@@ -18,6 +18,7 @@ TRoot *mainTree;
 
 DLList *list;
 token *tmpToken;
+token *tmp2Token;
 
 bool in_function = false;
 bool canParseEnd = false;
@@ -1077,8 +1078,6 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         return SEM_UNDEFINED_ERROR;
                     }
                 }
-                printf("%s LF@&substring%d\n", LABEL,unique);
-                printf("%s %s ", SUBSTRING, tmpToken->content.str->str);
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
@@ -1097,11 +1096,18 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                                 return SEM_UNDEFINED_ERROR;
                             }
                         }
-                        printf("%s ",sToken->content.str->str);
-                        tmpToken->content.str->str = sToken->content.str->str;
+                       
+                        printf("%s LF@&%s GF@&%s\n",MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
+                        printf("%s LF@&substring%d\n", LABEL, unique);
+                        printf("%s LF@&tmp%d\n", DEFVAR, unique);
+                        printf("%s LF@&tmp%d %s ", SUBSTRING, unique, (sToken->content.str->str)+1);
+                        
+                        tmp2Token = sToken;
+                        tmp2Token->content = sToken->content;
                         if((result = getNextToken(sToken)) != SUCCES){
                             return  result;
                         }
+                        
                         if(sToken->type == TYPE_COMMA){
                             if((result = getNextToken(sToken)) != SUCCES){
                                 return  result;
@@ -1117,9 +1123,14 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                                         return SEM_UNDEFINED_ERROR;
                                     }
                                 }
+                                
                                 printf("%s\n",sToken->content.str->str);
-                                printf("%s LF@&%s %d\n", ADD, tmpToken->content.str->str, 1);
-                                printf("%s %s %s\n",JUMPIFNEQ,tmpToken->content.str->str, sToken->content.str->str);
+                                printf("%s LF@&%s %d\n", ADD, tmp2Token->content.str->str, 1);
+                                
+                            
+                                printf("%s LF@&%s LF@&%s LF@&tmp%d\n", CONCAT, (tmpToken->content.str->str)+1, (tmpToken->content.str->str)+1, unique);
+                                printf("%s LF@&substring%d LF@&%s GF@&%s\n",JUMPIFNEQ, unique, (tmpToken->content.str->str)+1, (sToken->content.str->str)+1);
+                                printf("%s GF@&%s LF@&%s\n", MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
                                 if((result = getNextToken(sToken)) != SUCCES){
                                     return  result;
                                 }
