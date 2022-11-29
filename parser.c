@@ -1065,7 +1065,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             }
             return SYN_ERROR;
         case PARAM_SUBSTRING: // substring
-        unique++;
+            unique++;
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }

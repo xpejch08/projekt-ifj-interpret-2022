@@ -221,16 +221,16 @@ DataTypeEnum getDataType(token *sToken, TRoot *mainTree){
     }else if (sToken->type == TYPE_STRING){
         return DATATYPE_STRING;
     }else if (sToken->type == TYPE_IDENTIFIER){
-        TNode* data = BVSSearch(mainTree->rootPtr, *sToken);
+        //TNode* data = BVSSearch(mainTree->rootPtr, *sToken);
         
-        if(data->content.integerNumber == NULL && data->content.doubleNumber == NULL && data->content.str == NULL)
-            return DATATYPE_ERROR;
-        else if(data->content.integerNumber != NULL && data->content.doubleNumber == NULL && data->content.str == NULL)
-            return DATATYPE_INT;
-        else if(data->content.doubleNumber != NULL && data->content.integerNumber == NULL && data->content.str == NULL)
-            return DATATYPE_FLOAT;
-        else if(data->content.str != NULL && data->content.integerNumber == NULL && data->content.doubleNumber == NULL)
-            return DATATYPE_STRING;
+        //if(data->content.integerNumber == NULL && data->content->doubleNumber == NULL && data->content.str == NULL)
+        //    return DATATYPE_ERROR;
+        //else if(data->content.integerNumber != NULL && data->content.doubleNumber == NULL && data->content.str == NULL)
+        //    return DATATYPE_INT;
+        //else if(data->content.doubleNumber != NULL && data->content.integerNumber == NULL && data->content.str == NULL)
+        //    return DATATYPE_FLOAT;
+        //else if(data->content.str != NULL && data->content.integerNumber == NULL && data->content.doubleNumber == NULL)
+        //    return DATATYPE_STRING;
 
 
     }
