@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-//#include <malloc.h>
+#include <malloc.h>
 #include <stdbool.h>
 #include <string.h>
 #include "symtable.h"
@@ -22,7 +22,7 @@ void BVSCreate(TNode *rootPtr, token token){
     newPtr->leftPtr = NULL;
     newPtr->rightPtr = NULL;
     newPtr->type = token.type;
-    newPtr->content = token.content;
+    newPtr->content = token.content.str;
     rootPtr = newPtr;
 }
 
@@ -33,17 +33,13 @@ void BVSInsert(TRoot *root, token token){
             fprintf(stderr, "99");
             return;
         }
-        newPtr->leftPtr = NULL;
-        newPtr->rightPtr = NULL;
-        newPtr->type = token.type;
-        newPtr->content = token.content;
-        root->rootPtr = newPtr;
+        BVSCreate(root, token);
     }
     else{
-        if((strCmpStr(token.content.str, root->rootPtr->content.str)) < 0){
+        if((strCmpStr(token.content.str, root->rootPtr->content)) < 0){
             BVSInsert(root, token);
         }
-        else if((strCmpStr(token.content.str, root->rootPtr->content.str)) > 0){
+        else if((strCmpStr(token.content.str, root->rootPtr->content)) > 0){
             BVSInsert(root, token);
         }
     }
@@ -54,10 +50,10 @@ TNode *BVSSearch(TNode *rootPtr, token token){
         return NULL;
     }
     else{
-        if((strCmpStr(token.content.str, rootPtr->content.str)) < 0){
+        if((strCmpStr(token.content.str, rootPtr->content)) < 0){
             rootPtr->leftPtr = BVSSearch(rootPtr->leftPtr, token);
         }
-        else if((strCmpStr(token.content.str, rootPtr->content.str)) < 0){
+        else if((strCmpStr(token.content.str, rootPtr->content)) < 0){
             rootPtr->rightPtr = BVSSearch(rootPtr->rightPtr, token);
         }
         return rootPtr;
@@ -104,7 +100,7 @@ void BVSCreate_function(function_save token){
     }
     newPtr->leftPtr = NULL;
     newPtr->rightPtr = NULL;
-    newPtr->content = token.content;
+    newPtr->content = token.content->str;
     newPtr->parameters = token.param_count;
     newPtr->return_type = token.ret_value;
 }
@@ -114,10 +110,10 @@ void BVSInsert_function(TNodef *rootPtr, function_save token){
         BVSCreate_function(token);
     }
     else{
-        if((strCmpStr(token.content, rootPtr->content)) < 0){
+        if((strCmpStr(token.content->str, rootPtr->content->str)) < 0){
             BVSInsert_function(rootPtr->leftPtr, token);
         }
-        else if((strCmpStr(token.content, rootPtr->content)) > 0){
+        else if((strCmpStr(token.content->str, rootPtr->content->str)) > 0){
             BVSInsert_function(rootPtr->rightPtr, token);
         }
     }
@@ -162,6 +158,6 @@ void post(TNode *tree){
     if (tree != NULL){
         post(tree->leftPtr);
         post(tree->rightPtr);
-        fprintf(stderr,"CONTENT: %s      TYPE: %d\n", tree->content.str->str, tree->type);
+        fprintf(stderr,"CONTENT: %s      TYPE: %d\n", tree->content->str, tree->type);
     }
 }

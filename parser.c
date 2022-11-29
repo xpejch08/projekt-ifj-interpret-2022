@@ -1033,12 +1033,14 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 return SYN_ERROR;
             }
         case PARAM_STRLEN: // strlen
+        printf("%s LF@&%s GF@&%s\n", MOVE, (sToken->content.str->str)+1, sToken->content.str->str);
          if(in_function){
-            printf("%s LF@$%s\n", STRLEN,tmpToken->content.str->str);
+            
+            printf("%s LF@&%s\n", STRLEN,(tmpToken->content.str->str)+1);
                 //BVSSearch(insideFunction, *tmpToken)->content.integerNumber = INT_TYPE; 
             }
             else{
-            printf("%s GF@$%s\n", STRLEN,tmpToken->content.str->str);
+            printf("%s GF@&%s\n", STRLEN,(tmpToken->content.str->str)+1);
             }
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
