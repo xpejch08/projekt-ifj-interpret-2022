@@ -288,8 +288,8 @@ int declrList(token *sToken, function_save *fun_id) {
             if (BVSSearch_function(functionNames->rootPtr, *sToken) != NULL) {
                 canParseEnd = false;
                 call_function_save = BVSSearch_function(functionNames->rootPtr, *sToken);
-                printf("%s &%s\n", JUMP, sToken->content.str->str);
-                printf("%s &return%s\n", LABEL, sToken->content.str->str);
+                printf("%s $%s\n", JUMP, sToken->content.str->str);
+                printf("%s $return%s\n", LABEL, sToken->content.str->str);
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
@@ -324,12 +324,12 @@ int declrList(token *sToken, function_save *fun_id) {
                 return SEM_DEFINE_ERROR;
             }
             fun_id->content->str = sToken->content.str->str;
-            printf("%s &%send\n", JUMP, fun_id->content->str);
-            printf("%s &%s\n", LABEL, fun_id->content->str);
+            printf("%s $%send\n", JUMP, fun_id->content->str);
+            printf("%s $%s\n", LABEL, fun_id->content->str);
             printf("%s\n", CREATEFRAME);
             printf("%s\n", PUSHFRAME);
-            printf("%s LF@&return_val\n", DEFVAR);
-            printf("%s LF@&return_val %s\n", MOVE, NIL);
+            printf("%s LF@$return_val\n", DEFVAR);
+            printf("%s LF@$return_val %s\n", MOVE, NIL);
             
             if((result = getNextToken(sToken)) != SUCCES) {
                 return result;
@@ -365,7 +365,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
                 returnCount = false;
                 in_function = false;
-                printf("%s &%send\n", LABEL, fun_id->content->str);
+                printf("%s $%send\n", LABEL, fun_id->content->str);
                 BVSDispose(insideFunction);
                 result = statlist(sToken, fun_id);
                 if(result != SUCCES){
@@ -393,7 +393,7 @@ int declrList(token *sToken, function_save *fun_id) {
         case KEYWORD_WHILE:
             unique++;
             condCounter = unique;
-            printf("%s &while%d\n", LABEL, condCounter);
+            printf("%s $while%d\n", LABEL, condCounter);
             if((result = getNextToken(sToken)) != SUCCES) {
                 return result;
             }
@@ -411,7 +411,7 @@ int declrList(token *sToken, function_save *fun_id) {
                     return LEX_ERROR;
                 }
                 if(sToken->type == TYPE_RVINCULUM) {
-                    printf("%s &while%d\n", JUMP, condCounter);
+                    printf("%s $while%d\n", JUMP, condCounter);
                     result = statlist(sToken, fun_id);
                     if (result != SUCCES) {
                         return result;
@@ -519,7 +519,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
             }
         case KEYWORD_ELSE:
-            printf("%s &else%d\n", LABEL, condCounter);
+            printf("%s $else%d\n", LABEL, condCounter);
             condCounter--;
             if(getNextToken(sToken) == LEX_ERROR) {
                 return LEX_ERROR;
@@ -586,7 +586,7 @@ int statlist(token *sToken, function_save *fun_id){
 
         case TYPE_VARIABLE:
             BVSInsert(mainTree, *sToken);
-            printf("%s GF@&%s\n", DEFVAR, sToken->content.str->str);
+            printf("%s GF@%s\n", DEFVAR, sToken->content.str->str);
             tmpToken->content = sToken->content;
             getNextToken(sToken);
             result = statlist(sToken, fun_id);
@@ -784,7 +784,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     else if(sToken->type == TYPE_RBRACKET){
                         repeat--;
                         if(repeat == 0){
-                            printf("%s &else%d", JUMPIFNEQ, condCounter);
+                            printf("%s $else%d", JUMPIFNEQ, condCounter);
                             return SUCCES;
                         }
                         return parametrs(PARAM_IF_WHILE, repeat, sToken, fun_id);
@@ -964,12 +964,12 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             return SYN_ERROR;
         case PARAM_READI: // readi
             if(in_function){
-            printf("%s LF@&%s %s\n", READ,tmpToken->content.str->str,INT_TYPE);
+            printf("%s LF@$%s %s\n", READ,tmpToken->content.str->str,INT_TYPE);
                 //BVSSearch(insideFunction, *tmpToken)->content.integerNumber = INT_TYPE;
                 
             }
             else{
-            printf("%s GF@&%s %s\n", READ,tmpToken->content.str->str,INT_TYPE);
+            printf("%s GF@$%s %s\n", READ,tmpToken->content.str->str,INT_TYPE);
             }
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
@@ -982,12 +982,12 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             }
         case PARAM_READS: // reads
          if(in_function){
-            printf("%s LF@&%s %s\n", READ,tmpToken->content.str->str,STRING_TYPE);
+            printf("%s LF@$%s %s\n", READ,tmpToken->content.str->str,STRING_TYPE);
                 //BVSSearch(insideFunction, *tmpToken)->content.integerNumber = INT_TYPE;
                 
             }
             else{
-            printf("%s GF@&%s %s\n", READ,tmpToken->content.str->str,STRING_TYPE);
+            printf("%s GF@$%s %s\n", READ,tmpToken->content.str->str,STRING_TYPE);
             }
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
@@ -1000,11 +1000,11 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             }
         case PARAM_READF: // readf
             if(in_function){
-            printf("%s LF@&%s %s\n", READ,tmpToken->content.str->str,FLOAT_TYPE);
+            printf("%s LF@$%s %s\n", READ,tmpToken->content.str->str,FLOAT_TYPE);
                 //BVSSearch(insideFunction, *tmpToken)->content.integerNumber = INT_TYPE; 
             }
             else{
-            printf("%s GF@&%s %s\n", READ,tmpToken->content.str->str,FLOAT_TYPE);
+            printf("%s GF@$%s %s\n", READ,tmpToken->content.str->str,FLOAT_TYPE);
             }
 
             if((result = getNextToken(sToken)) != SUCCES){

@@ -74,7 +74,7 @@ void DLL_PrintLocal(DLList *list)
 		{
 			if(list->activeElement->type == TYPE_VARIABLE)
 			{
-			printf("LF@&%s ", list->activeElement->content.str->str);
+			printf("LF@%s ", list->activeElement->content.str->str);
 			}
 			else{
 			printf("%s ", list->activeElement->content.str->str);
@@ -93,7 +93,7 @@ void DLL_PrintGlobal(DLList *list)
 		{
 			if(list->activeElement->type == TYPE_VARIABLE)
 			{
-			printf("GF@&%s ", list->activeElement->content.str->str);
+			printf("GF@%s ", list->activeElement->content.str->str);
 			}
 			else{
 			printf("%s ", list->activeElement->content.str->str);
