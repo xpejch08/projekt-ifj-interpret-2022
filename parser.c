@@ -878,7 +878,15 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     repeat++;
                     return parametrs(PARAM_IF_WHILE, repeat, sToken, fun_id);
                 case KEYWORD_NULL:
-                    
+                    if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
+                    }
+                    if(sToken->type == TYPE_RBRACKET){
+                        return SUCCES;
+                    }else if(sToken->type == TYPE_EQUAL || sToken->type == TYPE_NOT_EQUAL){
+                        return parametrs(PARAM_IF_WHILE, repeat, sToken, fun_id);
+                    }
+                    return SYN_ERROR;
                 case TYPE_INTEGER_NUMBER:
                     
                 case TYPE_DOUBLE_NUMBER:
@@ -1355,7 +1363,7 @@ int parse(void){
         result = statlist(sToken, fun_id);
         //printf("EXIT %d", result);
     }
-    fprintf(stderr, "--%d--", result);
+    fprintf(stderr, "--%d--\n", result);
     //BVSFree(mainTree);
     //BVSFree(insideFunction);
     //BVSFree_function(functionNames);
