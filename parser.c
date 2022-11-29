@@ -1286,13 +1286,17 @@ int parse(void){
     token init;
     string initStr;
     function_save initek;
+    string fun_init;
 
     initStr.str = NULL;
     initStr.length = 0;
     initStr.alloc = 0;
+    fun_init.alloc = 0;
+    fun_init.length = 0;
+    fun_init.str = NULL;
     init.type = 110;
     init.content.str = &initStr;
-    initek.content = &initStr;
+    initek.content = &fun_init;
     initek.param_count = 0;
     initek.ret_value = 0;
     token *sToken;
