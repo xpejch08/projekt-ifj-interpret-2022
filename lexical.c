@@ -118,15 +118,41 @@ int prefix(token *str){
         return INT_ERROR;
     }
     strClean(str->content.str);
-    char prefix[30] = "<?php\ndeclare(strict_types=1);";
+
+    char character = (char) fgetc(stdin);
+    char prefix1[6] = "<?php";
+    char prefix2[18] = "(strict_types=1);";
     int i = 0;
-    while(i<30){
-        strAddChar(str->content.str, (char) fgetc(stdin));
+    while(isspace(character)){
+        character = (char) fgetc(stdin);
+    }
+    while(i<5){
+        strAddChar(str->content.str, character);
+        character = (char) fgetc(stdin);
         i++;
     }
-    if(strCmpConstStr(str->content.str, prefix) != 0){
+    int a = strCmpConstStr(str->content.str, prefix1);
+    if(strCmpConstStr(str->content.str, prefix1) != 0){
         return SYN_ERROR;
     }
+
+    getNextToken(str);
+    if(strCmpConstStr(str->content.str, "declare") != 0){
+        return SYN_ERROR;
+    }
+    strInit(str->content.str);
+    strClean(str->content.str);
+    i = 0;
+    character = (char) fgetc(stdin);
+    while(i<17){
+        strAddChar(str->content.str, character);
+        character = (char) fgetc(stdin);
+        i++;
+    }
+    if(strCmpConstStr(str->content.str, prefix2) != 0){
+        return SYN_ERROR;
+    }
+
     return 0;
 }
 
@@ -513,6 +539,7 @@ int getNextToken(token *attr) {
                     return SUCCES;
 
                 }
+
             case assignOrEqualState:
                 if(character == '='){
                     state = equalState;
