@@ -154,3 +154,14 @@ void BVSFree_function(TRootf *SymTable){
 
 
 //////////////////////////////////////////
+void postorder(TRoot *tree) {
+  post(tree->rootPtr);
+}
+
+void post(TNode *tree){
+    if (tree != NULL){
+        post(tree->leftPtr);
+        post(tree->rightPtr);
+        fprintf(stderr,"CONTENT: %s      TYPE: %d\n", tree->content.str->str, tree->type);
+    }
+}

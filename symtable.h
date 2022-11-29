@@ -104,6 +104,7 @@ void BVSFreeNode(TNode *rootPtr);
 
 void BVSFreeFunctionNode(TNodef *rootPtr);
 
-
+void postorder(TRoot *tree);
+void post(TNode *tree);
 
 #endif
