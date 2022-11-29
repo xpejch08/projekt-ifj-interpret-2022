@@ -654,6 +654,7 @@ int statlist(token *sToken, function_save *fun_id){
         case TYPE_GREATER_THAN:
         case TYPE_GREATER_OR_EQUAL:
         case TYPE_EQUAL:
+        case TYPE_NOT_EQUAL:
         case TYPE_CONCATENATE:
             if((result = getNextToken(sToken)) != SUCCES){
                 return result;
@@ -668,8 +669,6 @@ int statlist(token *sToken, function_save *fun_id){
         case TYPE_INTEGER_NUMBER:
         case TYPE_DOUBLE_NUMBER:
         case TYPE_EXPONENT_NUMBER:
-        case TYPE_NOT_EQUAL:
-            return SYN_ERROR;
 
     }
     return SYN_ERROR;
