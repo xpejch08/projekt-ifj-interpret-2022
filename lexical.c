@@ -127,11 +127,12 @@ int prefix(token *str){
     while(isspace(character)){
         character = (char) fgetc(stdin);
     }
-    while(i<5){
+    while(i<4){
         strAddChar(str->content.str, character);
         character = (char) fgetc(stdin);
         i++;
     }
+    strAddChar(str->content.str, character);
     int a = strCmpConstStr(str->content.str, prefix1);
     if(strCmpConstStr(str->content.str, prefix1) != 0){
         return SYN_ERROR;
@@ -141,16 +142,28 @@ int prefix(token *str){
     if(strCmpConstStr(str->content.str, "declare") != 0){
         return SYN_ERROR;
     }
-    strInit(str->content.str);
-    strClean(str->content.str);
-    i = 0;
-    character = (char) fgetc(stdin);
-    while(i<17){
-        strAddChar(str->content.str, character);
-        character = (char) fgetc(stdin);
-        i++;
+    getNextToken(str);
+    if(str->type != TYPE_LBRACKET){
+        return SYN_ERROR;
     }
-    if(strCmpConstStr(str->content.str, prefix2) != 0){
+    getNextToken(str);
+    if(strCmpConstStr(str->content.str, "strict_types") != 0){
+        return SYN_ERROR;
+    }
+    getNextToken(str);
+    if(str->type != TYPE_ASSIGN){
+        return SYN_ERROR;
+    }
+    getNextToken(str);
+    if(strCmpConstStr(str->content.integerNumber, "1") != 0){
+        return SYN_ERROR;
+    }
+    getNextToken(str);
+    if(str->type != TYPE_RBRACKET){
+        return SYN_ERROR;
+    }
+    getNextToken(str);
+    if(str->type != TYPE_SEMICOLON){
         return SYN_ERROR;
     }
 
@@ -159,7 +172,7 @@ int prefix(token *str){
 
 int getNextToken(token *attr) {
     int state = basicState;
-    char character;
+    char character = '\0';
     char hexaEscape1 = '0';
     char hexaEscape2 = '0';
     //char hexaEscape3 = '0'; //todo
@@ -272,6 +285,9 @@ int getNextToken(token *attr) {
                 else if(character == '"'){
                     state = waitForStringEnd;
                 }
+                else{
+                    return LEX_ERROR;
+                }
                 break;
                 /** if character is a comment **/
             case possibleCommentState :
@@ -293,7 +309,8 @@ int getNextToken(token *attr) {
                     state = basicState;
                 }
                 else if(character == EOF){
-                    return LEX_ERROR;
+                    attr->type = TYPE_END_OF_FILE;
+                    return SUCCES;
                 }
                 break;
             case blockCommentState:
@@ -551,6 +568,7 @@ int getNextToken(token *attr) {
                 }
                 else{
                     attr->type = TYPE_ASSIGN;
+                    ungetc(character, stdin);
                     return SUCCES;
                 }
             case equalState:
@@ -572,22 +590,23 @@ int getNextToken(token *attr) {
                 break;
             case epilogState:
                 if(character == '>'){
-                    getNextToken(attr);
-                    if(attr->type == TYPE_END_OF_FILE) {
-                        attr->type = TYPE_EPILOG;
-                        return SUCCES;
+                    character = (char) getc(stdin);
+                    if(character != EOF){
+                        return LEX_ERROR;
                     }
                     else{
-                        return LEX_ERROR;
+                        attr->type = TYPE_END_OF_FILE;
+                        return SUCCES;
                     }
                 }
                 else{
-                    return LEX_ERROR
+                    return LEX_ERROR;
                 }
                 break;
             case notEqualStateEnd:
                 if(character == '='){
                     attr->type = TYPE_NOT_EQUAL;
+                    return SUCCES;
                 }
                 else{
                     return LEX_ERROR;
