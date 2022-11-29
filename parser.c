@@ -669,7 +669,7 @@ int statlist(token *sToken, function_save *fun_id){
         case TYPE_INTEGER_NUMBER:
         case TYPE_DOUBLE_NUMBER:
         case TYPE_EXPONENT_NUMBER:
-
+        break;
     }
     return SYN_ERROR;
     //todo statList
