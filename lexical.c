@@ -37,6 +37,7 @@
 #define notEqualState                   326
 #define notEqualStateEnd                327
 #define epilogState                     328
+#define decimalEndState                 329
 
 
 //todo token initialization, change returns of getNextToken function
@@ -509,6 +510,19 @@ int getNextToken(token *attr) {
             case decimalState:
                 if(isdigit(character)){
                     strAddChar(attr->content.str, character);
+                    state = decimalEndState;
+                }
+                else if(character == 'e' || character == 'E'){
+                    strAddChar(attr->content.str, character);
+                    state = exponentPlusOrMinusState;
+                }
+                else{
+                    return LEX_ERROR;
+                }
+                break;
+            case decimalEndState:
+                if(isdigit(character)){
+                    strAddChar(attr->content.str, character);
                 }
                 else if(character == 'e' || character == 'E'){
                     strAddChar(attr->content.str, character);
@@ -519,17 +533,21 @@ int getNextToken(token *attr) {
                     strCpyStr(attr->content.doubleNumber, attr->content.str);
                     return SUCCES;
                 }
+                break;
             case exponentPlusOrMinusState:
                 if(character == '+' || character == '-' || isdigit(character) == 1){
                     strAddChar(attr->content.str, character);
                     state = endExponentState;
                     break;
                 }
+                else{
+                    return LEX_ERROR;
+                }
             case endExponentState:
                 if(isdigit(character)){
                     strAddChar(attr->content.str,character);
                 }
-                else if(isspace(character)){
+                else if(isspace(character) || character == ';'){
                     ungetc(character, source);
                     attr->type = TYPE_EXPONENT_NUMBER;
                     return SUCCES;

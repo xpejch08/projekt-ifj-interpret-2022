@@ -42,7 +42,7 @@ void BVSInsert(TRoot *root, token token){
         initStr.alloc = 0;
 
         newPtr = &init;
-        newPtr->content.str = &initStr;
+        newPtr-> = &initStr;
         newPtr->leftPtr = NULL;
         newPtr->rightPtr = NULL;
         newPtr->type = token.type;

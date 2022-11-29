@@ -530,7 +530,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
             }
         case KEYWORD_ELSE:
-            canParseEnd = false
+            canParseEnd = false;
             printf("%s $else%d\n", LABEL, condCounter);
             condCounter--;
             if(getNextToken(sToken) == LEX_ERROR) {

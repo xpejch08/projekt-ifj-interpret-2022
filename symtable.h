@@ -9,7 +9,7 @@
 
 /////////VARIABLE//////////
 typedef struct tnode{
-    string *name;
+    string *content;
     struct tnode *leftPtr;
     struct tnode *rightPtr;
     int type;
