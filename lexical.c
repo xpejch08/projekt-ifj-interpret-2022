@@ -8,7 +8,6 @@
 
 //todo hexa escape octa escape
 
-
 #define basicState                      300 //beginning state waiting for the first character
 #define possibleCommentState            301 //state that found the '/' symbol and checks if comment will be one-line block, or won't be at all
 #define oneLineCommentState             302 //one line comment state waiting for '\n' to end else returns LEX_ERROR
@@ -309,7 +308,7 @@ int getNextToken(token *attr) {
                 }
                 break;
             case variableRead:
-                if(!(isspace(character))) {
+                if(!isspace(character) && (isalnum(character) != 0 || character == '_')){
                     strAddChar(attr->content.str, character);
                     break;
                 }
