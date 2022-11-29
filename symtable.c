@@ -34,18 +34,27 @@ void BVSInsert(TRoot *root, token token){
             fprintf(stderr, "99");
             return;
         }
+        TNode init;
+        string initStr;
+
+        initStr.str = NULL;
+        initStr.length = 0;
+        initStr.alloc = 0;
+
+        newPtr = &init;
+        newPtr->content.str = &initStr;
         newPtr->leftPtr = NULL;
         newPtr->rightPtr = NULL;
         newPtr->type = token.type;
-        newPtr->content = token.content;
+        strCpyStr(newPtr->content.str, token.content.str);
         root->rootPtr = newPtr;
     }
-    else{
-        if((strCmpStr(token.content.str, root->rootPtr->content.str)) < 0){
-            BVSInsert(root, token);
-        }
-        else if((strCmpStr(token.content.str, root->rootPtr->content.str)) > 0){
-            BVSInsert(root, token);
+    else {
+
+        if ((strCmpStr(token.content.str, root->rootPtr->content.str)) < 0) {
+            BVSCreate(root->rootPtr->leftPtr, token);
+        } else if ((strCmpStr(token.content.str, root->rootPtr->content.str)) > 0) {
+            BVSCreate(root->rootPtr->rightPtr, token);
         }
     }
 }
