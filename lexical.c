@@ -114,6 +114,7 @@ int keywordCmp(string *str, token *attr){
  * @return returns different LEX_ERROR if something goes wrong else returns 0
  */
 int prefix(token *str){
+    //todo getnexttoken a upravit lexikalku na to
     if(strInit(str->content.str) == 1){
         return INT_ERROR;
     }
