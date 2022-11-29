@@ -401,6 +401,10 @@ int declrList(token *sToken, function_save *fun_id) {
                 return SYN_ERROR;
             }
             else {
+                paramError = parametrs(PARAM_IF_WHILE, 1, sToken, fun_id);
+                if(paramError != SUCCES){
+                    return paramError;
+                }
                 if((result = getNextToken(sToken)) != SUCCES) {
                     return result;
                 }
