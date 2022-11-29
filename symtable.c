@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-//#include <malloc.h>
+#include <malloc.h>
 #include <stdbool.h>
 #include <string.h>
 #include "symtable.h"
@@ -22,24 +22,43 @@ void BVSCreate(TNode *rootPtr, token token){
     newPtr->leftPtr = NULL;
     newPtr->rightPtr = NULL;
     newPtr->type = token.type;
-    newPtr->name = token.content.str; 
+    newPtr->name = token.content.str;
     newPtr->name->str = token.content.str->str;
     rootPtr = newPtr;
 }
 
 void BVSInsert(TRoot *root, token token){
     if(root->rootPtr == NULL){
-            BVSCreate(root->rootPtr, token);
-    }
-    else{
-        if((strCmpStr(token.content.str, root->rootPtr->name)) < 0){
-            BVSInsert(root, token);
+        TNode *newPtr = (TNode *) malloc(sizeof(struct tnode));
+        if(newPtr == NULL){
+            fprintf(stderr, "99");
+            return;
         }
-        else if((strCmpStr(token.content.str, root->rootPtr->name)) > 0){
-            BVSInsert(root, token);
+        TNode init;
+        string initStr;
+
+        initStr.str = NULL;
+        initStr.length = 0;
+        initStr.alloc = 0;
+
+        newPtr = &init;
+        newPtr->content.str = &initStr;
+        newPtr->leftPtr = NULL;
+        newPtr->rightPtr = NULL;
+        newPtr->type = token.type;
+        strCpyStr(newPtr->content.str, token.content.str);
+        root->rootPtr = newPtr;
+    }
+    else {
+
+        if ((strCmpStr(token.content.str, root->rootPtr->content.str)) < 0) {
+            BVSCreate(root->rootPtr->leftPtr, token);
+        } else if ((strCmpStr(token.content.str, root->rootPtr->content.str)) > 0) {
+            BVSCreate(root->rootPtr->rightPtr, token);
         }
     }
 }
+
 
 TNode *BVSSearch(TNode *rootPtr, token token){
     if(rootPtr == NULL){
