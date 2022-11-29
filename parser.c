@@ -288,7 +288,7 @@ int declrList(token *sToken, function_save *fun_id) {
             if (BVSSearch_function(functionNames->rootPtr, *sToken) != NULL) {
                 canParseEnd = false;
                 call_function_save = BVSSearch_function(functionNames->rootPtr, *sToken);
-                printf("%s &function%s\n", JUMP, sToken->content.str->str);
+                printf("%s &%s\n", JUMP, sToken->content.str->str);
                 printf("%s &return%s\n", LABEL, sToken->content.str->str);
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
@@ -324,8 +324,8 @@ int declrList(token *sToken, function_save *fun_id) {
                 return SEM_DEFINE_ERROR;
             }
             fun_id->content->str = sToken->content.str->str;
-            printf("%s &function%send\n", JUMP, fun_id->content->str);
-            printf("%s &function%s\n", LABEL, fun_id->content->str);
+            printf("%s &%send\n", JUMP, fun_id->content->str);
+            printf("%s &%s\n", LABEL, fun_id->content->str);
             printf("%s\n", CREATEFRAME);
             printf("%s\n", PUSHFRAME);
             printf("%s LF@&return_val\n", DEFVAR);
@@ -365,7 +365,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
                 returnCount = false;
                 in_function = false;
-                printf("%s &function%send\n", LABEL, fun_id->content->str);
+                printf("%s &%send\n", LABEL, fun_id->content->str);
                 BVSDispose(insideFunction);
                 result = statlist(sToken, fun_id);
                 if(result != SUCCES){
@@ -1314,7 +1314,7 @@ int parse(void){
     
     int result;
     
-    DLL_Init(list);
+    //DLL_Init(list);
     //todo fix init token function
 
     if((tokenId = getNextToken(sToken)) == LEX_ERROR){
@@ -1325,9 +1325,9 @@ int parse(void){
         //printf("EXIT %d", result);
     }
     fprintf(stderr, "--%d--", result);
-    BVSFree(mainTree);
-    BVSFree(insideFunction);
-    BVSFree_function(functionNames);
+    //BVSFree(mainTree);
+    //BVSFree(insideFunction);
+    //BVSFree_function(functionNames);
     //todo freeToken() funtcion
     return result;
 }
