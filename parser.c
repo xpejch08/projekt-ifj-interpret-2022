@@ -60,11 +60,9 @@ int declrList(token *sToken, function_save *fun_id) {
                             return  LEX_ERROR;
                         }
                         if (sToken->type != TYPE_SEMICOLON) {
-                            //instructionFree()
                             return SYN_ERROR;
                         }
 
-                        //todo instructionFree()
                         canParseEnd = true;
 
                         if((result = getNextToken(sToken)) != SUCCES){
@@ -92,11 +90,9 @@ int declrList(token *sToken, function_save *fun_id) {
                     paramError = parametrs(PARAM_READS, 1, sToken, fun_id);
                     if (paramError == SUCCES) {
                         if (getNextToken(sToken) != TYPE_SEMICOLON) {
-                            //instructionFree()
                             return SYN_ERROR;
                         }
 
-                        //todo instructionFree()
                         canParseEnd = true;
 
                         if((result = getNextToken(sToken)) != SUCCES){
@@ -123,7 +119,6 @@ int declrList(token *sToken, function_save *fun_id) {
                             return LEX_ERROR;
                         }
                         if (sToken->type != TYPE_SEMICOLON) {
-                            //instructionFree()
                             return SYN_ERROR;
                         }
 
@@ -156,11 +151,9 @@ int declrList(token *sToken, function_save *fun_id) {
                     paramError = parametrs(PARAM_READF, 1, sToken, fun_id);
                     if (paramError == SUCCES) {
                         if (getNextToken(sToken) != TYPE_SEMICOLON) {
-                            //instructionFree()
                             return SYN_ERROR;
                         }
 
-                        //todo instructionFree()
                         canParseEnd = true;
 
                         if ((result = getNextToken(sToken)) != SUCCES) {
@@ -184,10 +177,8 @@ int declrList(token *sToken, function_save *fun_id) {
                     paramError = parametrs(PARAM_STRLEN, 1, sToken, fun_id);
                     if (paramError == SUCCES) {
                         if (getNextToken(sToken) != TYPE_SEMICOLON) {
-                            //instructionFree()
                             return SYN_ERROR;
                         }
-                        //todo instructionFree()
                         canParseEnd = true;
 
                         if((result = getNextToken(sToken)) != SUCCES){
@@ -1033,6 +1024,13 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 return SYN_ERROR;
             }
         case PARAM_STRLEN: // strlen
+         if(in_function){
+            printf("%s LF@$%s\n", STRLEN,tmpToken->content.str->str);
+                //BVSSearch(insideFunction, *tmpToken)->content.integerNumber = INT_TYPE; 
+            }
+            else{
+            printf("%s GF@$%s\n", STRLEN,tmpToken->content.str->str);
+            }
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
@@ -1056,6 +1054,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             }
             return SYN_ERROR;
         case PARAM_SUBSTRING: // substring
+        unique++;
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
@@ -1070,6 +1069,8 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         return SEM_UNDEFINED_ERROR;
                     }
                 }
+                printf("%s LF@&substring%d\n", LABEL,unique);
+                printf("%s %s ", SUBSTRING, tmpToken->content.str->str);
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
@@ -1088,6 +1089,8 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                                 return SEM_UNDEFINED_ERROR;
                             }
                         }
+                        printf("%s ",sToken->content.str->str);
+                        tmpToken->content.str->str = sToken->content.str->str;
                         if((result = getNextToken(sToken)) != SUCCES){
                             return  result;
                         }
@@ -1106,6 +1109,9 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                                         return SEM_UNDEFINED_ERROR;
                                     }
                                 }
+                                printf("%s\n",sToken->content.str->str);
+                                printf("%s LF@&%s %d\n", ADD, tmpToken->content.str->str, 1);
+                                printf("%s %s %s\n",JUMPIFNEQ,tmpToken->content.str->str, sToken->content.str->str);
                                 if((result = getNextToken(sToken)) != SUCCES){
                                     return  result;
                                 }

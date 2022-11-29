@@ -51,6 +51,7 @@
 #define NIL "nil@nil"
 
 #define STRLEN "STRLEN"
+#define SUBSTRING "GETCHAR"
 
 //-------------------------------------//
 
