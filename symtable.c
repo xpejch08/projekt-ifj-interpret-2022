@@ -13,31 +13,37 @@ void BVSInit(TRoot *SymTable){
     SymTable->rootPtr = NULL;
 }
 
-TNode *BVSCreate(TNode *rootPtr, token token){
+void BVSCreate(TNode *rootPtr, token token){
     TNode *newPtr = malloc(sizeof(struct tnode));
     if(newPtr == NULL){
         fprintf(stderr, "99");
-        return NULL;
+        return;
     }
-    TNode init;
-    string initStr;
-    initStr.str = NULL;
-    initStr.length = 0;
-    initStr.alloc = 0;
-    newPtr = &init;
-    newPtr->content = &initStr;
-    newPtr->leftPtr = NULL;
+    //TNode init;
+    //string initStr;
+    //initStr.str = NULL;
+    //initStr.length = 0;
+    //initStr.alloc = 0;
+    //TNode *newPtr = &init;
+    //newPtr->content = &initStr;
+    //newPtr->leftPtr = NULL;
+    //newPtr->rightPtr = NULL;
+    //newPtr->type = token.type;
+    //strCpyStr(newPtr->content, token.content.str);
+    //rootPtr = newPtr;
+    //fprintf(stderr, "%s\n", newPtr->content->str);
+    //fprintf(stderr, "%d\n", newPtr->type);
+    newPtr->content = (&token)->content.str;
+    strCpyStr(newPtr->content, (&token)->content.str);
+    newPtr->type = (&token)->type;
+    newPtr->leftPtr = NULL;  
     newPtr->rightPtr = NULL;
-    newPtr->type = token.type;
-    strCpyStr(newPtr->content, token.content.str);
     rootPtr = newPtr;
-
-    return newPtr;
 }
 
-TNode *BVSInsert(TNode *rootPtr, token token){
+void BVSInsert(TNode *rootPtr, token token){
     if(rootPtr == NULL){
-        return BVSCreate(rootPtr, token);
+        BVSCreate(rootPtr, token);
     }
     else {
         if ((strCmpStr(token.content.str, rootPtr->content)) < 0) {
@@ -46,7 +52,7 @@ TNode *BVSInsert(TNode *rootPtr, token token){
             return BVSInsert(rootPtr->rightPtr, token);
         }
     }
-    return rootPtr;
+    
 }
 
 
@@ -103,12 +109,12 @@ void BVSCreate_function(TNodef *rootPtr,function_save token){
         fprintf(stderr, "99");
         return;
     }
-    TNodef init;
+    //TNodef init;
     string initStr;
     initStr.str = NULL;
     initStr.length = 0;
     initStr.alloc = 0;
-    newPtr = &init;
+    //newPtr = &init;
     newPtr->content = &initStr;
     newPtr->leftPtr = NULL;
     newPtr->rightPtr = NULL;
@@ -166,5 +172,8 @@ void BVSFree_function(TRootf *SymTable){
 void postorder(TNode *tree){ 
     if (tree != NULL){
         fprintf(stderr,"CONTENT: %s      TYPE: %d\n", tree->content->str, tree->type);
+    }
+    if(tree == NULL){
+        fprintf(stderr, "IS EMPTY\n");
     }
 }

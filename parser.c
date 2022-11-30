@@ -16,7 +16,8 @@ TRoot *insideFunction;
 TRootf *functionNames;
 TRoot *mainTree;
 
-DLList *list;
+DLList tmp;
+DLList *list = &tmp;
 token *tmpToken;
 token *tmp2Token;
 
@@ -1430,7 +1431,7 @@ int parse(void){
     
     int result;
     
-    //DLL_Init(list);
+    DLL_Init(list);
     //todo fix init token function
 
     if((tokenId = getNextToken(sToken)) == LEX_ERROR){
