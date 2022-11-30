@@ -48,7 +48,7 @@ int declrList(token *sToken, function_save *fun_id) {
         case TYPE_RVINCULUM:
             return SUCCES;
         case TYPE_IDENTIFIER:
-
+             
             if (strCmpConstStr(sToken->content.str, "write") == 0) {
                 canParseEnd = false;
 
@@ -56,6 +56,7 @@ int declrList(token *sToken, function_save *fun_id) {
                     return  result;
                 }
                 if (sToken->type == TYPE_LBRACKET) {
+                    printf("%s ", WRITE);
                     paramError = parametrs(PARAM_WRITE, 1,  sToken, fun_id);
                     if (paramError == SUCCES) {
                         if(getNextToken(sToken) == LEX_ERROR){
@@ -936,7 +937,6 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
-            printf("%s ", WRITE);
             switch (sToken->type) {
                 case TYPE_VARIABLE:
                     if(in_function){
@@ -949,17 +949,19 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                             return SEM_UNDEFINED_ERROR;
                         }
                     }
-                    DLL_InsertLast(list, *sToken);
+                    if(!in_function)
+                    {
+                                printf("GF@&%s ", sToken->content.str->str);
+                    }
+                    else {
+                              printf("LF@&%s ", sToken->content.str->str);
+                        }
+                    
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
                     if(sToken->type == TYPE_RBRACKET){
-                        if(!in_function){
-                            DLL_PrintGlobal(list);
-                        }
-                        else{
-                            DLL_PrintLocal(list);
-                        }
+                      
                         printf("\n");
                         DLL_Free(list);
                         return SUCCES;
@@ -974,18 +976,13 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 case TYPE_STRING:
                 case TYPE_INTEGER_NUMBER:
                 case TYPE_DOUBLE_NUMBER:
-                    DLL_InsertLast(list, *sToken);
+                    printf("%s ", sToken->content.str->str);                          
+                    
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
                     if(sToken->type == TYPE_RBRACKET){
-                        if(!in_function)
-                        {
-                            DLL_PrintGlobal(list);
-                        }
-                        else{
-                            DLL_PrintLocal(list);
-                        }
+                       
                         printf("\n");
                         DLL_Free(list);
                         return SUCCES;
