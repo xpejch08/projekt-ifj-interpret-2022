@@ -1085,7 +1085,6 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             }
             return SYN_ERROR;
         case PARAM_SUBSTRING: // substring
-            unique++;
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
@@ -1118,6 +1117,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                                 return SEM_UNDEFINED_ERROR;
                             }
                         }
+                        unique++;
                         printf("%s LF@&%s GF@&%s\n",MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
                         printf("%s LF@&substring%d\n", LABEL, unique);
                         printf("%s LF@&tmp%d\n", DEFVAR, unique);
@@ -1146,7 +1146,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                                 }
                                 
                                 printf("%s\n",sToken->content.str->str);
-                                printf("%s LF@&%s int@%d\n", ADD, tmp2Token->content.str->str, 1);
+                                printf("%s LF@&%s int@%a\n", ADD, tmp2Token->content.str->str, 1);
                                 
                             
                                 printf("%s LF@&%s LF@&%s LF@&tmp%d\n", CONCAT, (tmpToken->content.str->str)+1, (tmpToken->content.str->str)+1, unique);
@@ -1182,7 +1182,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 printf("%s\n", CREATEFRAME);
                 printf("%s\n", PUSHFRAME);
                 printf("%s LF@&%s GF@&%s\n", MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
-                printf("%s GF@&%s LF@&%s int@%d\n",STRI2INT, (tmpToken->content.str->str)+1, (sToken->content.str->str)+1, 0);
+                printf("%s GF@&%s LF@&%s int@%a\n",STRI2INT, (tmpToken->content.str->str)+1, (sToken->content.str->str)+1, 0);
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
@@ -1207,6 +1207,17 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         return SEM_UNDEFINED_ERROR;
                     }
                 }
+                unique++;
+                printf("%s\n", CREATEFRAME);
+                printf("%s\n", PUSHFRAME);
+                printf("%s LF@&%s GF@&%s\n", MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
+                printf("%s LF@&tmp%d\n", DEFVAR, unique);
+                printf("%s LF@&tmp%d LF@&%s int@%a\n", LT, sToken->content.str->str, 0);
+                printf("%s LF@&chr%d bool@true LF@&tmp%d\n",JUMPIFEQ, unique, unique);
+                printf("%s LF@&tmp%d LF@&%s int@%a\n", GT, sToken->content.str->str, 255);
+                printf("%s LF@&chr%d bool@true LF@&tmp%d\n",JUMPIFEQ, unique, unique);
+                printf("%s %s LF@&%s\n", INT2CHAR,(tmpToken->content.str->str)+1, (sToken->content.str->str)+1);
+                printf("%s LF@&chr%d\n", LABEL, unique);
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
