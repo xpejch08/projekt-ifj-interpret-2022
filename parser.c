@@ -51,7 +51,7 @@ int declrList(token *sToken, function_save *fun_id) {
              
             if (strCmpConstStr(sToken->content.str, "write") == 0) {
                 canParseEnd = false;
-
+                
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
@@ -937,6 +937,10 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
+<<<<<<< HEAD
+=======
+    
+>>>>>>> refs/remotes/origin/main
             switch (sToken->type) {
                 case TYPE_VARIABLE:
                     if(in_function){
@@ -951,19 +955,32 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
                     if(!in_function)
                     {
+<<<<<<< HEAD
                                 printf("GF@&%s ", sToken->content.str->str);
                     }
                     else {
                               printf("LF@&%s ", sToken->content.str->str);
                         }
                     
+=======
+                        printf("GF@&%s ", sToken->content.str->str);
+                    }
+                    else{
+                        printf("LF@&%s ", sToken->content.str->str);
+                    }
+                   
+>>>>>>> refs/remotes/origin/main
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
                     if(sToken->type == TYPE_RBRACKET){
+<<<<<<< HEAD
                       
+=======
+                       
+>>>>>>> refs/remotes/origin/main
                         printf("\n");
-                        DLL_Free(list);
+                        
                         return SUCCES;
                     }
                     else if(sToken->type == TYPE_COMMA){
@@ -976,13 +993,21 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 case TYPE_STRING:
                 case TYPE_INTEGER_NUMBER:
                 case TYPE_DOUBLE_NUMBER:
+<<<<<<< HEAD
                     printf("%s ", sToken->content.str->str);                          
                     
+=======
+                printf("%s ", sToken->content.str->str);
+>>>>>>> refs/remotes/origin/main
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
                     if(sToken->type == TYPE_RBRACKET){
+<<<<<<< HEAD
                        
+=======
+                        
+>>>>>>> refs/remotes/origin/main
                         printf("\n");
                         DLL_Free(list);
                         return SUCCES;
@@ -1428,7 +1453,6 @@ int parse(void){
     
     int result;
     
-    DLL_Init(list);
     //todo fix init token function
 
     if((tokenId = getNextToken(sToken)) == LEX_ERROR){

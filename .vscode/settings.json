@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "lexical.h": "c",
-        "parser.h": "c"
-    },
-    "C_Cpp.errorSquiggles": "Enabled"
-}
