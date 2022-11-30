@@ -406,6 +406,7 @@ int declrList(token *sToken, function_save *fun_id) {
             }
             else {
                 paramError = parametrs(PARAM_IF_WHILE, 1, sToken, fun_id);
+                printf("%s $while_end%d\n", JUMPIFNEQ, condCounter);
                 if(paramError != SUCCES){
                     return paramError;
                 }
@@ -420,7 +421,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
                 if(sToken->type == TYPE_RVINCULUM) {
                     canParseEnd = true;
-                    printf("%s $while%d\n", JUMP, condCounter);
+                    
                     result = statlist(sToken, fun_id);
                     if (result != SUCCES) {
                         return result;
@@ -432,6 +433,9 @@ int declrList(token *sToken, function_save *fun_id) {
                     if (result != SUCCES) {
                         return result;
                     }
+                    printf("%s $while%d\n", JUMP, condCounter);
+                    printf("%s $while_end%d\n", LABEL, condCounter);
+                    condCounter--;
                     if(sToken->type != TYPE_RVINCULUM) {
                         return SYN_ERROR;
                     }
@@ -489,6 +493,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 return SYN_ERROR;
             } else {
                 paramError = parametrs(PARAM_IF_WHILE,1, sToken, fun_id);
+                printf("%s $else%d\n", JUMPIFNEQ, condCounter);
                 if(paramError != SUCCES) {
                     return paramError;
                 }
@@ -534,7 +539,7 @@ int declrList(token *sToken, function_save *fun_id) {
         case KEYWORD_ELSE:
             canParseEnd = false;
             printf("%s $else%d\n", LABEL, condCounter);
-            condCounter--;
+            
             if(getNextToken(sToken) == LEX_ERROR) {
                 return LEX_ERROR;
             }
@@ -812,7 +817,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     else if(sToken->type == TYPE_RBRACKET){
                         repeat--;
                         if(repeat == 0){
-                            printf("%s $else%d\n", JUMPIFNEQ, condCounter);
+                           
                             return SUCCES;
                         }
                         return parametrs(PARAM_IF_WHILE, repeat, sToken, fun_id);
@@ -850,7 +855,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     else if(sToken->type == TYPE_RBRACKET){
                         repeat--;
                         if(repeat == 0){
-                            printf("%s $else%d\n", JUMPIFNEQ, condCounter);
+                            
                             return SUCCES;
                         }
                         return parametrs(PARAM_IF_WHILE, repeat, sToken, fun_id);
@@ -923,7 +928,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     else if(sToken->type == TYPE_RBRACKET){
                         repeat--;
                         if(repeat == 0){
-                            printf("%s $else%d\n", JUMPIFNEQ, condCounter);
+                           
                             return SUCCES;
                         }
                         return parametrs(PARAM_IF_WHILE, repeat, sToken, fun_id);
