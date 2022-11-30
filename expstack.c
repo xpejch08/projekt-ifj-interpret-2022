@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 //#include <malloc.h>
-//#include "expstack.h"
+#include "expstack.h"
 #include "expression.h"
 
 void stackInit(Stack *stack) {
