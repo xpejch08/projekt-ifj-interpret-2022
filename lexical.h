@@ -47,6 +47,7 @@
 #define   TYPE_COLON             136
 #define   TYPE_COMMA             137
 #define   TYPE_FUNCTIONDECLARE   138
+#define   TYPE_EPILOG            139
 
 
 typedef union{
@@ -54,6 +55,12 @@ typedef union{
     string *doubleNumber;
     string *str;
 }tokenContent;
+
+typedef struct{
+    string *content;
+    int param_count;
+    int ret_value;
+}function_save;
 
 typedef struct{
     tokenContent content;

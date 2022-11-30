@@ -16,12 +16,17 @@ typedef struct {
 	DLLElementPtr lastElement;
 } DLList;
 
-void DLL_Init( DLList *list );
 
-int DLL_InsertFirst( DLList *list, token token );
+void DLL_Init( DLList *);
 
-int DLL_InsertLast( DLList *list, token token );
+int DLL_InsertFirst( DLList *, token token );
 
-void DLL_Free( DLList *list );
+int DLL_InsertLast( DLList *, token token );
+
+void DLL_Free( DLList * );
+
+void DLL_PrintLocal(DLList *);
+
+void DLL_PrintGlobal(DLList *);
 
 #endif

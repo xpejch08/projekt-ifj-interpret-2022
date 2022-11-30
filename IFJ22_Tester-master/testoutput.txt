@@ -1,0 +1,1802 @@
+[33m> [37mBoolthen
+[33m---> [37mNot
+[33m------> [37mConstant
+[33m------> [37mBoolval by double not
+[33m---------> [37mConstant
+[33m------------> [37mInteger input
+[33m------------> [37mBool input
+[33m------------> [37mFloat input
+[33m---> [37mOr
+[33m------> [37mConstant
+[33m---> [37mShortcircuiting
+[33m---> [37mElseif
+[33m------> [37mConstant
+[33m---> [37mAnd
+[33m------> [37mConstant
+[33m> [37mSpecial
+[TEST] Keyword variable assigment
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Function redefinition
+[[31mERR[37m] Wrong error code found 2, but expected 3
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Builtin function redefinition
+[[31mERR[37m] Wrong error code found 2, but expected 3
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[33m> [37mHeavy tests
+[TEST] Square root
+[[31mERR[37m] Wrong output found , but expected Square root of 2 is: 0x1.6a09e667f3bccp+0
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Array
+[[31mERR[37m] Wrong output found , but expected this is test
+program
+hello
+
+1.1-4: syntax error, unexpected kwJUMP, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Hello World Brainfuck
+[[31mERR[37m] Wrong output found , but expected Hello World!
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m> [37mLexer
+[33m---> [37mProlog
+[TEST] Spaced prolog
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Empty file
+[[32mOK[37m ] TEST SUCCESS
+[TEST] Commented prolog
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Text before prolog
+[[32mOK[37m ] TEST SUCCESS
+[TEST] Missing prolog
+[[32mOK[37m ] TEST SUCCESS
+[TEST] Missing prolog 2
+[[32mOK[37m ] TEST SUCCESS
+[TEST] Pure prolog
+[[32mOK[37m ] TEST SUCCESS
+[33m---> [37mLine comment
+[TEST] Okay comment
+[[31mERR[37m] Wrong error code found 1, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m---> [37mEpilog
+[TEST] Space after epilog
+[[31mERR[37m] Wrong error code found -11, but expected 1 or 2
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Epilog with code
+[[32mOK[37m ] TEST SUCCESS
+[TEST] Pure epilog
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Text after epilog
+[[31mERR[37m] Wrong error code found -11, but expected 1 or 2
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m---> [37mNot equals
+[TEST] Not okay
+[[31mERR[37m] Wrong error code found 2, but expected 1
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Okay
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[33m---> [37mEquals
+[TEST] Not okay
+[[31mERR[37m] Wrong error code found 2, but expected 1
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Okay
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Unexpected character
+[[31mERR[37m] Wrong error code found 0, but expected 1
+STDERR output:
+--0--
+[[31mERR[37m] TEST FAILURE
+[33m---> [37mFloat
+[TEST] Missing decimal
+[[31mERR[37m] Wrong error code found -11, but expected 1
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Maximal float
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Missing exponent
+[[31mERR[37m] Wrong error code found -11, but expected 1
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m---> [37mString
+[TEST] Unterminated string
+[[31mERR[37m] Wrong error code found -11, but expected 1
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Okay string
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m---> [37mBlock comment
+[TEST] Okay comment
+[[32mOK[37m ] TEST SUCCESS
+[TEST] Unterminated comment
+[[32mOK[37m ] TEST SUCCESS
+[33m> [37mParser
+[33m---> [37mReturn
+[TEST] Global return constant
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Global empty return
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Global return expression
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[33m---> [37mWhile
+[TEST] Empty
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Solo semicolon
+[[31mERR[37m] Wrong error code found 0, but expected 2
+STDERR output:
+--0--
+[[31mERR[37m] TEST FAILURE
+[33m---> [37mIf
+[TEST] Single statement
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Empty if
+[[32mOK[37m ] TEST SUCCESS
+[TEST] Multiple statements
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m---> [37mRandom
+[TEST] Equals 10
+[[32mOK[37m ] TEST SUCCESS
+[33m---> [37mAssignment
+[TEST] Assigment nowhere
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Okay
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m---> [37mFunction
+[TEST] Call without parenthesis
+[[32mOK[37m ] TEST SUCCESS
+[TEST] Custom function
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Keyword function else
+[[32mOK[37m ] TEST SUCCESS
+[TEST] Keyword function return
+[[32mOK[37m ] TEST SUCCESS
+[TEST] Trailing commas
+[[31mERR[37m] Wrong error code found -11, but expected 2
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Builtin
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Trailing comma
+[[31mERR[37m] Wrong error code found -11, but expected 2
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m> [37mCycles
+[33m> [37mStrnum
+[33m---> [37mComparison
+[33m> [37mCode generation
+[33m---> [37mDynamic type tests
+[TEST] Int float add 1
+[[31mERR[37m] Wrong output found , but expected 6
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Buggy Int float add 4
+[[31mERR[37m] Wrong error code found -11, but expected 5
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Int float add 2
+[[31mERR[37m] Wrong output found , but expected 0x1.6p+2
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Buggy Int float add 3
+[[31mERR[37m] Wrong error code found -11, but expected 5
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Buggy Int float add 1
+[[31mERR[37m] Wrong output found , but expected 6
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Int float add 3
+[[31mERR[37m] Wrong output found , but expected 0x1.cp+1
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Int float add 4
+[[31mERR[37m] Wrong output found , but expected 0x1.8p+1
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Buggy Int float add 2
+[[31mERR[37m] Wrong error code found -11, but expected 5
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m---> [37mMultiple variable assigments
+[TEST] Null
+[[31mERR[37m] Wrong output found , but expected 3
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m---> [37mReturn
+[TEST] Global return
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Return wrong type 1
+[[31mERR[37m] Wrong error code found 2, but expected 4
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Return void
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] No return void
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Return wrong type 2
+[[31mERR[37m] Wrong error code found 2, but expected 4
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Return value
+[[31mERR[37m] Wrong output found , but expected 5
+
+1.1-4: syntax error, unexpected kwJUMP, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Missing return
+[[31mERR[37m] Wrong error code found 2, but expected 4
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Return wrong type 5
+[[31mERR[37m] Wrong error code found 2, but expected 4
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Missing return value
+[[31mERR[37m] Wrong error code found 2, but expected 6
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Return void value
+[[31mERR[37m] Wrong error code found 2, but expected 6
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Return wrong type 4
+[[31mERR[37m] Wrong error code found 2, but expected 4
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Void value use
+[[31mERR[37m] Wrong output found , but expected NULL
+
+1.1-4: syntax error, unexpected kwJUMP, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Missing return keyword
+[[31mERR[37m] Wrong error code found 2, but expected 4
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Return wrong type 3
+[[31mERR[37m] Wrong error code found 2, but expected 4
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[33m---> [37mUndefined variable
+[TEST] Conditionally undefined
+[[31mERR[37m] Wrong error code found -11, but expected 5
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Statement
+[[31mERR[37m] Wrong error code found -11, but expected 5
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Function argument
+[[32mOK[37m ] TEST SUCCESS
+[33m---> [37mFunction call
+[TEST] Bad argument type
+[[31mERR[37m] Wrong error code found 2, but expected 4
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Success
+[[31mERR[37m] Wrong output found , but expected 1
+
+1.1-4: syntax error, unexpected kwJUMP, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Too few arguments
+[[31mERR[37m] Wrong error code found 2, but expected 4
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Too many arguments
+[[31mERR[37m] Wrong error code found 2, but expected 4
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[33m---> [37mBuiltin functions
+[33m------> [37mFloatval
+[33m---------> [37mConstant
+[TEST] Integer input
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m------------> [37mBool input
+[TEST] Float input
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Null
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m---------> [37mInput
+[33m------------> [37mBool input
+[TEST] Float input
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m------------> [37mString input
+[TEST] Int input
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m------> [37mWrite
+[TEST] Int
+[[31mERR[37m] Wrong output found , but expected 666
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Everything
+[[31mERR[37m] Wrong output found , but expected 123456 or 0x1.edd2f1a9fbe77p+6, thats the question
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Empty
+[[31mERR[37m] Wrong output found , but expected DONE
+
+1.1-5: syntax error, unexpected kwWRITE, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Float
+[[31mERR[37m] Wrong output found , but expected 0x1.edd2f1a9fbe77p+6
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 1, but expected 0
+STDERR output:
+--1--
+[[31mERR[37m] TEST FAILURE
+[TEST] String
+[[31mERR[37m] Wrong output found , but expected Hello world!
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m------> [37mReadf
+[TEST] Not null
+[[31mERR[37m] Wrong output found , but expected 0x1.8p+0
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Null
+[[31mERR[37m] Wrong output found , but expected It is null!
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m------> [37mStrlen
+[TEST] Constant
+[[31mERR[37m] Wrong output found , but expected Length is 4
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Input
+[[31mERR[37m] Wrong output found , but expected Length is 5
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m------> [37mSubstring
+[33m---------> [37mNot null
+[TEST] Constant
+[[31mERR[37m] Wrong output found , but expected Substring is "str"
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Input
+[[31mERR[37m] Wrong output found , but expected Substring is "str"
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Same bounds
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m---------> [37mNull
+[TEST] i greater than j
+[[31mERR[37m] Wrong output found , but expected Substring is NULL
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] j greater than length
+[[31mERR[37m] Wrong output found , but expected Substring is NULL
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] i greater or equal to length
+[[31mERR[37m] Wrong output found , but expected Substring is NULL
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] i less than zero
+[[31mERR[37m] Wrong output found , but expected Substring is NULL
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] j less than zero
+[[31mERR[37m] Wrong output found , but expected Substring is NULL
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m------> [37mIntval
+[33m---------> [37mConstant
+[TEST] Integer input
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m------------> [37mBool input
+[TEST] Float input
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Null
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m---------> [37mInput
+[33m------------> [37mBool input
+[TEST] Float input
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Int input
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m------> [37mOrd
+[TEST] Constant
+[[31mERR[37m] Wrong output found , but expected Ord is 10
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Input
+[[31mERR[37m] Wrong output found , but expected Ord is 33
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Empty
+[[31mERR[37m] Wrong output found , but expected Ord is 0
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m------> [37mChr
+[TEST] Constant
+[[31mERR[37m] Wrong output found , but expected String is !
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Input
+[[31mERR[37m] Wrong output found , but expected String is 7
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Out of Interval
+[[31mERR[37m] Wrong error code found -11, but expected 58
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m------> [37mBoolval
+[33m---------> [37mConstant
+[33m------------> [37mInteger input
+[33m------------> [37mBool input
+[33m------------> [37mFloat input
+[33m------> [37mStrval
+[33m---------> [37mConstant
+[33m------------> [37mBool input
+[TEST] String input
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Null
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m---------> [37mInput
+[33m------------> [37mInteger input
+[33m------------> [37mBool input
+[33m------------> [37mFloat input
+[TEST] String input
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m------> [37mReads
+[TEST] Not null
+[[31mERR[37m] Wrong output found , but expected Hello user!
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Null
+[[31mERR[37m] Wrong output found , but expected It is null!
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m------> [37mReadi
+[TEST] Not null
+[[31mERR[37m] Wrong output found , but expected 124
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Null
+[[31mERR[37m] Wrong output found , but expected It is null!
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m---> [37mWhile
+[TEST] While empty string
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1-5: syntax error, unexpected kwLABEL, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] While string zero
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1-5: syntax error, unexpected kwLABEL, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] While null
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1-5: syntax error, unexpected kwLABEL, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] While float zero
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1-5: syntax error, unexpected kwLABEL, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 1, but expected 0
+STDERR output:
+--1--
+[[31mERR[37m] TEST FAILURE
+[TEST] Always false while
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1-5: syntax error, unexpected kwLABEL, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] While i less than 3
+[[31mERR[37m] Wrong output found , but expected 0
+1
+2
+GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] While zero
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1-5: syntax error, unexpected kwLABEL, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[33m---> [37mComparison
+[TEST] Greater
+[[31mERR[37m] Wrong output found , but expected done
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Less equals
+[[31mERR[37m] Wrong output found , but expected done
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 51, but expected 0
+STDERR output:
+--0--
+[[31mERR[37m] TEST FAILURE
+[TEST] Less
+[[31mERR[37m] Wrong output found , but expected done
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Greater equals
+[[31mERR[37m] Wrong output found , but expected done
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 51, but expected 0
+STDERR output:
+--0--
+[[31mERR[37m] TEST FAILURE
+[33m---> [37mRecursive call
+[TEST] Single Function
+[[31mERR[37m] Wrong output found , but expected 55
+
+1.1-4: syntax error, unexpected kwJUMP, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Fibonacci
+[[31mERR[37m] Wrong output found , but expected 34
+
+1.1-4: syntax error, unexpected kwJUMP, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Two functions
+[[31mERR[37m] Wrong output found , but expected 66
+
+1.1-4: syntax error, unexpected kwJUMP, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[33m---> [37mOperators
+[33m------> [37mPrecedence
+[TEST] Add mult
+[[31mERR[37m] Wrong output found , but expected 238
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Div div div
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m------> [37mMultiply
+[33m---------> [37mConstant
+[TEST] Null int
+[[31mERR[37m] Wrong output found , but expected 0
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Integer
+[[31mERR[37m] Wrong output found , but expected 60
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Null float
+[[31mERR[37m] Wrong output found , but expected 0x0p+0
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Float
+[[31mERR[37m] Wrong output found , but expected 0x1p+0
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m------> [37mConcatenate
+[33m---------> [37mRuntime
+[TEST] String
+[[31mERR[37m] Wrong output found , but expected hello hello
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Null
+[[31mERR[37m] Wrong output found , but expected hello 
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m---------> [37mConstant
+[TEST] Null string
+[[31mERR[37m] Wrong output found , but expected hello
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Strings
+[[31mERR[37m] Wrong output found , but expected Hello world
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Null null
+[[31mERR[37m] Wrong output found , but expected 
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m------> [37mSubstract
+[33m---------> [37mConstant
+[TEST] Null int
+[[31mERR[37m] Wrong output found , but expected -5
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Integer
+[[31mERR[37m] Wrong output found , but expected 3
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Float
+[[31mERR[37m] Wrong output found , but expected 0x1p+0
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m------> [37mAdd
+[33m---------> [37mConstant
+[TEST] Integer
+[[31mERR[37m] Wrong output found , but expected 3
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Int float
+[[31mERR[37m] Wrong output found , but expected 0x1.4p+1
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Float int
+[[31mERR[37m] Wrong output found , but expected 0x1.4p+1
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Float
+[[31mERR[37m] Wrong output found , but expected 0x1p+0
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Null null
+[[31mERR[37m] Wrong output found , but expected 0
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m------> [37mDivide
+[33m---------> [37mConstant
+[TEST] Integer
+[[31mERR[37m] Wrong output found , but expected 0x1p-1
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Int float
+[[31mERR[37m] Wrong output found , but expected 0x1.5555555555555p-1
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Float int
+[[31mERR[37m] Wrong output found , but expected 0x1.8p+0
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Float
+[[31mERR[37m] Wrong output found , but expected 0x1p+0
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Null null
+[[31mERR[37m] Wrong error code found -11, but expected 57
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m------> [37mAssignment
+[TEST] Bracketed variable
+[[32mOK[37m ] TEST SUCCESS
+[TEST] Zero addition
+[[31mERR[37m] Wrong error code found -11, but expected 2
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m---> [37mIf
+[33m------> [37mConstant
+[TEST] If empty string
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Always true if
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Always false if
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] If zero
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] If string zero
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] If nonempty string
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] If null
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] If nonzero
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] If float zero
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 1, but expected 0
+STDERR output:
+--1--
+[[31mERR[37m] TEST FAILURE
+[33m------> [37mDynamic
+[TEST] If empty string
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] If zero
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] If null integer
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] If null float
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] If null string
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] If nonempty string
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] If nonzero
+[[31mERR[37m] Wrong output found , but expected GOOD
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m> [37mExamples from Assigment
+[TEST] visibility
+[[31mERR[37m] Wrong output found , but expected 42426Insert non-empty input for quiting, otherwise next iteration.
+6Insert non-empty input for quiting, otherwise next iteration.
+6Insert non-empty input for quiting, otherwise next iteration.
+6Insert non-empty input for quiting, otherwise next iteration.
+quit10
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] fun
+[[31mERR[37m] Wrong output found , but expected calling f with 10
+calling g with 9
+calling f with 9
+res: 8
+
+1.1-4: syntax error, unexpected kwJUMP, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] substr
+[[31mERR[37m] Wrong output found , but expected Ahoj
+"Sve'te \"
+Toto je nejaky text
+Toto je nejaky text, ktery jeste trochu obohatime
+4 znaky od 16. znaku (index 15) v "Toto je nejaky text, ktery jeste trochu obohatime":text
+4 znaky od 16. znaku v "Toto je nejaky text, ktery jeste trochu obohatime":text
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] example2
+[[31mERR[37m] Wrong output found , but expected Zadejte cislo pro vypocet faktorialu: Vysledek je: 720
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] example1
+[[31mERR[37m] Wrong output found , but expected Zadejte cislo pro vypocet faktorialu
+Vysledek je: 120
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] hello
+[[31mERR[37m] Wrong output found , but expected Hello from IFJ22
+Hello from IFJ23
+
+1.1-4: syntax error, unexpected kwJUMP, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] example3
+[[31mERR[37m] Wrong output found , but expected Toto je nejaky text v programu jazyka IFJ22
+Toto je nejaky text v programu jazyka IFJ22, ktery jeste trochu obohatime
+Pozice retezce "text" v $str2: 15
+Zadejte serazenou posloupnost vsech malych pismen a-h, Spatne zadana posloupnost, zkuste znovu:
+Spatne zadana posloupnost, zkuste znovu:
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[33m> [37mRosetta Code
+[TEST] Mandelbrot fixed
+[[31mERR[37m] Wrong output found , but expected PRECISION=6
+aaaaaaaaabbbbbbbbbbbbbbbbbbbbcbb
+aaaaaaaabbbbbbbbbbbbbbbbbbbbbbcb
+aaaaaaabbbbcccccccccccbbbbbbbbbc
+aaaaaabbbcccccccddeleddcbbbbbbbb
+aaaaabbcccccccdddeei fddccbbbbbb
+aaaabbcdcccccdddefk   eedccbbbbb
+aaaabccccccdddeikjm  klg dccbbbb
+aaabccccccdeeff         kecccbbb
+aaaccccdeifgggk         jfdcccbb
+aaacdddefi   k           fdcccbb
+aaaddefgk                edcccbb
+aaa                     gedccebb
+aaaddefgk                edcccbb
+aaaceddefi   l           fdcccbb
+aaacccddemfgggl         lfdcccbb
+aaabcccccdeeefgl        lecccbbb
+aaaabccccccddef k      g dccbbbb
+aaaabbcdccccddddefk  ieedccbbbbb
+aaaaabbcccccccdddefijfddccbbbbbb
+aaaaaabbccccccccfdeieddccbbbbbbb
+aaaaaaabbbbcccccccccccbbbbbbbbbb
+aaaaaaaabbbbbbbbbbbbbbbbbbbbbbcb
+
+1.1-4: syntax error, unexpected kwJUMP, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Mandelbrot float
+[[31mERR[37m] Wrong output found , but expected >>>>>>=====<<<<<<<<<<<<<<<;;;;;;:::96032:;;;;<<<<==========
+>>>>>===<<<<<<<<<<<<<<<<;;;;;;;:::873*079::;;;;<<<<<=======
+>>>>===<<<<<<<<<<<<<<<;;;;;;;::9974    (.9::::;;<<<<<======
+>>>==<<<<<<<<<<<<<<<;;;;;;:98888764     5789999:;;<<<<<====
+>>==<<<<<<<<<<<<<;;;;::::996. &2           45335:;<<<<<<===
+>>=<<<<<<<<<<<;;;::::::999752                 *79:;<<<<<<==
+>=<<<<<<<<;;;:599999999886                    %78:;;<<<<<<=
+><<<<;;;;;:::972456-567763                      +9;;<<<<<<<
+><;;;;;;::::9875&      .3                       *9;;;<<<<<<
+>;;;;;;::997564'        '                       8:;;;<<<<<<
+>::988897735/                                 &89:;;;<<<<<<
+>::988897735/                                 &89:;;;<<<<<<
+>;;;;;;::997564'        '                       8:;;;<<<<<<
+><;;;;;;::::9875&      .3                       *9;;;<<<<<<
+><<<<;;;;;:::972456-567763                      +9;;<<<<<<<
+>=<<<<<<<<;;;:599999999886                    %78:;;<<<<<<=
+>>=<<<<<<<<<<<;;;::::::999752                 *79:;<<<<<<==
+>>==<<<<<<<<<<<<<;;;;::::996. &2           45335:;<<<<<<===
+>>>==<<<<<<<<<<<<<<<;;;;;;:98888764     5789999:;;<<<<<====
+>>>>===<<<<<<<<<<<<<<<;;;;;;;::9974    (.9::::;;<<<<<======
+>>>>>===<<<<<<<<<<<<<<<<;;;;;;;:::873*079::;;;;<<<<<=======
+
+1.1: syntax error, unexpected END, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found -11, but expected 0
+STDERR output:
+
+[[31mERR[37m] TEST FAILURE
+[TEST] Sierpinski carpet
+[[31mERR[37m] Wrong output found , but expected ***************************
+* ** ** ** ** ** ** ** ** *
+***************************
+***   ******   ******   ***
+* *   * ** *   * ** *   * *
+***   ******   ******   ***
+***************************
+* ** ** ** ** ** ** ** ** *
+***************************
+*********         *********
+* ** ** *         * ** ** *
+*********         *********
+***   ***         ***   ***
+* *   * *         * *   * *
+***   ***         ***   ***
+*********         *********
+* ** ** *         * ** ** *
+*********         *********
+***************************
+* ** ** ** ** ** ** ** ** *
+***************************
+***   ******   ******   ***
+* *   * ** *   * ** *   * *
+***   ******   ******   ***
+***************************
+* ** ** ** ** ** ** ** ** *
+***************************
+
+1.1-4: syntax error, unexpected kwJUMP, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] ROT13
+[[31mERR[37m] Wrong output found , but expected Uryyb jbeyq
+
+1.1-4: syntax error, unexpected kwJUMP, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Sierpinski triangle
+[[31mERR[37m] Wrong output found , but expected                *               
+              * *              
+             *   *             
+            * * * *            
+           *       *           
+          * *     * *          
+         *   *   *   *         
+        * * * * * * * *        
+       *               *       
+      * *             * *      
+     *   *           *   *     
+    * * * *         * * * *    
+   *       *       *       *   
+  * *     * *     * *     * *  
+ *   *   *   *   *   *   *   * 
+* * * * * * * * * * * * * * * *
+
+1.1-4: syntax error, unexpected kwJUMP, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+[TEST] Proper divisors
+[[31mERR[37m] Wrong output found , but expected 1: 
+2: 1 
+3: 1 
+4: 1 2 
+5: 1 
+6: 1 2 3 
+7: 1 
+8: 1 2 4 
+9: 1 3 
+10: 1 2 5 
+60 with 11 divisors
+
+1.1-4: syntax error, unexpected kwJUMP, expecting HEADER
+Syntax error!
+
+INTERPRETER STDERR output:
+[[31mERR[37m] Wrong error code found 2, but expected 0
+STDERR output:
+--2--
+[[31mERR[37m] TEST FAILURE
+Tests finished with [31m172 errors[37m and [32m15 successes[37m

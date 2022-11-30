@@ -8,7 +8,6 @@
 
 //todo hexa escape octa escape
 
-
 #define basicState                      300 //beginning state waiting for the first character
 #define possibleCommentState            301 //state that found the '/' symbol and checks if comment will be one-line block, or won't be at all
 #define oneLineCommentState             302 //one line comment state waiting for '\n' to end else returns LEX_ERROR
@@ -37,6 +36,8 @@
 #define endExponentState                325
 #define notEqualState                   326
 #define notEqualStateEnd                327
+#define epilogState                     328
+#define decimalEndState                 329
 
 
 //todo token initialization, change returns of getNextToken function
@@ -114,25 +115,63 @@ int keywordCmp(string *str, token *attr){
  * @return returns different LEX_ERROR if something goes wrong else returns 0
  */
 int prefix(token *str){
+    //todo getnexttoken a upravit lexikalku na to
     if(strInit(str->content.str) == 1){
         return INT_ERROR;
     }
     strClean(str->content.str);
-    char prefix[30] = "<?php\ndeclare(strict_types=1);";
+
+    char character = (char) fgetc(stdin);
+    char prefix1[6] = "<?php";
     int i = 0;
-    while(i<30){
-        strAddChar(str->content.str, (char) fgetc(stdin));
+    while(isspace(character)){
+        character = (char) fgetc(stdin);
+    }
+    while(i<4){
+        strAddChar(str->content.str, character);
+        character = (char) fgetc(stdin);
         i++;
     }
-    if(strCmpConstStr(str->content.str, prefix) != 0){
-        return INT_ERROR;
+    strAddChar(str->content.str, character);
+    if(strCmpConstStr(str->content.str, prefix1) != 0){
+        return SYN_ERROR;
     }
+
+    getNextToken(str);
+    if(strCmpConstStr(str->content.str, "declare") != 0){
+        return SYN_ERROR;
+    }
+    getNextToken(str);
+    if(str->type != TYPE_LBRACKET){
+        return SYN_ERROR;
+    }
+    getNextToken(str);
+    if(strCmpConstStr(str->content.str, "strict_types") != 0){
+        return SYN_ERROR;
+    }
+    getNextToken(str);
+    if(str->type != TYPE_ASSIGN){
+        return SYN_ERROR;
+    }
+    getNextToken(str);
+    if(strCmpConstStr(str->content.integerNumber, "1") != 0){
+        return SYN_ERROR;
+    }
+    getNextToken(str);
+    if(str->type != TYPE_RBRACKET){
+        return SYN_ERROR;
+    }
+    getNextToken(str);
+    if(str->type != TYPE_SEMICOLON){
+        return SYN_ERROR;
+    }
+
     return 0;
 }
 
 int getNextToken(token *attr) {
     int state = basicState;
-    char character;
+    char character = '\0';
     char hexaEscape1 = '0';
     char hexaEscape2 = '0';
     //char hexaEscape3 = '0'; //todo
@@ -230,6 +269,9 @@ int getNextToken(token *attr) {
                 else if(character == '>'){
                     state = smallerThanOrEqualState;
                 }
+                else if(character == '?'){
+                    state = epilogState;
+                }
                 else if(character == '!'){
                     state = notEqualState;
                 }
@@ -241,6 +283,9 @@ int getNextToken(token *attr) {
                 }
                 else if(character == '"'){
                     state = waitForStringEnd;
+                }
+                else{
+                    return LEX_ERROR;
                 }
                 break;
                 /** if character is a comment **/
@@ -263,7 +308,8 @@ int getNextToken(token *attr) {
                     state = basicState;
                 }
                 else if(character == EOF){
-                    return LEX_ERROR;
+                    attr->type = TYPE_END_OF_FILE;
+                    return SUCCES;
                 }
                 break;
             case blockCommentState:
@@ -308,7 +354,7 @@ int getNextToken(token *attr) {
                 }
                 break;
             case variableRead:
-                if(!(isspace(character))) {
+                if(!isspace(character) && (isalnum(character) != 0 || character == '_')){
                     strAddChar(attr->content.str, character);
                     break;
                 }
@@ -462,6 +508,19 @@ int getNextToken(token *attr) {
             case decimalState:
                 if(isdigit(character)){
                     strAddChar(attr->content.str, character);
+                    state = decimalEndState;
+                }
+                else if(character == 'e' || character == 'E'){
+                    strAddChar(attr->content.str, character);
+                    state = exponentPlusOrMinusState;
+                }
+                else{
+                    return LEX_ERROR;
+                }
+                break;
+            case decimalEndState:
+                if(isdigit(character)){
+                    strAddChar(attr->content.str, character);
                 }
                 else if(character == 'e' || character == 'E'){
                     strAddChar(attr->content.str, character);
@@ -472,17 +531,21 @@ int getNextToken(token *attr) {
                     strCpyStr(attr->content.doubleNumber, attr->content.str);
                     return SUCCES;
                 }
+                break;
             case exponentPlusOrMinusState:
                 if(character == '+' || character == '-' || isdigit(character) == 1){
                     strAddChar(attr->content.str, character);
                     state = endExponentState;
                     break;
                 }
+                else{
+                    return LEX_ERROR;
+                }
             case endExponentState:
                 if(isdigit(character)){
                     strAddChar(attr->content.str,character);
                 }
-                else if(isspace(character)){
+                else if(isspace(character) || character == ';'){
                     ungetc(character, source);
                     attr->type = TYPE_EXPONENT_NUMBER;
                     return SUCCES;
@@ -513,6 +576,7 @@ int getNextToken(token *attr) {
                     return SUCCES;
 
                 }
+
             case assignOrEqualState:
                 if(character == '='){
                     state = equalState;
@@ -520,6 +584,7 @@ int getNextToken(token *attr) {
                 }
                 else{
                     attr->type = TYPE_ASSIGN;
+                    ungetc(character, stdin);
                     return SUCCES;
                 }
             case equalState:
@@ -539,9 +604,25 @@ int getNextToken(token *attr) {
                     return LEX_ERROR;
                 }
                 break;
+            case epilogState:
+                if(character == '>'){
+                    character = (char) getc(stdin);
+                    if(character != EOF){
+                        return LEX_ERROR;
+                    }
+                    else{
+                        attr->type = TYPE_END_OF_FILE;
+                        return SUCCES;
+                    }
+                }
+                else{
+                    return LEX_ERROR;
+                }
+                break;
             case notEqualStateEnd:
                 if(character == '='){
                     attr->type = TYPE_NOT_EQUAL;
+                    return SUCCES;
                 }
                 else{
                     return LEX_ERROR;

@@ -20,11 +20,47 @@
 #define PARAM_RETURN        810
 #define PARAM_FUNCTION_CALL 811
 
+//instructions
+//-----------------------------------//
+#define MOVE "MOVE"
+#define ADD "ADD"
+#define SUB "SUB"
+#define MUL "MUL"
+#define DIV "DIV"
+#define IDIV "IDIV"
+#define PUSH "PUSH"
+#define POP "POP"
+#define LT "LT"
+#define GT "GT"
+#define WRITE "WRITE"
+#define READ "READ"
 
+#define CREATEFRAME "CRATEFRAME"
+#define PUSHFRAME "PUSHFRAME"
+#define POPFRAME "POPFRAME"
+#define DEFVAR "DEFVAR"
+#define LABEL "LABEL"
+#define JUMP "JUMP"
+#define JUMPIFEQ "JUMPIFEQ"
+#define JUMPIFNEQ "JUMPIFNEQ"
+#define EXIT "EXIT"
 
-int declrList(token *sToken);
-int statlist(token *sToken);
-int parametrs(int option, int repeat, token *sToken);
+#define STRING_TYPE "string"
+#define INT_TYPE "int"
+#define FLOAT_TYPE "float"
+#define NIL "nil@nil"
+
+#define STRLEN "STRLEN"
+#define SUBSTRING "GETCHAR"
+#define CONCAT "CONCAT"
+#define INT2CHAR "INT2CHAR"
+#define STRI2INT "STRI2INT"
+
+//-------------------------------------//
+
+int declrList(token *sToken, function_save *fun_id);
+int statlist(token *sToken, function_save *fun_id);
+int parametrs(int option, int repeat, token *sToken, function_save *fun_id);
 int program();
 int parse();
 

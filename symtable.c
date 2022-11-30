@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "symtable.h"
+#include "parser.h"
 
 
 ////////////VARIABLE///////////////////////////
@@ -18,78 +19,81 @@ void BVSCreate(TNode *rootPtr, token token){
         fprintf(stderr, "99");
         return;
     }
-    newPtr->leftPtr = NULL;
+    //TNode init;
+    //string initStr;
+    //initStr.str = NULL;
+    //initStr.length = 0;
+    //initStr.alloc = 0;
+    //TNode *newPtr = &init;
+    //newPtr->content = &initStr;
+    //newPtr->leftPtr = NULL;
+    //newPtr->rightPtr = NULL;
+    //newPtr->type = token.type;
+    //strCpyStr(newPtr->content, token.content.str);
+    //rootPtr = newPtr;
+    //fprintf(stderr, "%s\n", newPtr->content->str);
+    //fprintf(stderr, "%d\n", newPtr->type);
+    newPtr->content = (&token)->content.str;
+    strCpyStr(newPtr->content, (&token)->content.str);
+    newPtr->type = (&token)->type;
+    newPtr->leftPtr = NULL;  
     newPtr->rightPtr = NULL;
-    newPtr->type = token.type;
-    newPtr->content = token.content;
     rootPtr = newPtr;
 }
 
-void BVSInsert(TRoot *root, token token){
-    if(root->rootPtr == NULL){
-        TNode *newPtr = (TNode *) malloc(sizeof(struct tnode));
-        if(newPtr == NULL){
-            fprintf(stderr, "99");
-            return;
-        }
-        newPtr->leftPtr = NULL;
-        newPtr->rightPtr = NULL;
-        newPtr->type = token.type;
-        newPtr->content = token.content;
-        root->rootPtr = newPtr;
+void BVSInsert(TNode *rootPtr, token token){
+    if(rootPtr == NULL){
+        BVSCreate(rootPtr, token);
     }
-    else{
-        if((strCmpStr(token.content.str, root->rootPtr->content.str)) < 0){
-            BVSInsert(root, token);
-        }
-        else if((strCmpStr(token.content.str, root->rootPtr->content.str)) > 0){
-            BVSInsert(root, token);
+    else {
+        if ((strCmpStr(token.content.str, rootPtr->content)) < 0) {
+            return BVSInsert(rootPtr->leftPtr, token);
+        } else if ((strCmpStr(token.content.str,rootPtr->content)) > 0) {
+            return BVSInsert(rootPtr->rightPtr, token);
         }
     }
+    
 }
+
 
 TNode *BVSSearch(TNode *rootPtr, token token){
     if(rootPtr == NULL){
         return NULL;
     }
     else{
-        if((strCmpStr(token.content.str, rootPtr->content.str)) < 0){
+        if((strCmpStr(token.content.str, rootPtr->content)) < 0){
             rootPtr->leftPtr = BVSSearch(rootPtr->leftPtr, token);
         }
-        else if((strCmpStr(token.content.str, rootPtr->content.str)) < 0){
+        else if((strCmpStr(token.content.str, rootPtr->content)) < 0){
             rootPtr->rightPtr = BVSSearch(rootPtr->rightPtr, token);
         }
         return rootPtr;
     }
 }
 
-void BVSDisposeNode(TNode *SymTable){
-    SymTable->leftPtr = NULL;
-    SymTable->rightPtr = NULL;
-    SymTable = NULL;
+void BVSDisposeNode(TNode *rootPtr){
+    if(rootPtr != NULL){
+        BVSDisposeNode(rootPtr->leftPtr);
+        BVSDisposeNode(rootPtr->rightPtr);
+        rootPtr = NULL;
+    }
 }
 
-void BVSFreeNode(TNode *SymTable){
-    free(SymTable->rightPtr);
-    free(SymTable->leftPtr);
+void BVSFreeNode(TNode *rootPtr){
+    if(rootPtr != NULL){
+        BVSFreeNode(rootPtr->leftPtr);
+        BVSFreeNode(rootPtr->rightPtr);
+        free(rootPtr);
+    }
 }
 
 void BVSDispose(TRoot *SymTable){
-    if(SymTable->rootPtr != NULL){
-        BVSDisposeNode(SymTable->rootPtr->leftPtr);
-        BVSDisposeNode(SymTable->rootPtr->rightPtr);
-        SymTable->rootPtr = NULL;
-    }
+    BVSDisposeNode(SymTable->rootPtr);
     SymTable = NULL;
 }
 
 void BVSFree(TRoot *SymTable){
-    if(SymTable->rootPtr != NULL){
-        BVSFreeNode(SymTable->rootPtr->rightPtr);
-        BVSFreeNode(SymTable->rootPtr->leftPtr);
-        SymTable->rootPtr = NULL;
-        free(SymTable->rootPtr);
-    }
+    BVSFreeNode(SymTable->rootPtr);
     free(SymTable);
 }
 //////////////////////////////////////////
@@ -99,29 +103,37 @@ void BVSInit_function(TRootf *SymTable){
     SymTable->rootPtr = NULL;
 }
 
-void BVSCreate_function(function_save token){
+void BVSCreate_function(TNodef *rootPtr,function_save token){
     TNodef *newPtr = malloc(sizeof(struct tnodef));
     if(newPtr == NULL){
         fprintf(stderr, "99");
         return;
     }
+    //TNodef init;
+    string initStr;
+    initStr.str = NULL;
+    initStr.length = 0;
+    initStr.alloc = 0;
+    //newPtr = &init;
+    newPtr->content = &initStr;
     newPtr->leftPtr = NULL;
     newPtr->rightPtr = NULL;
-    newPtr->content = token.content;
-    newPtr->parameters = token.param_count;
     newPtr->return_type = token.ret_value;
+    newPtr->parameters = token.param_count;
+    strCpyStr(newPtr->content, token.content);
+    rootPtr = newPtr;
 }
 
 void BVSInsert_function(TNodef *rootPtr, function_save token){
     if(rootPtr == NULL){
-        BVSCreate_function(token);
+        BVSCreate_function(rootPtr ,token);
     }
     else{
         if((strCmpStr(token.content, rootPtr->content)) < 0){
-            BVSInsert_function(rootPtr->leftPtr, token);
+            BVSCreate_function(rootPtr->leftPtr, token);
         }
         else if((strCmpStr(token.content, rootPtr->content)) > 0){
-            BVSInsert_function(rootPtr->rightPtr, token);
+            BVSCreate_function(rootPtr->rightPtr, token);
         }
     }
 }
@@ -141,18 +153,27 @@ TNodef *BVSSearch_function(TNodef *rootPtr, token token){
     }
 }
 
-void BVSFreeFunctionNode(TNodef *SymTable){
-    free(SymTable->rightPtr);
-    free(SymTable->leftPtr);
+void BVSFreeFunctionNode(TNodef *rootPtr){
+    if(rootPtr != NULL){
+        BVSFreeFunctionNode(rootPtr->leftPtr);
+        BVSFreeFunctionNode(rootPtr->rightPtr);
+        free(rootPtr);
+    }
 }
 
 void BVSFree_function(TRootf *SymTable){
-    if(SymTable->rootPtr != NULL){
-        BVSFreeFunctionNode(SymTable->rootPtr->rightPtr);
-        BVSFreeFunctionNode(SymTable->rootPtr->leftPtr);
-        SymTable->rootPtr = NULL;
-        free(SymTable->rootPtr);
-    }
+    
+    BVSFreeFunctionNode(SymTable->rootPtr);
     free(SymTable);
 }
+
+
 //////////////////////////////////////////
+void postorder(TNode *tree){ 
+    if (tree != NULL){
+        fprintf(stderr,"CONTENT: %s      TYPE: %d\n", tree->content->str, tree->type);
+    }
+    if(tree == NULL){
+        fprintf(stderr, "IS EMPTY\n");
+    }
+}
