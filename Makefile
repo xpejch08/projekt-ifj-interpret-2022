@@ -1,7 +1,7 @@
 OBJS	= main.o lexical.o parser.o semantic.o expression.o expstack.o stack.o str.o symtable.o
 SOURCE	= main.c lexical.c parser.c semantic.c expression.c expstack.c stack.c str.c symtable.c
 HEADER	= errors.h lexical.h parser.h semantic.h expression.h expstack.h stack.h str.h symtable.h
-OUT	= interpret.o
+OUT	= interpret
 CC	 = gcc
 FLAGS	 = -g -c -Wall
 LFLAGS	 = -lm
