@@ -13,37 +13,30 @@ void BVSInit(TRoot *SymTable){
     SymTable->rootPtr = NULL;
 }
 
-void BVSCreate(TNode *rootPtr, token token){
+TNode *BVSCreate(TNode *rootPtr, token token){
     TNode *newPtr = malloc(sizeof(struct tnode));
     if(newPtr == NULL){
         fprintf(stderr, "99");
-        return;
+        return NULL;
     }
     //TNode init;
-    //string initStr;
-    //initStr.str = NULL;
-    //initStr.length = 0;
-    //initStr.alloc = 0;
-    //TNode *newPtr = &init;
-    //newPtr->content = &initStr;
-    //newPtr->leftPtr = NULL;
-    //newPtr->rightPtr = NULL;
-    //newPtr->type = token.type;
-    //strCpyStr(newPtr->content, token.content.str);
-    //rootPtr = newPtr;
-    //fprintf(stderr, "%s\n", newPtr->content->str);
-    //fprintf(stderr, "%d\n", newPtr->type);
-    newPtr->content = (&token)->content.str;
+    string initString;
+    initString.str = NULL;
+    initString.length = 0;
+    initString.alloc = 0;
+    newPtr->content = &initString;
+    strClean(newPtr->content);
     strCpyStr(newPtr->content, (&token)->content.str);
     newPtr->type = (&token)->type;
     newPtr->leftPtr = NULL;  
     newPtr->rightPtr = NULL;
     rootPtr = newPtr;
+    return newPtr;
 }
 
-void BVSInsert(TNode *rootPtr, token token){
+TNode *BVSInsert(TNode *rootPtr, token token){
     if(rootPtr == NULL){
-        BVSCreate(rootPtr, token);
+        return BVSCreate(rootPtr, token);
     }
     else {
         if ((strCmpStr(token.content.str, rootPtr->content)) < 0) {
@@ -52,8 +45,7 @@ void BVSInsert(TNode *rootPtr, token token){
             return BVSInsert(rootPtr->rightPtr, token);
         }
     }
-    fprintf(stderr, "%s", rootPtr->content->str);
-    
+    return rootPtr;
 }
 
 
@@ -178,3 +170,13 @@ void postorder(TNode *tree){
         fprintf(stderr, "IS EMPTY\n");
     }
 }
+
+//TNode *newPtr = &init;
+//newPtr->leftPtr = NULL;
+//newPtr->rightPtr = NULL;
+//newPtr->type = token.type;
+//strCpyStr(newPtr->content, token.content.str);
+//rootPtr = newPtr;
+//fprintf(stderr, "%s\n", newPtr->content->str);
+//fprintf(stderr, "%d\n", newPtr->type);
+//newPtr->content = (&token)->content.str;
