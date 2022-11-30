@@ -52,6 +52,7 @@ void BVSInsert(TNode *rootPtr, token token){
             return BVSInsert(rootPtr->rightPtr, token);
         }
     }
+    fprintf(stderr, "%s", rootPtr->content->str);
     
 }
 
