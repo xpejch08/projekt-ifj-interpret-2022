@@ -4,19 +4,27 @@ declare(strict_types=1);
 
 // Hlavni telo programu
 write("Zadejte cislo pro vypocet faktorialu\n");
-$a = readi();
+//$a = readi();
 
-if ($a === null) {
+if (4 === 2) {
 	write("Chyba pri nacitani celeho cisla!\n");
+	while(6 < 0)
+	{
+		$f;
+	}
 } else {}
 
-if ($a < 0) {
+if (4 < 0) {
 	write("Faktorial nelze spocitat\n");
 } else {
-	$vysl = 1;
-	while ($a > 0) {
-		$vysl = $vysl * $a;
-		$a = $a - 1;
+	
+	while (5 > 0) {
+		$h;
 	}
-	write("Vysledek je: ", $vysl, "\n");
+	write("Vysledek je: ", 777, "\n");
+	if(4 ===3)
+	{
+		$v;
+	}
+	else{};
 }
