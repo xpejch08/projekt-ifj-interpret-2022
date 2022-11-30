@@ -16,7 +16,8 @@ TRoot *insideFunction;
 TRootf *functionNames;
 TRoot *mainTree;
 
-DLList *list;
+DLList _list;
+DLList *list = &_list;
 token *tmpToken;
 token *tmp2Token;
 
@@ -1430,7 +1431,7 @@ int parse(void){
     
     int result;
     
-    //DLL_Init(list);
+    DLL_Init(list);
     //todo fix init token function
 
     if((tokenId = getNextToken(sToken)) == LEX_ERROR){
@@ -1441,9 +1442,9 @@ int parse(void){
         //printf("EXIT %d", result);
     }
     fprintf(stderr, "--%d--\n", result);
-    //BVSFree(mainTree);
-    //BVSFree(insideFunction);
-    //BVSFree_function(functionNames);
+    BVSFree(mainTree);
+    BVSFree(insideFunction);
+    BVSFree_function(functionNames);
     //todo freeToken() funtcion
     return result;
 }
