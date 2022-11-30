@@ -1,7 +1,8 @@
 {
     "files.associations": {
-        "lexical.h": "c",
-        "parser.h": "c"
-    },
-    "C_Cpp.errorSquiggles": "Enabled"
+        "limits": "c",
+        "cmath": "c",
+        "type_traits": "c",
+        "typeinfo": "c"
+    }
 }

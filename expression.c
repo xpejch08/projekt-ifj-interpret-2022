@@ -1,14 +1,16 @@
-// Prediktivní syntaktická analýza výrazu
+// Precedencni syntaktická analýza výrazu
 
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "expression.h"
-#include "lexical.h"
+
+//#include "expression.h"
+#include "expstack.h"
+//#include "lexical.h"
 #include "symtable.h"
 #include "code_gen.h"
-//#include "expstack.h"
+//#include "expstack.c"
 #include "str.h"
 
 
@@ -31,16 +33,16 @@ typedef enum
 {
     S, // shift (<)  dej vstup a "<" na zasobnik"
     E, // equal (=)  dej vstup na zasobnik
-    R, // reduce (>) hledej na zasobniku "<" a pak pocaď pop
+    R, // reduce (>) hledej na zasobniku "<" a pak pocaď pop a generuj instrukci
     X  // nic ( )    chyba
 } PrtableActionsEnum;
 
-//precedencni tabulka, svisle zasobnik, vodorovne vstup
+//precedencni tabulka, X vodorovne vstup, Y svisle zasobnik
 int prtable[8][8] = {
 //       comp|rel|asc| md| ( | ) | i | $
 /*comp*/ { R , S , S , S , S , R , S , R },
 /*rel*/  { R , R , S , S , S , R , S , R },
-/*as*/   { R , R , R , S , S , R , S , R },
+/*asc*/  { R , R , R , S , S , R , S , R },
 /*md*/   { R , R , R , R , S , R , S , R },
 /*(*/    { S , S , S , S , S , E , X , X },
 /*)*/    { R , R , R , R , X , R , S , R },
@@ -50,7 +52,7 @@ int prtable[8][8] = {
 
 
 //prevest tokeny na symboly prtable
-/*
+
 static PrtableSymbolsEnum prtableTokenToSymbol(token *sToken)
 {
     switch (sToken->type)
@@ -94,7 +96,7 @@ static PrtableSymbolsEnum prtableTokenToSymbol(token *sToken)
         default:
             return DOLLAR;
     }
-}*/
+}
 
 //prevest symboly na prislusny index prtable
 static PrtableIndexEnum prtableSymbolToIndex(PrtableSymbolsEnum symb)
@@ -132,27 +134,6 @@ static PrtableIndexEnum prtableSymbolToIndex(PrtableSymbolsEnum symb)
     }
 }
 
-struct ExpStack stack;
-int countSymbols() //pocet symbolu ve stacku nez prijde "<"
-{
-    StackElementPtr elem = stackGetTopSymbol(&stack);
-    int count = 0;
-    while (elem != NULL)
-    {
-        if(elem->symbol == STOPPER){
-            elem = elem->nextElement;
-            return count;
-            
-        }
-        else{
-            elem = elem->nextElement;
-            count++;
-        }
-        
-    }
-    return -1;
-
-}
 
 /*PRAVIDLA PRECEDENCNI ANALYZY, z prave strany budeme tvořit levou stranu
 * E -> E === E 
@@ -221,20 +202,30 @@ DataTypeEnum getDataType(token *sToken, TRoot *mainTree){
     }else if (sToken->type == TYPE_STRING){
         return DATATYPE_STRING;
     }else if (sToken->type == TYPE_IDENTIFIER){
-        //TNode* data = BVSSearch(mainTree->rootPtr, *sToken);
-        
-        //if(data->content.integerNumber == NULL && data->content->doubleNumber == NULL && data->content.str == NULL)
-        //    return DATATYPE_ERROR;
-        //else if(data->content.integerNumber != NULL && data->content.doubleNumber == NULL && data->content.str == NULL)
-        //    return DATATYPE_INT;
-        //else if(data->content.doubleNumber != NULL && data->content.integerNumber == NULL && data->content.str == NULL)
-        //    return DATATYPE_FLOAT;
-        //else if(data->content.str != NULL && data->content.integerNumber == NULL && data->content.doubleNumber == NULL)
-        //    return DATATYPE_STRING;
+        TNode* data = BVSSearch(mainTree->rootPtr, *sToken);
+        if (data != NULL){
+            if(data->type == TYPE_INTEGER_NUMBER){
+                return DATATYPE_INT;
+        }
+        else if(data->type == TYPE_DOUBLE_NUMBER || data->type == TYPE_EXPONENT_NUMBER){
+            return DATATYPE_FLOAT;
+        }
+        else if(data->type == TYPE_STRING){
+            return DATATYPE_STRING;
+        }
+        }
+       /* if(data->content == NULL && data->content == NULL && data->content == NULL)
+            return DATATYPE_NONE;
+        else if(data->contentegerNumber != NULL && data->content == NULL && data->content == NULL)
+            return DATATYPE_INT;
+        else if(data->content != NULL && data->contentegerNumber == NULL && data->content == NULL)
+            return DATATYPE_FLOAT;
+        else if(data->content != NULL && data->contentegerNumber == NULL && data->content == NULL)
+            return DATATYPE_STRING;*/
 
 
     }
-    return DATATYPE_ERROR;
+    return DATATYPE_NONE;
         
         
         
@@ -244,8 +235,8 @@ DataTypeEnum getDataType(token *sToken, TRoot *mainTree){
 int checkTypeForRule(PrtableRulesEnum rule, StackElementPtr op1, StackElementPtr op2, StackElementPtr op3, DataTypeEnum* resulttype)
 {
     if(rule != RULE_I && rule != RULE_BRACKETS)
-        if(op1->datatype == DATATYPE_ERROR || op3->datatype == DATATYPE_ERROR)
-            return SEM_UNDEFINED_ERROR;
+        if(op1->datatype == DATATYPE_NONE || op3->datatype == DATATYPE_NONE)
+            return SEM_COMPABILITY_ERROR;
 
     switch(rule)
     {
@@ -282,7 +273,7 @@ int checkTypeForRule(PrtableRulesEnum rule, StackElementPtr op1, StackElementPtr
                 *resulttype = DATATYPE_FLOAT;
                 return 0;
             }
-            return 1; //neco je undefined nebo string
+            return SEM_COMPABILITY_ERROR; //neco je undefined nebo string
         case RULE_DIVIDE:
             *resulttype = DATATYPE_FLOAT;
             if (op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_INT){
@@ -301,44 +292,64 @@ int checkTypeForRule(PrtableRulesEnum rule, StackElementPtr op1, StackElementPtr
                 *resulttype = DATATYPE_FLOAT;
                 return 0;
             }
-            return 1; //neco je undefined nebo string
+            return SEM_COMPABILITY_ERROR; //neco je undefined nebo string
         
 
         case RULE_I:
-            if(op1->datatype != DATATYPE_ERROR)
+            if(op1->datatype != DATATYPE_NONE)
                 *resulttype = op1->datatype;
             else
-                return SEM_UNDEFINED_ERROR;
+                return SEM_COMPABILITY_ERROR;
         case RULE_BRACKETS:
-            if(op2->datatype != DATATYPE_ERROR)
+            if(op2->datatype != DATATYPE_NONE)
                 *resulttype = op2->datatype;
             else
-                return SEM_UNDEFINED_ERROR;
+                return SEM_COMPABILITY_ERROR;
         default:
-            return 1;
+            return SEM_COMPABILITY_ERROR;
         
     }
 }
 
-int reduceExpression(){
+//struct ExpStack stack;
+int countSymbols(Stack stack) //pocet symbolu ve stacku nez prijde "<"
+{
+    StackElementPtr elem = stackGetTopSymbol(&stack);
+    int count = 0;
+    while (elem != NULL)
+    {
+        if(elem->symbol == STOPPER){
+            elem = elem->nextElement;
+            return count;
+            
+        }
+        else{
+            elem = elem->nextElement;
+            count++;
+        }
+        
+    }
+    return -1;
+
+}
+
+int reduceExpression(Stack stack){
     
-    PrtableIndexEnum ok = prtableSymbolToIndex(EQUAL); ///TESTTT
-    //printf("%d",ok);
-    ok++;
+   
     StackElementPtr op1 = NULL;
     StackElementPtr op2 = NULL;
     StackElementPtr op3 = NULL;
-    DataTypeEnum resulttype = DATATYPE_ERROR;
+    DataTypeEnum resulttype = DATATYPE_NONE;
     PrtableRulesEnum rule = RULE_ERROR;
 
 
 
-    if(countSymbols() == 1)
+    if(countSymbols(stack) == 1)
     {
         op1 = stack.top;
         rule = pickRule(op1, NULL, NULL);
     }    
-    else if(countSymbols() == 3)
+    else if(countSymbols(stack) == 3)
     {
         op1 = stack.top;
         op2 = op1->nextElement;
@@ -346,8 +357,9 @@ int reduceExpression(){
         rule = pickRule(op1, op2, op3);
     }
     else
-        return 1;
-
+    {
+        return SYN_ERROR;
+    }
     if(rule == RULE_ERROR)
         return 1;
     
@@ -356,24 +368,61 @@ int reduceExpression(){
     
     //generate operaci (pomoci rule)
 
-    stackPop(&stack, countSymbols() + 1);
+    stackPop(&stack, countSymbols(stack) + 1);
     stackPush(&stack, NON_TERMINAL, resulttype);
     return 0;
 }
 
 
-/*StackElementPtr stacktop;
-int action(mainTree){ HODNE TODO
+//StackElementPtr stacktop;
+
+int takeAction(TRoot *someTree, token *sToken, Stack stack){ 
+    
+    int result;
+    
 
     stackInit(&stack);
-
-    stackPush(&stack, DOLLAR, DATATYPE_ERROR);
-
-    
+    stackPush(&stack, DOLLAR, DATATYPE_NONE);
 
     
- 
-}*/
+
+    PrtableSymbolsEnum inputsymbol = prtableTokenToSymbol(sToken);
+    DataTypeEnum inputdatatype = getDataType( sToken, someTree);
+    PrtableIndexEnum coordinput = prtableSymbolToIndex(inputsymbol);
+    PrtableIndexEnum coordstack = prtableSymbolToIndex(stack.top->symbol);
+
+    PrtableActionsEnum action = prtable[coordinput][coordstack];
+    switch(action){
+        case S:
+            stackInsertAfterTop(&stack, STOPPER, DATATYPE_NONE);
+            stackPush(&stack, inputsymbol, inputdatatype);
+            if ((result = getNextToken(sToken)) != SUCCES) {
+                return result;
+            }
+            takeAction(someTree, sToken, stack);
+         
+        case E:
+            stackPush(&stack, inputsymbol, inputdatatype);
+            if ((result = getNextToken(sToken)) != SUCCES) {
+                return result;
+            }
+            takeAction(someTree, sToken, stack);
+
+        case R:
+            reduceExpression(stack);
+            takeAction(someTree, sToken, stack);
+            
+        case X:
+            if (coordinput == INDEX_DOLLAR && coordstack == INDEX_DOLLAR) {
+                return SUCCES;
+            }
+            else {
+                return SEM_COMPABILITY_ERROR;
+            }
+        default:
+            return SEM_COMPABILITY_ERROR;
+    }
+}   
 
 
 
