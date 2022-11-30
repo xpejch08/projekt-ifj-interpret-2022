@@ -16,10 +16,10 @@ TRoot *insideFunction;
 TRootf *functionNames;
 TRoot *mainTree;
 
-DLList tmp;
-DLList *list = &tmp;
-token *tmpToken;
-token *tmp2Token;
+//DLList _list;
+//DLList *list = &_list;
+//token *tmpToken;
+//token *tmp2Token;
 
 bool in_function = false;
 bool canParseEnd = false;
@@ -627,10 +627,10 @@ int statlist(token *sToken, function_save *fun_id){
             }
             return SUCCES;
 
-        case TYPE_SEMICOLON:
         case TYPE_RBRACKET:
             return SUCCES;
 
+        case TYPE_SEMICOLON:
         case TYPE_ASSIGN:
 
             if((result = getNextToken(sToken)) != SUCCES){

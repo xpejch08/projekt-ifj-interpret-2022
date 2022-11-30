@@ -3,6 +3,7 @@
 //#include <malloc.h>
 #include "stack.h"
 
+
 void DLL_Init( DLList *list ) {
 	list->activeElement = NULL;
 	list->firstElement = NULL;
@@ -37,7 +38,7 @@ int DLL_InsertLast( DLList *list, token token ) {
         {
                 return INT_ERROR;
         }
-
+		printf("%s\n", list->activeElement->content.str->str);
         if(list->firstElement != NULL)
         {
         newElementLast->nextElement = NULL;
