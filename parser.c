@@ -16,10 +16,10 @@ TRoot *insideFunction;
 TRootf *functionNames;
 TRoot *mainTree;
 
-//DLList _list;
-//DLList *list = &_list;
-//token *tmpToken;
-//token *tmp2Token;
+DLList _list;
+DLList *list = &_list;
+token *tmpToken;
+token *tmp2Token;
 
 bool in_function = false;
 bool canParseEnd = false;
