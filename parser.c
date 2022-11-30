@@ -600,8 +600,7 @@ int statlist(token *sToken, function_save *fun_id){
             return SUCCES;
 
         case TYPE_VARIABLE:
-            BVSInsert(mainTree, *sToken);
-            postorder(mainTree);
+            BVSInsert(mainTree->rootPtr, *sToken);
             printf("%s GF@&%s\n", DEFVAR, (sToken->content.str->str)+1);
             tmpToken = sToken;
             if((result = getNextToken(sToken)) != SUCCES){
@@ -745,7 +744,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     return  result;
                 }
                 if (sToken->type == TYPE_VARIABLE) {
-                    BVSInsert(mainTree, *sToken);
+                    BVSInsert(mainTree->rootPtr, *sToken);
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
@@ -1119,7 +1118,6 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                                 return SEM_UNDEFINED_ERROR;
                             }
                         }
-                       
                         printf("%s LF@&%s GF@&%s\n",MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
                         printf("%s LF@&substring%d\n", LABEL, unique);
                         printf("%s LF@&tmp%d\n", DEFVAR, unique);
