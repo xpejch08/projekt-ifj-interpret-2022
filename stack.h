@@ -19,9 +19,7 @@ typedef struct {
 
 void DLL_Init( DLList *);
 
-int DLL_InsertFirst( DLList *, token token );
-
-int DLL_InsertLast( DLList *, token token );
+void DLL_InsertLast( DLList *, token token );
 
 void DLL_Free( DLList * );
 

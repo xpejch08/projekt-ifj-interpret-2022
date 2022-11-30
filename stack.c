@@ -10,35 +10,15 @@ void DLL_Init( DLList *list ) {
 	list->lastElement = NULL;
 }
 
-int DLL_InsertFirst( DLList *list, token token ) {
-	DLLElementPtr insertingptr = malloc(sizeof(struct DLLElement));
 
-	if(insertingptr == NULL){
-        return INT_ERROR; 
-	}
-    insertingptr->type = token.type;
-    insertingptr->content = token.content;  
-    insertingptr->previousElement = NULL; 
-
-	if(list->firstElement == NULL){ 
-		insertingptr->nextElement = NULL;  
-		list->lastElement = insertingptr; 
-	}else{ 
-		insertingptr->nextElement = list->firstElement;
-		list->firstElement->previousElement = insertingptr;
-	}
-	list->firstElement = insertingptr;
-
-    return SUCCES;
-}
-
-int DLL_InsertLast( DLList *list, token token ) {
+void DLL_InsertLast( DLList *list, token pToken ) {
 	 DLLElementPtr newElementLast = malloc(sizeof(struct DLLElement));
         if(newElementLast == NULL) // Kontrola operace malloc
         {
-                return INT_ERROR;
+            return;
         }
-		printf("%s\n", list->activeElement->content.str->str);
+		
+		//printf("%s\n", list->activeElement->content.str->str);
         if(list->firstElement != NULL)
         {
         newElementLast->nextElement = NULL;
@@ -57,7 +37,7 @@ int DLL_InsertLast( DLList *list, token token ) {
         }
 		
 		list->activeElement = list->firstElement;
-    return SUCCES;
+    return;
 }
 
 void DLL_Free( DLList *list ) {
@@ -79,15 +59,9 @@ void DLL_Free( DLList *list ) {
 void DLL_PrintLocal(DLList *list)
 {
 	
-		
 		while(list->activeElement != NULL)
 		{
-			if(list->activeElement == list->lastElement)
-			{
-			list->activeElement = NULL;
-			return;
-			}
-
+			
 			if(list->activeElement->type == TYPE_VARIABLE)
 			{
 			printf("LF@&%s ", list->activeElement->content.str->str);
