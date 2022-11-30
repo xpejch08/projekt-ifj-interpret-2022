@@ -123,7 +123,6 @@ int prefix(token *str){
 
     char character = (char) fgetc(stdin);
     char prefix1[6] = "<?php";
-    char prefix2[18] = "(strict_types=1);";
     int i = 0;
     while(isspace(character)){
         character = (char) fgetc(stdin);
@@ -134,7 +133,6 @@ int prefix(token *str){
         i++;
     }
     strAddChar(str->content.str, character);
-    int a = strCmpConstStr(str->content.str, prefix1);
     if(strCmpConstStr(str->content.str, prefix1) != 0){
         return SYN_ERROR;
     }
