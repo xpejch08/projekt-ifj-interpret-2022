@@ -25,7 +25,6 @@ TNode *BVSCreate(TNode *rootPtr, token token){
     initString.length = 0;
     initString.alloc = 0;
     newPtr->content = &initString;
-    strClean(newPtr->content);
     strCpyStr(newPtr->content, (&token)->content.str);
     newPtr->type = (&token)->type;
     newPtr->leftPtr = NULL;  
