@@ -1442,9 +1442,9 @@ int parse(void){
         //printf("EXIT %d", result);
     }
     fprintf(stderr, "--%d--\n", result);
-    BVSFree(mainTree);
-    BVSFree(insideFunction);
-    BVSFree_function(functionNames);
+    //BVSFree(mainTree);
+    //BVSFree(insideFunction);
+    //BVSFree_function(functionNames);
     //todo freeToken() funtcion
     return result;
 }
