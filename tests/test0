@@ -2,5 +2,20 @@
 declare(strict_types=1);
 
 $a;
-write("ff", "gg",5);
-$b = readf();
+if(5 === 5)
+{
+    if(4===3)
+    {
+        $g;
+    }
+    else{};
+$f;
+}
+else{
+    if(2 === 4){
+    write("inIF2");
+    }
+    else{
+        $d;
+    }
+}
