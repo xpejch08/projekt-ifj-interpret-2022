@@ -622,7 +622,6 @@ int statlist(token *sToken, function_save *fun_id){
             {
                 printf("%s GF@&%s\n", DEFVAR, (sToken->content.str->str)+1);
             }
-            printf("%s GF@&%s\n", DEFVAR, (sToken->content.str->str)+1);
             tmpToken = sToken;
             if((result = getNextToken(sToken)) != SUCCES){
                 return result;
