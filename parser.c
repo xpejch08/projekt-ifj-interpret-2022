@@ -618,6 +618,10 @@ int statlist(token *sToken, function_save *fun_id){
 
         case TYPE_VARIABLE:
             mainTree->rootPtr = BVSInsert(mainTree->rootPtr, *sToken);
+            if(BVSSearch(mainTree->rootPtr, *sToken) == NULL)
+            {
+                printf("%s GF@&%s\n", DEFVAR, (sToken->content.str->str)+1);
+            }
             printf("%s GF@&%s\n", DEFVAR, (sToken->content.str->str)+1);
             tmpToken = sToken;
             if((result = getNextToken(sToken)) != SUCCES){
