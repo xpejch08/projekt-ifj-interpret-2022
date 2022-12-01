@@ -389,10 +389,10 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack stack){
         PrtableSymbolsEnum inputsymbol = prtableTokenToSymbol(sToken);
         DataTypeEnum inputdatatype = getDataType(sToken, someTree);
 
-        PrtableSymbolsEnum stacktopterminal = stackGetTopTerminal(&stack);
+        StackElementPtr stacktopterminal = stackGetTopTerminal(&stack);
 
         PrtableIndexEnum coordinput = prtableSymbolToIndex(inputsymbol);
-        PrtableIndexEnum coordstack = prtableSymbolToIndex(stacktopterminal);
+        PrtableIndexEnum coordstack = prtableSymbolToIndex(stacktopterminal->symbol);
 
         PrtableActionsEnum action = prtable[coordinput][coordstack];
         switch(action){
@@ -428,7 +428,7 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack stack){
         }
 
     }
-
+return SUCCES;
 }   
 
 
