@@ -141,6 +141,7 @@ TNodef *BVSInsert_function(TNodef *rootPtr, function_save token){
             return BVSCreate_function(rootPtr->rightPtr, token);
         }
     }
+    return rootPtr;
 }
 
 TNodef *BVSSearch_function(TNodef *rootPtr, token token){
