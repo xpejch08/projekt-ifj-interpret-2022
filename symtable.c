@@ -64,13 +64,17 @@ TNode *BVSSearch(TNode *rootPtr, token token){
         return NULL;
     }
     else{
+        if((strCmpStr(token.content.str, rootPtr->content)) == 0){
+            return rootPtr
+        }
         if((strCmpStr(token.content.str, rootPtr->content)) < 0){
             rootPtr->leftPtr = BVSSearch(rootPtr->leftPtr, token);
+            return  rootPtr->leftPtr;
         }
         else if((strCmpStr(token.content.str, rootPtr->content)) < 0){
             rootPtr->rightPtr = BVSSearch(rootPtr->rightPtr, token);
+            return rootPtr->rightPtr;
         }
-        return rootPtr;
     }
 }
 
