@@ -677,6 +677,9 @@ int statlist(token *sToken, function_save *fun_id){
             if((result = getNextToken(sToken)) != SUCCES){
                 return result;
             }
+            if(sToken->type != TYPE_IDENTIFIER){
+                return SYN_ERROR;
+            }
             sToken->type = TYPE_FUNCTIONDECLARE;
             result = declrList(sToken, fun_id);
             if(result != SUCCES){
