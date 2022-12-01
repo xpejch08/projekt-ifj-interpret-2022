@@ -672,6 +672,25 @@ int statlist(token *sToken, function_save *fun_id){
             }
             return SUCCES;
 
+        case KEYWORD_RETURN:
+            if(in_function == true){
+                result = declrList(sToken, fun_id);
+                if(result != SUCCES){
+                    return result;
+                }
+                return SUCCES;
+            }
+            if(canParseEnd == true){
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return result;
+                }
+                if(sToken->type == TYPE_SEMICOLON){
+                    return SUCCES;
+                }
+                //todo return getnexttoken value codegen
+                return SUCCES;
+            }
+
         case TYPE_ADDITION:
         case TYPE_MULTIPLY:
         case TYPE_DIVIDE:
@@ -1453,6 +1472,9 @@ int parse(void){
         return LEX_ERROR;
     }
     else{
+        if(sToken->type == TYPE_SEMICOLON){
+            return SYN_ERROR;
+        }
         result = statlist(sToken, fun_id);
         //printf("EXIT %d", result);
     }
