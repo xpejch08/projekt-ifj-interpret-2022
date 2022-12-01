@@ -65,7 +65,7 @@ TNode *BVSSearch(TNode *rootPtr, token token){
     }
     else{
         if((strCmpStr(token.content.str, rootPtr->content)) == 0){
-            return rootPtr
+            return rootPtr;
         }
         if((strCmpStr(token.content.str, rootPtr->content)) < 0){
             rootPtr->leftPtr = BVSSearch(rootPtr->leftPtr, token);
@@ -76,6 +76,7 @@ TNode *BVSSearch(TNode *rootPtr, token token){
             return rootPtr->rightPtr;
         }
     }
+    return NULL;
 }
 
 void BVSDisposeNode(TNode *rootPtr){
@@ -174,6 +175,7 @@ TNodef *BVSSearch_function(TNodef *rootPtr, token token){
             return rootPtr->rightPtr;
         }
     }
+    return  NULL;
 }
 
 void BVSFreeFunctionNode(TNodef *rootPtr){
