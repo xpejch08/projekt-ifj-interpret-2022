@@ -617,13 +617,11 @@ int statlist(token *sToken, function_save *fun_id){
             return SUCCES;
 
         case TYPE_VARIABLE:
-            if(BVSSearch(mainTree->rootPtr, *sToken) == NULL)
-            {
+            if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
                 printf("%s GF@&%s\n", DEFVAR, (sToken->content.str->str)+1);
             }
             mainTree->rootPtr = BVSInsert(mainTree->rootPtr, *sToken);
-            if(BVSSearch(mainTree->rootPtr, *sToken) == NULL)
-                tmpToken = sToken;
+            tmpToken = sToken;
             if((result = getNextToken(sToken)) != SUCCES){
                 return result;
             }
@@ -898,7 +896,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     else if(sToken->type == TYPE_RBRACKET){
                         repeat--;
                         if(repeat == 0){
-
+                            
                             return SUCCES;
                         }
                         return parametrs(PARAM_IF_WHILE, repeat, sToken, fun_id);
