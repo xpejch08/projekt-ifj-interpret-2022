@@ -339,7 +339,7 @@ int declrList(token *sToken, function_save *fun_id) {
             else{
                 in_function = true;
                 paramError = parametrs(PARAM_FUNCTION, 1, sToken, fun_id);
-                BVSInsert_function(functionNames->rootPtr, *fun_id);
+                functionNames->rootPtr = BVSInsert_function(functionNames->rootPtr, *fun_id);
                 if (paramError != SUCCES) {
                     return paramError;
                 }

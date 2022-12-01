@@ -45,6 +45,16 @@ TNode *BVSInsert(TNode *rootPtr, token token){
             return BVSInsert(rootPtr->rightPtr, token);
         }
     }
+    string initString;
+    initString.str = NULL;
+    initString.length = 0;
+    initString.alloc = 0;
+    rootPtr->content = &initString;
+    strCpyStr(rootPtr->content, (&token)->content.str);
+    rootPtr->type = (&token)->type;
+    rootPtr->leftPtr = NULL;  
+    rootPtr->rightPtr = NULL;
+    
     return rootPtr;
 }
 
@@ -96,11 +106,11 @@ void BVSInit_function(TRootf *SymTable){
     SymTable->rootPtr = NULL;
 }
 
-void BVSCreate_function(TNodef *rootPtr,function_save token){
+TNodef *BVSCreate_function(TNodef *rootPtr,function_save token){
     TNodef *newPtr = malloc(sizeof(struct tnodef));
     if(newPtr == NULL){
         fprintf(stderr, "99");
-        return;
+        return NULL;
     }
     //TNodef init;
     string initStr;
@@ -115,18 +125,20 @@ void BVSCreate_function(TNodef *rootPtr,function_save token){
     newPtr->parameters = token.param_count;
     strCpyStr(newPtr->content, token.content);
     rootPtr = newPtr;
+
+    return newPtr;
 }
 
-void BVSInsert_function(TNodef *rootPtr, function_save token){
+TNodef *BVSInsert_function(TNodef *rootPtr, function_save token){
     if(rootPtr == NULL){
-        BVSCreate_function(rootPtr ,token);
+        return BVSCreate_function(rootPtr ,token);
     }
     else{
         if((strCmpStr(token.content, rootPtr->content)) < 0){
-            BVSCreate_function(rootPtr->leftPtr, token);
+            return BVSCreate_function(rootPtr->leftPtr, token);
         }
         else if((strCmpStr(token.content, rootPtr->content)) > 0){
-            BVSCreate_function(rootPtr->rightPtr, token);
+            return BVSCreate_function(rootPtr->rightPtr, token);
         }
     }
 }
@@ -163,12 +175,12 @@ void BVSFree_function(TRootf *SymTable){
 
 //////////////////////////////////////////
 void postorder(TNode *tree){ 
-    if (tree != NULL){
-        fprintf(stderr,"CONTENT: %s      TYPE: %d\n", tree->content->str, tree->type);
+    if(tree != NULL){
+        postorder(tree->leftPtr);
+        postorder(tree->rightPtr);
+        fprintf(stderr, "CONTENT: %s              TYPE: %d\n", tree->content->str, tree->type);
     }
-    if(tree == NULL){
-        fprintf(stderr, "IS EMPTY\n");
-    }
+    fprintf(stderr, "Whatttttttt");
 }
 
 //TNode *newPtr = &init;

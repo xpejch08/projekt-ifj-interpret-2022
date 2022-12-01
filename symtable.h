@@ -78,13 +78,13 @@ void BVSInit_function(TRootf *SymTable);
  * @brief function creates new function in SymTable
  * @param token token from which we put data
  */
-void BVSCreate_function(TNodef *rootPtr,function_save token);
+TNodef *BVSCreate_function(TNodef *rootPtr,function_save token);
 /**
  * @brief function inserts function to binary tree based on its ASCII value
  * @param rootPtr pointer on node
  * @param token token from which we put data
  */
-void BVSInsert_function(TNodef *rootPtr, function_save token);
+TNodef *BVSInsert_function(TNodef *rootPtr, function_save token);
 /**
  * @brief function search if we have already declared function
  * @param rootPtr pointer on node
