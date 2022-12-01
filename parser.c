@@ -343,9 +343,8 @@ int declrList(token *sToken, function_save *fun_id) {
             else{
                 in_function = true;
                 paramError = parametrs(PARAM_FUNCTION, 1, sToken, fun_id);
-                fprintf(stderr, "%d\n", paramError);
+                
                 functionNames->rootPtr = BVSInsert_function(functionNames->rootPtr, *fun_id);
-                fprintf(stderr, "%d", paramError);
                 if (paramError != SUCCES) {
                 
                     return paramError;
@@ -1390,6 +1389,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         }
                     }
                 case TYPE_VARIABLE:
+                
                     if(in_function){
                         if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
                             return SEM_UNDEFINED_ERROR;
@@ -1397,6 +1397,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
                     else{
                         if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
+                            
                             return SEM_UNDEFINED_ERROR;
                         }
                     }

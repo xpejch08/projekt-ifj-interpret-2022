@@ -2,9 +2,9 @@
 declare(strict_types=1);
 
 $g;
-$g = 4;
 
-function bar(int $g) : void
+
+function bar(int $h) : void
 {
     $var;
    return;
