@@ -145,9 +145,9 @@ TNodef *BVSInsert_function(TNodef *rootPtr, function_save token){
     }
     else {
         if ((strCmpStr(token.content, rootPtr->content)) < 0) {
-            return BVSInsert_function(rootPtr->leftPtr, token);
+            rootPtr->leftPtr = BVSInsert_function(rootPtr->leftPtr, token);
         } else if ((strCmpStr(token.content,rootPtr->content)) > 0) {
-            return BVSInsert_function(rootPtr->rightPtr, token);
+            rootPtr->rightPtr =  BVSInsert_function(rootPtr->rightPtr, token);
         }
     }
     return rootPtr;
