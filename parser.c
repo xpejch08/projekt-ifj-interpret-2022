@@ -1218,15 +1218,13 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                                 }
                                 else{
                                     if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
-                                        printf("HERE55\n");
                                         return SEM_UNDEFINED_ERROR;
                                     }
                                 }
 
-                                printf("%s\n",sToken->content.str->str);
+                                printf("&%s\n",(sToken->content.str->str)+1);
+                                printf("%s LF@&%s GF@&%s\n", MOVE,(sToken->content.str->str)+1,(sToken->content.str->str)+1);
                                 printf("%s LF@&%s int@%d\n", ADD, tmp2Token->content.str->str, 1);
-
-
                                 printf("%s LF@&%s LF@&%s LF@&tmp%d\n", CONCAT, (tmpToken->content.str->str)+1, (tmpToken->content.str->str)+1, unique);
                                 printf("%s LF@&substring%d LF@&%s GF@&%s\n",JUMPIFNEQ, unique, (tmpToken->content.str->str)+1, (sToken->content.str->str)+1);
                                 printf("%s GF@&%s LF@&%s\n", MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
