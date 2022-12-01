@@ -35,7 +35,33 @@ int tokenId;
 int incId = 1;
 
 
-
+int checkIfBuiltIn(token *sToken){
+    if (strCmpConstStr(sToken->content.str, "write") == 0){
+        return 1;
+    }
+    if (strCmpConstStr(sToken->content.str, "reads") == 0){
+        return 1;
+    }
+    if (strCmpConstStr(sToken->content.str, "readi") == 0){
+        return 1;
+    }
+    if (strCmpConstStr(sToken->content.str, "readf") == 0){
+        return 1;
+    }
+    if (strCmpConstStr(sToken->content.str, "strlen") == 0){
+        return 1;
+    }
+    if (strCmpConstStr(sToken->content.str, "substring") == 0){
+        return 1;
+    }
+    if (strCmpConstStr(sToken->content.str, "ord") == 0){
+        return 1;
+    }
+    if (strCmpConstStr(sToken->content.str, "chr") == 0){
+        return 1;
+    }
+    return 0;
+}
 // declaration because function is used before definition
 
 //check declare function, checks beginning of token type for example checks if there is a left bracket after while,
@@ -302,14 +328,12 @@ int declrList(token *sToken, function_save *fun_id) {
                     }
 
                     //todo nevim kam to patří správně
+
                     result = statlist(sToken, fun_id);
                     if(result != SUCCES){
                         return result;
                     }
                     return SUCCES;
-                }
-                else{
-                    return paramError;
                 }
 
             } else {
@@ -331,7 +355,8 @@ int declrList(token *sToken, function_save *fun_id) {
             printf("%s\n", PUSHFRAME);
             printf("%s LF@$return_val\n", DEFVAR);
             printf("%s LF@$return_val %s\n", MOVE, NIL);
-            
+            printf("%s\n", POPFRAME);
+            printf("%s\n", RETURN);
 
             if((result = getNextToken(sToken)) != SUCCES) {
                 return result;
@@ -346,7 +371,6 @@ int declrList(token *sToken, function_save *fun_id) {
                 
                 functionNames->rootPtr = BVSInsert_function(functionNames->rootPtr, *fun_id);
                 if (paramError != SUCCES) {
-                
                     return paramError;
                 }
                 else{
@@ -373,8 +397,6 @@ int declrList(token *sToken, function_save *fun_id) {
                 canParseEnd = true;
                 returnCount = false;
                 in_function = false;
-                printf("%s\n", POPFRAME);
-                printf("%s\n", RETURN);
                 printf("%s $%send\n", LABEL, fun_id->content->str);
                 BVSDispose(insideFunction);
                 if((result = getNextToken(sToken)) != SUCCES){
@@ -679,6 +701,9 @@ int statlist(token *sToken, function_save *fun_id){
             if(sToken->type != TYPE_IDENTIFIER){
                 return SYN_ERROR;
             }
+            else if((checkIfBuiltIn(sToken)) != 0){
+                return 3;
+            }
             sToken->type = TYPE_FUNCTIONDECLARE;
             result = declrList(sToken, fun_id);
             if(result != SUCCES){
@@ -902,7 +927,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     else if(sToken->type == TYPE_RBRACKET){
                         repeat--;
                         if(repeat == 0){
-                            
+
                             return SUCCES;
                         }
                         return parametrs(PARAM_IF_WHILE, repeat, sToken, fun_id);
