@@ -232,10 +232,8 @@ int declrList(token *sToken, function_save *fun_id) {
                     paramError = parametrs(PARAM_SUBSTRING, 1, sToken, fun_id);
                     if (paramError == SUCCES) {
                         if (getNextToken(sToken) != TYPE_SEMICOLON) {
-                            //instructionFree()
                             return SYN_ERROR;
                         }
-                        //todo instructionFree()
                         canParseEnd = true;
 
                         if((result = getNextToken(sToken)) != SUCCES){
@@ -243,6 +241,7 @@ int declrList(token *sToken, function_save *fun_id) {
                         }
                         return SUCCES;
                     } else {
+                       printf("HERE\n");
                         return paramError;
                     }
                 } else {
@@ -1193,10 +1192,12 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                             }
                         }
                         unique++;
+                        printf("%s\n", CREATEFRAME);
+                        printf("%s\n", PUSHFRAME);
                         printf("%s LF@&%s GF@&%s\n",MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
-                        printf("%s LF@&substring%d\n", LABEL, unique);
                         printf("%s LF@&tmp%d\n", DEFVAR, unique);
-                        printf("%s LF@&tmp%d %s ", SUBSTRING, unique, (sToken->content.str->str)+1);
+                        printf("%s LF@&substring%d\n", LABEL, unique);
+                        printf("%s LF@&tmp%d LF@&%s ", SUBSTRING, unique, (sToken->content.str->str)+1);
 
                         tmp2Token = sToken;
                         tmp2Token->content = sToken->content;
@@ -1216,6 +1217,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                                 }
                                 else{
                                     if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
+                                        printf("HERE55\n");
                                         return SEM_UNDEFINED_ERROR;
                                     }
                                 }
