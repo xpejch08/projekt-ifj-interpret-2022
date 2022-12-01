@@ -49,9 +49,9 @@ TNode *BVSInsert(TNode *rootPtr, token token){
     }
     else {
         if ((strCmpStr(token.content.str, rootPtr->content)) < 0) {
-            rootPtr->leftPtr =  BVSInsert(rootPtr->leftPtr, token);
+            return BVSInsert(rootPtr->leftPtr, token);
         } else if ((strCmpStr(token.content.str,rootPtr->content)) > 0) {
-            rootPtr->rightPtr =  BVSInsert(rootPtr->rightPtr, token);
+            return BVSInsert(rootPtr->rightPtr, token);
         }
     }
     return rootPtr;
@@ -64,19 +64,14 @@ TNode *BVSSearch(TNode *rootPtr, token token){
         return NULL;
     }
     else{
-        if((strCmpStr(token.content.str, rootPtr->content)) == 0){
-            return rootPtr;
-        }
         if((strCmpStr(token.content.str, rootPtr->content)) < 0){
             rootPtr->leftPtr = BVSSearch(rootPtr->leftPtr, token);
-            return  rootPtr->leftPtr;
         }
         else if((strCmpStr(token.content.str, rootPtr->content)) < 0){
             rootPtr->rightPtr = BVSSearch(rootPtr->rightPtr, token);
-            return rootPtr->rightPtr;
         }
+        return rootPtr;
     }
-    return NULL;
 }
 
 void BVSDisposeNode(TNode *rootPtr){
@@ -158,24 +153,22 @@ TNodef *BVSInsert_function(TNodef *rootPtr, function_save token){
     return rootPtr;
 }
 
-TNodef *BVSSearch_function(TNodef *rootPtr, token token){
-    if(rootPtr == NULL){
+TNodef *BVSSearch_function(TNodef *rootPtr, token token) {
+    if (rootPtr == NULL) {
         return NULL;
-    }
-    else{
-        if((strCmpStr(token.content.str, rootPtr->content)) == 0){
+    } else {
+        if ((strCmpStr(token.content.str, rootPtr->content)) == 0) {
             return rootPtr;
         }
-        if((strCmpStr(token.content.str, rootPtr->content)) < 0){
+        else if ((strCmpStr(token.content.str, rootPtr->content)) < 0) {
             rootPtr->leftPtr = BVSSearch_function(rootPtr->leftPtr, token);
             return rootPtr->leftPtr;
-        }
-        else if((strCmpStr(token.content.str, rootPtr->content)) >0){
+        } else if ((strCmpStr(token.content.str, rootPtr->content)) > 0) {
             rootPtr->rightPtr = BVSSearch_function(rootPtr->rightPtr, token);
             return rootPtr->rightPtr;
         }
     }
-    return  NULL;
+    return NULL;
 }
 
 void BVSFreeFunctionNode(TNodef *rootPtr){

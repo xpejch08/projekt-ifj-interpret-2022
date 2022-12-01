@@ -286,7 +286,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 canParseEnd = false;
                 call_function_save = BVSSearch_function(functionNames->rootPtr, *sToken);
                 printf("%s $%s\n", CALL, sToken->content.str->str);
-
+                
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
@@ -431,7 +431,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
                 if(sToken->type == TYPE_RVINCULUM) {
                     canParseEnd = true;
-
+                    
                     result = statlist(sToken, fun_id);
                     if (result != SUCCES) {
                         return result;
@@ -549,7 +549,7 @@ int declrList(token *sToken, function_save *fun_id) {
         case KEYWORD_ELSE:
             canParseEnd = false;
             printf("%s $else%d\n", LABEL, condCounter);
-
+            
             if(getNextToken(sToken) == LEX_ERROR) {
                 return LEX_ERROR;
             }
@@ -856,7 +856,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     else if(sToken->type == TYPE_RBRACKET){
                         repeat--;
                         if(repeat == 0){
-
+                           
                             return SUCCES;
                         }
                         return parametrs(PARAM_IF_WHILE, repeat, sToken, fun_id);
@@ -894,7 +894,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     else if(sToken->type == TYPE_RBRACKET){
                         repeat--;
                         if(repeat == 0){
-
+                            
                             return SUCCES;
                         }
                         return parametrs(PARAM_IF_WHILE, repeat, sToken, fun_id);
@@ -967,7 +967,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     else if(sToken->type == TYPE_RBRACKET){
                         repeat--;
                         if(repeat == 0){
-
+                           
                             return SUCCES;
                         }
                         return parametrs(PARAM_IF_WHILE, repeat, sToken, fun_id);
