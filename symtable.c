@@ -49,9 +49,9 @@ TNode *BVSInsert(TNode *rootPtr, token token){
     }
     else {
         if ((strCmpStr(token.content.str, rootPtr->content)) < 0) {
-            return BVSInsert(rootPtr->leftPtr, token);
+            rootPtr->leftPtr =  BVSInsert(rootPtr->leftPtr, token);
         } else if ((strCmpStr(token.content.str,rootPtr->content)) > 0) {
-            return BVSInsert(rootPtr->rightPtr, token);
+            rootPtr->rightPtr =  BVSInsert(rootPtr->rightPtr, token);
         }
     }
     return rootPtr;
