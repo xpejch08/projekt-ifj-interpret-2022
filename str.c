@@ -70,14 +70,14 @@ int strAddChar(string *s, char c){
 int strCpyStr(string *s1, string *s2){
 
     int len2 = s2->length;
-    if(len2 > s1->alloc){
+    if(len2 >= s1->alloc){
         if(((s1->str) = (char*) realloc(s1->str, len2 + 1)) == NULL){
             return 1;
         }
         s1->alloc = len2 + 1;
     }
     strcpy(s1->str, s2->str);
-    s1->length = len2 + 1;
+    s1->length = len2;
     return 0;
 }
 

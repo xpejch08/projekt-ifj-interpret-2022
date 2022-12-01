@@ -130,15 +130,24 @@ TNodef *BVSCreate_function(TNodef *rootPtr,function_save token){
 }
 
 TNodef *BVSInsert_function(TNodef *rootPtr, function_save token){
-    if(rootPtr == NULL){
-        return BVSCreate_function(rootPtr ,token);
+    TNodef *tmp = rootPtr;
+    TNodef *insert = malloc((sizeof (TNode)));
+    string *insertStr = malloc(sizeof (string));
+    insert->leftPtr = NULL;
+    insert->rightPtr = NULL;
+    insert->content = insertStr;
+    strCpyStr(insert->content, token.content);
+    insert->return_type = token.ret_value;
+    insert->parameters = token.param_count;
+    if(!tmp){
+        rootPtr = insert;
+        return rootPtr;
     }
-    else{
-        if((strCmpStr(token.content, rootPtr->content)) < 0){
-            return BVSCreate_function(rootPtr->leftPtr, token);
-        }
-        else if((strCmpStr(token.content, rootPtr->content)) > 0){
-            return BVSCreate_function(rootPtr->rightPtr, token);
+    else {
+        if ((strCmpStr(token.content, rootPtr->content)) < 0) {
+            return BVSInsert_function(rootPtr->leftPtr, token);
+        } else if ((strCmpStr(token.content,rootPtr->content)) > 0) {
+            return BVSInsert_function(rootPtr->rightPtr, token);
         }
     }
     return rootPtr;
