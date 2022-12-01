@@ -302,12 +302,14 @@ int declrList(token *sToken, function_save *fun_id) {
                     }
 
                     //todo nevim kam to patří správně
-
                     result = statlist(sToken, fun_id);
                     if(result != SUCCES){
                         return result;
                     }
                     return SUCCES;
+                }
+                else{
+                    return paramError;
                 }
 
             } else {
@@ -329,8 +331,7 @@ int declrList(token *sToken, function_save *fun_id) {
             printf("%s\n", PUSHFRAME);
             printf("%s LF@$return_val\n", DEFVAR);
             printf("%s LF@$return_val %s\n", MOVE, NIL);
-            printf("%s\n", POPFRAME);
-            printf("%s\n", RETURN);
+            
 
             if((result = getNextToken(sToken)) != SUCCES) {
                 return result;
@@ -346,6 +347,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 functionNames->rootPtr = BVSInsert_function(functionNames->rootPtr, *fun_id);
                 fprintf(stderr, "%d", paramError);
                 if (paramError != SUCCES) {
+                
                     return paramError;
                 }
                 else{
@@ -372,6 +374,8 @@ int declrList(token *sToken, function_save *fun_id) {
                 canParseEnd = true;
                 returnCount = false;
                 in_function = false;
+                printf("%s\n", POPFRAME);
+                printf("%s\n", RETURN);
                 printf("%s $%send\n", LABEL, fun_id->content->str);
                 BVSDispose(insideFunction);
                 if((result = getNextToken(sToken)) != SUCCES){

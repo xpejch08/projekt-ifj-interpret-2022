@@ -14,21 +14,18 @@ if (4 === 2) {
 	}
 } else {}
 
-function foo(int $l) : int {
-	$cc;
-}
 
 if (4 < 0) {
 	write("Faktorial nelze spocitat\n");
 } else {
 	
-	while (5 > 0) {
+	while ($a > 0) {
 		$h;
 	}
 	write("Vysledek je: ", 777, "\n");
 	if(4 ===3)
 	{
-		$v;
+		$h = 5;
 	}
 	else{};
 }

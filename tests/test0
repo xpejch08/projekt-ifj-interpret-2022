@@ -1,6 +1,13 @@
 <?php
 declare(strict_types=1);
 
-function foo (int $d, string $l) : int {
-    
+$g;
+$g = 4;
+
+function bar(int $g) : void
+{
+    $var;
+   return;
 }
+
+bar($g);
