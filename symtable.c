@@ -35,8 +35,17 @@ TNode *BVSCreate(TNode *rootPtr, token token){
 }
 
 TNode *BVSInsert(TNode *rootPtr, token token){
-    if(rootPtr == NULL){
-        return BVSCreate(rootPtr, token);
+    TNode *tmp = rootPtr;
+    TNode *insert = malloc((sizeof (TNode)));
+    string *insertStr = malloc(sizeof (string));
+    insert->leftPtr = NULL;
+    insert->rightPtr = NULL;
+    insert->content = insertStr;
+    strCpyStr(insert->content, token.content.str);
+    insert->type = token.type;
+    if(!tmp){
+        rootPtr = insert;
+        return rootPtr;
     }
     else {
         if ((strCmpStr(token.content.str, rootPtr->content)) < 0) {
@@ -45,18 +54,9 @@ TNode *BVSInsert(TNode *rootPtr, token token){
             return BVSInsert(rootPtr->rightPtr, token);
         }
     }
-    string initString;
-    initString.str = NULL;
-    initString.length = 0;
-    initString.alloc = 0;
-    rootPtr->content = &initString;
-    strCpyStr(rootPtr->content, (&token)->content.str);
-    rootPtr->type = (&token)->type;
-    rootPtr->leftPtr = NULL;  
-    rootPtr->rightPtr = NULL;
-    
     return rootPtr;
 }
+
 
 
 TNode *BVSSearch(TNode *rootPtr, token token){
