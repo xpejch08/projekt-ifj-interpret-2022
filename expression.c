@@ -91,9 +91,9 @@ static PrtableSymbolsEnum prtableTokenToSymbol(token *sToken)
             return SFLOAT;
         case TYPE_STRING:
             return SSTRING;
-        case TYPE_IDENTIFIER:
-            return IDENTIFIER;
-        default:
+        case TYPE_VARIABLE:
+            return VARIABLE;
+        default: ///SEMICOLON -> DOLLAR , EOL -> DOLLAR, default chyba?
             return DOLLAR;
     }
 }
@@ -125,7 +125,7 @@ static PrtableIndexEnum prtableSymbolToIndex(PrtableSymbolsEnum symb)
         case SINT:
         case SFLOAT:
         case SSTRING:
-        case IDENTIFIER:
+        case VARIABLE:
             return INDEX_DATA;
         default:
             return INDEX_DOLLAR; // DOLLAR 
@@ -182,7 +182,7 @@ PrtableRulesEnum pickRule(StackElementPtr op1, StackElementPtr op2, StackElement
             return RULE_ERROR;
     }
     if (&(op1->symbol) != NULL && &(op2->symbol) == NULL && &(op3->symbol) == NULL){
-        if (op1->symbol == IDENTIFIER || op1->symbol == SINT || op1->symbol == SFLOAT || op1->symbol == SSTRING)
+        if (op1->symbol == VARIABLE || op1->symbol == SINT || op1->symbol == SFLOAT || op1->symbol == SSTRING)
             return RULE_I;
         else
             return RULE_ERROR;
@@ -193,7 +193,7 @@ PrtableRulesEnum pickRule(StackElementPtr op1, StackElementPtr op2, StackElement
 
 
 //TNode* data;
-TRoot *mainTree; //nejak zaridit aby to byl STEJNY treee jako se pouziva v parser.c
+//TRoot *mainTree; //nejak zaridit aby to byl STEJNY treee jako se pouziva v parser.c
 DataTypeEnum getDataType(token *sToken, TRoot *mainTree){
     if (sToken->type == TYPE_INTEGER_NUMBER){
         return DATATYPE_INT;
@@ -201,18 +201,18 @@ DataTypeEnum getDataType(token *sToken, TRoot *mainTree){
         return DATATYPE_FLOAT;
     }else if (sToken->type == TYPE_STRING){
         return DATATYPE_STRING;
-    }else if (sToken->type == TYPE_IDENTIFIER){
+    }else if (sToken->type == TYPE_VARIABLE){
         TNode* data = BVSSearch(mainTree->rootPtr, *sToken);
         if (data != NULL){
             if(data->type == TYPE_INTEGER_NUMBER){
                 return DATATYPE_INT;
-        }
+            }
         else if(data->type == TYPE_DOUBLE_NUMBER || data->type == TYPE_EXPONENT_NUMBER){
             return DATATYPE_FLOAT;
-        }
+            }
         else if(data->type == TYPE_STRING){
             return DATATYPE_STRING;
-        }
+            }
         }
        /* if(data->content == NULL && data->content == NULL && data->content == NULL)
             return DATATYPE_NONE;
@@ -332,8 +332,8 @@ int countSymbols(Stack stack) //pocet symbolu ve stacku nez prijde "<"
     return -1;
 
 }
-
-int reduceExpression(Stack stack){
+//redukuje vyraz, vola se pri akci ">""
+int reduceExpression(Stack stack){ 
     
    
     StackElementPtr op1 = NULL;
@@ -354,11 +354,11 @@ int reduceExpression(Stack stack){
         op1 = stack.top;
         op2 = op1->nextElement;
         op3 = op2->nextElement;
-        rule = pickRule(op1, op2, op3);
+        rule = pickRule(op3, op2, op1);
     }
     else
     {
-        return SYN_ERROR;
+        return SEM_COMPABILITY_ERROR;
     }
     if(rule == RULE_ERROR)
         return 1;
@@ -376,52 +376,59 @@ int reduceExpression(Stack stack){
 
 //StackElementPtr stacktop;
 
-int takeAction(TRoot *someTree, token *sToken, Stack stack){ 
+int precedenceAction(TRoot *someTree, token *sToken, Stack stack){ 
     
     int result;
-    
+    bool done = 0;
 
     stackInit(&stack);
     stackPush(&stack, DOLLAR, DATATYPE_NONE);
 
     
+    while (done != 1){
+        PrtableSymbolsEnum inputsymbol = prtableTokenToSymbol(sToken);
+        DataTypeEnum inputdatatype = getDataType(sToken, someTree);
 
-    PrtableSymbolsEnum inputsymbol = prtableTokenToSymbol(sToken);
-    DataTypeEnum inputdatatype = getDataType( sToken, someTree);
-    PrtableIndexEnum coordinput = prtableSymbolToIndex(inputsymbol);
-    PrtableIndexEnum coordstack = prtableSymbolToIndex(stack.top->symbol);
+        StackElementPtr stacktopterminal = stackGetTopTerminal(&stack);
 
-    PrtableActionsEnum action = prtable[coordinput][coordstack];
-    switch(action){
-        case S:
-            stackInsertAfterTop(&stack, STOPPER, DATATYPE_NONE);
-            stackPush(&stack, inputsymbol, inputdatatype);
-            if ((result = getNextToken(sToken)) != SUCCES) {
-                return result;
-            }
-            takeAction(someTree, sToken, stack);
-         
-        case E:
-            stackPush(&stack, inputsymbol, inputdatatype);
-            if ((result = getNextToken(sToken)) != SUCCES) {
-                return result;
-            }
-            takeAction(someTree, sToken, stack);
+        PrtableIndexEnum coordinput = prtableSymbolToIndex(inputsymbol);
+        PrtableIndexEnum coordstack = prtableSymbolToIndex(stacktopterminal->symbol);
 
-        case R:
-            reduceExpression(stack);
-            takeAction(someTree, sToken, stack);
-            
-        case X:
-            if (coordinput == INDEX_DOLLAR && coordstack == INDEX_DOLLAR) {
-                return SUCCES;
-            }
-            else {
-                return SEM_COMPABILITY_ERROR;
-            }
-        default:
-            return SEM_COMPABILITY_ERROR;
+        PrtableActionsEnum action = prtable[coordinput][coordstack];
+        switch(action){
+            case S:
+                stackInsertAfterTop(&stack, STOPPER, DATATYPE_NONE);
+                stackPush(&stack, inputsymbol, inputdatatype);
+                if ((result = getNextToken(sToken)) != SUCCES) {
+                    return result;
+                }
+                break;
+
+            case E:
+                stackPush(&stack, inputsymbol, inputdatatype);
+                if ((result = getNextToken(sToken)) != SUCCES) {
+                    return result;
+                }
+                break;
+
+            case R:
+                reduceExpression(stack);
+                break;
+
+            case X:
+                if (coordinput == INDEX_DOLLAR && coordstack == INDEX_DOLLAR) {
+                    stackDispose(&stack);
+                    done = 1;
+                    break;
+                }
+                else {
+                    stackDispose(&stack);
+                    return SEM_COMPABILITY_ERROR;
+                }
+        }
+
     }
+return SUCCES;
 }   
 
 

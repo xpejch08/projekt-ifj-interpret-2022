@@ -165,11 +165,9 @@ TNodef *BVSSearch_function(TNodef *rootPtr, token token) {
             return rootPtr;
         }
         else if ((strCmpStr(token.content.str, rootPtr->content)) < 0) {
-            rootPtr->leftPtr = BVSSearch_function(rootPtr->leftPtr, token);
-            return rootPtr->leftPtr;
+            return BVSSearch_function(rootPtr->leftPtr, token);
         } else if ((strCmpStr(token.content.str, rootPtr->content)) > 0) {
-            rootPtr->rightPtr = BVSSearch_function(rootPtr->rightPtr, token);
-            return rootPtr->rightPtr;
+            return BVSSearch_function(rootPtr->rightPtr, token);
         }
     }
     return NULL;
