@@ -44,6 +44,8 @@
 #define JUMPIFEQ "JUMPIFEQ"
 #define JUMPIFNEQ "JUMPIFNEQ"
 #define EXIT "EXIT"
+#define CALL "CALL"
+#define RETURN "RETURN"
 
 #define STRING_TYPE "string"
 #define INT_TYPE "int"

@@ -1,21 +1,6 @@
 <?php
 declare(strict_types=1);
 
-$a;
-if(5 === 5)
-{
-    if(4===3)
-    {
-        $g;
-    }
-    else{};
-$f;
-}
-else{
-    if(2 === 4){
-    write("inIF2");
-    }
-    else{
-        $d;
-    }
+function foo (int $d, string $l) : int {
+    
 }

@@ -285,8 +285,8 @@ int declrList(token *sToken, function_save *fun_id) {
             if (BVSSearch_function(functionNames->rootPtr, *sToken) != NULL) {
                 canParseEnd = false;
                 call_function_save = BVSSearch_function(functionNames->rootPtr, *sToken);
-                printf("%s $%s\n", JUMP, sToken->content.str->str);
-                printf("%s $return%s\n", LABEL, sToken->content.str->str);
+                printf("%s $%s\n", CALL, sToken->content.str->str);
+                
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
@@ -329,6 +329,8 @@ int declrList(token *sToken, function_save *fun_id) {
             printf("%s\n", PUSHFRAME);
             printf("%s LF@$return_val\n", DEFVAR);
             printf("%s LF@$return_val %s\n", MOVE, NIL);
+            printf("%s\n", POPFRAME);
+            printf("%s\n", RETURN);
 
             if((result = getNextToken(sToken)) != SUCCES) {
                 return result;
@@ -339,7 +341,9 @@ int declrList(token *sToken, function_save *fun_id) {
             else{
                 in_function = true;
                 paramError = parametrs(PARAM_FUNCTION, 1, sToken, fun_id);
+                fprintf(stderr, "%d\n", paramError);
                 functionNames->rootPtr = BVSInsert_function(functionNames->rootPtr, *fun_id);
+                fprintf(stderr, "%d", paramError);
                 if (paramError != SUCCES) {
                     return paramError;
                 }
