@@ -27,10 +27,10 @@ TNode *BVSCreate(TNode *rootPtr, token token){
     newPtr->content = &initString;
     strCpyStr(newPtr->content, (&token)->content.str);
     newPtr->type = (&token)->type;
-    newPtr->leftPtr = NULL;  
+    newPtr->leftPtr = NULL;
     newPtr->rightPtr = NULL;
     rootPtr = newPtr;
-    
+
     return newPtr;
 }
 
@@ -73,7 +73,7 @@ TNode *BVSSearch(TNode *rootPtr, token token){
         else if((strCmpStr(token.content.str, rootPtr->content)) < 0){
             rootPtr->rightPtr = BVSSearch(rootPtr->rightPtr, token);
         }
-        return rootPtr;
+        return NULL;
     }
 }
 
@@ -183,14 +183,14 @@ void BVSFreeFunctionNode(TNodef *rootPtr){
 }
 
 void BVSFree_function(TRootf *SymTable){
-    
+
     BVSFreeFunctionNode(SymTable->rootPtr);
     free(SymTable);
 }
 
 
 //////////////////////////////////////////
-void postorder(TNode *tree){ 
+void postorder(TNode *tree){
     if(tree != NULL){
         postorder(tree->leftPtr);
         postorder(tree->rightPtr);
