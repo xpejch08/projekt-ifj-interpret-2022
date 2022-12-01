@@ -644,8 +644,8 @@ int statlist(token *sToken, function_save *fun_id){
         case TYPE_VARIABLE:
             if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
                 printf("%s GF@&%s\n", DEFVAR, (sToken->content.str->str)+1);
+                mainTree->rootPtr = BVSInsert(mainTree->rootPtr, *sToken);
             }
-            mainTree->rootPtr = BVSInsert(mainTree->rootPtr, *sToken);
             tmpToken = sToken;
             if((result = getNextToken(sToken)) != SUCCES){
                 return result;
@@ -655,6 +655,7 @@ int statlist(token *sToken, function_save *fun_id){
                 return result;
             }
             return SUCCES;
+
 
         case TYPE_END_OF_FILE:
             if(canParseEnd == true){
