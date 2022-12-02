@@ -681,6 +681,14 @@ int statlist(token *sToken, function_save *fun_id){
             return SUCCES;
 
         case TYPE_SEMICOLON:
+            if((result = getNextToken(sToken)) != SUCCES){
+                return result;
+            }
+            result = statlist(sToken, fun_id);
+            if(result != SUCCES){
+                return result;
+            }
+            return SUCCES;
         case TYPE_ASSIGN:
 
             if((result = getNextToken(sToken)) != SUCCES){
