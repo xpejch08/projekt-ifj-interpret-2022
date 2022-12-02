@@ -1140,15 +1140,17 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
-            if(sToken->type == TYPE_VARIABLE){
-                if(in_function){
-                    if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
-                        return SEM_UNDEFINED_ERROR;
+            if(sToken->type == TYPE_VARIABLE || sToken->type == TYPE_STRING){
+                if(sToken->type == TYPE_VARIABLE){
+                    if(in_function){
+                        if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
+                        }
                     }
-                }
-                else{
-                    if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
-                        return SEM_UNDEFINED_ERROR;
+                    else{
+                        if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
+                        }
                     }
                 }
                 if((result = getNextToken(sToken)) != SUCCES){
@@ -1163,15 +1165,17 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
-            if(sToken->type == TYPE_VARIABLE){
-                if(in_function){
-                    if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
-                        return SEM_UNDEFINED_ERROR;
+            if(sToken->type == TYPE_VARIABLE || sToken->type == TYPE_STRING){
+                if(sToken->type == TYPE_VARIABLE){
+                    if(in_function){
+                        if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
+                        }
                     }
-                }
-                else{
-                    if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
-                        return SEM_UNDEFINED_ERROR;
+                    else{
+                        if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
+                        }
                     }
                 }
                 if((result = getNextToken(sToken)) != SUCCES){
@@ -1181,15 +1185,17 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
-                    if(sToken->type == TYPE_VARIABLE){
-                        if(in_function){
-                            if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
-                                return SEM_UNDEFINED_ERROR;
+                    if(sToken->type == TYPE_VARIABLE || sToken->type == TYPE_INTEGER_NUMBER){
+                        if(sToken->type == TYPE_VARIABLE){
+                            if(in_function){
+                                if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
+                                    return SEM_UNDEFINED_ERROR;
+                                }
                             }
-                        }
-                        else{
-                            if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
-                                return SEM_UNDEFINED_ERROR;
+                            else{
+                                if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
+                                    return SEM_UNDEFINED_ERROR;
+                                }
                             }
                         }
                         unique++;
@@ -1208,18 +1214,19 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                             if((result = getNextToken(sToken)) != SUCCES){
                                 return  result;
                             }
-                            if(sToken->type == TYPE_VARIABLE){
-                                if(in_function){
-                                    if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
-                                        return SEM_UNDEFINED_ERROR;
+                            if(sToken->type == TYPE_VARIABLE || sToken->type == TYPE_INTEGER_NUMBER){
+                                if(sToken->type == TYPE_VARIABLE){
+                                    if(in_function){
+                                        if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
+                                            return SEM_UNDEFINED_ERROR;
+                                        }
+                                    }
+                                    else{
+                                        if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
+                                            return SEM_UNDEFINED_ERROR;
+                                        }
                                     }
                                 }
-                                else{
-                                    if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
-                                        return SEM_UNDEFINED_ERROR;
-                                    }
-                                }
-
                                 printf("%s\n",sToken->content.str->str);
                                 printf("%s LF@&%s int@%d\n", ADD, tmp2Token->content.str->str, 1);
 
@@ -1243,15 +1250,17 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
-            if(sToken->type == TYPE_VARIABLE){
-                if(in_function){
-                    if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
-                        return SEM_UNDEFINED_ERROR;
+            if(sToken->type == TYPE_VARIABLE || sToken->type == TYPE_STRING){
+                if(sToken->type == TYPE_VARIABLE){
+                    if(in_function){
+                        if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
+                        }
                     }
-                }
-                else{
-                    if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
-                        return SEM_UNDEFINED_ERROR;
+                    else{
+                        if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
+                        }
                     }
                 }
                 printf("%s\n", CREATEFRAME);
@@ -1271,15 +1280,17 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
-            if(sToken->type == TYPE_VARIABLE){
-                if(in_function){
-                    if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
-                        return SEM_UNDEFINED_ERROR;
+            if(sToken->type == TYPE_VARIABLE || sToken->type == TYPE_INTEGER_NUMBER){
+                if(sToken->type == TYPE_VARIABLE){
+                    if(in_function){
+                        if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
+                        }
                     }
-                }
-                else{
-                    if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
-                        return SEM_UNDEFINED_ERROR;
+                    else{
+                        if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
+                        }
                     }
                 }
                 unique++;
