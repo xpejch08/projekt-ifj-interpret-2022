@@ -1338,6 +1338,54 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
+            if(!insideFunction){
+                switch(sToken->type){
+                    case TYPE_STRING:
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
+                        if(sToken->type == TYPE_CONCATENATE){
+                            repeat++;
+                            return parametrs(PARAM_RETURN, repeat, sToken, fun_id);
+                        }else if(sToken->type == TYPE_SEMICOLON){
+                            return SUCCES;
+                        }
+                        return SYN_ERROR;
+                    case TYPE_INTEGER_NUMBER:
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
+                        if(sToken->type == TYPE_ADDITION ||
+                           sToken->type == TYPE_DIVIDE   ||
+                           sToken->type == TYPE_MULTIPLY ||
+                           sToken->type == TYPE_SUBTRACTION
+                                ){
+                            repeat++;
+                            return parametrs(PARAM_RETURN, repeat, sToken, fun_id);
+                        }else if(sToken->type == TYPE_SEMICOLON){
+                            return SUCCES;
+                        }
+                        return SYN_ERROR;
+                    case TYPE_DOUBLE_NUMBER:
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
+                        if(sToken->type == TYPE_ADDITION ||
+                           sToken->type == TYPE_DIVIDE   ||
+                           sToken->type == TYPE_MULTIPLY ||
+                           sToken->type == TYPE_SUBTRACTION
+                                ){
+                            repeat++;
+                            return parametrs(PARAM_RETURN, repeat, sToken, fun_id);
+                        }else if(sToken->type == TYPE_SEMICOLON){
+                            return SUCCES;
+                        }
+                        return SYN_ERROR;
+                    case TYPE_SEMICOLON:
+                            return SUCCES;
+                        }
+                        return SYN_ERROR;
+            }
             switch(sToken->type){
                 case TYPE_IDENTIFIER:
                     if(BVSSearch_function(functionNames->rootPtr, *sToken) == NULL){
@@ -1430,6 +1478,16 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         return SEM_COUNT_ERROR;
                     }
                     return SYN_ERROR;
+                case KEYWORD_NULL:
+                    if(fun_id->ret_value != KEYWORD_VOID){
+                        return SEM_COUNT_ERROR;
+                    }
+                    if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
+                    }
+                    if(sToken->type == TYPE_SEMICOLON){
+                        return SUCCES;
+                    }
             }
             return SYN_ERROR;
         case PARAM_FUNCTION_CALL: // calling function
