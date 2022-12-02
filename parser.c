@@ -418,7 +418,8 @@ int declrList(token *sToken, function_save *fun_id) {
             paramError = parametrs(PARAM_RETURN, 1, sToken, fun_id);
             if(paramError != SUCCES){
                 return  paramError;
-            }else if(in_function == true){
+            }
+            if(in_function == true){
                 returnCount = true;
                 canParseEnd = true;
                 result = statlist(sToken, fun_id);
@@ -427,7 +428,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
                 return SUCCES;
             } else{
-                return SEM_ERROR;
+                return SUCCES; /////////////////////// tady je treba ukoncit program
             }
 
 
