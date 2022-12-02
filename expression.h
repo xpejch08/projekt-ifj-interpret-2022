@@ -4,7 +4,7 @@
 
 
 #include "parser.h"
-//#include "expstack.h"
+#include "expstack.h"
 
 #include "lexical.h"
 #include "symtable.h"
@@ -30,7 +30,7 @@ typedef enum{
     LBRACKET,
     RBRACKET,
     DOLLAR,
-    STOPPER,
+    SHIFT,
     NON_TERMINAL
 } PrtableSymbolsEnum;
 
@@ -58,8 +58,5 @@ typedef enum {
     RULE_I,
     RULE_ERROR
 } PrtableRulesEnum;
-
-
-
 
 #endif
