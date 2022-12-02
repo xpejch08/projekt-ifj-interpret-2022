@@ -20,8 +20,7 @@ string* activeString;
 
 DLList _list;
 DLList *list = &_list;
-token *tmpToken;
-token *tmp2Token;
+
 
 bool in_function = false;
 bool canParseEnd = false;
@@ -647,7 +646,7 @@ int statlist(token *sToken, function_save *fun_id){
                 }
                 strClean(activeString);
                 strCpyStr(activeString, sToken->content.str);
-                tmpToken = sToken;
+                
                 if ((result = getNextToken(sToken)) != SUCCES) {
                     return result;
                 }
@@ -803,6 +802,12 @@ int statlist(token *sToken, function_save *fun_id){
 
 //todo
 int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
+    string* tmpToken;
+    string initToken;
+    initToken.str = NULL;
+    initToken.alloc = 0;
+    initToken.length = 0;
+    tmpToken = &initToken;
 
     int result;
     switch (option) {
@@ -1102,12 +1107,11 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             return SYN_ERROR;
         case PARAM_READI: // readi
             if(in_function){
-                printf("%s LF@$%s %s\n", READ,tmpToken->content.str->str,INT_TYPE);
-                //BVSSearch(insideFunction, *tmpToken)->content.integerNumber = INT_TYPE;
+                printf("%s LF@$%s %s\n", READ,activeString->str,INT_TYPE);
 
             }
             else{
-                printf("%s GF@$%s %s\n", READ,tmpToken->content.str->str,INT_TYPE);
+                printf("%s GF@$%s %s\n", READ,activeString->str,INT_TYPE);
             }
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
@@ -1120,12 +1124,11 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             }
         case PARAM_READS: // reads
             if(in_function){
-                printf("%s LF@$%s %s\n", READ,tmpToken->content.str->str,STRING_TYPE);
-                //BVSSearch(insideFunction, *tmpToken)->content.integerNumber = INT_TYPE;
+                printf("%s LF@$%s %s\n", READ,activeString->str,STRING_TYPE);
 
             }
             else{
-                printf("%s GF@$%s %s\n", READ,tmpToken->content.str->str,STRING_TYPE);
+                printf("%s GF@$%s %s\n", READ,activeString->str,STRING_TYPE);
             }
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
@@ -1138,11 +1141,10 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             }
         case PARAM_READF: // readf
             if(in_function){
-                printf("%s LF@$%s %s\n", READ,tmpToken->content.str->str,FLOAT_TYPE);
-                //BVSSearch(insideFunction, *tmpToken)->content.integerNumber = INT_TYPE;
+                printf("%s LF@$%s %s\n", READ,activeString->str,FLOAT_TYPE);
             }
             else{
-                printf("%s GF@$%s %s\n", READ,tmpToken->content.str->str,FLOAT_TYPE);
+                printf("%s GF@$%s %s\n", READ,activeString->str,FLOAT_TYPE);
             }
 
             if((result = getNextToken(sToken)) != SUCCES){
@@ -1158,11 +1160,10 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             printf("%s LF@&%s GF@&%s\n", MOVE, (sToken->content.str->str)+1, sToken->content.str->str);
             if(in_function){
 
-                printf("%s LF@&%s\n", STRLEN,(tmpToken->content.str->str)+1);
-                //BVSSearch(insideFunction, *tmpToken)->content.integerNumber = INT_TYPE;
+                printf("%s LF@&%s\n", STRLEN,(activeString->str)+1);
             }
             else{
-                printf("%s GF@&%s\n", STRLEN,(tmpToken->content.str->str)+1);
+                printf("%s GF@&%s\n", STRLEN,(activeString->str)+1);
             }
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
@@ -1189,6 +1190,9 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             }
             return SYN_ERROR;
         case PARAM_SUBSTRING: // substring
+
+            printf("%s\n", CREATEFRAME);
+            printf("%s\n", PUSHFRAME);
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
@@ -1205,6 +1209,9 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         }
                     }
                 }
+                unique++;
+                printf("%s LF@&tmp%d\n", DEFVAR, unique);
+                printf("%s LF@&tmp%d GF@&%s\n",MOVE, unique, (sToken->content.str->str)+1);
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
@@ -1225,18 +1232,11 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                                 }
                             }
                         }
-                        string* tmpToken;
-                        string initToken;
-                        initToken.str = NULL;
-                        initToken.alloc = 0;
-                        initToken.length = 0;
-                        tmpToken = &initToken;
-                        tmpToken = sToken->content.str;
-                        unique++;
-                        printf("%s\n", CREATEFRAME);
-                        printf("%s\n", PUSHFRAME);
+                        
+                        strCpyStr(tmpToken,sToken->content.str);
+                        
+                        
                         printf("%s LF@&%s GF@&%s\n",MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
-                        printf("%s LF@&tmp%d\n", DEFVAR, unique);
                         printf("%s LF@&substring%d\n", LABEL, unique);
                         printf("%s LF@&tmp%d LF@&%s ", SUBSTRING, unique, (sToken->content.str->str)+1);
 
@@ -1263,9 +1263,11 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
 
                                 printf("LF@&%s\n",(sToken->content.str->str)+1);
                                 printf("%s LF@&%s int@%d\n", ADD, tmpToken->str, 1);
+                                printf("%s LF@&%s string@\n",MOVE, (activeString->str)+1);
                                 printf("%s LF@&%s LF@&%s LF@&tmp%d\n", CONCAT, (activeString->str)+1, (activeString->str)+1, unique);
-                                printf("%s LF@&substring%d LF@&%s GF@&%s\n",JUMPIFNEQ, unique, (activeString->str)+1, (sToken->content.str->str)+1);
-                                printf("%s GF@&%s LF@&%s\n", MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
+                                printf("%s LF@&substring%d LF@&%s GF@&%s\n",JUMPIFNEQ, unique, (tmpToken->str)+1, (sToken->content.str->str)+1);
+                                printf("%s GF@&%s LF@&%s\n", MOVE, (activeString->str)+1, (activeString->str)+1);
+                                strClean(tmpToken);
                                 if((result = getNextToken(sToken)) != SUCCES){
                                     return  result;
                                 }
@@ -1298,7 +1300,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 printf("%s\n", CREATEFRAME);
                 printf("%s\n", PUSHFRAME);
                 printf("%s LF@&%s GF@&%s\n", MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
-                printf("%s GF@&%s LF@&%s int@%d\n",STRI2INT, (tmpToken->content.str->str)+1, (sToken->content.str->str)+1, 0);
+                printf("%s GF@&%s LF@&%s int@%d\n",STRI2INT, (activeString->str)+1, (sToken->content.str->str)+1, 0);
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
@@ -1334,7 +1336,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 printf("%s LF@&chr%d bool@true LF@&tmp%d\n",JUMPIFEQ, unique, unique);
                 printf("%s LF@&tmp%d LF@&%s int@%d\n", GT,unique, sToken->content.str->str, 255);
                 printf("%s LF@&chr%d bool@true LF@&tmp%d\n",JUMPIFEQ, unique, unique);
-                printf("%s %s LF@&%s\n", INT2CHAR,(tmpToken->content.str->str)+1, (sToken->content.str->str)+1);
+                printf("%s %s LF@&%s\n", INT2CHAR,(activeString->str)+1, (sToken->content.str->str)+1);
                 printf("%s LF@&chr%d\n", LABEL, unique);
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
