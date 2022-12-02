@@ -16,6 +16,8 @@ TRoot *insideFunction;
 TRootf *functionNames;
 TRoot *mainTree;
 
+string* activeString;
+
 DLList _list;
 DLList *list = &_list;
 token *tmpToken;
@@ -24,6 +26,7 @@ token *tmp2Token;
 bool in_function = false;
 bool canParseEnd = false;
 bool returnCount = false;
+bool afterAssign = false;
 
 TNodef *call_function_save; //////////////////////////////// new
 
@@ -232,10 +235,8 @@ int declrList(token *sToken, function_save *fun_id) {
                     paramError = parametrs(PARAM_SUBSTRING, 1, sToken, fun_id);
                     if (paramError == SUCCES) {
                         if (getNextToken(sToken) != TYPE_SEMICOLON) {
-                            //instructionFree()
                             return SYN_ERROR;
                         }
-                        //todo instructionFree()
                         canParseEnd = true;
 
                         if((result = getNextToken(sToken)) != SUCCES){
@@ -243,6 +244,7 @@ int declrList(token *sToken, function_save *fun_id) {
                         }
                         return SUCCES;
                     } else {
+                       printf("HERE\n");
                         return paramError;
                     }
                 } else {
@@ -368,8 +370,9 @@ int declrList(token *sToken, function_save *fun_id) {
             else{
                 in_function = true;
                 paramError = parametrs(PARAM_FUNCTION, 1, sToken, fun_id);
-                
+                fprintf(stderr, "%d\n", paramError);
                 functionNames->rootPtr = BVSInsert_function(functionNames->rootPtr, *fun_id);
+                fprintf(stderr, "%d", paramError);
                 if (paramError != SUCCES) {
                     return paramError;
                 }
@@ -625,47 +628,55 @@ int statlist(token *sToken, function_save *fun_id){
         case TYPE_COLON:
 
             getNextToken(sToken);
-            if(sToken->type != KEYWORD_VOID    ||
-               sToken->type != KEYWORD_INT     ||
-               sToken->type != KEYWORD_STRING  ||
-               sToken->type != KEYWORD_FLOAT)
+            if (sToken->type != KEYWORD_VOID ||
+                sToken->type != KEYWORD_INT ||
+                sToken->type != KEYWORD_STRING ||
+                sToken->type != KEYWORD_FLOAT)
                 return SYN_ERROR;
             getNextToken(sToken);
-            if(sToken->type != TYPE_LVINCULUM)
+            if (sToken->type != TYPE_LVINCULUM)
                 return SYN_ERROR;
             getNextToken(sToken);
             return declrList(sToken, fun_id);
-
 
 
         case TYPE_RVINCULUM:
             return SUCCES;
 
         case TYPE_VARIABLE:
-            if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
-                printf("%s GF@&%s\n", DEFVAR, (sToken->content.str->str)+1);
+            if (afterAssign == false) {
+                if (BVSSearch(mainTree->rootPtr, *sToken) == NULL) {
+                    printf("%s GF@&%s\n", DEFVAR, (sToken->content.str->str) + 1);
+                    mainTree->rootPtr = BVSInsert(mainTree->rootPtr, *sToken);
+                }
+                strClean(activeString);
+                strCpyStr(activeString, sToken->content.str);
+                tmpToken = sToken;
+                if ((result = getNextToken(sToken)) != SUCCES) {
+                    return result;
+                }
+                if (sToken->type == TYPE_SEMICOLON) {
+                    canParseEnd = true;
+                }
+                result = statlist(sToken, fun_id);
+                if (result != SUCCES) {
+                    return result;
+                }
+                return SUCCES;
+            } else {
+                //todo precedenc
+                afterAssign = false;
             }
-            mainTree->rootPtr = BVSInsert(mainTree->rootPtr, *sToken);
-            tmpToken = sToken;
-            if((result = getNextToken(sToken)) != SUCCES){
-                return result;
-            }
-            result = statlist(sToken, fun_id);
-            if(result != SUCCES){
-                return result;
-            }
-            return SUCCES;
 
         case TYPE_END_OF_FILE:
-            if(canParseEnd == true){
+            if (canParseEnd == true) {
                 return SUCCES;
-            }
-            else{
+            } else {
                 return SYN_ERROR;
             }
         case TYPE_IDENTIFIER:
             result = declrList(sToken, fun_id);
-            if(result != SUCCES){
+            if (result != SUCCES) {
                 return result;
             }
             return SUCCES;
@@ -675,12 +686,21 @@ int statlist(token *sToken, function_save *fun_id){
 
         case TYPE_SEMICOLON:
         case TYPE_ASSIGN:
-
-            if((result = getNextToken(sToken)) != SUCCES){
+            afterAssign = true;
+            if ((result = getNextToken(sToken)) != SUCCES) {
                 return result;
             }
+            if (sToken->type != TYPE_VARIABLE) {
+                if (sToken->type != TYPE_EXPONENT_NUMBER) {
+                    if (sToken->type != TYPE_DOUBLE_NUMBER) {
+                        if (sToken->type != TYPE_INTEGER_NUMBER) {
+                            afterAssign = false;
+                        }
+                    }
+                }
+            }
             result = statlist(sToken, fun_id);
-            if(result != SUCCES){
+            if (result != SUCCES) {
                 return result;
             }
             return SUCCES;
@@ -689,46 +709,43 @@ int statlist(token *sToken, function_save *fun_id){
         case KEYWORD_ELSE:
         case KEYWORD_WHILE:
             result = declrList(sToken, fun_id);
-            if(result != SUCCES){
+            if (result != SUCCES) {
                 return result;
             }
             return SUCCES;
 
         case KEYWORD_FUNCTION:
-            if((result = getNextToken(sToken)) != SUCCES){
+            if ((result = getNextToken(sToken)) != SUCCES) {
                 return result;
             }
-            if(sToken->type != TYPE_IDENTIFIER){
+            if (sToken->type != TYPE_IDENTIFIER) {
                 return SYN_ERROR;
-            }
-            else if((checkIfBuiltIn(sToken)) != 0){
+            } else if ((checkIfBuiltIn(sToken)) != 0) {
                 return 3;
             }
             sToken->type = TYPE_FUNCTIONDECLARE;
             result = declrList(sToken, fun_id);
-            if(result != SUCCES){
+            if (result != SUCCES) {
                 return result;
             }
             return SUCCES;
 
         case KEYWORD_RETURN:
-            if(in_function == true){
+            if (in_function == true) {
                 result = declrList(sToken, fun_id);
-                if(result != SUCCES){
+                if (result != SUCCES) {
                     return result;
                 }
                 return SUCCES;
             }
-            if(canParseEnd == true){
-                if((result = getNextToken(sToken)) != SUCCES){
+            if (canParseEnd == true) {
+                result = parametrs(PARAM_RETURN, 1, sToken, fun_id);
+                if (result != SUCCES) {
                     return result;
                 }
-                if(sToken->type == TYPE_SEMICOLON){
-                    return SUCCES;
-                }
-                //todo return getnexttoken value codegen
                 return SUCCES;
             }
+            return SYN_ERROR;
 
         case TYPE_ADDITION:
         case TYPE_MULTIPLY:
@@ -741,11 +758,12 @@ int statlist(token *sToken, function_save *fun_id){
         case TYPE_EQUAL:
         case TYPE_NOT_EQUAL:
         case TYPE_CONCATENATE:
-            if((result = getNextToken(sToken)) != SUCCES){
+            canParseEnd = false;
+            if ((result = getNextToken(sToken)) != SUCCES) {
                 return result;
             }
             result = statlist(sToken, fun_id);
-            if(result != SUCCES){
+            if (result != SUCCES) {
                 return result;
             }
             return SUCCES;
@@ -757,14 +775,19 @@ int statlist(token *sToken, function_save *fun_id){
         case TYPE_INTEGER_NUMBER:
         case TYPE_DOUBLE_NUMBER:
         case TYPE_EXPONENT_NUMBER:
-            if((result = getNextToken(sToken)) != SUCCES){
-                return result;
+            if (afterAssign == false) {
+                if ((result = getNextToken(sToken)) != SUCCES) {
+                    return result;
+                }
+                result = statlist(sToken, fun_id);
+                if (result != SUCCES) {
+                    return result;
+                }
+                return SUCCES;
             }
-            result = statlist(sToken, fun_id);
-            if(result != SUCCES){
-                return result;
+            else{
+                //todo precedencni analyza
             }
-            return SUCCES;
     }
     return SYN_ERROR;
     //todo statList
@@ -1199,10 +1222,12 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                             }
                         }
                         unique++;
+                        printf("%s\n", CREATEFRAME);
+                        printf("%s\n", PUSHFRAME);
                         printf("%s LF@&%s GF@&%s\n",MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
-                        printf("%s LF@&substring%d\n", LABEL, unique);
                         printf("%s LF@&tmp%d\n", DEFVAR, unique);
-                        printf("%s LF@&tmp%d %s ", SUBSTRING, unique, (sToken->content.str->str)+1);
+                        printf("%s LF@&substring%d\n", LABEL, unique);
+                        printf("%s LF@&tmp%d LF@&%s ", SUBSTRING, unique, (sToken->content.str->str)+1);
 
                         tmp2Token = sToken;
                         tmp2Token->content = sToken->content;
@@ -1214,23 +1239,20 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                             if((result = getNextToken(sToken)) != SUCCES){
                                 return  result;
                             }
-                            if(sToken->type == TYPE_VARIABLE || sToken->type == TYPE_INTEGER_NUMBER){
-                                if(sToken->type == TYPE_VARIABLE){
-                                    if(in_function){
-                                        if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
-                                            return SEM_UNDEFINED_ERROR;
-                                        }
-                                    }
-                                    else{
-                                        if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
-                                            return SEM_UNDEFINED_ERROR;
-                                        }
+                            if(sToken->type == TYPE_VARIABLE){
+                                if(in_function){
+                                    if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
+                                        return SEM_UNDEFINED_ERROR;
                                     }
                                 }
+                                else{
+                                    if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
+                                        return SEM_UNDEFINED_ERROR;
+                                    }
+                                }
+
                                 printf("%s\n",sToken->content.str->str);
                                 printf("%s LF@&%s int@%d\n", ADD, tmp2Token->content.str->str, 1);
-
-
                                 printf("%s LF@&%s LF@&%s LF@&tmp%d\n", CONCAT, (tmpToken->content.str->str)+1, (tmpToken->content.str->str)+1, unique);
                                 printf("%s LF@&substring%d LF@&%s GF@&%s\n",JUMPIFNEQ, unique, (tmpToken->content.str->str)+1, (sToken->content.str->str)+1);
                                 printf("%s GF@&%s LF@&%s\n", MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
@@ -1425,7 +1447,6 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         }
                     }
                 case TYPE_VARIABLE:
-                
                     if(in_function){
                         if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
                             return SEM_UNDEFINED_ERROR;
@@ -1433,7 +1454,6 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
                     else{
                         if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
-                            
                             return SEM_UNDEFINED_ERROR;
                         }
                     }
@@ -1487,6 +1507,11 @@ int parse(void){
     string initStr;
     function_save initek;
     string fun_init;
+    string activeStringInit;
+    activeStringInit.str = NULL;
+    activeStringInit.length = 0;
+    activeStringInit.str = 0;
+
 
     initStr.str = NULL;
     initStr.length = 0;
@@ -1504,9 +1529,13 @@ int parse(void){
     function_save *fun_id;
     fun_id = &initek;
 
+    activeString = &activeStringInit;
     TRoot initMain;
     TRoot initInside;
     TRootf initNames;
+
+    strInit(activeString);
+    strClean(activeString);
 
     mainTree = &initMain;
     functionNames = &initNames;

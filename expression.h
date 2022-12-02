@@ -26,7 +26,7 @@ typedef enum{
     SINT,
     SFLOAT,
     SSTRING,
-    IDENTIFIER,
+    VARIABLE,
     LBRACKET,
     RBRACKET,
     DOLLAR,
