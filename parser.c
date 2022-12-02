@@ -415,7 +415,8 @@ int declrList(token *sToken, function_save *fun_id) {
             paramError = parametrs(PARAM_RETURN, 1, sToken, fun_id);
             if(paramError != SUCCES){
                 return  paramError;
-            }else if(in_function == true){
+            }
+            if(in_function == true){
                 returnCount = true;
                 canParseEnd = true;
                 result = statlist(sToken, fun_id);
@@ -424,7 +425,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
                 return SUCCES;
             } else{
-                return SEM_ERROR;
+                return SUCCES; /////////////////////// tady je treba ukoncit program
             }
 
 
@@ -623,18 +624,7 @@ int statlist(token *sToken, function_save *fun_id){
         case TYPE_LVINCULUM:
             return SYN_ERROR;
         case TYPE_COLON:
-
-            getNextToken(sToken);
-            if (sToken->type != KEYWORD_VOID ||
-                sToken->type != KEYWORD_INT ||
-                sToken->type != KEYWORD_STRING ||
-                sToken->type != KEYWORD_FLOAT)
-                return SYN_ERROR;
-            getNextToken(sToken);
-            if (sToken->type != TYPE_LVINCULUM)
-                return SYN_ERROR;
-            getNextToken(sToken);
-            return declrList(sToken, fun_id);
+            return SYN_ERROR;
 
 
         case TYPE_RVINCULUM:
@@ -670,7 +660,7 @@ int statlist(token *sToken, function_save *fun_id){
                 }
                 return SUCCES;
             } else {
-                //todo precedenc
+                //todo precedencni
                 afterAssign = false;
             }
 
@@ -691,6 +681,14 @@ int statlist(token *sToken, function_save *fun_id){
             return SUCCES;
 
         case TYPE_SEMICOLON:
+            if((result = getNextToken(sToken)) != SUCCES){
+                return result;
+            }
+            result = statlist(sToken, fun_id);
+            if(result != SUCCES){
+                return result;
+            }
+            return SUCCES;
         case TYPE_ASSIGN:
 
             if((result = getNextToken(sToken)) != SUCCES){
