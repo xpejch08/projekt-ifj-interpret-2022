@@ -443,7 +443,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 return SYN_ERROR;
             }
             else {
-                paramError = parametrs(PARAM_IF_WHILE, 1, sToken, fun_id);
+                paramError = parametrs(PARAM_IF_WHILE, 1, sToken, fun_id); // misto parametrs volat precedencku
                 printf("%s $while_end%d\n", JUMPIFNEQ, condCounter);
                 if(paramError != SUCCES){
                     return paramError;
@@ -520,7 +520,7 @@ int declrList(token *sToken, function_save *fun_id) {
             } else {
                 return SUCCES;
             }
-        case KEYWORD_IF:
+        case KEYWORD_IF: // misto parametrs volat precedencku
             unique+= 1;
             condCounter = unique;
             canParseEnd = true;
@@ -676,7 +676,7 @@ int statlist(token *sToken, function_save *fun_id){
             }
         case TYPE_IDENTIFIER:
             result = declrList(sToken, fun_id);
-            if (result != SUCCES) {
+            if(result != SUCCES){
                 return result;
             }
             return SUCCES;
@@ -686,8 +686,8 @@ int statlist(token *sToken, function_save *fun_id){
 
         case TYPE_SEMICOLON:
         case TYPE_ASSIGN:
-            afterAssign = true;
-            if ((result = getNextToken(sToken)) != SUCCES) {
+
+            if((result = getNextToken(sToken)) != SUCCES){
                 return result;
             }
             if (sToken->type != TYPE_VARIABLE) {
@@ -700,7 +700,7 @@ int statlist(token *sToken, function_save *fun_id){
                 }
             }
             result = statlist(sToken, fun_id);
-            if (result != SUCCES) {
+            if(result != SUCCES){
                 return result;
             }
             return SUCCES;
@@ -709,7 +709,7 @@ int statlist(token *sToken, function_save *fun_id){
         case KEYWORD_ELSE:
         case KEYWORD_WHILE:
             result = declrList(sToken, fun_id);
-            if (result != SUCCES) {
+            if(result != SUCCES){
                 return result;
             }
             return SUCCES;
