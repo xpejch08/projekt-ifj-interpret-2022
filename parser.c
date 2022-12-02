@@ -120,7 +120,10 @@ int declrList(token *sToken, function_save *fun_id) {
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_READS, 1, sToken, fun_id);
                     if (paramError == SUCCES) {
-                        if (getNextToken(sToken) != TYPE_SEMICOLON) {
+                        if(getNextToken(sToken) == LEX_ERROR){
+                            return LEX_ERROR;
+                        }
+                        if (sToken->type != TYPE_SEMICOLON) {
                             return SYN_ERROR;
                         }
 
@@ -129,7 +132,13 @@ int declrList(token *sToken, function_save *fun_id) {
                         if((result = getNextToken(sToken)) != SUCCES){
                             return  result;
                         }
-                        return SUCCES;
+                        result = statlist(sToken, fun_id);
+                        if(result != SUCCES){
+                            return result;
+                        }
+                        else {
+                            return SUCCES;
+                        }
                     } else {
                         return paramError;
                     }
@@ -173,24 +182,33 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
             }
             if (strCmpConstStr(sToken->content.str, "readf") == 0) {
-                canParseEnd = false;
+                  canParseEnd = false;
 
-                if ((result = getNextToken(sToken)) != SUCCES) {
-                    return result;
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
                 }
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_READF, 1, sToken, fun_id);
                     if (paramError == SUCCES) {
-                        if (getNextToken(sToken) != TYPE_SEMICOLON) {
+                        if(getNextToken(sToken) == LEX_ERROR){
+                            return LEX_ERROR;
+                        }
+                        if (sToken->type != TYPE_SEMICOLON) {
                             return SYN_ERROR;
                         }
 
                         canParseEnd = true;
 
-                        if ((result = getNextToken(sToken)) != SUCCES) {
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
+                        result = statlist(sToken, fun_id);
+                        if(result != SUCCES){
                             return result;
                         }
-                        return SUCCES;
+                        else {
+                            return SUCCES;
+                        }
                     } else {
                         return paramError;
                     }
@@ -1061,10 +1079,10 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
                     if(!in_function)
                     {
-                        printf("GF@&%s ", sToken->content.str->str);
+                        printf("GF@&%s ", (sToken->content.str->str)+1);
                     }
                     else{
-                        printf("LF@&%s ", sToken->content.str->str);
+                        printf("LF@&%s ", (sToken->content.str->str)+1);
                     }
 
                     if((result = getNextToken(sToken)) != SUCCES){
@@ -1107,11 +1125,11 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             return SYN_ERROR;
         case PARAM_READI: // readi
             if(in_function){
-                printf("%s LF@$%s %s\n", READ,activeString->str,INT_TYPE);
+                printf("%s LF@&%s %s\n", READ,(activeString->str)+1,INT_TYPE);
 
             }
             else{
-                printf("%s GF@$%s %s\n", READ,activeString->str,INT_TYPE);
+                printf("%s GF@&%s %s\n", READ,(activeString->str)+1,INT_TYPE);
             }
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
@@ -1124,11 +1142,11 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             }
         case PARAM_READS: // reads
             if(in_function){
-                printf("%s LF@$%s %s\n", READ,activeString->str,STRING_TYPE);
+                printf("%s LF@&%s %s\n", READ,(activeString->str)+1,STRING_TYPE);
 
             }
             else{
-                printf("%s GF@$%s %s\n", READ,activeString->str,STRING_TYPE);
+                printf("%s GF@&%s %s\n", READ,(activeString->str)+1,STRING_TYPE);
             }
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
@@ -1136,15 +1154,15 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             if(sToken->type == TYPE_RBRACKET){
                 return SUCCES;
             }
-            else{
+            else{          
                 return SYN_ERROR;
             }
         case PARAM_READF: // readf
             if(in_function){
-                printf("%s LF@$%s %s\n", READ,activeString->str,FLOAT_TYPE);
+                printf("%s LF@&%s %s\n", READ,(activeString->str)+1,FLOAT_TYPE);
             }
             else{
-                printf("%s GF@$%s %s\n", READ,activeString->str,FLOAT_TYPE);
+                printf("%s GF@&%s %s\n", READ,(activeString->str)+1,FLOAT_TYPE);
             }
 
             if((result = getNextToken(sToken)) != SUCCES){

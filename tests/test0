@@ -5,7 +5,8 @@ declare(strict_types=1);
 $o;
 $f;
 $i;
-$p = substring($f, $o,$i);
+$p = readi();
+write($p);
 
 
 //python3 test.py ../interpret ../ic22int_linux64_2022-11-24/ic22int
