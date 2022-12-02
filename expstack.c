@@ -32,7 +32,7 @@ int stackPop(Stack *stack, int n) {
 }
 StackElementPtr stackGetTopTerminal(Stack *stack) {
 	for(StackElementPtr elem = stack->top; elem != NULL; elem = elem->nextElement ){
-		if (elem->symbol < STOPPER){
+		if (elem->symbol < SHIFT){
 			return elem;
 		}
 
@@ -45,7 +45,7 @@ int stackInsertAfterTop(Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum da
 	StackElementPtr previousElement = NULL;
 
 	for(StackElementPtr elem = stack->top; elem != NULL; elem = elem->nextElement ){
-		if (elem->symbol < STOPPER){
+		if (elem->symbol < SHIFT){
 			StackElementPtr newElement = malloc(sizeof(struct StackElement));
 			if (newElement == NULL) {
 				return 1;
