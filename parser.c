@@ -225,14 +225,14 @@ int declrList(token *sToken, function_save *fun_id) {
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_STRLEN, 1, sToken, fun_id);
                     if (paramError == SUCCES) {
-                        if (getNextToken(sToken) != TYPE_SEMICOLON) {
-                            return SYN_ERROR;
-                        }
-                        canParseEnd = true;
-
                         if((result = getNextToken(sToken)) != SUCCES){
                             return  result;
                         }
+                        if (sToken->type != TYPE_SEMICOLON) {
+                            return SYN_ERROR;
+                        }
+                        canParseEnd = true;
+                        
                         return SUCCES;
                     } else {
                         return paramError;
@@ -251,14 +251,14 @@ int declrList(token *sToken, function_save *fun_id) {
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_SUBSTRING, 1, sToken, fun_id);
                     if (paramError == SUCCES) {
-                        if (getNextToken(sToken) != TYPE_SEMICOLON) {
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
+                        if (sToken->type != TYPE_SEMICOLON) {
                             return SYN_ERROR;
                         }
                         canParseEnd = true;
 
-                        if((result = getNextToken(sToken)) != SUCCES){
-                            return  result;
-                        }
                         return SUCCES;
                     } else {
                         return paramError;
@@ -1175,14 +1175,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 return SYN_ERROR;
             }
         case PARAM_STRLEN: // strlen
-            printf("%s LF@&%s GF@&%s\n", MOVE, (sToken->content.str->str)+1, sToken->content.str->str);
-            if(in_function){
-
-                printf("%s LF@&%s\n", STRLEN,(activeString->str)+1);
-            }
-            else{
-                printf("%s GF@&%s\n", STRLEN,(activeString->str)+1);
-            }
+           
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
@@ -1199,6 +1192,13 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         }
                     }
                 }
+            if(in_function){
+
+                printf("%s LF@&%s %s\n", STRLEN,(activeString->str)+1, sToken->content.str->str);
+            }
+            else{
+                printf("%s GF@&%s %s\n", STRLEN,(activeString->str)+1, sToken->content.str->str);
+            }
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
@@ -1214,6 +1214,9 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
+            unique++;
+            int tmpCounter = unique;
+            printf("%s LF@&tmp%d\n", DEFVAR, unique);
             if(sToken->type == TYPE_VARIABLE || sToken->type == TYPE_STRING){
                 if(sToken->type == TYPE_VARIABLE){
                     if(in_function){
@@ -1226,10 +1229,12 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                             return SEM_UNDEFINED_ERROR;
                         }
                     }
+                    printf("%s LF@&tmp%d GF@&%s\n",MOVE, unique, (sToken->content.str->str)+1);
                 }
-                unique++;
-                printf("%s LF@&tmp%d\n", DEFVAR, unique);
-                printf("%s LF@&tmp%d GF@&%s\n",MOVE, unique, (sToken->content.str->str)+1);
+                else{
+                    printf("%s LF@&tmp%d string@%s\n",MOVE, unique, sToken->content.str->str);   
+                }
+                
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
@@ -1237,6 +1242,8 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
+                    
+                    strCpyStr(tmpToken,sToken->content.str);
                     if(sToken->type == TYPE_VARIABLE || sToken->type == TYPE_INTEGER_NUMBER){
                         if(sToken->type == TYPE_VARIABLE){
                             if(in_function){
@@ -1249,15 +1256,17 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                                     return SEM_UNDEFINED_ERROR;
                                 }
                             }
-                        }
-                        
-                        strCpyStr(tmpToken,sToken->content.str);
-                        
-                        
                         printf("%s LF@&%s GF@&%s\n",MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
                         printf("%s LF@&substring%d\n", LABEL, unique);
                         printf("%s LF@&tmp%d LF@&%s ", SUBSTRING, unique, (sToken->content.str->str)+1);
-
+                        }
+                        
+                        else{
+                             tmpCounter++;
+                        printf("%s LF@tmp%d\n", DEFVAR, tmpCounter);
+                        printf("%s LF@&tmp%d int@%s\n",MOVE,tmpCounter, sToken->content.str->str);
+                        printf("%s LF@&substring%d\n", LABEL, unique);
+                        }
                         
                         if((result = getNextToken(sToken)) != SUCCES){
                             return  result;
@@ -1285,6 +1294,26 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                                 printf("%s LF@&%s LF@&%s LF@&tmp%d\n", CONCAT, (activeString->str)+1, (activeString->str)+1, unique);
                                 printf("%s LF@&substring%d LF@&%s GF@&%s\n",JUMPIFNEQ, unique, (tmpToken->str)+1, (sToken->content.str->str)+1);
                                 printf("%s GF@&%s LF@&%s\n", MOVE, (activeString->str)+1, (activeString->str)+1);
+                                strClean(tmpToken);
+                                if((result = getNextToken(sToken)) != SUCCES){
+                                    return  result;
+                                }
+                                if(sToken->type == TYPE_RBRACKET){
+                                    return SUCCES;
+                                }
+                            }
+                            else{
+                                printf("%s LF@&res%d\n", DEFVAR, unique);
+                                printf("%s LF@&tmp%d\n", DEFVAR, (tmpCounter)+1);
+                                printf("%s LF@&tmp%d int@%s\n", MOVE,(tmpCounter)+1, sToken->content.str->str);
+                                printf("%s LF@&res%d LF@&tmp%d LF@&tmp%d\n", SUBSTRING, unique,unique, tmpCounter);
+                                printf("%s LF@&tmp%d int@%d\n", ADD, tmpCounter, 1);
+                                printf("%s LF@&%s\n", DEFVAR, (activeString->str)+1);
+                                printf("%s LF@&%s string@\n",MOVE, (activeString->str)+1);
+                                printf("%s LF@&%s LF@&%s LF@&res%d\n", CONCAT, (activeString->str)+1,(activeString->str)+1, unique);
+            
+                                printf("%s LF@&substring%d LF@&tmp%d LF@&tmp%d\n",JUMPIFNEQ, unique, tmpCounter, (tmpCounter)+1);
+                                printf("%s GF@&%s LF@&%s\n", MOVE, (activeString->str)+1, (activeString->str)+1); 
                                 strClean(tmpToken);
                                 if((result = getNextToken(sToken)) != SUCCES){
                                     return  result;
