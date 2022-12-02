@@ -370,9 +370,7 @@ int declrList(token *sToken, function_save *fun_id) {
             else{
                 in_function = true;
                 paramError = parametrs(PARAM_FUNCTION, 1, sToken, fun_id);
-                fprintf(stderr, "%d\n", paramError);
                 functionNames->rootPtr = BVSInsert_function(functionNames->rootPtr, *fun_id);
-                fprintf(stderr, "%d", paramError);
                 if (paramError != SUCCES) {
                     return paramError;
                 }
@@ -627,18 +625,7 @@ int statlist(token *sToken, function_save *fun_id){
         case TYPE_LVINCULUM:
             return SYN_ERROR;
         case TYPE_COLON:
-
-            getNextToken(sToken);
-            if (sToken->type != KEYWORD_VOID ||
-                sToken->type != KEYWORD_INT ||
-                sToken->type != KEYWORD_STRING ||
-                sToken->type != KEYWORD_FLOAT)
-                return SYN_ERROR;
-            getNextToken(sToken);
-            if (sToken->type != TYPE_LVINCULUM)
-                return SYN_ERROR;
-            getNextToken(sToken);
-            return declrList(sToken, fun_id);
+            return SYN_ERROR;
 
 
         case TYPE_RVINCULUM:
@@ -646,9 +633,18 @@ int statlist(token *sToken, function_save *fun_id){
 
         case TYPE_VARIABLE:
             if (afterAssign == false) {
+                if(!in_function){
                 if (BVSSearch(mainTree->rootPtr, *sToken) == NULL) {
                     printf("%s GF@&%s\n", DEFVAR, (sToken->content.str->str) + 1);
                     mainTree->rootPtr = BVSInsert(mainTree->rootPtr, *sToken);
+                }
+                }
+                else
+                {
+                    if (BVSSearch(insideFunction->rootPtr, *sToken) == NULL) {
+                    insideFunction->rootPtr = BVSInsert(insideFunction->rootPtr, *sToken);
+                    printf("%s LF@&%s\n", DEFVAR, (sToken->content.str->str) + 1);
+                    }
                 }
                 strClean(activeString);
                 strCpyStr(activeString, sToken->content.str);
@@ -665,7 +661,7 @@ int statlist(token *sToken, function_save *fun_id){
                 }
                 return SUCCES;
             } else {
-                //todo precedenc
+                //todo precedencni
                 afterAssign = false;
             }
 
@@ -686,6 +682,14 @@ int statlist(token *sToken, function_save *fun_id){
             return SUCCES;
 
         case TYPE_SEMICOLON:
+            if((result = getNextToken(sToken)) != SUCCES){
+                return result;
+            }
+            result = statlist(sToken, fun_id);
+            if(result != SUCCES){
+                return result;
+            }
+            return SUCCES;
         case TYPE_ASSIGN:
 
             if((result = getNextToken(sToken)) != SUCCES){
