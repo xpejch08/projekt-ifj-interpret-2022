@@ -370,9 +370,7 @@ int declrList(token *sToken, function_save *fun_id) {
             else{
                 in_function = true;
                 paramError = parametrs(PARAM_FUNCTION, 1, sToken, fun_id);
-                fprintf(stderr, "%d\n", paramError);
                 functionNames->rootPtr = BVSInsert_function(functionNames->rootPtr, *fun_id);
-                fprintf(stderr, "%d", paramError);
                 if (paramError != SUCCES) {
                     return paramError;
                 }
@@ -645,9 +643,18 @@ int statlist(token *sToken, function_save *fun_id){
 
         case TYPE_VARIABLE:
             if (afterAssign == false) {
+                if(!in_function){
                 if (BVSSearch(mainTree->rootPtr, *sToken) == NULL) {
                     printf("%s GF@&%s\n", DEFVAR, (sToken->content.str->str) + 1);
                     mainTree->rootPtr = BVSInsert(mainTree->rootPtr, *sToken);
+                }
+                }
+                else
+                {
+                    if (BVSSearch(insideFunction->rootPtr, *sToken) == NULL) {
+                    insideFunction->rootPtr = BVSInsert(insideFunction->rootPtr, *sToken);
+                    printf("%s LF@&%s\n", DEFVAR, (sToken->content.str->str) + 1);
+                    }
                 }
                 strClean(activeString);
                 strCpyStr(activeString, sToken->content.str);

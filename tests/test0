@@ -1,10 +1,14 @@
 <?php
 declare(strict_types=1);
 
-$d;
-$a;
-$l;
-$g;
-$g = substring($a,$d,$l);
+
+$o;
+$p;
+function foo(int $a) : int {
+$lll;
+
+}
+
+foo($p);
 
 //python3 test.py ../interpret ../ic22int_linux64_2022-11-24/ic22int
