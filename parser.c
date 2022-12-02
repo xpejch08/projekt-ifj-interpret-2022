@@ -624,18 +624,7 @@ int statlist(token *sToken, function_save *fun_id){
         case TYPE_LVINCULUM:
             return SYN_ERROR;
         case TYPE_COLON:
-
-            getNextToken(sToken);
-            if (sToken->type != KEYWORD_VOID ||
-                sToken->type != KEYWORD_INT ||
-                sToken->type != KEYWORD_STRING ||
-                sToken->type != KEYWORD_FLOAT)
-                return SYN_ERROR;
-            getNextToken(sToken);
-            if (sToken->type != TYPE_LVINCULUM)
-                return SYN_ERROR;
-            getNextToken(sToken);
-            return declrList(sToken, fun_id);
+            return SYN_ERROR;
 
 
         case TYPE_RVINCULUM:
@@ -671,7 +660,7 @@ int statlist(token *sToken, function_save *fun_id){
                 }
                 return SUCCES;
             } else {
-                //todo precedenc
+                //todo precedencni
                 afterAssign = false;
             }
 
