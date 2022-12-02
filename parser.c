@@ -1338,7 +1338,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
-            if(!insideFunction){
+            if(!insideFunction){ // pokud je to v hlavni funkci
                 switch(sToken->type){
                     case TYPE_STRING:
                         if((result = getNextToken(sToken)) != SUCCES){
