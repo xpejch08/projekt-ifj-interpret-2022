@@ -448,8 +448,8 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
                 return SUCCES;
             } else{
-                return SUCCES;
                 printf("%s %d\n", EXIT, 0);
+                return SUCCES;            
                  /////////////////////// tady je treba ukoncit program
             }
 
