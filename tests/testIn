@@ -11,8 +11,11 @@ if (4 === 2) {
 	while(6 < 0)
 	{
 		$f = readi();
+		write("HEREEEEEE");
 	}
-} else {}
+} else {
+	
+}
 
 
 if (4 < 0) {
@@ -20,12 +23,14 @@ if (4 < 0) {
 } else {
 	
 	while ($a > 0) {
+		if(3 === 4)
+		{
+			$kk;
+		}
+		else{
+			$op;
+		}
 		$h;
 	}
-	write("Vysledek je: ", 777, "\n");
-	if(4 ===3)
-	{
-		$h = 5;
-	}
-	else{};
+	$xxx = readf();
 }

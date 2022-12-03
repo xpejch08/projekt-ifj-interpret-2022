@@ -30,6 +30,7 @@
 #define IDIV "IDIV"
 #define PUSH "PUSH"
 #define POP "POP"
+#define EQ "EQ"
 #define LT "LT"
 #define GT "GT"
 #define WRITE "WRITE"
