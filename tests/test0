@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 $o;
 $i;
-$p = substring("TESTING", 4, $i);
+function bar(int $a) : int {
+    $fff = readi();
+    return 3;
+}
+
+$o = bar($i);
 
 
 

@@ -1610,6 +1610,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 case TYPE_SEMICOLON:
                     if(repeat == 1){
                         if(fun_id->ret_value == KEYWORD_VOID){
+                            
                             return SUCCES;
                         }
                         return SEM_RETURN_ERROR;
@@ -1623,6 +1624,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         return  result;
                     }
                     if(sToken->type == TYPE_SEMICOLON){
+                        
                         return SUCCES;
                     }
             }
@@ -1656,6 +1658,10 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         return  result;
                     }
                     if(sToken->type == TYPE_RBRACKET){
+                        if(call_function_save->return_type == KEYWORD_VOID)
+                        {
+                        printf("%s GF@&%s nil@nil\n", MOVE, (activeString->str)+1);
+                        }
                         if(repeat == call_function_save->parameters){
                             return SUCCES;
                         }
@@ -1677,6 +1683,10 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         return  result;
                     }
                     if(sToken->type == TYPE_RBRACKET){
+                        if(call_function_save->return_type == KEYWORD_VOID)
+                        {
+                        printf("%s GF@&%s nil@nil\n", MOVE, (activeString->str)+1);
+                        }
                         if(repeat == call_function_save->parameters){
                             return SUCCES;
                         }
