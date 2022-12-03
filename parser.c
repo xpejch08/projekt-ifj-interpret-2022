@@ -39,7 +39,7 @@ int unique = 0;
 int whileCounter = 0;
 int incId = 1;
 
-
+//test
 int checkIfBuiltIn(token *sToken){
     if (strCmpConstStr(sToken->content.str, "write") == 0){
         return 1;
