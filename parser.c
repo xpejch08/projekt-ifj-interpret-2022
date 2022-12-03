@@ -408,8 +408,11 @@ int declrList(token *sToken, function_save *fun_id) {
                 if(result != SUCCES){
                     return result;
                 }
-                if((sToken->type != TYPE_RVINCULUM) || returnCount != true){
+                if(sToken->type != TYPE_RVINCULUM){
                     return SYN_ERROR;
+                }
+                if(returnCount != true){
+                    return SEM_COUNT_ERROR;
                 }
                 canParseEnd = true;
                 returnCount = false;
@@ -442,7 +445,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
                 return SUCCES;
             } else{
-                return SUCCES; /////////////////////// tady je treba ukoncit program
+                return SUCCES; /////////////////////// tady je treba ukoncit program exit(0)
             }
 
 
