@@ -482,7 +482,8 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
                 if(sToken->type == TYPE_RVINCULUM) {
                     canParseEnd = true;
-                
+                    printf("%s &while%d\n", JUMP, whileCounter);
+                    printf("%s &while_end%d\n", LABEL, whileCounter);
                     result = statlist(sToken, fun_id);
                     if (result != SUCCES) {
                         return result;
@@ -491,6 +492,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
                 else {
                     result = statlist(sToken, fun_id);
+                    
                     if (result != SUCCES) {
                         return result;
                     }
@@ -502,12 +504,14 @@ int declrList(token *sToken, function_save *fun_id) {
                     if(getNextToken(sToken) == LEX_ERROR) {
                         return LEX_ERROR;
                     }
+                                 
                     result = statlist(sToken, fun_id);
                     printf("%s &while%d\n", JUMP, whileCounter);
-                    printf("%s &while_end%d\n", LABEL, whileCounter);
+                    printf("%s &while_end%d\n", LABEL, whileCounter);                   
                     if (result != SUCCES) {
                         return result;
                     }
+                    
                     return SUCCES;
                 }
             }
@@ -624,18 +628,23 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
                 return SUCCES;
             }else {
-                result = statlist(sToken, fun_id);
+                
+                result = statlist(sToken, fun_id);         
+                
                 if (result != SUCCES) {
                     return result;
                 }
+               
                 if (sToken->type != TYPE_RVINCULUM) {
                     return SYN_ERROR;
                 }
                 
-                printf("%s &else_end%d\n", LABEL, condCounter);
-                condCounter--;
                 canParseEnd = true;
                 result = statlist(sToken, fun_id);
+            
+                //getNextToken ->statlist?
+                printf("%s &else_end%d\n", LABEL, condCounter);
+                condCounter--;
                 if (result != SUCCES) {
                     return result;
                 }
@@ -690,7 +699,7 @@ int statlist(token *sToken, function_save *fun_id){
                     return result;
                 }
                 return SUCCES;
-            } else {
+            } else {               
                 //todo precedencni
                 afterAssign = false;
             }
@@ -702,6 +711,7 @@ int statlist(token *sToken, function_save *fun_id){
                 return SYN_ERROR;
             }
         case TYPE_IDENTIFIER:
+        
             result = declrList(sToken, fun_id);
             if(result != SUCCES){
                 return result;
