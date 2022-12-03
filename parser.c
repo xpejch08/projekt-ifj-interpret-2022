@@ -411,8 +411,11 @@ int declrList(token *sToken, function_save *fun_id) {
                 if(result != SUCCES){
                     return result;
                 }
-                if((sToken->type != TYPE_RVINCULUM) || returnCount != true){
+                if(sToken->type != TYPE_RVINCULUM){
                     return SYN_ERROR;
+                }
+                if(returnCount != true){
+                    return SEM_COUNT_ERROR;
                 }
                 canParseEnd = true;
                 returnCount = false;
@@ -1469,7 +1472,8 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
-            if(!insideFunction){ // pokud je to v hlavni funkci
+            /////////////////////// IN MAIN PROGRAM ///////////////////////////////////////
+            if(!insideFunction){ 
                 switch(sToken->type){
                     case TYPE_STRING:
                         if((result = getNextToken(sToken)) != SUCCES){
@@ -1516,7 +1520,9 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                             return SUCCES;
                         }
                         return SYN_ERROR;
+                    return SYN_ERROR;
             }
+            ///////////////// IN FUNCTION /////////////////////////////
             switch(sToken->type){
                 case TYPE_IDENTIFIER:
                     if(BVSSearch_function(functionNames->rootPtr, *sToken) == NULL){
@@ -1606,7 +1612,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         if(fun_id->ret_value == KEYWORD_VOID){
                             return SUCCES;
                         }
-                        return SEM_COUNT_ERROR;
+                        return SEM_RETURN_ERROR;
                     }
                     return SYN_ERROR;
                 case KEYWORD_NULL:
