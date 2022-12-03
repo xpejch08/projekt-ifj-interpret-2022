@@ -631,7 +631,6 @@ int declrList(token *sToken, function_save *fun_id) {
                 if (sToken->type != TYPE_RVINCULUM) {
                     return SYN_ERROR;
                 }
-                
                 printf("%s &else_end%d\n", LABEL, condCounter);
                 condCounter--;
                 canParseEnd = true;
@@ -1115,6 +1114,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     else{
                         return SYN_ERROR;
                     }
+                case TYPE_EXPONENT_NUMBER:
                 case TYPE_STRING:
                 case TYPE_INTEGER_NUMBER:
                 case TYPE_DOUBLE_NUMBER:
@@ -1475,6 +1475,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             /////////////////////// IN MAIN PROGRAM ///////////////////////////////////////
             if(!insideFunction){ 
                 switch(sToken->type){
+                    case KEYWORD_NULL:
                     case TYPE_STRING:
                         if((result = getNextToken(sToken)) != SUCCES){
                             return  result;
@@ -1486,21 +1487,8 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                             return SUCCES;
                         }
                         return SYN_ERROR;
+                    case TYPE_EXPONENT_NUMBER:
                     case TYPE_INTEGER_NUMBER:
-                        if((result = getNextToken(sToken)) != SUCCES){
-                            return  result;
-                        }
-                        if(sToken->type == TYPE_ADDITION ||
-                           sToken->type == TYPE_DIVIDE   ||
-                           sToken->type == TYPE_MULTIPLY ||
-                           sToken->type == TYPE_SUBTRACTION
-                                ){
-                            repeat++;
-                            return parametrs(PARAM_RETURN, repeat, sToken, fun_id);
-                        }else if(sToken->type == TYPE_SEMICOLON){
-                            return SUCCES;
-                        }
-                        return SYN_ERROR;
                     case TYPE_DOUBLE_NUMBER:
                         if((result = getNextToken(sToken)) != SUCCES){
                             return  result;
@@ -1517,9 +1505,11 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         }
                         return SYN_ERROR;
                     case TYPE_SEMICOLON:
-                            return SUCCES;
-                        }
+                            if(repeat == 1){
+                                return SUCCES;
+                            }
                         return SYN_ERROR;
+                }    
                     return SYN_ERROR;
             }
             ///////////////// IN FUNCTION /////////////////////////////
@@ -1557,6 +1547,17 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }else{
                         return SYN_ERROR;
                     }
+                case KEYWORD_NULL:
+                    if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
+                    }
+                    if(sToken->type == TYPE_CONCATENATE){
+                        repeat++;
+                        return parametrs(PARAM_RETURN, repeat, sToken, fun_id);
+                    }else if(sToken->type == TYPE_SEMICOLON){
+                        return SUCCES;
+                    }
+                    return SYN_ERROR;
                 case TYPE_STRING:
                     if(fun_id->ret_value != KEYWORD_STRING){
                         return SEM_COUNT_ERROR;
@@ -1590,6 +1591,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
                     return SYN_ERROR;
                 case TYPE_DOUBLE_NUMBER:
+                case TYPE_EXPONENT_NUMBER:
                     if(fun_id->ret_value != KEYWORD_FLOAT){
                         return SEM_COUNT_ERROR;
                     }
@@ -1610,23 +1612,11 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 case TYPE_SEMICOLON:
                     if(repeat == 1){
                         if(fun_id->ret_value == KEYWORD_VOID){
-                            
                             return SUCCES;
                         }
                         return SEM_RETURN_ERROR;
                     }
                     return SYN_ERROR;
-                case KEYWORD_NULL:
-                    if(fun_id->ret_value != KEYWORD_VOID){
-                        return SEM_COUNT_ERROR;
-                    }
-                    if((result = getNextToken(sToken)) != SUCCES){
-                        return  result;
-                    }
-                    if(sToken->type == TYPE_SEMICOLON){
-                        
-                        return SUCCES;
-                    }
             }
             return SYN_ERROR;
         case PARAM_FUNCTION_CALL: // calling function
@@ -1676,6 +1666,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                             ){
                         return parametrs(PARAM_FUNCTION_CALL, repeat, sToken, fun_id);
                     }
+                case TYPE_EXPONENT_NUMBER:
                 case TYPE_INTEGER_NUMBER:
                 case TYPE_DOUBLE_NUMBER:
                 case TYPE_STRING:
@@ -1685,7 +1676,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     if(sToken->type == TYPE_RBRACKET){
                         if(call_function_save->return_type == KEYWORD_VOID)
                         {
-                        printf("%s GF@&%s nil@nil\n", MOVE, (activeString->str)+1);
+                            printf("%s GF@&%s nil@nil\n", MOVE, (activeString->str)+1);
                         }
                         if(repeat == call_function_save->parameters){
                             return SUCCES;
