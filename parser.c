@@ -20,7 +20,7 @@ TRoot *mainTree;
 
 string* activeString;
 
-Stack stack;
+Stack *stack;
 
 DLList _list;
 DLList *list = &_list;
@@ -1901,6 +1901,9 @@ int parse(void){
     activeStringInit.length = 0;
     activeStringInit.str = 0;
 
+
+    Stack initStack;
+    stack = &initStack;
 
     initStr.str = NULL;
     initStr.length = 0;
