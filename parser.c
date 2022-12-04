@@ -367,8 +367,8 @@ int declrList(token *sToken, function_save *fun_id) {
             if (BVSSearch_function(functionNames->rootPtr, *sToken) != NULL) {
                 canParseEnd = false;
                 call_function_save = BVSSearch_function(functionNames->rootPtr, *sToken);
-                printf("%s &%s\n", CALL, sToken->content.str->str);
-
+                
+                //tmpToken for call
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
@@ -377,6 +377,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
 
                 paramError = parametrs(PARAM_FUNCTION_CALL, 1, sToken, fun_id);
+                printf("%s &%s\n", CALL, sToken->content.str->str);
                 if(paramError == SUCCES){
                     canParseEnd = true;
                     if((result = getNextToken(sToken)) != SUCCES){
