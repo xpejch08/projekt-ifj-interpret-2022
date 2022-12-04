@@ -1602,8 +1602,36 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             }
             /////////////////////// IN MAIN PROGRAM ///////////////////////////////////////
             if(!in_function){
-                
                 switch(sToken->type){
+                    case TYPE_IDENTIFIER:
+                        if(BVSSearch_function(functionNames->rootPtr, *sToken) == NULL){
+                            return SEM_DEFINE_ERROR;
+                        }
+                        call_function_save = BVSSearch_function(functionNames->rootPtr, *sToken);
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
+                        if(sToken->type != TYPE_LBRACKET){
+                            return SYN_ERROR;
+                        }
+                        result = parametrs(PARAM_FUNCTION_CALL, 1, sToken, fun_id);
+                        if(result != SUCCES){
+                            return result;
+                        }
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
+                        if(sToken->type == TYPE_SEMICOLON){
+                            return SUCCES;
+                        }else if(sToken->type == TYPE_ADDITION ||
+                                 sToken->type == TYPE_DIVIDE   ||
+                                 sToken->type == TYPE_MULTIPLY ||
+                                 sToken->type == TYPE_SUBTRACTION
+                                ){
+                            return parametrs(PARAM_RETURN, repeat, sToken, fun_id);
+                        }else{
+                            return SYN_ERROR;
+                        }
                     case KEYWORD_NULL:
                     case TYPE_STRING:
                         if((result = getNextToken(sToken)) != SUCCES){
@@ -1764,7 +1792,6 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                             return SEM_COUNT_ERROR;
                         }
                     }
-                    return SYN_ERROR;
                 case TYPE_VARIABLE:
                     if(in_function){
                         if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
@@ -1806,8 +1833,8 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 case TYPE_EXPONENT_NUMBER:
                 case TYPE_INTEGER_NUMBER:
                 case TYPE_DOUBLE_NUMBER:
-                printf("%s TF@&fun_param%d\n", DEFVAR, unique);
-                printf("%s TF@&fun_param%d int@%s\n", MOVE, unique, sToken->content.str->str);
+                    printf("%s TF@&fun_param%d\n", DEFVAR, unique);
+                    printf("%s TF@&fun_param%d int@%s\n", MOVE, unique, sToken->content.str->str);
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
