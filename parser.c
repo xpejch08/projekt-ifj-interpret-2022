@@ -450,7 +450,6 @@ int declrList(token *sToken, function_save *fun_id) {
             } else{
                 printf("%s %d\n", EXIT, 0);
                 return SUCCES;            
-                 /////////////////////// tady je treba ukoncit program
             }
 
 
@@ -477,8 +476,8 @@ int declrList(token *sToken, function_save *fun_id) {
                 if(sToken->type != TYPE_LVINCULUM) {
                     return SYN_ERROR;
                 }
-                if(getNextToken(sToken) == LEX_ERROR) {
-                    return LEX_ERROR;
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
                 }
                 if(sToken->type == TYPE_RVINCULUM) {
                     canParseEnd = true;
@@ -499,8 +498,8 @@ int declrList(token *sToken, function_save *fun_id) {
                         return SYN_ERROR;
                     }
                     canParseEnd = true;
-                    if(getNextToken(sToken) == LEX_ERROR) {
-                        return LEX_ERROR;
+                    if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
                     }
                     result = statlist(sToken, fun_id);
                     printf("%s &while%d\n", JUMP, whileCounter);
@@ -537,7 +536,9 @@ int declrList(token *sToken, function_save *fun_id) {
             //        return SUCCES;
             //    }
         case KEYWORD_INT:
-            getNextToken(sToken);
+            if((result = getNextToken(sToken)) != SUCCES){
+                return  result;
+            }
             if (sToken->type != TYPE_VARIABLE) {
                 return SYN_ERROR;
             } else {
@@ -547,8 +548,8 @@ int declrList(token *sToken, function_save *fun_id) {
             uniqueIf+= 1;
             condCounter = uniqueIf;
             canParseEnd = true;
-            if(getNextToken(sToken) == LEX_ERROR) {
-                return LEX_ERROR;
+            if((result = getNextToken(sToken)) != SUCCES){
+                return  result;
             }
             if (sToken->type != TYPE_LBRACKET) {
                 return SYN_ERROR;
@@ -560,14 +561,14 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
                 else {
 
-                    if(getNextToken(sToken) == LEX_ERROR) {
-                        return LEX_ERROR;
+                    if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
                     }
                     if(sToken->type != TYPE_LVINCULUM) {
                         return SYN_ERROR;
                     }
-                    if(getNextToken(sToken) == LEX_ERROR) {
-                        return LEX_ERROR;
+                    if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
                     }
                     if(sToken->type == TYPE_RVINCULUM) {
                         canParseEnd = true;
@@ -602,21 +603,21 @@ int declrList(token *sToken, function_save *fun_id) {
             canParseEnd = false;
             printf("%s &else%d\n", LABEL, condCounter);
 
-            if(getNextToken(sToken) == LEX_ERROR) {
-                return LEX_ERROR;
+            if((result = getNextToken(sToken)) != SUCCES){
+                return  result;
             }
             if(sToken->type != TYPE_LVINCULUM) {
                 return SYN_ERROR;
             }
-            if(getNextToken(sToken) == LEX_ERROR){
-                return LEX_ERROR;
+            if((result = getNextToken(sToken)) != SUCCES){
+                return  result;
             }
             if(sToken->type == TYPE_RVINCULUM) {
                 printf("%s &else_end%d\n", LABEL, condCounter);
                 
                 canParseEnd = true;
-                if(getNextToken(sToken) == LEX_ERROR) {
-                    return LEX_ERROR;
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
                 }
                 result = statlist(sToken, fun_id);
                 if (result != SUCCES) {
