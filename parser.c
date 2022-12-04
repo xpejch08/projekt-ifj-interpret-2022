@@ -407,7 +407,6 @@ int declrList(token *sToken, function_save *fun_id) {
             fun_id->content->str = sToken->content.str->str;
             printf("%s &%send\n", JUMP, fun_id->content->str);
             printf("%s &%s\n", LABEL, fun_id->content->str);
-            printf("%s\n", CREATEFRAME);
             printf("%s\n", PUSHFRAME);
             printf("%s LF@&return_val\n", DEFVAR);
             printf("%s LF@&return_val %s\n", MOVE, NIL);
@@ -899,7 +898,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
     initToken.alloc = 0;
     initToken.length = 0;
     tmpToken = &initToken;
-
+    
     int result;
     switch (option) {
         case PARAM_FUNCTION: // kontrolujeme parametry funkce
@@ -946,6 +945,8 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     return  result;
                 }
                 if (sToken->type == TYPE_VARIABLE) {
+                    printf("%s LF@&param%d\n", DEFVAR, repeat);
+                    printf("%s LF@& param%d LF@&fun_param%d\n", MOVE, repeat, repeat);
                     BVSInsert(mainTree->rootPtr, *sToken);
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
@@ -1682,6 +1683,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             }
             return SYN_ERROR;
         case PARAM_FUNCTION_CALL: // calling function
+        printf("%s\n", CREATEFRAME);
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
@@ -1707,6 +1709,9 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                             return SEM_UNDEFINED_ERROR;
                         }
                     }
+                    printf("%s TF@&fun_param%d\n", DEFVAR, repeat);
+                    printf("%s TF@&fun_param%d LF@&%s\n", MOVE, repeat, (sToken->content.str->str)+1);
+
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
@@ -1734,6 +1739,8 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 case TYPE_EXPONENT_NUMBER:
                 case TYPE_INTEGER_NUMBER:
                 case TYPE_DOUBLE_NUMBER:
+                printf("%s TF@&fun_param%d\n", DEFVAR, unique);
+                printf("%s TF@&fun_param%d int@%s\n", MOVE, unique, sToken->content.str->str);
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
