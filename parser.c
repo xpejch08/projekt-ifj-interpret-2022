@@ -752,30 +752,30 @@ int statlist(token *sToken, function_save *fun_id){
                     if ((result = getNextToken(sToken)) != SUCCES) {
                         return result;
                     }
+                    afterAssign = false;
                     result = statlist(sToken, fun_id);
                     if (result != SUCCES) {
                         return result;
                     }
-                    afterAssign = false;
                     return SUCCES;
                 }
                 else{
-                    result = precedenceAction(mainTree, sToken, stack);
+                    result = precedenceAction(insideFunction, sToken, stack);
                     if (result < 113 || result > 117) {
                         return result;
                     }
                     strClean(sToken->content.str);
                     strCpyStr(sToken->content.str, activeString);
-                    TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
+                    TNode *active = BVSSearch(insideFunction->rootPtr, *sToken);
                     active->type = result;
                     if ((result = getNextToken(sToken)) != SUCCES) {
                         return result;
                     }
+                    afterAssign = false;
                     result = statlist(sToken, fun_id);
                     if (result != SUCCES) {
                         return result;
                     }
-                    afterAssign = false;
                     return SUCCES;
                 }
             }
@@ -808,7 +808,7 @@ int statlist(token *sToken, function_save *fun_id){
             }
             return SUCCES;
         case TYPE_ASSIGN:
-
+            afterAssign = true;
             if((result = getNextToken(sToken)) != SUCCES){
                 return result;
             }
@@ -923,30 +923,30 @@ int statlist(token *sToken, function_save *fun_id){
                     if ((result = getNextToken(sToken)) != SUCCES) {
                         return result;
                     }
+                    afterAssign = false;
                     result = statlist(sToken, fun_id);
                     if (result != SUCCES) {
                         return result;
                     }
-                    afterAssign = false;
                     return SUCCES;
                 }
                 else{
-                    result = precedenceAction(mainTree, sToken, stack);
+                    result = precedenceAction(insideFunction, sToken, stack);
                     if (result < 113 || result > 117) {
                         return result;
                     }
                     strClean(sToken->content.str);
                     strCpyStr(sToken->content.str, activeString);
-                    TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
+                    TNode *active = BVSSearch(insideFunction->rootPtr, *sToken);
                     active->type = result;
                     if ((result = getNextToken(sToken)) != SUCCES) {
                         return result;
                     }
+                    afterAssign = false;
                     result = statlist(sToken, fun_id);
                     if (result != SUCCES) {
                         return result;
                     }
-                    afterAssign = false;
                     return SUCCES;
                 }
             }
@@ -1936,7 +1936,7 @@ int parse(void){
     BVSInit(insideFunction);
     BVSInit(mainTree);
     BVSInit_function(functionNames);
-
+    stackInit(stack);
     int result;
 
     //todo fix init token function
