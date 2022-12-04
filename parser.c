@@ -642,6 +642,9 @@ int declrList(token *sToken, function_save *fun_id) {
                 printf("%s &else_end%d\n", LABEL, condCounter);
                 condCounter--;
                 canParseEnd = true;
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
+                }
                 result = statlist(sToken, fun_id);
             
                 //getNextToken ->statlist?
