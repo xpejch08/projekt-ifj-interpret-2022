@@ -5,6 +5,8 @@
 #include "str.h"
 #include "parser.h"
 #include "symtable.h"
+#include "expstack.h"
+#include "expression.h"
 
 //todo think about using enum and redefining token structure !!!
 //todo function declrlist -> starts a type(checks if something is declared or not etc.) for all types that need it
@@ -17,6 +19,8 @@ TRootf *functionNames;
 TRoot *mainTree;
 
 string* activeString;
+
+Stack stack;
 
 DLList _list;
 DLList *list = &_list;
@@ -664,7 +668,10 @@ int statlist(token *sToken, function_save *fun_id){
                 }
                 return SUCCES;
             } else {
-                //todo precedenc
+                result = precedenceAction(mainTree, sToken, stack);
+                if (result <113 || result > 117) {
+                    return result;
+                }
                 afterAssign = false;
             }
 
@@ -786,7 +793,11 @@ int statlist(token *sToken, function_save *fun_id){
                 return SUCCES;
             }
             else{
-                //todo precedencni analyza
+                result = precedenceAction(mainTree, sToken, stack);
+                if (result <113 || result > 117) {
+                    return result;
+                }
+                afterAssign = false;
             }
     }
     return SYN_ERROR;

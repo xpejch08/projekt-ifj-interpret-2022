@@ -12,8 +12,8 @@
 //s
 
 typedef enum{
-    EQUAL, //TODO!!!!!!! : SPATNA LEXICAL!
-    NOT_EQUAL, ///TODO -||-
+    EQUAL,
+    NOT_EQUAL,
     SMALLER_THAN,
     GREATER_THAN,
     SMALLER_OR_EQUAL,
@@ -31,14 +31,17 @@ typedef enum{
     RBRACKET,
     DOLLAR,
     SHIFT,
-    NON_TERMINAL
+    NON_TERMINAL,
+    SYMBOLSENUMERROR
 } PrtableSymbolsEnum;
 
 typedef enum{
     DATATYPE_INT,
     DATATYPE_FLOAT,
     DATATYPE_STRING,
-    DATATYPE_NONE
+    DATATYPE_NONE,
+    DATATYPEENUM_ERROR,
+    DATATYPE_ENDER
 }DataTypeEnum;
 
 typedef enum {
@@ -56,7 +59,8 @@ typedef enum {
     RULE_DIVIDE,
     RULE_BRACKETS,
     RULE_I,
-    RULE_ERROR
+    RULE_ERROR,
+    RULESENUMERROR
 } PrtableRulesEnum;
 
 #endif
