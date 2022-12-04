@@ -10,30 +10,13 @@ if (4 === 2) {
 	write("Chyba pri nacitani celeho cisla!\n");
 	while(6 < 0)
 	{
-		$f = readi();
+		$f = substring("TEST", 2, 6);
 		
 	}
-	write("HEREEEEEE");
+	write("PRINT");
 } else {
 	
 }
 
 
-if (4 < 0) {
-	write("Faktorial nelze spocitat\n");
-} else {
-	$kokokok;
-	while (5 > 0) {
-		if(3 === 4)
-		{
-			$kk;
-		}
-		else{
-			$op;
-		}
-		$h;
-		write("LOL");
-	}
-	write("XDDD");
-	$g;
-}
+
