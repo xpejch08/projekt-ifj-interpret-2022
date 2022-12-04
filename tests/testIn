@@ -18,6 +18,11 @@ if (4 === 2) {
 	
 }
 
+return 5;
+?>
+dsds
+
+
 /*
 if (4 < 0) {
 	write("Faktorial nelze spocitat\n");

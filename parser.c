@@ -829,6 +829,7 @@ int statlist(token *sToken, function_save *fun_id){
             }
             if (canParseEnd == true) {
                 result = parametrs(PARAM_RETURN, 1, sToken, fun_id);
+                
                 if (result != SUCCES) {
                     return result;
                 }
@@ -1532,7 +1533,8 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 return  result;
             }
             /////////////////////// IN MAIN PROGRAM ///////////////////////////////////////
-            if(!insideFunction){
+            if(!in_function){
+                
                 switch(sToken->type){
                     case KEYWORD_NULL:
                     case TYPE_STRING:
@@ -1549,6 +1551,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     case TYPE_EXPONENT_NUMBER:
                     case TYPE_INTEGER_NUMBER:
                     case TYPE_DOUBLE_NUMBER:
+                    
                         if((result = getNextToken(sToken)) != SUCCES){
                             return  result;
                         }
