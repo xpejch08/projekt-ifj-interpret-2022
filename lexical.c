@@ -380,6 +380,7 @@ int getNextToken(token *attr) {
                     }
                 }
                 else if(character == 92){
+                    strAddChar(attr->content.str, '\\');
                     state = backslashState;
                 }
                     //backslash
@@ -390,7 +391,6 @@ int getNextToken(token *attr) {
                 break;
             case backslashState:
                 if(character == 'x'){
-                    strAddChar(attr->content.str, '\\');
                     strAddChar(attr->content.str, 'x');
                     state = escapeHexaState;
                     break;
