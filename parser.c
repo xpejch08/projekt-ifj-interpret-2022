@@ -78,7 +78,7 @@ int checkIfBuiltIn(token *sToken){
 int declrList(token *sToken, function_save *fun_id) {
     int paramError;
     int result;
-
+   
     switch (sToken->type) {
         case TYPE_RVINCULUM:
             return SUCCES;
@@ -377,7 +377,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
 
                 paramError = parametrs(PARAM_FUNCTION_CALL, 1, sToken, fun_id);
-                printf("%s &%s\n", CALL, sToken->content.str->str);
+                printf("%s &%s\n", CALL, call_function_save->content->str);
                 if(paramError == SUCCES){
                     canParseEnd = true;
                     if((result = getNextToken(sToken)) != SUCCES){
@@ -1916,6 +1916,7 @@ int parse(void){
         if(sToken->type == TYPE_SEMICOLON){
             return SYN_ERROR;
         }
+        printf(".IFJcode22\n");
         result = statlist(sToken, fun_id);
         if(result != 0)
         {
