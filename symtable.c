@@ -12,8 +12,8 @@
 void BVSInit(TRoot *SymTable){
     SymTable->rootPtr = NULL;
 }
-
 TNode *BVSCreate(TNode *rootPtr, token token){
+
     TNode *newPtr = malloc(sizeof(struct tnode));
     if(newPtr == NULL){
         fprintf(stderr, "99");

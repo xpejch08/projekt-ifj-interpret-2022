@@ -24,8 +24,7 @@ Stack stack;
 
 DLList _list;
 DLList *list = &_list;
-token *tmpToken;
-token *tmp2Token;
+
 
 bool in_function = false;
 bool canParseEnd = false;
@@ -34,14 +33,17 @@ bool afterAssign = false;
 
 TNodef *call_function_save; //////////////////////////////// new
 
-int unique = 0;
-int condCounter = 0;
 int tokenId;
 //function_save *fun_id;
 
+int uniqueIf = 0;
+int uniqueWhile = 0;
+int condCounter = 0;
+int unique = 0;
+int whileCounter = 0;
 int incId = 1;
 
-
+//test
 int checkIfBuiltIn(token *sToken){
     if (strCmpConstStr(sToken->content.str, "write") == 0){
         return 1;
@@ -76,7 +78,7 @@ int checkIfBuiltIn(token *sToken){
 int declrList(token *sToken, function_save *fun_id) {
     int paramError;
     int result;
-
+    
     switch (sToken->type) {
         case TYPE_RVINCULUM:
             return SUCCES;
@@ -125,7 +127,10 @@ int declrList(token *sToken, function_save *fun_id) {
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_READS, 1, sToken, fun_id);
                     if (paramError == SUCCES) {
-                        if (getNextToken(sToken) != TYPE_SEMICOLON) {
+                        if(getNextToken(sToken) == LEX_ERROR){
+                            return LEX_ERROR;
+                        }
+                        if (sToken->type != TYPE_SEMICOLON) {
                             return SYN_ERROR;
                         }
 
@@ -134,7 +139,13 @@ int declrList(token *sToken, function_save *fun_id) {
                         if((result = getNextToken(sToken)) != SUCCES){
                             return  result;
                         }
-                        return SUCCES;
+                        result = statlist(sToken, fun_id);
+                        if(result != SUCCES){
+                            return result;
+                        }
+                        else {
+                            return SUCCES;
+                        }
                     } else {
                         return paramError;
                     }
@@ -178,24 +189,33 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
             }
             if (strCmpConstStr(sToken->content.str, "readf") == 0) {
-                canParseEnd = false;
+                  canParseEnd = false;
 
-                if ((result = getNextToken(sToken)) != SUCCES) {
-                    return result;
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
                 }
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_READF, 1, sToken, fun_id);
                     if (paramError == SUCCES) {
-                        if (getNextToken(sToken) != TYPE_SEMICOLON) {
+                        if(getNextToken(sToken) == LEX_ERROR){
+                            return LEX_ERROR;
+                        }
+                        if (sToken->type != TYPE_SEMICOLON) {
                             return SYN_ERROR;
                         }
 
                         canParseEnd = true;
 
-                        if ((result = getNextToken(sToken)) != SUCCES) {
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
+                        result = statlist(sToken, fun_id);
+                        if(result != SUCCES){
                             return result;
                         }
-                        return SUCCES;
+                        else {
+                            return SUCCES;
+                        }
                     } else {
                         return paramError;
                     }
@@ -212,14 +232,14 @@ int declrList(token *sToken, function_save *fun_id) {
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_STRLEN, 1, sToken, fun_id);
                     if (paramError == SUCCES) {
-                        if (getNextToken(sToken) != TYPE_SEMICOLON) {
-                            return SYN_ERROR;
-                        }
-                        canParseEnd = true;
-
                         if((result = getNextToken(sToken)) != SUCCES){
                             return  result;
                         }
+                        if (sToken->type != TYPE_SEMICOLON) {
+                            return SYN_ERROR;
+                        }
+                        canParseEnd = true;
+                        
                         return SUCCES;
                     } else {
                         return paramError;
@@ -238,17 +258,16 @@ int declrList(token *sToken, function_save *fun_id) {
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_SUBSTRING, 1, sToken, fun_id);
                     if (paramError == SUCCES) {
-                        if (getNextToken(sToken) != TYPE_SEMICOLON) {
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
+                        if (sToken->type != TYPE_SEMICOLON) {
                             return SYN_ERROR;
                         }
                         canParseEnd = true;
 
-                        if((result = getNextToken(sToken)) != SUCCES){
-                            return  result;
-                        }
                         return SUCCES;
                     } else {
-                       printf("HERE\n");
                         return paramError;
                     }
                 } else {
@@ -317,7 +336,7 @@ int declrList(token *sToken, function_save *fun_id) {
             if (BVSSearch_function(functionNames->rootPtr, *sToken) != NULL) {
                 canParseEnd = false;
                 call_function_save = BVSSearch_function(functionNames->rootPtr, *sToken);
-                printf("%s $%s\n", CALL, sToken->content.str->str);
+                printf("%s &%s\n", CALL, sToken->content.str->str);
 
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
@@ -355,12 +374,12 @@ int declrList(token *sToken, function_save *fun_id) {
                 return SEM_DEFINE_ERROR;
             }
             fun_id->content->str = sToken->content.str->str;
-            printf("%s $%send\n", JUMP, fun_id->content->str);
-            printf("%s $%s\n", LABEL, fun_id->content->str);
+            printf("%s &%send\n", JUMP, fun_id->content->str);
+            printf("%s &%s\n", LABEL, fun_id->content->str);
             printf("%s\n", CREATEFRAME);
             printf("%s\n", PUSHFRAME);
-            printf("%s LF@$return_val\n", DEFVAR);
-            printf("%s LF@$return_val %s\n", MOVE, NIL);
+            printf("%s LF@&return_val\n", DEFVAR);
+            printf("%s LF@&return_val %s\n", MOVE, NIL);
             printf("%s\n", POPFRAME);
             printf("%s\n", RETURN);
 
@@ -374,9 +393,7 @@ int declrList(token *sToken, function_save *fun_id) {
             else{
                 in_function = true;
                 paramError = parametrs(PARAM_FUNCTION, 1, sToken, fun_id);
-                fprintf(stderr, "%d\n", paramError);
                 functionNames->rootPtr = BVSInsert_function(functionNames->rootPtr, *fun_id);
-                fprintf(stderr, "%d", paramError);
                 if (paramError != SUCCES) {
                     return paramError;
                 }
@@ -398,13 +415,16 @@ int declrList(token *sToken, function_save *fun_id) {
                 if(result != SUCCES){
                     return result;
                 }
-                if((sToken->type != TYPE_RVINCULUM) || returnCount != true){
+                if(sToken->type != TYPE_RVINCULUM){
                     return SYN_ERROR;
+                }
+                if(returnCount != true){
+                    return SEM_COUNT_ERROR;
                 }
                 canParseEnd = true;
                 returnCount = false;
                 in_function = false;
-                printf("%s $%send\n", LABEL, fun_id->content->str);
+                printf("%s &%send\n", LABEL, fun_id->content->str);
                 BVSDispose(insideFunction);
                 if((result = getNextToken(sToken)) != SUCCES){
                     return result;
@@ -422,7 +442,8 @@ int declrList(token *sToken, function_save *fun_id) {
             paramError = parametrs(PARAM_RETURN, 1, sToken, fun_id);
             if(paramError != SUCCES){
                 return  paramError;
-            }else if(in_function == true){
+            }
+            if(in_function == true){
                 returnCount = true;
                 canParseEnd = true;
                 result = statlist(sToken, fun_id);
@@ -431,15 +452,16 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
                 return SUCCES;
             } else{
-                return SEM_ERROR;
+                printf("%s %d\n", EXIT, 0);
+                return SUCCES;            
             }
 
 
         case KEYWORD_WHILE:
             canParseEnd = false;
-            unique++;
-            condCounter = unique;
-            printf("%s $while%d\n", LABEL, condCounter);
+            uniqueWhile++;
+            whileCounter = uniqueWhile;
+            printf("%s &while%d\n", LABEL, whileCounter);
             if((result = getNextToken(sToken)) != SUCCES) {
                 return result;
             }
@@ -447,8 +469,8 @@ int declrList(token *sToken, function_save *fun_id) {
                 return SYN_ERROR;
             }
             else {
-                paramError = parametrs(PARAM_IF_WHILE, 1, sToken, fun_id);
-                printf("%s $while_end%d\n", JUMPIFNEQ, condCounter);
+                paramError = parametrs(PARAM_IF_WHILE, 1, sToken, fun_id); // misto parametrs volat precedencku
+                printf("%s &while_end%d\n", JUMPIFNEQ, whileCounter);
                 if(paramError != SUCCES){
                     return paramError;
                 }
@@ -458,12 +480,13 @@ int declrList(token *sToken, function_save *fun_id) {
                 if(sToken->type != TYPE_LVINCULUM) {
                     return SYN_ERROR;
                 }
-                if(getNextToken(sToken) == LEX_ERROR) {
-                    return LEX_ERROR;
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
                 }
                 if(sToken->type == TYPE_RVINCULUM) {
                     canParseEnd = true;
-
+                    printf("%s &while%d\n", JUMP, whileCounter);
+                    printf("%s &while_end%d\n", LABEL, whileCounter);
                     result = statlist(sToken, fun_id);
                     if (result != SUCCES) {
                         return result;
@@ -472,23 +495,26 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
                 else {
                     result = statlist(sToken, fun_id);
+                    
                     if (result != SUCCES) {
                         return result;
                     }
-                    printf("%s $while%d\n", JUMP, condCounter);
-                    printf("%s $while_end%d\n", LABEL, condCounter);
-                    condCounter--;
+                    
                     if(sToken->type != TYPE_RVINCULUM) {
                         return SYN_ERROR;
                     }
                     canParseEnd = true;
-                    if(getNextToken(sToken) == LEX_ERROR) {
-                        return LEX_ERROR;
+                    if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
                     }
+                                 
                     result = statlist(sToken, fun_id);
+                    printf("%s &while%d\n", JUMP, whileCounter);
+                    printf("%s &while_end%d\n", LABEL, whileCounter);                   
                     if (result != SUCCES) {
                         return result;
                     }
+                    
                     return SUCCES;
                 }
             }
@@ -518,37 +544,39 @@ int declrList(token *sToken, function_save *fun_id) {
             //        return SUCCES;
             //    }
         case KEYWORD_INT:
-            getNextToken(sToken);
+            if((result = getNextToken(sToken)) != SUCCES){
+                return  result;
+            }
             if (sToken->type != TYPE_VARIABLE) {
                 return SYN_ERROR;
             } else {
                 return SUCCES;
             }
-        case KEYWORD_IF:
-            unique+= 1;
-            condCounter = unique;
+        case KEYWORD_IF: // misto parametrs volat precedencku
+            uniqueIf+= 1;
+            condCounter = uniqueIf;
             canParseEnd = true;
-            if(getNextToken(sToken) == LEX_ERROR) {
-                return LEX_ERROR;
+            if((result = getNextToken(sToken)) != SUCCES){
+                return  result;
             }
             if (sToken->type != TYPE_LBRACKET) {
                 return SYN_ERROR;
             } else {
                 paramError = parametrs(PARAM_IF_WHILE,1, sToken, fun_id);
-                printf("%s $else%d\n", JUMPIFNEQ, condCounter);
+                printf("%s &else%d\n", JUMPIFNEQ, condCounter);
                 if(paramError != SUCCES) {
                     return paramError;
                 }
                 else {
 
-                    if(getNextToken(sToken) == LEX_ERROR) {
-                        return LEX_ERROR;
+                    if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
                     }
                     if(sToken->type != TYPE_LVINCULUM) {
                         return SYN_ERROR;
                     }
-                    if(getNextToken(sToken) == LEX_ERROR) {
-                        return LEX_ERROR;
+                    if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
                     }
                     if(sToken->type == TYPE_RVINCULUM) {
                         canParseEnd = true;
@@ -566,6 +594,7 @@ int declrList(token *sToken, function_save *fun_id) {
                         if(sToken->type != TYPE_RVINCULUM) {
                             return SYN_ERROR;
                         }
+                        printf("%s &else_end%d\n", JUMP, condCounter);
                         canParseEnd = true;
                         if(getNextToken(sToken) == LEX_ERROR) {
                             return LEX_ERROR;
@@ -580,21 +609,23 @@ int declrList(token *sToken, function_save *fun_id) {
             }
         case KEYWORD_ELSE:
             canParseEnd = false;
-            printf("%s $else%d\n", LABEL, condCounter);
+            printf("%s &else%d\n", LABEL, condCounter);
 
-            if(getNextToken(sToken) == LEX_ERROR) {
-                return LEX_ERROR;
+            if((result = getNextToken(sToken)) != SUCCES){
+                return  result;
             }
             if(sToken->type != TYPE_LVINCULUM) {
                 return SYN_ERROR;
             }
-            if(getNextToken(sToken) == LEX_ERROR){
-                return LEX_ERROR;
+            if((result = getNextToken(sToken)) != SUCCES){
+                return  result;
             }
             if(sToken->type == TYPE_RVINCULUM) {
+                printf("%s &else_end%d\n", LABEL, condCounter);
+                
                 canParseEnd = true;
-                if(getNextToken(sToken) == LEX_ERROR) {
-                    return LEX_ERROR;
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
                 }
                 result = statlist(sToken, fun_id);
                 if (result != SUCCES) {
@@ -602,15 +633,27 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
                 return SUCCES;
             }else {
-                result = statlist(sToken, fun_id);
+                
+                result = statlist(sToken, fun_id);         
+                
                 if (result != SUCCES) {
                     return result;
                 }
+               
                 if (sToken->type != TYPE_RVINCULUM) {
                     return SYN_ERROR;
                 }
+                printf("%s &else_end%d\n", LABEL, condCounter);
+                condCounter--;
                 canParseEnd = true;
+                if((result = getNextToken(sToken)) != SUCCES){
+                    return  result;
+                }
                 result = statlist(sToken, fun_id);
+            
+                //getNextToken ->statlist?
+                printf("%s &else_end%d\n", LABEL, condCounter);
+                condCounter--;
                 if (result != SUCCES) {
                     return result;
                 }
@@ -630,18 +673,7 @@ int statlist(token *sToken, function_save *fun_id){
         case TYPE_LVINCULUM:
             return SYN_ERROR;
         case TYPE_COLON:
-
-            getNextToken(sToken);
-            if (sToken->type != KEYWORD_VOID ||
-                sToken->type != KEYWORD_INT ||
-                sToken->type != KEYWORD_STRING ||
-                sToken->type != KEYWORD_FLOAT)
-                return SYN_ERROR;
-            getNextToken(sToken);
-            if (sToken->type != TYPE_LVINCULUM)
-                return SYN_ERROR;
-            getNextToken(sToken);
-            return declrList(sToken, fun_id);
+            return SYN_ERROR;
 
 
         case TYPE_RVINCULUM:
@@ -649,13 +681,22 @@ int statlist(token *sToken, function_save *fun_id){
 
         case TYPE_VARIABLE:
             if (afterAssign == false) {
+                if(!in_function){
                 if (BVSSearch(mainTree->rootPtr, *sToken) == NULL) {
                     printf("%s GF@&%s\n", DEFVAR, (sToken->content.str->str) + 1);
                     mainTree->rootPtr = BVSInsert(mainTree->rootPtr, *sToken);
                 }
+                }
+                else
+                {
+                    if (BVSSearch(insideFunction->rootPtr, *sToken) == NULL) {
+                    insideFunction->rootPtr = BVSInsert(insideFunction->rootPtr, *sToken);
+                    printf("%s LF@&%s\n", DEFVAR, (sToken->content.str->str) + 1);
+                    }
+                }
                 strClean(activeString);
                 strCpyStr(activeString, sToken->content.str);
-                tmpToken = sToken;
+                
                 if ((result = getNextToken(sToken)) != SUCCES) {
                     return result;
                 }
@@ -682,8 +723,9 @@ int statlist(token *sToken, function_save *fun_id){
                 return SYN_ERROR;
             }
         case TYPE_IDENTIFIER:
+        
             result = declrList(sToken, fun_id);
-            if (result != SUCCES) {
+            if(result != SUCCES){
                 return result;
             }
             return SUCCES;
@@ -692,9 +734,17 @@ int statlist(token *sToken, function_save *fun_id){
             return SUCCES;
 
         case TYPE_SEMICOLON:
+            if((result = getNextToken(sToken)) != SUCCES){
+                return result;
+            }
+            result = statlist(sToken, fun_id);
+            if(result != SUCCES){
+                return result;
+            }
+            return SUCCES;
         case TYPE_ASSIGN:
-            afterAssign = true;
-            if ((result = getNextToken(sToken)) != SUCCES) {
+
+            if((result = getNextToken(sToken)) != SUCCES){
                 return result;
             }
             if (sToken->type != TYPE_VARIABLE) {
@@ -707,7 +757,7 @@ int statlist(token *sToken, function_save *fun_id){
                 }
             }
             result = statlist(sToken, fun_id);
-            if (result != SUCCES) {
+            if(result != SUCCES){
                 return result;
             }
             return SUCCES;
@@ -716,7 +766,7 @@ int statlist(token *sToken, function_save *fun_id){
         case KEYWORD_ELSE:
         case KEYWORD_WHILE:
             result = declrList(sToken, fun_id);
-            if (result != SUCCES) {
+            if(result != SUCCES){
                 return result;
             }
             return SUCCES;
@@ -810,6 +860,12 @@ int statlist(token *sToken, function_save *fun_id){
 
 //todo
 int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
+    string* tmpToken;
+    string initToken;
+    initToken.str = NULL;
+    initToken.alloc = 0;
+    initToken.length = 0;
+    tmpToken = &initToken;
 
     int result;
     switch (option) {
@@ -1063,10 +1119,10 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
                     if(!in_function)
                     {
-                        printf("GF@&%s ", sToken->content.str->str);
+                        printf("GF@&%s ", (sToken->content.str->str)+1);
                     }
                     else{
-                        printf("LF@&%s ", sToken->content.str->str);
+                        printf("LF@&%s ", (sToken->content.str->str)+1);
                     }
 
                     if((result = getNextToken(sToken)) != SUCCES){
@@ -1085,6 +1141,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     else{
                         return SYN_ERROR;
                     }
+                case TYPE_EXPONENT_NUMBER:
                 case TYPE_STRING:
                 case TYPE_INTEGER_NUMBER:
                 case TYPE_DOUBLE_NUMBER:
@@ -1109,12 +1166,11 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             return SYN_ERROR;
         case PARAM_READI: // readi
             if(in_function){
-                printf("%s LF@$%s %s\n", READ,tmpToken->content.str->str,INT_TYPE);
-                //BVSSearch(insideFunction, *tmpToken)->content.integerNumber = INT_TYPE;
+                printf("%s LF@&%s %s\n", READ,(activeString->str)+1,INT_TYPE);
 
             }
             else{
-                printf("%s GF@$%s %s\n", READ,tmpToken->content.str->str,INT_TYPE);
+                printf("%s GF@&%s %s\n", READ,(activeString->str)+1,INT_TYPE);
             }
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
@@ -1127,12 +1183,11 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             }
         case PARAM_READS: // reads
             if(in_function){
-                printf("%s LF@$%s %s\n", READ,tmpToken->content.str->str,STRING_TYPE);
-                //BVSSearch(insideFunction, *tmpToken)->content.integerNumber = INT_TYPE;
+                printf("%s LF@&%s %s\n", READ,(activeString->str)+1,STRING_TYPE);
 
             }
             else{
-                printf("%s GF@$%s %s\n", READ,tmpToken->content.str->str,STRING_TYPE);
+                printf("%s GF@&%s %s\n", READ,(activeString->str)+1,STRING_TYPE);
             }
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
@@ -1140,16 +1195,15 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             if(sToken->type == TYPE_RBRACKET){
                 return SUCCES;
             }
-            else{
+            else{          
                 return SYN_ERROR;
             }
         case PARAM_READF: // readf
             if(in_function){
-                printf("%s LF@$%s %s\n", READ,tmpToken->content.str->str,FLOAT_TYPE);
-                //BVSSearch(insideFunction, *tmpToken)->content.integerNumber = INT_TYPE;
+                printf("%s LF@&%s %s\n", READ,(activeString->str)+1,FLOAT_TYPE);
             }
             else{
-                printf("%s GF@$%s %s\n", READ,tmpToken->content.str->str,FLOAT_TYPE);
+                printf("%s GF@&%s %s\n", READ,(activeString->str)+1,FLOAT_TYPE);
             }
 
             if((result = getNextToken(sToken)) != SUCCES){
@@ -1162,15 +1216,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 return SYN_ERROR;
             }
         case PARAM_STRLEN: // strlen
-            printf("%s LF@&%s GF@&%s\n", MOVE, (sToken->content.str->str)+1, sToken->content.str->str);
-            if(in_function){
-
-                printf("%s LF@&%s\n", STRLEN,(tmpToken->content.str->str)+1);
-                //BVSSearch(insideFunction, *tmpToken)->content.integerNumber = INT_TYPE;
-            }
-            else{
-                printf("%s GF@&%s\n", STRLEN,(tmpToken->content.str->str)+1);
-            }
+           
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
@@ -1187,6 +1233,13 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         }
                     }
                 }
+            if(in_function){
+
+                printf("%s LF@&%s %s\n", STRLEN,(activeString->str)+1, sToken->content.str->str);
+            }
+            else{
+                printf("%s GF@&%s %s\n", STRLEN,(activeString->str)+1, sToken->content.str->str);
+            }
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
@@ -1196,9 +1249,21 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             }
             return SYN_ERROR;
         case PARAM_SUBSTRING: // substring
+
+            printf("%s\n", CREATEFRAME);
+            printf("%s\n", PUSHFRAME);
+            printf("%s LF@&cmp\n", DEFVAR);
+            printf("%s LF@&cmp bool@false\n", MOVE);
+            printf("%s LF@&cmp2\n", DEFVAR);
+            printf("%s LF@&cmp2 bool@false\n", MOVE);
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
+            unique++;
+            int tmpCounter = unique;
+            bool varI = false;
+            bool varJ = false;
+            
             if(sToken->type == TYPE_VARIABLE || sToken->type == TYPE_STRING){
                 if(sToken->type == TYPE_VARIABLE){
                     if(in_function){
@@ -1211,7 +1276,13 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                             return SEM_UNDEFINED_ERROR;
                         }
                     }
+                    printf("%s LF@&tmp%d GF@&%s\n",MOVE, unique, (sToken->content.str->str)+1);
                 }
+                else{
+                    printf("%s LF@&tmp%d\n", DEFVAR, unique);
+                    printf("%s LF@&tmp%d string@%s\n",MOVE, unique, sToken->content.str->str);   
+                }
+                
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
@@ -1219,8 +1290,11 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
+                    
+                    strCpyStr(tmpToken,sToken->content.str);
                     if(sToken->type == TYPE_VARIABLE || sToken->type == TYPE_INTEGER_NUMBER){
                         if(sToken->type == TYPE_VARIABLE){
+                            varI = true;
                             if(in_function){
                                 if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
                                     return SEM_UNDEFINED_ERROR;
@@ -1231,17 +1305,23 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                                     return SEM_UNDEFINED_ERROR;
                                 }
                             }
-                        }
-                        unique++;
-                        printf("%s\n", CREATEFRAME);
-                        printf("%s\n", PUSHFRAME);
+                           
                         printf("%s LF@&%s GF@&%s\n",MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
-                        printf("%s LF@&tmp%d\n", DEFVAR, unique);
-                        printf("%s LF@&substring%d\n", LABEL, unique);
-                        printf("%s LF@&tmp%d LF@&%s ", SUBSTRING, unique, (sToken->content.str->str)+1);
-
-                        tmp2Token = sToken;
-                        tmp2Token->content = sToken->content;
+                        printf("%s LF@&cmp LF@&%s int@%d\n", LT, (sToken->content.str->str)+1, 0);
+                        printf("%s LF@&error LF@&cmp bool@true\n", JUMPIFEQ); 
+                        
+                        }
+                        
+                        else{
+                             tmpCounter++;
+                        
+                        printf("%s LF@tmp%d\n", DEFVAR, tmpCounter);
+                        printf("%s LF@&res%d\n", DEFVAR, unique);
+                        printf("%s LF@&tmp%d int@%s\n",MOVE,tmpCounter, sToken->content.str->str);
+                        printf("%s LF@&cmp LF@&tmp%d int@%d\n", LT, tmpCounter, 0);
+                        printf("%s LF@&error LF@&cmp bool@true\n", JUMPIFEQ);
+                        }
+                        
                         if((result = getNextToken(sToken)) != SUCCES){
                             return  result;
                         }
@@ -1250,7 +1330,9 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                             if((result = getNextToken(sToken)) != SUCCES){
                                 return  result;
                             }
+                            
                             if(sToken->type == TYPE_VARIABLE){
+                                varJ = true;
                                 if(in_function){
                                     if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
                                         return SEM_UNDEFINED_ERROR;
@@ -1261,19 +1343,87 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                                         return SEM_UNDEFINED_ERROR;
                                     }
                                 }
+                                printf("%s LF@&%s GF@&%s\n", MOVE, (sToken->content.str->str)+1,(sToken->content.str->str)+1);
+                                printf("%s LF@&cmp LF@&tmp%d LF@&%s\n", GT, tmpCounter,(sToken->content.str->str)+1);
+                                printf("%s LF@&error LF@&cmp bool@true\n", JUMPIFEQ);
+                                printf("%s LF@&cmp LF@&%s int@%d\n", LT, (sToken->content.str->str)+1, 0);
+                                printf("%s LF@&error LF@&cmp bool@true\n", JUMPIFEQ);
+                                printf("%s LF@&%s\n", DEFVAR, (activeString->str)+1);
+                                printf("%s LF@&%s string@" "\n",MOVE, (activeString->str)+1);
+                                printf("%s LF@&substring%d\n", LABEL, unique);
+                                printf("%s LF@&tmp%d LF@&tmp%d LF@&%s\n", SUBSTRING, unique,tmpCounter, (sToken->content.str->str)+1);
+                                printf("%s LF@&%s LF@&%s LF@&tmp%d\n", CONCAT, (activeString->str)+1, (activeString->str)+1, unique);
 
-                                printf("%s\n",sToken->content.str->str);
-                                printf("%s LF@&%s int@%d\n", ADD, tmp2Token->content.str->str, 1);
-                                printf("%s LF@&%s LF@&%s LF@&tmp%d\n", CONCAT, (tmpToken->content.str->str)+1, (tmpToken->content.str->str)+1, unique);
-                                printf("%s LF@&substring%d LF@&%s GF@&%s\n",JUMPIFNEQ, unique, (tmpToken->content.str->str)+1, (sToken->content.str->str)+1);
-                                printf("%s GF@&%s LF@&%s\n", MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
+                                printf("%s LF@&cmp2 LF@&tmp%d LF@&%s\n", EQ, tmpCounter, (sToken->content.str->str)+1);
+                                printf("%s LF@&tmp%d int@%d\n", ADD, tmpCounter, 1);
+                                printf("%s LF@&substring%d LF@&cmp2 bool@true\n",JUMPIFNEQ, unique);
+
+                                
+                                printf("%s GF@&%s LF@&%s\n", MOVE, (activeString->str)+1, (activeString->str)+1);
+                                printf("%s LF@&legit\n", JUMP);
+                                
+                            }
+                            else{
+                    
+                                if(varI == false && varJ == false){
+                                printf("%s LF@&tmp%d\n", DEFVAR, (tmpCounter)+1);
+                                printf("%s LF@&tmp%d int@%s\n", MOVE,(tmpCounter)+1, sToken->content.str->str);
+                                printf("%s LF@&cmp LF@&tmp%d LF@&tmp%d\n", GT, tmpCounter,(tmpCounter)+1);
+                                printf("%s LF@&error LF@&cmp bool@true\n", JUMPIFEQ);
+                                printf("%s LF@&cmp LF@&tmp%d int@%d\n", LT, (tmpCounter)+1, 0);
+                                printf("%s LF@&error LF@&cmp bool@true\n", JUMPIFEQ);
+
+                                printf("%s LF@&%s\n", DEFVAR, (activeString->str)+1);
+                                printf("%s LF@&%s string@\n",MOVE, (activeString->str)+1);
+
+                                printf("%s LF@&substring%d\n", LABEL, unique);
+                                printf("%s LF@&res%d LF@&tmp%d LF@&tmp%d\n", SUBSTRING, unique,unique, tmpCounter);
+                                
+                                printf("%s LF@&%s LF@&%s LF@&res%d\n", CONCAT, (activeString->str)+1,(activeString->str)+1, unique);
+                                printf("%s LF@&cmp2 LF@&tmp%d LF@&tmp%d\n", EQ, tmpCounter, (tmpCounter)+1);
+                                printf("%s LF@&tmp%d int@%d\n", ADD, tmpCounter, 1);
+                                printf("%s LF@&substring%d LF@&cmp2 bool@true",JUMPIFNEQ, unique);
+                                printf("%s GF@&%s LF@&%s\n", MOVE, (activeString->str)+1, (activeString->str)+1);
+                                printf("%s LF@&legit\n", JUMP);
+                                }
+                                if(varI == true)
+                                {
+                                printf("%s LF@&tmp%d\n", DEFVAR, (tmpCounter)+1);
+                                printf("%s LF@&tmp%d int@%s\n", MOVE,(tmpCounter)+1, sToken->content.str->str);
+                                
+                                printf("%s LF@&cmp LF@&%s LF@&tmp%d\n", GT, (tmpToken->str)+1,(tmpCounter)+1);
+                                printf("%s LF@&error LF@&cmp bool@true\n", JUMPIFEQ);
+                                printf("%s LF@&cmp LF@&tmp%d int@%d\n", LT, (tmpCounter)+1, 0);
+                                printf("%s LF@&error LF@&cmp bool@true\n", JUMPIFEQ);
+                                
+                                printf("%s LF@&%s\n", DEFVAR, (activeString->str)+1);
+                                printf("%s LF@&%s string@\n",MOVE, (activeString->str)+1);
+
+                                printf("%s LF@&substring%d\n", LABEL, unique);
+                                printf("%s LF@&res%d LF@&%s LF@&tmp%d\n", SUBSTRING, unique,(tmpToken->str)+1, tmpCounter);
+                                
+                                printf("%s LF@&%s LF@&%s LF@&res%d\n", CONCAT, (activeString->str)+1,(activeString->str)+1, unique);
+                                printf("%s LF@&cmp2 LF@&%s LF@&tmp%d\n", EQ, (tmpToken->str)+1, (tmpCounter)+1);
+                                printf("%s LF@&%s int@%d\n", ADD, (tmpToken->str)+1, 1);
+                                printf("%s LF@&substring%d LF@&cmp2 bool@true",JUMPIFNEQ, unique);
+                                
+                                printf("%s GF@&%s LF@&%s\n", MOVE, (activeString->str)+1, (activeString->str)+1);
+                                printf("%s LF@&legit\n", JUMP);
+                                } 
+                                
+                              } 
+                                strClean(tmpToken);
                                 if((result = getNextToken(sToken)) != SUCCES){
                                     return  result;
                                 }
                                 if(sToken->type == TYPE_RBRACKET){
+                                    printf("%s LF@&error\n", LABEL);
+                                    printf("%s GF@&%s nil@nil\n", MOVE, (activeString->str)+1);
+                                    printf("%s LF@&legit\n", LABEL);
+                                    printf("%s\n", POPFRAME);
                                     return SUCCES;
                                 }
-                            }
+                            
                         }
                     }
                 }
@@ -1299,7 +1449,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 printf("%s\n", CREATEFRAME);
                 printf("%s\n", PUSHFRAME);
                 printf("%s LF@&%s GF@&%s\n", MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
-                printf("%s GF@&%s LF@&%s int@%d\n",STRI2INT, (tmpToken->content.str->str)+1, (sToken->content.str->str)+1, 0);
+                printf("%s GF@&%s LF@&%s int@%d\n",STRI2INT, (activeString->str)+1, (sToken->content.str->str)+1, 0);
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
@@ -1335,7 +1485,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 printf("%s LF@&chr%d bool@true LF@&tmp%d\n",JUMPIFEQ, unique, unique);
                 printf("%s LF@&tmp%d LF@&%s int@%d\n", GT,unique, sToken->content.str->str, 255);
                 printf("%s LF@&chr%d bool@true LF@&tmp%d\n",JUMPIFEQ, unique, unique);
-                printf("%s %s LF@&%s\n", INT2CHAR,(tmpToken->content.str->str)+1, (sToken->content.str->str)+1);
+                printf("%s %s LF@&%s\n", INT2CHAR,(activeString->str)+1, (sToken->content.str->str)+1);
                 printf("%s LF@&chr%d\n", LABEL, unique);
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
@@ -1349,8 +1499,10 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
-            if(!insideFunction){
+            /////////////////////// IN MAIN PROGRAM ///////////////////////////////////////
+            if(!insideFunction){ 
                 switch(sToken->type){
+                    case KEYWORD_NULL:
                     case TYPE_STRING:
                         if((result = getNextToken(sToken)) != SUCCES){
                             return  result;
@@ -1362,21 +1514,8 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                             return SUCCES;
                         }
                         return SYN_ERROR;
+                    case TYPE_EXPONENT_NUMBER:
                     case TYPE_INTEGER_NUMBER:
-                        if((result = getNextToken(sToken)) != SUCCES){
-                            return  result;
-                        }
-                        if(sToken->type == TYPE_ADDITION ||
-                           sToken->type == TYPE_DIVIDE   ||
-                           sToken->type == TYPE_MULTIPLY ||
-                           sToken->type == TYPE_SUBTRACTION
-                                ){
-                            repeat++;
-                            return parametrs(PARAM_RETURN, repeat, sToken, fun_id);
-                        }else if(sToken->type == TYPE_SEMICOLON){
-                            return SUCCES;
-                        }
-                        return SYN_ERROR;
                     case TYPE_DOUBLE_NUMBER:
                         if((result = getNextToken(sToken)) != SUCCES){
                             return  result;
@@ -1393,10 +1532,14 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         }
                         return SYN_ERROR;
                     case TYPE_SEMICOLON:
-                            return SUCCES;
-                        }
+                            if(repeat == 1){
+                                return SUCCES;
+                            }
                         return SYN_ERROR;
+                }    
+                    return SYN_ERROR;
             }
+            ///////////////// IN FUNCTION /////////////////////////////
             switch(sToken->type){
                 case TYPE_IDENTIFIER:
                     if(BVSSearch_function(functionNames->rootPtr, *sToken) == NULL){
@@ -1431,6 +1574,17 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }else{
                         return SYN_ERROR;
                     }
+                case KEYWORD_NULL:
+                    if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
+                    }
+                    if(sToken->type == TYPE_CONCATENATE){
+                        repeat++;
+                        return parametrs(PARAM_RETURN, repeat, sToken, fun_id);
+                    }else if(sToken->type == TYPE_SEMICOLON){
+                        return SUCCES;
+                    }
+                    return SYN_ERROR;
                 case TYPE_STRING:
                     if(fun_id->ret_value != KEYWORD_STRING){
                         return SEM_COUNT_ERROR;
@@ -1464,6 +1618,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
                     return SYN_ERROR;
                 case TYPE_DOUBLE_NUMBER:
+                case TYPE_EXPONENT_NUMBER:
                     if(fun_id->ret_value != KEYWORD_FLOAT){
                         return SEM_COUNT_ERROR;
                     }
@@ -1486,19 +1641,9 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         if(fun_id->ret_value == KEYWORD_VOID){
                             return SUCCES;
                         }
-                        return SEM_COUNT_ERROR;
+                        return SEM_RETURN_ERROR;
                     }
                     return SYN_ERROR;
-                case KEYWORD_NULL:
-                    if(fun_id->ret_value != KEYWORD_VOID){
-                        return SEM_COUNT_ERROR;
-                    }
-                    if((result = getNextToken(sToken)) != SUCCES){
-                        return  result;
-                    }
-                    if(sToken->type == TYPE_SEMICOLON){
-                        return SUCCES;
-                    }
             }
             return SYN_ERROR;
         case PARAM_FUNCTION_CALL: // calling function
@@ -1515,6 +1660,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                             return SEM_COUNT_ERROR;
                         }
                     }
+                    return SYN_ERROR;
                 case TYPE_VARIABLE:
                     if(in_function){
                         if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
@@ -1530,6 +1676,10 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         return  result;
                     }
                     if(sToken->type == TYPE_RBRACKET){
+                        if(call_function_save->return_type == KEYWORD_VOID)
+                        {
+                            printf("%s GF@&%s nil@nil\n", MOVE, (activeString->str)+1);
+                        }
                         if(repeat == call_function_save->parameters){
                             return SUCCES;
                         }
@@ -1543,20 +1693,52 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                              sToken->type == TYPE_SUBTRACTION
                             ){
                         return parametrs(PARAM_FUNCTION_CALL, repeat, sToken, fun_id);
+                    }else{
+                        return SYN_ERROR;
                     }
+                case TYPE_EXPONENT_NUMBER:
                 case TYPE_INTEGER_NUMBER:
                 case TYPE_DOUBLE_NUMBER:
-                case TYPE_STRING:
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
                     if(sToken->type == TYPE_RBRACKET){
+                        if(call_function_save->return_type == KEYWORD_VOID)
+                        {
+                            printf("%s GF@&%s nil@nil\n", MOVE, (activeString->str)+1);
+                        }
                         if(repeat == call_function_save->parameters){
                             return SUCCES;
                         }
                         return SEM_COUNT_ERROR;
                     }else if(sToken->type == TYPE_COMMA){
                         repeat++;
+                        return parametrs(PARAM_FUNCTION_CALL, repeat, sToken, fun_id);
+                    }else if(sToken->type == TYPE_ADDITION    ||
+                             sToken->type == TYPE_SUBTRACTION ||
+                             sToken->type == TYPE_DIVIDE      ||
+                             sToken->type == TYPE_MULTIPLY){
+                        return parametrs(PARAM_FUNCTION_CALL, repeat, sToken, fun_id);
+                    }else{
+                        return SYN_ERROR;
+                    }
+                case TYPE_STRING:
+                    if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
+                    }
+                    if(sToken->type == TYPE_RBRACKET){
+                        if(call_function_save->return_type == KEYWORD_VOID)
+                        {
+                            printf("%s GF@&%s nil@nil\n", MOVE, (activeString->str)+1);
+                        }
+                        if(repeat == call_function_save->parameters){
+                            return SUCCES;
+                        }
+                        return SEM_COUNT_ERROR;
+                    }else if(sToken->type == TYPE_COMMA){
+                        repeat++;
+                        return parametrs(PARAM_FUNCTION_CALL, repeat, sToken, fun_id);
+                    }else if(sToken->type == TYPE_CONCATENATE){
                         return parametrs(PARAM_FUNCTION_CALL, repeat, sToken, fun_id);
                     }else{
                         return SYN_ERROR;
