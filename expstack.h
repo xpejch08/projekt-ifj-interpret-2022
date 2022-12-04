@@ -2,6 +2,7 @@
 #define EXPSTACK_H
 
 #include "expression.h"
+#include "str.h"
 
 
 //EXPSTACK FUNKCE
@@ -9,25 +10,27 @@ typedef struct StackElement {
 	
     PrtableSymbolsEnum symbol;
 	DataTypeEnum datatype;
+    string codename;
 	struct StackElement *nextElement;
-} *StackElementPtr;
+} StackElement;
 
-typedef struct ExpStack{
-	StackElementPtr top;
+
+typedef struct{
+	StackElement *top;
 } Stack;
 
 
 void stackInit(Stack *stack );
 
-int stackPush( Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum datatype );
+int stackPush( Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum datatype, string codename );
 
-int stackInsertAfterTop( Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum datatype );
+int stackInsertAfterTopTerminal( Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum datatype, string codename );
 
 int stackPop( Stack *stack, int n ); //kolikrat popnout
 
-StackElementPtr stackGetTopSymbol( Stack *stack );
+StackElement* stackGetTopSymbol( Stack *stack );
 
-StackElementPtr stackGetTopTerminal( Stack *stack );
+StackElement* stackGetTopTerminal( Stack *stack );
 
 void stackDispose( Stack *stack );
 
@@ -40,6 +43,6 @@ int checkTypeForRule(PrtableRulesEnum rule, StackElementPtr op1, StackElementPtr
 int countSymbols(Stack stack);
 int reduceExpression(Stack stack);*/
 
-int precedenceAction(TRoot *someTree, token *sToken, Stack stack);
+int precedenceAction(TRoot *someTree, token *sToken, Stack *stack);
 
 #endif

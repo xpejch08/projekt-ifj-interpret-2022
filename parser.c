@@ -751,7 +751,9 @@ int statlist(token *sToken, function_save *fun_id){
                 if (sToken->type != TYPE_EXPONENT_NUMBER) {
                     if (sToken->type != TYPE_DOUBLE_NUMBER) {
                         if (sToken->type != TYPE_INTEGER_NUMBER) {
-                            afterAssign = false;
+                            if(sToken->type != TYPE_STRING){
+                                afterAssign = false;
+                            }
                         }
                     }
                 }

@@ -12,7 +12,7 @@
 //s
 
 typedef enum{
-    EQUAL,
+    EQUAL = 0,
     NOT_EQUAL,
     SMALLER_THAN,
     GREATER_THAN,
