@@ -1456,7 +1456,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                                 printf("%s LF@&%s LF@&%s LF@&tmp%d\n", CONCAT, (activeString->str)+1, (activeString->str)+1, unique);
 
                                 printf("%s LF@&cmp2 LF@&tmp%d LF@&%s\n", EQ, tmpCounter, (sToken->content.str->str)+1);
-                                printf("%s LF@&tmp%d int@%d\n", ADD, tmpCounter, 1);
+                                printf("%s LF@&tmp%d LF@&tmp%d int@%d\n", ADD, tmpCounter,tmpCounter, 1);
                                 printf("%s LF@&substring%d LF@&cmp2 bool@true\n",JUMPIFNEQ, unique);
 
 
@@ -1482,7 +1482,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
 
                                     printf("%s LF@&%s LF@&%s LF@&res%d\n", CONCAT, (activeString->str)+1,(activeString->str)+1, unique);
                                     printf("%s LF@&cmp2 LF@&tmp%d LF@&tmp%d\n", EQ, tmpCounter, (tmpCounter)+1);
-                                    printf("%s LF@&tmp%d int@%d\n", ADD, tmpCounter, 1);
+                                    printf("%s LF@&tmp%d LF@&tmp%d int@%d\n", ADD, tmpCounter,tmpCounter, 1);
                                     printf("%s LF@&substring%d LF@&cmp2 bool@true",JUMPIFNEQ, unique);
                                     printf("%s GF@&%s LF@&%s\n", MOVE, (activeString->str)+1, (activeString->str)+1);
                                     printf("%s LF@&legit\n", JUMP);
@@ -1505,7 +1505,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
 
                                     printf("%s LF@&%s LF@&%s LF@&res%d\n", CONCAT, (activeString->str)+1,(activeString->str)+1, unique);
                                     printf("%s LF@&cmp2 LF@&%s LF@&tmp%d\n", EQ, (tmpToken->str)+1, (tmpCounter)+1);
-                                    printf("%s LF@&%s int@%d\n", ADD, (tmpToken->str)+1, 1);
+                                    printf("%s LF@&%s LF@&%s int@%d\n", ADD, (tmpToken->str)+1,(tmpToken->str)+1, 1);
                                     printf("%s LF@&substring%d LF@&cmp2 bool@true",JUMPIFNEQ, unique);
 
                                     printf("%s GF@&%s LF@&%s\n", MOVE, (activeString->str)+1, (activeString->str)+1);
