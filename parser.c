@@ -739,12 +739,44 @@ int statlist(token *sToken, function_save *fun_id){
                 }
                 return SUCCES;
             } else {
-                result = precedenceAction(mainTree, sToken, stack);
-                if (result <113 || result > 117) {
-                    return result;
+                if(in_function == false) {
+                    result = precedenceAction(mainTree, sToken, stack);
+                    if (result < 113 || result > 117) {
+                        return result;
+                    }
+                    strClean(sToken->content.str);
+                    strCpyStr(sToken->content.str, activeString);
+                    TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
+                    active->type = result;
+                    if ((result = getNextToken(sToken)) != SUCCES) {
+                        return result;
+                    }
+                    result = statlist(sToken, fun_id);
+                    if (result != SUCCES) {
+                        return result;
+                    }
+                    afterAssign = false;
+                    return SUCCES;
                 }
-
-                afterAssign = false;
+                else{
+                    result = precedenceAction(mainTree, sToken, stack);
+                    if (result < 113 || result > 117) {
+                        return result;
+                    }
+                    strClean(sToken->content.str);
+                    strCpyStr(sToken->content.str, activeString);
+                    TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
+                    active->type = result;
+                    if ((result = getNextToken(sToken)) != SUCCES) {
+                        return result;
+                    }
+                    result = statlist(sToken, fun_id);
+                    if (result != SUCCES) {
+                        return result;
+                    }
+                    afterAssign = false;
+                    return SUCCES;
+                }
             }
 
         case TYPE_END_OF_FILE:
@@ -875,12 +907,45 @@ int statlist(token *sToken, function_save *fun_id){
                 }
                 return SUCCES;
             }
-            else{
-                result = precedenceAction(mainTree, sToken, stack);
-                if (result <113 || result > 117) {
-                    return result;
+            else {
+                if(in_function == false) {
+                    result = precedenceAction(mainTree, sToken, stack);
+                    if (result < 113 || result > 117) {
+                        return result;
+                    }
+                    strClean(sToken->content.str);
+                    strCpyStr(sToken->content.str, activeString);
+                    TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
+                    active->type = result;
+                    if ((result = getNextToken(sToken)) != SUCCES) {
+                        return result;
+                    }
+                    result = statlist(sToken, fun_id);
+                    if (result != SUCCES) {
+                        return result;
+                    }
+                    afterAssign = false;
+                    return SUCCES;
                 }
-                afterAssign = false;
+                else{
+                    result = precedenceAction(mainTree, sToken, stack);
+                    if (result < 113 || result > 117) {
+                        return result;
+                    }
+                    strClean(sToken->content.str);
+                    strCpyStr(sToken->content.str, activeString);
+                    TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
+                    active->type = result;
+                    if ((result = getNextToken(sToken)) != SUCCES) {
+                        return result;
+                    }
+                    result = statlist(sToken, fun_id);
+                    if (result != SUCCES) {
+                        return result;
+                    }
+                    afterAssign = false;
+                    return SUCCES;
+                }
             }
     }
     return SYN_ERROR;
