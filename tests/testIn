@@ -18,27 +18,5 @@ if (4 === 2) {
 	
 }
 
-return 5;
-?>
-dsds
 
 
-/*
-if (4 < 0) {
-	write("Faktorial nelze spocitat\n");
-} else {
-	$kokokok;
-	while (5 > 0) {
-		if(3 === 4)
-		{
-			$kk;
-		}
-		else{
-			$op;
-		}
-		$h;
-		write("LOL");
-	}
-	write("XDDD");
-	$g;
-}*/

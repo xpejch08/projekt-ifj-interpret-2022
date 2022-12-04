@@ -750,6 +750,7 @@ int statlist(token *sToken, function_save *fun_id){
 
         case TYPE_END_OF_FILE:
             if (canParseEnd == true) {
+                printf("%s %d\n", EXIT, 0);
                 return SUCCES;
             } else {
                 return SYN_ERROR;
