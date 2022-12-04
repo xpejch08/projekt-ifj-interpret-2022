@@ -197,13 +197,3 @@ void postorder(TNode *tree){
     }
     fprintf(stderr, "Whatttttttt");
 }
-
-//TNode *newPtr = &init;
-//newPtr->leftPtr = NULL;
-//newPtr->rightPtr = NULL;
-//newPtr->type = token.type;
-//strCpyStr(newPtr->content, token.content.str);
-//rootPtr = newPtr;
-//fprintf(stderr, "%s\n", newPtr->content->str);
-//fprintf(stderr, "%d\n", newPtr->type);
-//newPtr->content = (&token)->content.str;
