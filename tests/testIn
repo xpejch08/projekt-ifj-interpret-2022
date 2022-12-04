@@ -10,15 +10,20 @@ if (4 === 2) {
 	write("Chyba pri nacitani celeho cisla!\n");
 	while(6 < 0)
 	{
-		$f = readi();
+		$f = substring("TEST", 2, 6);
 		
 	}
-	write("HEREEEEEE");
+	write("PRINT");
 } else {
 	
 }
 
+return 5;
+?>
+dsds
 
+
+/*
 if (4 < 0) {
 	write("Faktorial nelze spocitat\n");
 } else {
@@ -36,4 +41,4 @@ if (4 < 0) {
 	}
 	write("XDDD");
 	$g;
-}
+}*/
