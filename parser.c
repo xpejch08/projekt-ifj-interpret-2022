@@ -1646,6 +1646,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                             return SEM_COUNT_ERROR;
                         }
                     }
+                    return SYN_ERROR;
                 case TYPE_VARIABLE:
                     if(in_function){
                         if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
@@ -1663,7 +1664,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     if(sToken->type == TYPE_RBRACKET){
                         if(call_function_save->return_type == KEYWORD_VOID)
                         {
-                        printf("%s GF@&%s nil@nil\n", MOVE, (activeString->str)+1);
+                            printf("%s GF@&%s nil@nil\n", MOVE, (activeString->str)+1);
                         }
                         if(repeat == call_function_save->parameters){
                             return SUCCES;
@@ -1678,10 +1679,35 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                              sToken->type == TYPE_SUBTRACTION
                             ){
                         return parametrs(PARAM_FUNCTION_CALL, repeat, sToken, fun_id);
+                    }else{
+                        return SYN_ERROR;
                     }
                 case TYPE_EXPONENT_NUMBER:
                 case TYPE_INTEGER_NUMBER:
                 case TYPE_DOUBLE_NUMBER:
+                    if((result = getNextToken(sToken)) != SUCCES){
+                        return  result;
+                    }
+                    if(sToken->type == TYPE_RBRACKET){
+                        if(call_function_save->return_type == KEYWORD_VOID)
+                        {
+                            printf("%s GF@&%s nil@nil\n", MOVE, (activeString->str)+1);
+                        }
+                        if(repeat == call_function_save->parameters){
+                            return SUCCES;
+                        }
+                        return SEM_COUNT_ERROR;
+                    }else if(sToken->type == TYPE_COMMA){
+                        repeat++;
+                        return parametrs(PARAM_FUNCTION_CALL, repeat, sToken, fun_id);
+                    }else if(sToken->type == TYPE_ADDITION    ||
+                             sToken->type == TYPE_SUBTRACTION ||
+                             sToken->type == TYPE_DIVIDE      ||
+                             sToken->type == TYPE_MULTIPLY){
+                        return parametrs(PARAM_FUNCTION_CALL, repeat, sToken, fun_id);
+                    }else{
+                        return SYN_ERROR;
+                    }
                 case TYPE_STRING:
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
@@ -1697,6 +1723,8 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         return SEM_COUNT_ERROR;
                     }else if(sToken->type == TYPE_COMMA){
                         repeat++;
+                        return parametrs(PARAM_FUNCTION_CALL, repeat, sToken, fun_id);
+                    }else if(sToken->type == TYPE_CONCATENATE){
                         return parametrs(PARAM_FUNCTION_CALL, repeat, sToken, fun_id);
                     }else{
                         return SYN_ERROR;
