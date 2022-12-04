@@ -262,6 +262,7 @@ int declrList(token *sToken, function_save *fun_id) {
                             return  result;
                         }
                         if (sToken->type != TYPE_SEMICOLON) {
+                        
                             return SYN_ERROR;
                         }
                         canParseEnd = true;
@@ -507,10 +508,10 @@ int declrList(token *sToken, function_save *fun_id) {
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
-                                 
+                     printf("%s &while%d\n", JUMP, whileCounter);
+                    printf("%s &while_end%d\n", LABEL, whileCounter);           
                     result = statlist(sToken, fun_id);
-                    printf("%s &while%d\n", JUMP, whileCounter);
-                    printf("%s &while_end%d\n", LABEL, whileCounter);                   
+                                       
                     if (result != SUCCES) {
                         return result;
                     }
@@ -643,8 +644,8 @@ int declrList(token *sToken, function_save *fun_id) {
                 if (sToken->type != TYPE_RVINCULUM) {
                     return SYN_ERROR;
                 }
-                printf("%s &else_end%d\n", LABEL, condCounter);
-                condCounter--;
+                //printf("%s &else_end%d\n", LABEL, condCounter);
+                //condCounter--;
                 canParseEnd = true;
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
@@ -1808,9 +1809,12 @@ int parse(void){
             return SYN_ERROR;
         }
         result = statlist(sToken, fun_id);
-        //printf("EXIT %d", result);
+        if(result != 0)
+        {
+        printf("EXIT %d\n", result);
+        }    
     }
-    fprintf(stderr, "--%d--\n", result);
+    
     //BVSFree(mainTree);
     //BVSFree(insideFunction);
     //BVSFree_function(functionNames);
