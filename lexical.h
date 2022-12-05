@@ -4,6 +4,10 @@
 #include "str.h"
 #include "errors.h"
 
+/**
+ * defining all possible tokens
+ */
+
 #define   KEYWORD_ELSE          100
 #define   KEYWORD_IF            101
 #define   KEYWORD_FUNCTION      102
@@ -50,6 +54,9 @@
 #define   TYPE_EPILOG            139
 
 
+/**
+ * tokenContent is a structure containing the string value of a token
+ */
 typedef union{
     string *integerNumber;
     string *doubleNumber;
@@ -62,15 +69,37 @@ typedef struct{
     int ret_value;
 }function_save;
 
+/**
+ * token structure, every token has a type defined above and it's content
+ * defined in tokenContent structure
+ */
 typedef struct{
     tokenContent content;
     int type;
 }token;
 
-
+/**
+ * @brief function for setting a FILE
+ * @param f pointer to a file
+ */
 void setSourceFile(FILE *f);
+
+/**
+ * @brief main function of lexical analysis, sets token structure depending on the input from stdin
+ * @param attr attr is type token defined above
+ * @return returns SUCCESS if it finds a legitimate token else returns lex error
+ * parses stdin input into separate tokens
+ */
 int getNextToken(token *attr);
+
+//function for initializing a token
 void initToken(token *attr);
+
+/**
+ * @brief function that checks beginning of the input for prolog, function calls getNextToken
+ * @param str passing a initialized token to the function because of getNextToken
+ * @return returns SUCCESS if prolog is correct else returns SYN_ERROR
+ */
 int prolog(token *str);
 
 #endif
