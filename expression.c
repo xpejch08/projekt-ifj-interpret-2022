@@ -600,7 +600,6 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
     if (result != 0){
         return result;
     }
-    string str;
     DataTypeEnum finaltype;
     token tToken = *sToken;
     tToken.content.str = malloc(sizeof (string));
