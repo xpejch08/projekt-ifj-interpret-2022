@@ -575,7 +575,7 @@ int declrList(token *sToken, function_save *fun_id) {
             }
             else {
                 paramError = parametrs(PARAM_IF_WHILE, 1, sToken, fun_id); // misto parametrs volat precedencku
-                printf("%s &while_end%d\n", JUMPIFNEQ, whileCounter);
+                printf("%s &while_end%d GF@&expTmp bool@true\n", JUMPIFNEQ, whileCounter);
                 if(paramError != SUCCES){
                     return paramError;
                 }
@@ -653,7 +653,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 return SYN_ERROR;
             } else {
                 paramError = parametrs(PARAM_IF_WHILE,1, sToken, fun_id);
-                printf("%s &else%d\n", JUMPIFNEQ, condCounter);
+                printf("%s &else%d GF@&expTmp bool@true\n", JUMPIFNEQ, condCounter);
                 if(paramError != SUCCES) {
                     return paramError;
                 }
@@ -2105,7 +2105,7 @@ int parse(void){
         }
         //.IFJcode22 has to be on top of every ifjcode22 code
         printf(".IFJcode22\n");
-        printf("%s GF@&expTmp%s\n", DEFVAR);
+        printf("%s GF@&expTmp\n", DEFVAR);
 
         //calling first statlist
         result = statlist(sToken, fun_id);
