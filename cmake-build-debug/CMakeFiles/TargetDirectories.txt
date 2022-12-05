@@ -1,0 +1,3 @@
+/home/ondrej/IFJHUB/CLION/cmake-build-debug/CMakeFiles/testing2.dir
+/home/ondrej/IFJHUB/CLION/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/ondrej/IFJHUB/CLION/cmake-build-debug/CMakeFiles/rebuild_cache.dir
