@@ -970,7 +970,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
     
     int result;
     switch (option) {
-        case PARAM_FUNCTION: // kontrolujeme parametry funkce
+        case PARAM_FUNCTION: 
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
@@ -1064,7 +1064,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             } else {
                 return SYN_ERROR;
             }
-        case PARAM_IF_WHILE: // kontrolujeme podminku ve while nebo if
+        case PARAM_IF_WHILE: 
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
@@ -1203,7 +1203,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
             }
             return SYN_ERROR;
-        case PARAM_WRITE: // write
+        case PARAM_WRITE: 
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
@@ -1275,7 +1275,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
             }
             return SYN_ERROR;
-        case PARAM_READI: // readi
+        case PARAM_READI: 
             if(in_function){
                 printf("%s LF@&%s %s\n", READ,(activeString->str)+1,INT_TYPE);
 
@@ -1292,7 +1292,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             else{
                 return SYN_ERROR;
             }
-        case PARAM_READS: // reads
+        case PARAM_READS: 
             if(in_function){
                 printf("%s LF@&%s %s\n", READ,(activeString->str)+1,STRING_TYPE);
 
@@ -1309,7 +1309,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             else{
                 return SYN_ERROR;
             }
-        case PARAM_READF: // readf
+        case PARAM_READF: 
             if(in_function){
                 printf("%s LF@&%s %s\n", READ,(activeString->str)+1,FLOAT_TYPE);
             }
@@ -1326,7 +1326,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             else{
                 return SYN_ERROR;
             }
-        case PARAM_STRLEN: // strlen
+        case PARAM_STRLEN: 
 
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
@@ -1359,7 +1359,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 }
             }
             return SYN_ERROR;
-        case PARAM_SUBSTRING: // substring
+        case PARAM_SUBSTRING: 
 
             printf("%s\n", CREATEFRAME);
             printf("%s\n", PUSHFRAME);
@@ -1540,7 +1540,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 }
             }
             return SYN_ERROR;
-        case PARAM_ORD: // ord
+        case PARAM_ORD: 
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
@@ -1570,7 +1570,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             }
             return SYN_ERROR;
 
-        case PARAM_CHR: //chr
+        case PARAM_CHR: 
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
@@ -1606,7 +1606,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 }
             }
             return SYN_ERROR;
-        case PARAM_RETURN: // function return value
+        case PARAM_RETURN: 
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
@@ -1787,7 +1787,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     return SYN_ERROR;
             }
             return SYN_ERROR;
-        case PARAM_FUNCTION_CALL: // calling function
+        case PARAM_FUNCTION_CALL: 
         printf("%s\n", CREATEFRAME);
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;

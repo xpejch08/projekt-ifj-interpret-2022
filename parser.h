@@ -7,18 +7,18 @@
 #include "symtable.h"
 #include "code_gen.h"
 
-#define PARAM_FUNCTION      800
-#define PARAM_IF_WHILE      801
-#define PARAM_WRITE         802
-#define PARAM_READI         803
-#define PARAM_READS         804
-#define PARAM_READF         805
-#define PARAM_STRLEN        806
-#define PARAM_SUBSTRING     807
-#define PARAM_ORD           808
-#define PARAM_CHR           809
-#define PARAM_RETURN        810
-#define PARAM_FUNCTION_CALL 811
+#define PARAM_FUNCTION      800 // case for checking arguments in declaration of function
+#define PARAM_IF_WHILE      801  
+#define PARAM_WRITE         802 // case for checking parameters in bult-in function write 
+#define PARAM_READI         803 // case for checking parameters in bult-in function readi
+#define PARAM_READS         804 // case for checking parameters in bult-in function reads
+#define PARAM_READF         805 // case for checking parameters in bult-in function readf
+#define PARAM_STRLEN        806 // case for checking parameters in bult-in function strlen
+#define PARAM_SUBSTRING     807 // case for checking parameters in bult-in function substring
+#define PARAM_ORD           808 // case for checking parameters in bult-in function ord
+#define PARAM_CHR           809 // case for checking parameters in bult-in function chr
+#define PARAM_RETURN        810 // case for checking expression after return
+#define PARAM_FUNCTION_CALL 811 // case for checking parameters in function calls
 
 //instructions
 //-----------------------------------//
