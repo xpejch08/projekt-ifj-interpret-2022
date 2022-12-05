@@ -1,11 +1,15 @@
 <?php
 declare(strict_types=1);
+$a = "test";
+$b = 2;
 
-function foo(int $d) : string
+
+if ($a > $b)
 {
-    return "HI\n";
+    write("magie\n");
 }
-
-$d = foo(4);
+else{
+    $g = readf();
+}
 
 ?>
