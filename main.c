@@ -25,7 +25,7 @@ int main(void){
     token *sToken;
 
     sToken = &init;
-    int res = prefix(sToken);
+    int res = prolog(sToken);
     if(res != 0)
     {
         printf("%d\n", res);

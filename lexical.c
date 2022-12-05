@@ -17,32 +17,33 @@
 #define keywordOrIdentifierState        306 //reading the variable
 #define identifierOrKeywordState        307 //the next token will be an identifier or a keyword
 #define numberState                     308 //the next token will be a number, we don't know the specific data type yet
-#define smallerThanOrEqualState         309
-#define greaterThanOrEqualState         310
-#define assignOrEqualState              311
-#define equalState                      312
-#define stringStartState                313
-#define waitForStringEnd                314
-#define variableRead                    315
-#define backslashState                  316
-#define escapeHexaState                 317
-#define endHexaState                    318
-#define escapeOctaState                 319
-#define waitOctaState                   320
-#define endOctaState                    321
-#define decimalState                    322
-#define exponentState                   323
-#define exponentPlusOrMinusState        324
-#define endExponentState                325
-#define notEqualState                   326
-#define notEqualStateEnd                327
-#define epilogState                     328
-#define decimalEndState                 329
+#define smallerThanOrEqualState         309 //the next token can be an assign
+#define greaterThanOrEqualState         310 //the next token can be an assign
+#define assignOrEqualState              311 //next token can be either a = or a space
+#define equalState                      312 //waiting for last =
+#define stringStartState                313 //token was ", beginning of string state
+#define waitForStringEnd                314 //waiting for " to end string
+#define variableRead                    315 //token was $ => next has to be variable identifier
+#define backslashState                  316 //escape sequence in a string
+#define escapeHexaState                 317 //token is x after backslash, waiting for 2 numbers
+#define endHexaState                    318 //ending escape hexadecimal sequence
+#define escapeOctaState                 319 //the token after backslash was a number
+#define waitOctaState                   320 //waiting for 2 numbers
+#define endOctaState                    321 //end of octal escape sequence
+#define decimalState                    322 //token was a decimal point => float number
+#define exponentState                   323 //token was e or E => exponent number
+#define exponentPlusOrMinusState        324 //checking if we have + or - after exponent sign
+#define endExponentState                325 //waiting for end of exponent
+#define notEqualState                   326 //token was ! waiting for assign
+#define notEqualStateEnd                327 //waiting for last assign
+#define epilogState                     328 //token was ? which means only epilog can occur
+#define decimalEndState                 329 //end of decimal number
 
 
-//todo token initialization, change returns of getNextToken function
+//initializing source file
 FILE *source;
 
+//function to set source file
 void setSourceFile(FILE *f){
     source = f;
 }
@@ -68,9 +69,9 @@ int hexaToDecimal(const char arr[]){
  * @brief function that checks if a string is a keyword and sets the token depending on the output
  * @param str dynamic string that we want to compare with a keyword
  * @param attr main token attribute that we set depending on the outcome
- * @return returns 0 if successful
+ * @return function is always succesfull
  */
-int keywordCmp(string *str, token *attr){
+void keywordCmp(string *str, token *attr){
     if(strCmpConstStr(str, "else") == 0){
         attr->type = KEYWORD_ELSE;
     }
@@ -105,38 +106,49 @@ int keywordCmp(string *str, token *attr){
         attr->type = TYPE_IDENTIFIER;
         strCpyStr(attr->content.str, str);
     }
-    return SUCCES;
 
 }
 
 /**
- * @brief main function of lexical analysis, finite state machine that creates tokens
- * @param attr token sent to parser
- * @return returns different LEX_ERROR if something goes wrong else returns 0
+ * @brief function for checking if prolog is correct
+ * @param str token passing initialized token for getnexttoken call in function
+ * @return returns syntax error if prefix is wrong else returns SUCCESS => 0
  */
-int prefix(token *str){
-    //todo getnexttoken a upravit lexikalku na to
+
+int prolog(token *str){
+    //initializing and cleaning token
     if(strInit(str->content.str) == 1){
         return INT_ERROR;
     }
     strClean(str->content.str);
 
+    //checking first character from stdin into character variable
     char character = (char) fgetc(stdin);
-    char prefix1[6] = "<?php";
+    ///variable for comparing first part of prolog
+    char prolog1[6] = "<?php";
     int i = 0;
+
+    //checking for empty space before first part of prolog
     while(isspace(character)){
         character = (char) fgetc(stdin);
     }
+
+    //getting first 4 tokens which should be <?ph
     while(i<4){
         strAddChar(str->content.str, character);
         character = (char) fgetc(stdin);
         i++;
     }
+    //adding lat character which should be 'p' outside of loop and comparing to prolog1
     strAddChar(str->content.str, character);
-    if(strCmpConstStr(str->content.str, prefix1) != 0){
+    if(strCmpConstStr(str->content.str, prolog1) != 0){
         return SYN_ERROR;
     }
 
+
+    //next tokens should be in order identifier:declare->leftBracket->
+    //identifier:strict_types->=->integernumber:1->rightBracket->semicolon
+    //calling as tokens to ignore white space
     getNextToken(str);
     if(strCmpConstStr(str->content.str, "declare") != 0){
         return SYN_ERROR;
@@ -169,6 +181,12 @@ int prefix(token *str){
     return 0;
 }
 
+
+/**
+ * @brief main function of lexical analysis, finite state machine that creates tokens
+ * @param attr token sent to parser
+ * @return returns different LEX_ERROR if something goes wrong else returns 0
+ */
 int getNextToken(token *attr) {
     int state = basicState;
     char character = '\0';
@@ -181,17 +199,22 @@ int getNextToken(token *attr) {
         return INT_ERROR;
     }
 
-
+    //initializing and cleaning token string
     strInit(attr->content.str);
     strClean(attr->content.str);
 
+
+    //** finite state machine that calls new character from stdin and ends with a correct token or Lexical eror **//
     while(1){
         /** reading value from stdin **/
         character = (char) fgetc(stdin);
 
         switch (state){
 
-            /** beginning state **/
+            /** beginning state
+             * ignores white space and jumps into next state depending on the value
+             * if character doesn't jump into any state returns lex error
+             * **/
             case basicState :
                 if(isspace(character)){
                     state = basicState;
@@ -288,21 +311,26 @@ int getNextToken(token *attr) {
                     return LEX_ERROR;
                 }
                 break;
-                /** if character is a comment **/
+                /** if character is a backlash
+                 *  the next token can be a comment, comments are ignored
+                 * **/
             case possibleCommentState :
                 if(character == '/'){
                     state = oneLineCommentState;
                     break;
                 }
+                //checking for block comment
                 else if(character == '*'){
                     state = blockCommentState;
                     break;
                 }
+                //if we don't get an asterisk it means the sign was a divide
                 else {
                     attr->type = TYPE_DIVIDE;
                     ungetc(character, source);
                     return SUCCES;
                 }
+                // we got 2 consecutive '/' which means oneline comment
             case oneLineCommentState :
                 if(character == '\n'){
                     state = basicState;
@@ -312,6 +340,8 @@ int getNextToken(token *attr) {
                     return SUCCES;
                 }
                 break;
+                //if we get an asterisk the block comment can end alse we read other characters,
+                // if we get EOF returns lex error
             case blockCommentState:
                 if(character == '*'){
                     state = waitForBlockCommentEnd;
@@ -322,6 +352,7 @@ int getNextToken(token *attr) {
                 }
                 break;
 
+            //waiting for end of block comment
             case waitForBlockCommentEnd:
                 if(character == '/'){
                     state = basicState;
@@ -334,6 +365,7 @@ int getNextToken(token *attr) {
                     return LEX_ERROR;
                 }
                 break;
+
             case keywordOrIdentifierStateBegin:
                 if(isalpha(character) || character == '_'){
                     character =  (char) tolower(character);
@@ -353,6 +385,7 @@ int getNextToken(token *attr) {
 
                 }
                 break;
+                //waiting for end of variable
             case variableRead:
                 if(!isspace(character) && (isalnum(character) != 0 || character == '_')){
                     strAddChar(attr->content.str, character);
@@ -370,16 +403,19 @@ int getNextToken(token *attr) {
                         attr->type = TYPE_STRING;
                         return SUCCES;
                     }
+                    //if we get dollar without escape sequence it is a lex error
                     else if(character == 36){
                         return LEX_ERROR;
 
                     }
+                    //adding space character as octal escape sequence because of codegen
                     else if(isspace(character)){
                         strAddChar(attr->content.str, '\\');
                         strAddChar(attr->content.str, '0');
                         strAddChar(attr->content.str, '3');
                         strAddChar(attr->content.str, '2');
                     }
+                    //adding an exclamation point character as octal escape sequence because of codegen
                     else if(character == '!'){
                         strAddChar(attr->content.str, '\\');
                         strAddChar(attr->content.str, '0');
@@ -391,12 +427,11 @@ int getNextToken(token *attr) {
 
                     }
                 }
+                //if we get backslash jumb into possible escape sequence
                 else if(character == 92){
                     strAddChar(attr->content.str, '\\');
                     state = backslashState;
                 }
-                    //backslash
-
                 else{
                     return LEX_ERROR;
                 }
@@ -412,6 +447,7 @@ int getNextToken(token *attr) {
                     state = escapeOctaState;
                     break;
                 }
+                //adding tab character as octal escape sequence because of codegen
                 else if(character == 't') {
                     strAddChar(attr->content.str, 'x');
                     strAddChar(attr->content.str, '0');
@@ -419,6 +455,7 @@ int getNextToken(token *attr) {
                     state = waitForStringEnd;
                     break;
                 }
+                //adding newline character as octal escape sequence because of codegen
                 else if(character == 'n'){
                     strAddChar(attr->content.str, '0');
                     strAddChar(attr->content.str, '1');
@@ -426,6 +463,7 @@ int getNextToken(token *attr) {
                     state = waitForStringEnd;
                     break;
                 }
+                //adding quotation mark character as octal escape sequence because of codegen
                 else if(character == '"'){
                     character = '"';
                     strAddChar(attr->content.str, '0');
@@ -434,12 +472,14 @@ int getNextToken(token *attr) {
                     state = waitForStringEnd;
                     break;
                 }
+                //dollar can come only after backslash
                 else if(character == '$'){
                     character = '$';
                     strAddChar(attr->content.str, character);
                     state = waitForStringEnd;
                     break;
                 }
+                //anything else after backslash is not an error
                 else {
                     strAddChar(attr->content.str, 92);
                     state = waitForStringEnd;
@@ -499,20 +539,24 @@ int getNextToken(token *attr) {
                     state = waitForStringEnd;
 
                 }
-
+                //next token is a number
+                //a number can be a regular int or a float or a float with n amount of exponents
             case numberState:
                 if(isdigit(character)){
                     strAddChar(attr->content.str, character);
                 }
+                //checking if number is decimal
                 else if(character == '.'){
                     strAddChar(attr->content.str, character);
                     state = decimalState;
                 }
+                //checking if number is exponent
                 else if(character == 'e' || character == 'E'){
                     strAddChar(attr->content.str, character);
                     state = exponentPlusOrMinusState;
                 }
                 else{
+                    //the next character could be for example ; so we unget it because of syntax analysis
                     ungetc(character, source);
                     attr->type = TYPE_INTEGER_NUMBER;
                     strCpyStr(attr->content.integerNumber, attr->content.str);
@@ -547,6 +591,7 @@ int getNextToken(token *attr) {
                     return SUCCES;
                 }
                 break;
+                //we can get a - or + sign after an exponent
             case exponentPlusOrMinusState:
                 if(character == '+' || character == '-' || isdigit(character) == 1){
                     strAddChar(attr->content.str, character);
@@ -566,7 +611,10 @@ int getNextToken(token *attr) {
                     return SUCCES;
                 }
                 break;
-
+            /**
+             * next states check if next token is <=, >=, ===, !== or epilog
+             *else returns lex error
+             */
             case smallerThanOrEqualState:
                 if(character == '='){
                     attr->type = TYPE_SMALLER_OR_EQUAL;
