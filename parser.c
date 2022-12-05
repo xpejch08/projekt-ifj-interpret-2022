@@ -170,10 +170,12 @@ int declrList(token *sToken, function_save *fun_id) {
                         if (sToken->type != TYPE_SEMICOLON) {
                             return SYN_ERROR;
                         }
-                        strClean(sToken->content.str);
-                        strCpyStr(sToken->content.str, activeString);
-                        TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
-                        active->type = TYPE_STRING;
+                        if(afterAssign == true) {
+                            strClean(sToken->content.str);
+                            strCpyStr(sToken->content.str, activeString);
+                            TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
+                            active->type = TYPE_STRING;
+                        }
 
                         canParseEnd = true;
 
@@ -209,10 +211,12 @@ int declrList(token *sToken, function_save *fun_id) {
                         if (sToken->type != TYPE_SEMICOLON) {
                             return SYN_ERROR;
                         }
-                        strClean(sToken->content.str);
-                        strCpyStr(sToken->content.str, activeString);
-                        TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
-                        active->type = TYPE_INTEGER_NUMBER;
+                        if(afterAssign == true) {
+                            strClean(sToken->content.str);
+                            strCpyStr(sToken->content.str, activeString);
+                            TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
+                            active->type = TYPE_INTEGER_NUMBER;
+                        }
                         canParseEnd = true;
 
                         if((result = getNextToken(sToken)) != SUCCES){
@@ -248,10 +252,12 @@ int declrList(token *sToken, function_save *fun_id) {
                             return SYN_ERROR;
                         }
 
-                        strClean(sToken->content.str);
-                        strCpyStr(sToken->content.str, activeString);
-                        TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
-                        active->type = TYPE_DOUBLE_NUMBER;
+                        if(afterAssign == true) {
+                            strClean(sToken->content.str);
+                            strCpyStr(sToken->content.str, activeString);
+                            TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
+                            active->type = TYPE_DOUBLE_NUMBER;
+                        }
 
                         canParseEnd = true;
 
@@ -729,7 +735,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 return  result;
             }
             if(sToken->type == TYPE_RVINCULUM) {
-                
+
 
                 canParseEnd = true;
                 if((result = getNextToken(sToken)) != SUCCES){
@@ -760,7 +766,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 printf("%s &else_end%d\n", LABEL, condCounter);
                 result = statlist(sToken, fun_id);
                 //getNextToken ->statlist?
-                
+
                 condCounter--;
                 if (result != SUCCES) {
                     return result;
