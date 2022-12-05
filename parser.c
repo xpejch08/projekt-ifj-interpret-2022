@@ -1162,6 +1162,7 @@ int statlist(token *sToken, function_save *fun_id){
                 //we are iside a function so we use the insideFunction tree
                 else{
                     result = precedenceAction(insideFunction, sToken, stack, in_function,1);
+                    printf("%s LF@&%s GF@&expTmp\n", MOVE, (activeString->str)+1);
                     if (result < 113 || result > 117) {
                         return result;
                     }
@@ -1212,6 +1213,7 @@ int statlist(token *sToken, function_save *fun_id){
                 //we are not inside a function so we use mainTree
                 if(in_function == false) {
                     result = precedenceAction(mainTree, sToken, stack, in_function, 1);
+                    printf("%s GF@&%s GF@&expTmp\n", MOVE, (activeString->str)+1);
                     if (result < 113 || result > 117) {
                         return result;
                     }
@@ -1237,6 +1239,7 @@ int statlist(token *sToken, function_save *fun_id){
                     //we are iside a function so we use the insideFunction tree
                 else{
                     result = precedenceAction(insideFunction, sToken, stack, in_function,1);
+                    printf("%s LF@&%s LF@&expTmp\n", MOVE, (activeString->str)+1);
                     if (result < 113 || result > 117) {
                         return result;
                     }

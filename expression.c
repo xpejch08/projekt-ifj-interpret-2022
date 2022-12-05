@@ -721,12 +721,22 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
     }
     if(sToken->type == TYPE_SEMICOLON){
         if(!in_function) {
-            printf("%s GF@&expTmp int@%s\n", MOVE, tToken.content.str->str);
+            switch(tToken.type) {
+                case TYPE_INTEGER_NUMBER:
+                    printf("%s GF@&expTmp int@%s\n", MOVE, tToken.content.str->str);
+                    break;
+                case TYPE_STRING:
+                    printf("%s GF@&expTmp string@%s\n", MOVE, tToken.content.str->str);
+                    break;
+                case TYPE_DOUBLE_NUMBER:
+                    printf("%s GF@&expTmp float@%s\n", MOVE, tToken.content.str->str);
+            }
             free(tToken.content.str);
             if(tToken.type > 117 || sToken->type  < 113){
                 return SYN_ERROR;
             }
             return tToken.type;
+            
         }else {
             printf("%s LF@&expTmp int@%s\n", MOVE, tToken.content.str->str);
             free(tToken.content.str);
