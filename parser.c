@@ -373,13 +373,15 @@ int declrList(token *sToken, function_save *fun_id) {
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_CHR, 1, sToken, fun_id);
                     if (paramError == SUCCES) {
-                        if (getNextToken(sToken) != TYPE_SEMICOLON) {
-                            //instructionFree()
+                        if ((result = getNextToken(sToken)) != SUCCES) {
+                            return result;
+                        }
+                        
+                        canParseEnd = true;
+                        if(sToken->type != TYPE_SEMICOLON)
+                        {
                             return SYN_ERROR;
                         }
-                        //todo instructionFree()
-                        canParseEnd = true;
-
                         if((result = getNextToken(sToken)) != SUCCES){
                             return  result;
                         }
