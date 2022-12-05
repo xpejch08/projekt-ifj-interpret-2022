@@ -713,6 +713,7 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
         return result;
     }
     DataTypeEnum finaltype;
+    if(iforass == 1) {
     token tToken = *sToken;
     tToken.content.str = malloc(sizeof (string));
     strCpyStr(tToken.content.str, sToken->content.str);
@@ -756,7 +757,7 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
         }
     }
     sToken = &tToken;
-
+    }
 
     string t;
 
