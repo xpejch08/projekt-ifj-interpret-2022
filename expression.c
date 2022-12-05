@@ -584,26 +584,27 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
     }
     DataTypeEnum finaltype;
     token tToken = *sToken;
+    tToken.content.str = malloc(sizeof (string));
+    strCpyStr(tToken.content.str, sToken->content.str);
     if ((result = getNextToken(sToken)) != SUCCES) {
         return result;
     }
-
     if(sToken->type == TYPE_SEMICOLON){
-        if(iforass == 2){
-            return SYN_ERROR;
-        }
         if(!in_function) {
-            //printf("%s GF@&%s int@%s\n", MOVE, temp, sToken->content.str);
-            if(tToken.type > 117){
+            printf("%s GF@&expTmp int@%s\n", MOVE, tToken.content.str->str);
+            free(tToken.content.str);
+            if(tToken.type > 117 || sToken->type  < 113){
                 return SYN_ERROR;
             }
             return tToken.type;
-        }else
-            if(tToken.type > 117){
+        }else {
+            printf("%s LF@&expTmp int@%s\n", MOVE, tToken.content.str->str);
+            free(tToken.content.str);
+            if(tToken.type > 117 || sToken->type  < 113){
                 return SYN_ERROR;
             }
-            //printf("%s LF@&%s int@%s\n", MOVE, temp, sToken->content.str);
             return tToken.type;
+        }
     }
     sToken = &tToken;
 
