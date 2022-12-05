@@ -34,7 +34,7 @@ StackElement* stackGetTopTerminal( Stack *stack );
 
 void stackDispose( Stack *stack );
 
-PrtableSymbolsEnum prtableTokenToSymbol(token *sToken);
+PrtableSymbolsEnum prtableTokenToSymbol(token *sToken, int iforass);
 
 /*PrtableIndexEnum prtableSymbolToIndex(PrtableSymbolsEnum symb);
 PrtableRulesEnum pickRule(StackElementPtr op1, StackElementPtr op2, StackElementPtr op3);
