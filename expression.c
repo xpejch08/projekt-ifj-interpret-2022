@@ -329,7 +329,7 @@ DataTypeEnum checkTypeForRule(PrtableRulesEnum rule, StackElement *op1, StackEle
             }
         case RULE_BRACKETS:
             if(op2->datatype != DATATYPE_NONE) {
-                result = op2->datatype;
+                return op2->datatype;
             }
             else {
                 result = SEM_COMPABILITY_ERROR;
@@ -565,14 +565,30 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
 
 //StackElement stacktop;
 
-int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_function){
+int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_function, int iforass){
     if (result != 0){
         return result;
     }
+    DataTypeEnum finaltype;
+    token tToken = *sToken;
+    if ((result = getNextToken(sToken)) != SUCCES) {
+        return result;
+    }
+    if(sToken->type == TYPE_SEMICOLON){
+        if(!in_function) {
+            //printf("%s GF@&%s int@%s\n", MOVE, temp, sToken->content.str);
+            return tToken.type;
+        }else
+            //printf("%s LF@&%s int@%s\n", MOVE, temp, sToken->content.str);
+        return tToken.type;
+    }
+    sToken = &tToken;
+
+
     string t;
 
     bool done = 0;
-    DataTypeEnum finaltype;
+
 
 
     stackPush(stack, DOLLAR, DATATYPE_NONE, t);
@@ -630,6 +646,7 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
 
             case X:
                 if (coordinput == INDEX_DOLLAR && coordstack == INDEX_DOLLAR) {
+
                     stackDispose(stack);
                     done = 1;
                     break;

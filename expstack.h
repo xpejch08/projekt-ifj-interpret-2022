@@ -1,6 +1,6 @@
 #ifndef EXPSTACK_H
 #define EXPSTACK_H
-
+#include <stdbool.h>
 #include "expression.h"
 #include "str.h"
 
@@ -43,6 +43,6 @@ int checkTypeForRule(PrtableRulesEnum rule, StackElementPtr op1, StackElementPtr
 int countSymbols(Stack stack);
 int reduceExpression(Stack stack);*/
 
-int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_function);
+int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_function,int iforass);
 
 #endif
