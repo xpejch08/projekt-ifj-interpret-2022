@@ -583,30 +583,31 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
         return result;
     }
     DataTypeEnum finaltype;
-    token tToken = *sToken;
-    if ((result = getNextToken(sToken)) != SUCCES) {
-        return result;
-    }
 
-    if(sToken->type == TYPE_SEMICOLON){
-        if(iforass == 2){
-            return SYN_ERROR;
+    if(iforass == 1) {
+        token tToken = *sToken;
+        if ((result = getNextToken(sToken)) != SUCCES) {
+            return result;
         }
-        if(!in_function) {
-            //printf("%s GF@&%s int@%s\n", MOVE, temp, sToken->content.str);
-            if(tToken.type > 117){
-                return SYN_ERROR;
-            }
-            return tToken.type;
-        }else
-            if(tToken.type > 117){
-                return SYN_ERROR;
-            }
-            //printf("%s LF@&%s int@%s\n", MOVE, temp, sToken->content.str);
-            return tToken.type;
-    }
-    sToken = &tToken;
 
+        if (sToken->type == TYPE_SEMICOLON) {
+
+            if (!in_function) {
+                //printf("%s GF@&%s int@%s\n", MOVE, temp, sToken->content.str);
+                if (tToken.type > 117) {
+                    return SYN_ERROR;
+                }
+                return tToken.type;
+            } else {
+                if (tToken.type > 117) {
+                    return SYN_ERROR;
+                }
+                //printf("%s LF@&%s int@%s\n", MOVE, temp, sToken->content.str);
+                return tToken.type;
+            }
+        }
+        sToken = &tToken;
+    }
 
     string t;
 
@@ -676,7 +677,7 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
                 }
                 else {
                     stackDispose(stack);
-                    result = SEM_COMPABILITY_ERROR;
+                    result = SYN_ERROR;
                     return result;
                 }
             case ACTIONSENUMERROR:
