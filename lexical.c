@@ -401,25 +401,24 @@ int getNextToken(token *attr) {
                     break;
                 }
                 else if(character == 't') {
-                    character = '\t';
+                    character = 't';
                     strAddChar(attr->content.str, character);
                     state = waitForStringEnd;
                     break;
                 }
                 else if(character == 'n'){
-                    character = '\n';
+                    character = 'n';
                     strAddChar(attr->content.str, character);
                     state = waitForStringEnd;
                     break;
                 }
                 else if(character == '"'){
-                    character = '\"';
+                    character = '"';
                     strAddChar(attr->content.str, character);
                     state = waitForStringEnd;
                     break;
                 }
                 else if(character == '$'){
-                    strAddChar(attr->content.str, '\\');
                     character = '$';
                     strAddChar(attr->content.str, character);
                     state = waitForStringEnd;
@@ -464,7 +463,6 @@ int getNextToken(token *attr) {
                     break;
                 }
                 else{
-                    strAddChar(attr->content.str, '\\');
                     strAddChar(attr->content.str, hexaEscape1);
                     strAddChar(attr->content.str, hexaEscape2);
                     strAddChar(attr->content.str, character);
