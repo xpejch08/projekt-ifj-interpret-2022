@@ -1634,6 +1634,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 printf("%s\n", PUSHFRAME);
                 printf("%s LF@&%s GF@&%s\n", MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
                 printf("%s GF@&%s LF@&%s int@%d\n",STRI2INT, (activeString->str)+1, (sToken->content.str->str)+1, 0);
+                printf("%s\n",POPFRAME);
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
@@ -1663,14 +1664,17 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 unique++;
                 printf("%s\n", CREATEFRAME);
                 printf("%s\n", PUSHFRAME);
-                printf("%s &tmp%d\n", DEFVAR, unique);
-                printf("%s &tmp%d bool@false\n", MOVE, unique);
-                printf("%s &tmp%d int@%s int@%d\n", LT,unique, sToken->content.str->str, 0);
-                printf("%s &chr%d bool@true &tmp%d\n",JUMPIFEQ, unique, unique);
-                printf("%s &tmp%d int@%s int@%d\n", GT,unique, sToken->content.str->str, 255);
-                printf("%s &chr%d bool@true &tmp%d\n",JUMPIFEQ, unique, unique);
+                printf("%s LF@&tmp%d\n", DEFVAR, unique);
+                printf("%s LF@&tmp%d bool@false\n", MOVE, unique);
+                printf("%s LF@&tmp%d int@%s int@%d\n", LT,unique, sToken->content.str->str, 0);
+                printf("%s &chr%d bool@true LF@&tmp%d\n",JUMPIFEQ, unique, unique);
+                printf("%s LF@&tmp%d int@%s int@%d\n", GT,unique, sToken->content.str->str, 255);
+                printf("%s &chr%d bool@true LF@&tmp%d\n",JUMPIFEQ, unique, unique);
                 printf("%s GF@&%s int@%s\n", INT2CHAR,(activeString->str)+1, sToken->content.str->str);
+                printf("%s &chr_legit\n", JUMP);
                 printf("%s &chr%d\n", LABEL, unique);
+                printf("%s int@%d\n", EXIT, SEM_ERROR);
+                printf("%s &chr_legit\n", LABEL);
                 printf("%s\n", POPFRAME);
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
