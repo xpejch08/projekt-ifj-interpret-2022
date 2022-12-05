@@ -532,6 +532,37 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
             }
             }
         }
+        else if(rule == RULE_EQUAL)
+        {
+            if(!in_function){
+             if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_INT)
+            {
+            printf("%s GF@&expTmp int@%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
+            }
+            if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_NONE)
+            {
+            printf("%s GF@&expTmp int@%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+            }
+            if(op1->datatype == DATATYPE_NONE && op3->datatype == DATATYPE_INT)
+            {
+            printf("%s GF@&expTmp GF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+            }
+            }
+            else{
+                 if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_INT)
+            {
+            printf("%s LF@&expTmp int@%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
+            }
+            if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_NONE)
+            {
+            printf("%s LF@&expTmp int@%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+            }
+            if(op1->datatype == DATATYPE_NONE && op3->datatype == DATATYPE_INT)
+            {
+            printf("%s LF@&expTmp GF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+            }
+            }
+        }
         /*
         else if(rule == RULE_I)
         {
