@@ -63,16 +63,16 @@
 
 /**
  * @brief function that handles all function calls and keyword calls
- * @param sToken active token passed around through all functions that call getNextToken
- * @param fun_id
+ * @param sToken active token passed around through all functions that need to work with it
+ * @param fun_id stores information about the function we are currently in
  * @return returns SUCCESS if everything runs properly else returns coresponding error from errors.h
  */
 int declrList(token *sToken, function_save *fun_id);
 
 /**
  * @brief function that handles all the parts of code that aren't a declaration or a keyword call
- * @param sToken active token passed around through all functions that call getNextToken
- * @param fun_id
+ * @param sToken active token passed around through all functions that need to work with it
+ * @param fun_id stores information about the function we are currently in
  * @return returns SUCCESS if everything runs properly else returns coresponding error from errors.h
  */
 int statlist(token *sToken, function_save *fun_id);
@@ -82,8 +82,8 @@ int statlist(token *sToken, function_save *fun_id);
  * functon or a keyword call, handles for example if condition
  * @param option option corresponding to what we need to handle for example PARAM_WHILE
  * @param repeat how many times we need to repeat a function, because it is called recursively
- * @param sToken active token passed around through all functions that call getNextToken
- * @param fun_id
+ * @param active token passed around through all functions that need to work with it
+ * @param fun_id stores information about the function we are currently in
  * @return returns SUCCESS if everything runs properly else returns coresponding error from errors.h
  */
 int parametrs(int option, int repeat, token *sToken, function_save *fun_id);
