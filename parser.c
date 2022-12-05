@@ -8,32 +8,42 @@
 #include "expstack.h"
 #include "expression.h"
 
-//todo think about using enum and redefining token structure !!!
-//todo function declrlist -> starts a type(checks if something is declared or not etc.) for all types that need it
-//todo function statlist that ends functions (checks for right bracket, semicolon, etc.) for all types that need it
-//todo generateinstruction(idinstruukce, pointrprev, pointractive, pouinternanext) -> function that inserts active instruction into instruction list
-//todo TInst setactiveinstruction(const int *type, void *op1, void *op2, void *op3)
 
+//global variables for trees that store variable names and function names
+//tree used for variables inside a function
 TRoot *insideFunction;
+
+//tree that stores all function names
 TRootf *functionNames;
+
+//tree that stores all variable names that aren't inside a function (global variables)
 TRoot *mainTree;
 
+
+//global variable used for storing the value of the active variable, needed because of precedence analysis
 string* activeString;
 
+//stack used in precedence analysis
 Stack *stack;
 
 DLList _list;
 DLList *list = &_list;
 
-
+//bool global variable used for checking if we are inside a function or not
 bool in_function = false;
+
+//bool global variable used for checking if function parse can end after EOF or if it is a syntax error
 bool canParseEnd = false;
+
+//bool global variable used for checking if a function has a return or not
 bool returnCount = false;
+
+//bool global variable used for checking if the next token arrives after an assign token or not
+//if true calls precedenceAction -> main function of precedence analysis
 bool afterAssign = false;
 
 TNodef *call_function_save; //////////////////////////////// new
 
-int tokenId;
 //function_save *fun_id;
 
 int uniqueIf = 0;
@@ -43,7 +53,11 @@ int unique = 0;
 int whileCounter = 0;
 int incId = 1;
 
-//test
+/**
+ * @brief function that checks if the content of a token is a built in function or not
+ * @param sToken active token passed around through all functions that need to work with it
+ * @return returns 1 if content is an inbuilt function else returns 0
+ */
 int checkIfBuiltIn(token *sToken){
     if (strCmpConstStr(sToken->content.str, "write") == 0){
         return 1;
@@ -71,17 +85,22 @@ int checkIfBuiltIn(token *sToken){
     }
     return 0;
 }
-// declaration because function is used before definition
 
-//check declare function, checks beginning of token type for example checks if there is a left bracket after while,
-// recursively calls itself
+
 int declrList(token *sToken, function_save *fun_id) {
+
+    //variable used for checking if function parametrs returns and error or success
     int paramError;
+
+    //variable used for storing the value of next recursive call of statlist or declrlist
     int result;
    
     switch (sToken->type) {
+        //if token is rvinculum we always return succes and jump out of current declrlist
         case TYPE_RVINCULUM:
             return SUCCES;
+
+            //case that checks all
         case TYPE_IDENTIFIER:
 
             if (strCmpConstStr(sToken->content.str, "write") == 0) {
@@ -895,7 +914,15 @@ int statlist(token *sToken, function_save *fun_id){
             return SUCCES;
 
         case TYPE_EPILOG:
-            return SUCCES;
+            if ((result = getNextToken(sToken)) != SUCCES) {
+                return result;
+            }
+            if(sToken->type == EOF){
+                return SUCCES;
+            }
+            else {
+                return SYN_ERROR;
+            }
 
         case TYPE_STRING:
         case TYPE_INTEGER_NUMBER:
@@ -1906,31 +1933,35 @@ int parse(void){
     function_save initek;
     string fun_init;
     string activeStringInit;
+    Stack initStack;
     activeStringInit.str = NULL;
     activeStringInit.length = 0;
     activeStringInit.str = 0;
 
-
-    Stack initStack;
     stack = &initStack;
 
     initStr.str = NULL;
     initStr.length = 0;
     initStr.alloc = 0;
+
     fun_init.alloc = 0;
     fun_init.length = 0;
     fun_init.str = NULL;
+
     init.type = 110;
     init.content.str = &initStr;
+
     initek.content = &fun_init;
     initek.param_count = 0;
     initek.ret_value = 0;
+
     token *sToken;
     sToken = &init;
     function_save *fun_id;
     fun_id = &initek;
 
     activeString = &activeStringInit;
+
     TRoot initMain;
     TRoot initInside;
     TRootf initNames;
@@ -1941,23 +1972,27 @@ int parse(void){
     mainTree = &initMain;
     functionNames = &initNames;
     insideFunction = &initInside;
-    //initializing tree
+
+    //initializing trees
     BVSInit(insideFunction);
     BVSInit(mainTree);
     BVSInit_function(functionNames);
     stackInit(stack);
     int result;
 
-    //todo fix init token function
-
-    if((tokenId = getNextToken(sToken)) == LEX_ERROR){
+    //calling first token after successfull prolog
+    if((result = getNextToken(sToken)) == LEX_ERROR){
         return LEX_ERROR;
     }
     else{
+        //if the first token is a semicolon returns a syntax serror
         if(sToken->type == TYPE_SEMICOLON){
             return SYN_ERROR;
         }
+        //.IFJcode22 has to be on top of every ifjcode22 code
         printf(".IFJcode22\n");
+
+        //calling first statlist
         result = statlist(sToken, fun_id);
         if(result != 0)
         {

@@ -10,7 +10,10 @@
 #include "symtable.h"
 #include "errors.h"
 
-
+/**]
+ * @brief main function of program calling all other functions
+ * @return returns result of parsing function
+ */
 int main(void){
 
     setSourceFile(stdin);
@@ -25,7 +28,7 @@ int main(void){
     token *sToken;
 
     sToken = &init;
-    int res = prefix(sToken);
+    int res = prolog(sToken);
     if(res != 0)
     {
         printf("%d\n", res);
