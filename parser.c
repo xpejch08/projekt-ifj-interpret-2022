@@ -579,9 +579,12 @@ int declrList(token *sToken, function_save *fun_id) {
             }
             return SUCCES;
 
-
-
+            /**
+             * case for handeling while loops
+             */
         case KEYWORD_WHILE:
+
+            //if we get EOF return SYNTAX ERROR
             canParseEnd = false;
             uniqueWhile++;
             whileCounter = uniqueWhile;
@@ -589,10 +592,13 @@ int declrList(token *sToken, function_save *fun_id) {
             if((result = getNextToken(sToken)) != SUCCES) {
                 return result;
             }
+            //next token has to be left bracket
             if (sToken->type != TYPE_LBRACKET) {
                 return SYN_ERROR;
             }
             else {
+                //calling precedence analysis on inside of while condition
+                //returns token type or error
                 result = precedenceAction(mainTree, sToken, stack, in_function, 2);
                 if(!in_function){
                 printf("%s &while_end%d GF@&expTmp bool@true\n", JUMPIFNEQ, whileCounter);
@@ -604,12 +610,15 @@ int declrList(token *sToken, function_save *fun_id) {
                 if (result < 113 || result > 117) {
                     return result;
                 }
+
+                //next token should be left vinculum
                 if(sToken->type != TYPE_LVINCULUM) {
                     return SYN_ERROR;
                 }
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
+                //if next token is rvinculum while is empty so we call statlist
                 if(sToken->type == TYPE_RVINCULUM) {
                     canParseEnd = true;
                     printf("%s &while%d\n", JUMP, whileCounter);
@@ -620,7 +629,10 @@ int declrList(token *sToken, function_save *fun_id) {
                     }
                     return SUCCES;
                 }
+
+                //while is not empty, we call statlist and then check for right vinculum
                 else {
+
                     result = statlist(sToken, fun_id);
 
                     if (result != SUCCES) {
@@ -630,6 +642,7 @@ int declrList(token *sToken, function_save *fun_id) {
                     if(sToken->type != TYPE_RVINCULUM) {
                         return SYN_ERROR;
                     }
+                    //if we get EOF we return SUCCESS get next token and call function statlist
                     canParseEnd = true;
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
@@ -646,34 +659,28 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
             }
 
+            /**
+             * case that handles if statement
+             */
 
-
-        case KEYWORD_VOID:
-            getNextToken(sToken);
-            if (sToken->type != TYPE_LBRACKET) {
-                return SYN_ERROR;
-            } else {
-                return SUCCES;
-            }
-        case KEYWORD_INT:
-            if((result = getNextToken(sToken)) != SUCCES){
-                return  result;
-            }
-            if (sToken->type != TYPE_VARIABLE) {
-                return SYN_ERROR;
-            } else {
-                return SUCCES;
-            }
         case KEYWORD_IF: // misto parametrs volat precedencku
             uniqueIf+= 1;
             condCounter = uniqueIf;
-            canParseEnd = true;
+
+            //if we get EOF we return SYNTAX ERROR
+            canParseEnd = false;
+
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
+
+            //next token should be lbracket
             if (sToken->type != TYPE_LBRACKET) {
                 return SYN_ERROR;
-            } else {
+            }
+
+            //we call precedence analysis on inside of if statement, precedence action returns error or datatype
+            else {
                 result = precedenceAction(mainTree, sToken, stack, in_function, 2);
                 if(!in_function){
                 printf("%s &else%d GF@&expTmp bool@true\n", JUMPIFNEQ, condCounter);
@@ -685,13 +692,18 @@ int declrList(token *sToken, function_save *fun_id) {
                 if (result < 113 || result > 117) {
                     return result;
                 }
+
+                //next token has to be lvinculum
                 else {
                     if(sToken->type != TYPE_LVINCULUM) {
                         return SYN_ERROR;
                     }
+
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
+
+                    //if next token is rvinculum the if is empty, so we call statlist
                     if(sToken->type == TYPE_RVINCULUM) {
                         canParseEnd = true;
                         result = statlist(sToken, fun_id);
@@ -700,11 +712,14 @@ int declrList(token *sToken, function_save *fun_id) {
                         }
                         return SUCCES;
                     }
+
+                    //we are inside the if so we call statlist and then check for right vinculum
                     else {
                         result = statlist(sToken, fun_id);
                         if (result != SUCCES) {
                             return result;
                         }
+
                         if(sToken->type != TYPE_RVINCULUM) {
                             return SYN_ERROR;
                         }
@@ -713,6 +728,8 @@ int declrList(token *sToken, function_save *fun_id) {
                         if(getNextToken(sToken) == LEX_ERROR) {
                             return LEX_ERROR;
                         }
+
+                        //inside of if ended so we call statlist an carry on
                         result = statlist(sToken, fun_id);
                         if (result != SUCCES) {
                             return result;
@@ -721,22 +738,34 @@ int declrList(token *sToken, function_save *fun_id) {
                     }
                 }
             }
+
+            /**
+             * case that handles inside of else
+             */
         case KEYWORD_ELSE:
+
+            //if we get EOF inside else we return SYNTAX ERROR
             canParseEnd = false;
             printf("%s &else%d\n", LABEL, condCounter);
 
+            //next token should be left vinculum
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
+
             if(sToken->type != TYPE_LVINCULUM) {
                 return SYN_ERROR;
             }
+
+
+            // if the next token is right vinculum the if is empty, so we call statlist and carry on
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
             if(sToken->type == TYPE_RVINCULUM) {
 
 
+                //parse function can end here
                 canParseEnd = true;
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
@@ -746,7 +775,12 @@ int declrList(token *sToken, function_save *fun_id) {
                     return result;
                 }
                 return SUCCES;
-            }else {
+
+
+            }
+
+            //we are inside of the else, so we call statlist and then check for right vinculum
+            else {
 
                 result = statlist(sToken, fun_id);
 
@@ -759,6 +793,8 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
                 //printf("%s &else_end%d\n", LABEL, condCounter);
                 //condCounter--;
+
+                //we got right vinculum so we call statlist and carry on with a new token
                 canParseEnd = true;
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
@@ -781,15 +817,21 @@ int declrList(token *sToken, function_save *fun_id) {
 //also calls main fynction stat
 int statlist(token *sToken, function_save *fun_id){
 
+    //variable that saves return of any function that can return an error
     int result;
 
     switch (sToken->type) {
+
+            //we cant get left vinculum in the main scope of a php program
         case TYPE_LVINCULUM:
             return SYN_ERROR;
+
+
+            //we cant get a colon in the main scope of a php program
         case TYPE_COLON:
             return SYN_ERROR;
 
-
+        //if we get right vinculum we return success
         case TYPE_RVINCULUM:
             return SUCCES;
 
@@ -1900,7 +1942,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         repeat++;
                         return parametrs(PARAM_RETURN, repeat, sToken, fun_id);
                     }else if(sToken->type == TYPE_SEMICOLON){
-                        
+
                         return SUCCES;
                     }
                     return SYN_ERROR;
