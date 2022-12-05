@@ -738,7 +738,16 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
             return tToken.type;
             
         }else {
-            printf("%s LF@&expTmp int@%s\n", MOVE, tToken.content.str->str);
+             switch(tToken.type) {
+                case TYPE_INTEGER_NUMBER:
+                    printf("%s LF@&expTmp int@%s\n", MOVE, tToken.content.str->str);
+                    break;
+                case TYPE_STRING:
+                    printf("%s LF@&expTmp string@%s\n", MOVE, tToken.content.str->str);
+                    break;
+                case TYPE_DOUBLE_NUMBER:
+                    printf("%s LF@&expTmp float@%s\n", MOVE, tToken.content.str->str);
+            }
             free(tToken.content.str);
             if(tToken.type > 117 || sToken->type  < 113){
                 return SYN_ERROR;
