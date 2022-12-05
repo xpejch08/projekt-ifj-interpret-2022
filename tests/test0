@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 $a;
-$a = chr(104);
+$a = 3 + 5;
 
 
 //python3 ./test.py ../interpret ../ic22int_linux64_2022-11-24/ic22int
