@@ -480,6 +480,7 @@ int declrList(token *sToken, function_save *fun_id) {
             printf("%s &%s\n", LABEL, fun_id->content->str);
             printf("%s\n", PUSHFRAME);
             printf("%s LF@&return_val\n", DEFVAR);
+            printf("%s LF@&expTmp\n", DEFVAR);
             printf("%s LF@&return_val %s\n", MOVE, NIL);
 
 
@@ -587,6 +588,13 @@ int declrList(token *sToken, function_save *fun_id) {
             }
             else {
                 result = precedenceAction(mainTree, sToken, stack, in_function, 2);
+                if(!in_function){
+                printf("%s &while_end%d GF@&expTmp bool@true\n", JUMPIFNEQ, whileCounter);
+                }
+                else
+                {
+                printf("%s &while_end%d LF@&expTmp bool@true\n", JUMPIFNEQ, whileCounter);
+                }
                 if (result < 113 || result > 117) {
                     return result;
                 }
@@ -661,7 +669,13 @@ int declrList(token *sToken, function_save *fun_id) {
                 return SYN_ERROR;
             } else {
                 result = precedenceAction(mainTree, sToken, stack, in_function, 2);
+                if(!in_function){
                 printf("%s &else%d GF@&expTmp bool@true\n", JUMPIFNEQ, condCounter);
+                }
+                else
+                {
+                printf("%s &else%d LF@&expTmp bool@true\n", JUMPIFNEQ, condCounter);
+                }
                 if (result < 113 || result > 117) {
                     return result;
                 }
@@ -1872,6 +1886,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     if(fun_id->ret_value != KEYWORD_STRING){
                         return SEM_COUNT_ERROR;
                     }
+                    printf("%s LF@return_val string@%s\n", MOVE, sToken->content.str->str);
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
@@ -1879,6 +1894,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         repeat++;
                         return parametrs(PARAM_RETURN, repeat, sToken, fun_id);
                     }else if(sToken->type == TYPE_SEMICOLON){
+                        
                         return SUCCES;
                     }
                     return SYN_ERROR;
@@ -1936,7 +1952,6 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             }
             return SYN_ERROR;
         case PARAM_FUNCTION_CALL:
-            printf("%s\n", CREATEFRAME);
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
