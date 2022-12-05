@@ -10,7 +10,10 @@
 #include "symtable.h"
 #include "errors.h"
 
-
+/**]
+ * @brief main function of program calling all other functions
+ * @return returns result of parsing function
+ */
 int main(void){
 
     setSourceFile(stdin);
