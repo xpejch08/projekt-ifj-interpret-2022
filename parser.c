@@ -474,18 +474,15 @@ int declrList(token *sToken, function_save *fun_id) {
             if(paramError != SUCCES){
                 return  paramError;
             }
-            if(in_function == true){
-                returnCount = true;
-                canParseEnd = true;
-                result = statlist(sToken, fun_id);
-                if(result != SUCCES){
-                    return result;
-                }
-                return SUCCES;
-            } else{
-                printf("%s int@%d\n", EXIT, 0);
-                return SUCCES;
+            
+            returnCount = true;
+            canParseEnd = true;
+            result = statlist(sToken, fun_id);
+            if(result != SUCCES){
+                return result;
             }
+            return SUCCES;
+            
 
 
         case KEYWORD_WHILE:
@@ -868,6 +865,7 @@ int statlist(token *sToken, function_save *fun_id){
                 if (result != SUCCES) {
                     return result;
                 }
+                printf("%s int@%d\n", EXIT, 0);
                 return SUCCES;
             }
             return SYN_ERROR;
