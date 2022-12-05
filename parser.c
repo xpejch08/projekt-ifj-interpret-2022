@@ -100,7 +100,10 @@ int declrList(token *sToken, function_save *fun_id) {
         case TYPE_RVINCULUM:
             return SUCCES;
 
-            //case that checks all
+            /**
+             * case that checks all identifiers
+             * identifier can either be a built in function or a
+             */
         case TYPE_IDENTIFIER:
 
             if (strCmpConstStr(sToken->content.str, "write") == 0) {
@@ -403,8 +406,6 @@ int declrList(token *sToken, function_save *fun_id) {
                         return  result;
                     }
 
-                    //todo nevim kam to patří správně
-
                     result = statlist(sToken, fun_id);
                     if(result != SUCCES){
                         return result;
@@ -578,21 +579,6 @@ int declrList(token *sToken, function_save *fun_id) {
             } else {
                 return SUCCES;
             }
-            //case KEYWORD_STRING:
-            //    getNextToken(sToken);
-            //    if(sToken->type != TYPE_VARIABLE){
-            //        return SYN_ERROR;
-            //    }else{
-            //        return SUCCES;
-            //    }
-            //case KEYWORD_RETURN:
-            //    getNextToken(sToken);
-            //    // TODO check if anything is missing
-            //    if(sToken->type != TYPE_VARIABLE || sToken->type != TYPE_STRING || sToken->type != TYPE_INTEGER_NUMBER || sToken){
-            //        return SYN_ERROR;
-            //    }else{
-            //        return SUCCES;
-            //    }
         case KEYWORD_INT:
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;

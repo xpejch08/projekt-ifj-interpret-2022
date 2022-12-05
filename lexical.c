@@ -676,7 +676,7 @@ int getNextToken(token *attr) {
                     }
                 }
                 else{
-                    return LEX_ERROR;
+                    return SYN_ERROR;
                 }
                 break;
             case notEqualStateEnd:
