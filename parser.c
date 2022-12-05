@@ -800,7 +800,7 @@ int statlist(token *sToken, function_save *fun_id){
                 return SUCCES;
             } else {
                 if(in_function == false) {
-                    result = precedenceAction(mainTree, sToken, stack, in_function);
+                    result = precedenceAction(mainTree, sToken, stack, in_function, 1);
                     printf("%s GF@&%s GF@&expTmp\n", MOVE, (activeString->str)+1);
                     if (result < 113 || result > 117) {
                         return result;
@@ -820,7 +820,7 @@ int statlist(token *sToken, function_save *fun_id){
                     return SUCCES;
                 }
                 else{
-                    result = precedenceAction(insideFunction, sToken, stack, in_function);
+                    result = precedenceAction(insideFunction, sToken, stack, in_function, 1);
                     printf("%s LF@&%s LF@&expTmp\n", MOVE, (activeString->str)+1);
                     if (result < 113 || result > 117) {
                         return result;
@@ -974,9 +974,8 @@ int statlist(token *sToken, function_save *fun_id){
             }
             else {
                 if(in_function == false) {
-                    result = precedenceAction(mainTree, sToken, stack, in_function);
-                    printf("%s GF@&%s GF@&expTmp\n", MOVE, (activeString->str)+1);
                     result = precedenceAction(mainTree, sToken, stack, in_function, 1);
+                    printf("%s GF@&%s GF@&expTmp\n", MOVE, (activeString->str)+1);
                     if (result < 113 || result > 117) {
                         return result;
                     }
