@@ -1,22 +1,6 @@
 <?php
 declare(strict_types=1);
-// Program 1: Vypocet faktorialu (iterativne)
-
-// Hlavni telo programu
-write("Zadejte cislo pro vypocet faktorialu\n");
-
-
-if (4 === 2) {
-	write("Chyba pri nacitani celeho cisla!\n");
-	while(6 < 0)
-	{
-		$f = substring("TEST", 2, 6);
-		
-	}
-	write("PRINT");
-} else {
-	
-}
+$x = 04534.1543210e+5655;
 
 
 

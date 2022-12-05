@@ -1,8 +1,21 @@
 <?php
 declare(strict_types=1);
 
+<<<<<<< HEAD
 $a;
 $a = 3 + 5;
+=======
+$d = 4 + 6;
+>>>>>>> refs/remotes/origin/main
 
+$c;
+$j;
+$st;
+function foo(string $c, int $j) : int {
+$in = 3 +4 ;
+return 55;
+}
 
-//python3 ./test.py ../interpret ../ic22int_linux64_2022-11-24/ic22int
+foo($st, 5);
+
+?>
