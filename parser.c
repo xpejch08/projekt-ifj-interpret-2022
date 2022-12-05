@@ -42,9 +42,8 @@ bool returnCount = false;
 //if true calls precedenceAction -> main function of precedence analysis
 bool afterAssign = false;
 
-TNodef *call_function_save; //////////////////////////////// new
+TNodef *call_function_save; 
 
-//function_save *fun_id;
 
 int uniqueIf = 0;
 int uniqueWhile = 0;
@@ -102,41 +101,57 @@ int declrList(token *sToken, function_save *fun_id) {
 
             /**
              * case that checks all identifiers
-             * identifier can either be a built in function or a
+             * identifier can either be a built in function, function declaration or a function call
+             * all built in fucntions call prametrs, if successfully call next token and call function statlist
+             * all built in function cases are the same but they call parametrs with different option
              */
         case TYPE_IDENTIFIER:
 
             if (strCmpConstStr(sToken->content.str, "write") == 0) {
+
+                //setting canParseEnd to false -> if we get EOF we return SYNTAX ERROR
                 canParseEnd = false;
+
 
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
                 if (sToken->type == TYPE_LBRACKET) {
                     printf("%s ", WRITE);
+                    //calling function parametrs with PARAM_WRITE
                     paramError = parametrs(PARAM_WRITE, 1,  sToken, fun_id);
                     if (paramError == SUCCES) {
                         if(getNextToken(sToken) == LEX_ERROR){
                             return  LEX_ERROR;
                         }
+                        //next token has to be semicolon else SYNTAX ERROR
                         if (sToken->type != TYPE_SEMICOLON) {
                             return SYN_ERROR;
                         }
 
+                        //setting canParseEnd to false -> if we get EOF we return SUCCESS
                         canParseEnd = true;
 
+                        //calling next token after correct handle of inbuilt function
                         if((result = getNextToken(sToken)) != SUCCES){
                             return  result;
                         }
+                        //calling function statlist one layer deeper
                         result = statlist(sToken, fun_id);
                         if(result != SUCCES) {
                             return result;
                         }
+                        //if result is SUCCESS we can return here
                         return SUCCES;
-                    } else {
+
+                    }
+                    //if function parametrs didn't return succes we return its error from errors.h
+                    else {
                         return paramError;
                     }
-                } else {
+                }
+                // if type isn't left bracket returns syntax error
+                else {
                     return SYN_ERROR;
                 }
             }
@@ -382,11 +397,16 @@ int declrList(token *sToken, function_save *fun_id) {
                     return SYN_ERROR;
                 }
             }
-            //todo bvssearch nust be true
             /**
-             * @brief case for declaring a function
+             * if identifier isn't a built in function we know it's a function call
              */
+
+            //checking if a function was already defined otherwise we are
+            // calling an undefined function which returns a SEM_UNDEFINED_ERROR
+
             if (BVSSearch_function(functionNames->rootPtr, *sToken) != NULL) {
+
+                //setting canParseEnd to false, if we get EOF token now we return SYNTAX ERROR
                 canParseEnd = false;
                 call_function_save = BVSSearch_function(functionNames->rootPtr, *sToken);
                 
@@ -400,7 +420,10 @@ int declrList(token *sToken, function_save *fun_id) {
                 printf("%s\n", CREATEFRAME);
                 paramError = parametrs(PARAM_FUNCTION_CALL, 1, sToken, fun_id);
                 printf("%s &%s\n", CALL, call_function_save->content->str);
+
+                //if parametrs returns SUCCESS we call next token and jump into another layer of function statlist
                 if(paramError == SUCCES){
+                    //setting canParseEnd to true, if we get EOF we return SUCCESS
                     canParseEnd = true;
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
@@ -413,15 +436,26 @@ int declrList(token *sToken, function_save *fun_id) {
                     return SUCCES;
                 }
 
-            } else {
+            }
+            //we called an undefined function
+            else {
                 return SEM_DEFINE_ERROR;
             }
 
+
+            /**
+             * case that checks a function declaration
+             */
         case TYPE_FUNCTIONDECLARE:
+            //if we get EOF returns error
             canParseEnd = false;
+
+            //if we are inside a function we can't declare a function
             if(in_function){
                 return SYN_ERROR;
             }
+
+            //if function already exists return SEM_DEFINE_ERROR because of function redeclaration
             if(BVSSearch_function(functionNames->rootPtr, *sToken) != NULL){
                 return SEM_DEFINE_ERROR;
             }
@@ -436,18 +470,24 @@ int declrList(token *sToken, function_save *fun_id) {
             if((result = getNextToken(sToken)) != SUCCES) {
                 return result;
             }
+            //next token after function identifier has to be left bracket
             if (sToken->type != TYPE_LBRACKET) {
                 return SYN_ERROR;
             }
 
             else{
+                //from now on we are inside a function
                 in_function = true;
+
+                //calling function parametrs with option PARAM_FUNCTION to handle function parametrs
                 paramError = parametrs(PARAM_FUNCTION, 1, sToken, fun_id);
                 functionNames->rootPtr = BVSInsert_function(functionNames->rootPtr, *fun_id);
                 if (paramError != SUCCES) {
                     return paramError;
                 }
                 else{
+
+                    //next token has to be left vinculum
                     if ((result = getNextToken(sToken)) != SUCCES) {
                         return result;
                     }
@@ -457,6 +497,7 @@ int declrList(token *sToken, function_save *fun_id) {
 
                 }
 
+                //call next token and jump into another layer of statlist
                 if ((result = getNextToken(sToken)) != SUCCES) {
                     return result;
                 }
@@ -465,6 +506,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 if(result != SUCCES){
                     return result;
                 }
+                //here we jumped out of function declaration next token has to be right vinculum
                 if(sToken->type != TYPE_RVINCULUM){
                     return SYN_ERROR;
                 }
@@ -473,15 +515,22 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
                 printf("%s\n", POPFRAME);
                 printf("%s\n", RETURN);
+
+                //parse function can end, we are no longer inside a function
                 canParseEnd = true;
                 returnCount = false;
                 in_function = false;
                 printf("%s &%send\n", LABEL, fun_id->content->str);
+
+                //freeing inside function tree
                 BVSDispose(insideFunction);
+
+
                 if((result = getNextToken(sToken)) != SUCCES){
                     return result;
                 }
 
+                //calling next layer of statlist
                 result = statlist(sToken, fun_id);
                 if(result != SUCCES){
                     return result;
@@ -489,24 +538,24 @@ int declrList(token *sToken, function_save *fun_id) {
                 return SUCCES;
             }
 
+            /**
+             * case return handles parametrs of return
+             */
         case KEYWORD_RETURN :
             canParseEnd = false;
             paramError = parametrs(PARAM_RETURN, 1, sToken, fun_id);
             if(paramError != SUCCES){
                 return  paramError;
             }
-            if(in_function == true){
-                returnCount = true;
-                canParseEnd = true;
-                result = statlist(sToken, fun_id);
-                if(result != SUCCES){
-                    return result;
-                }
-                return SUCCES;
-            } else{
-                printf("%s int@%d\n", EXIT, 0);
-                return SUCCES;
+
+            returnCount = true;
+            canParseEnd = true;
+            result = statlist(sToken, fun_id);
+            if(result != SUCCES){
+                return result;
             }
+            return SUCCES;
+
 
 
         case KEYWORD_WHILE:
@@ -874,6 +923,7 @@ int statlist(token *sToken, function_save *fun_id){
                 if (result != SUCCES) {
                     return result;
                 }
+                printf("%s int@%d\n", EXIT, 0);
                 return SUCCES;
             }
             return SYN_ERROR;
@@ -1709,6 +1759,9 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         return SEM_DEFINE_ERROR;
                     }
                     TNodef *tmp = BVSSearch_function(functionNames->rootPtr, *sToken);
+                    if(tmp->return_type != KEYWORD_VOID && fun_id->ret_value == KEYWORD_VOID){
+                        return SEM_RETURN_ERROR;
+                    }
                     if(tmp->return_type != fun_id->ret_value){
                         return SEM_COUNT_ERROR;
                     }
@@ -1750,6 +1803,9 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
                     return SYN_ERROR;
                 case TYPE_STRING:
+                    if(fun_id->ret_value == KEYWORD_VOID){
+                        return SEM_RETURN_ERROR;
+                    }
                     if(fun_id->ret_value != KEYWORD_STRING){
                         return SEM_COUNT_ERROR;
                     }
@@ -1764,6 +1820,9 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
                     return SYN_ERROR;
                 case TYPE_INTEGER_NUMBER:
+                    if(fun_id->ret_value == KEYWORD_VOID){
+                        return SEM_RETURN_ERROR;
+                    }
                     if(fun_id->ret_value != KEYWORD_INT){
                         return SEM_COUNT_ERROR;
                     }
@@ -1783,6 +1842,9 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     return SYN_ERROR;
                 case TYPE_DOUBLE_NUMBER:
                 case TYPE_EXPONENT_NUMBER:
+                    if(fun_id->ret_value == KEYWORD_VOID){
+                        return SEM_RETURN_ERROR;
+                    }
                     if(fun_id->ret_value != KEYWORD_FLOAT){
                         return SEM_COUNT_ERROR;
                     }
