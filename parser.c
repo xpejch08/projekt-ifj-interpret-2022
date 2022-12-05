@@ -499,7 +499,7 @@ int declrList(token *sToken, function_save *fun_id) {
 
                 }
 
-                //call next token and jum into another layer of statlist
+                //call next token and jump into another layer of statlist
                 if ((result = getNextToken(sToken)) != SUCCES) {
                     return result;
                 }
