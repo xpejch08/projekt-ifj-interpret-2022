@@ -711,7 +711,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 return  result;
             }
             if(sToken->type == TYPE_RVINCULUM) {
-                printf("%s &else_end%d\n", LABEL, condCounter);
+                
 
                 canParseEnd = true;
                 if((result = getNextToken(sToken)) != SUCCES){
@@ -729,7 +729,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 if (result != SUCCES) {
                     return result;
                 }
-
+                //printf("%s &else_end%d\n", LABEL, condCounter);
                 if (sToken->type != TYPE_RVINCULUM) {
                     return SYN_ERROR;
                 }
@@ -739,10 +739,10 @@ int declrList(token *sToken, function_save *fun_id) {
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
-                result = statlist(sToken, fun_id);
-
-                //getNextToken ->statlist?
                 printf("%s &else_end%d\n", LABEL, condCounter);
+                result = statlist(sToken, fun_id);
+                //getNextToken ->statlist?
+                
                 condCounter--;
                 if (result != SUCCES) {
                     return result;
