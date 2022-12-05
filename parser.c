@@ -42,9 +42,8 @@ bool returnCount = false;
 //if true calls precedenceAction -> main function of precedence analysis
 bool afterAssign = false;
 
-TNodef *call_function_save; //////////////////////////////// new
+TNodef *call_function_save; 
 
-//function_save *fun_id;
 
 int uniqueIf = 0;
 int uniqueWhile = 0;
@@ -1699,6 +1698,9 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         return SEM_DEFINE_ERROR;
                     }
                     TNodef *tmp = BVSSearch_function(functionNames->rootPtr, *sToken);
+                    if(tmp->return_type != KEYWORD_VOID && fun_id->ret_value == KEYWORD_VOID){
+                        return SEM_RETURN_ERROR;
+                    }
                     if(tmp->return_type != fun_id->ret_value){
                         return SEM_COUNT_ERROR;
                     }
@@ -1739,6 +1741,9 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
                     return SYN_ERROR;
                 case TYPE_STRING:
+                    if(fun_id->ret_value == KEYWORD_VOID){
+                        return SEM_RETURN_ERROR;
+                    }
                     if(fun_id->ret_value != KEYWORD_STRING){
                         return SEM_COUNT_ERROR;
                     }
@@ -1753,6 +1758,9 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
                     return SYN_ERROR;
                 case TYPE_INTEGER_NUMBER:
+                    if(fun_id->ret_value == KEYWORD_VOID){
+                        return SEM_RETURN_ERROR;
+                    }
                     if(fun_id->ret_value != KEYWORD_INT){
                         return SEM_COUNT_ERROR;
                     }
@@ -1772,6 +1780,9 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     return SYN_ERROR;
                 case TYPE_DOUBLE_NUMBER:
                 case TYPE_EXPONENT_NUMBER:
+                    if(fun_id->ret_value == KEYWORD_VOID){
+                        return SEM_RETURN_ERROR;
+                    }
                     if(fun_id->ret_value != KEYWORD_FLOAT){
                         return SEM_COUNT_ERROR;
                     }
