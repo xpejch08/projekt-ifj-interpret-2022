@@ -13,6 +13,7 @@
 //#include "expstack.c"
 #include "str.h"
 
+
 int result;
 
 //indexy prtable
@@ -407,9 +408,32 @@ DataTypeEnum reduceExpression(Stack *stack){
     }
     resulttype =  checkTypeForRule(rule, op1, op2, op3);
 
+    
     if(printon == 1) {
         if (RULE_ADDITION) {
-            printf("%s %s %s\n", ADD, op1->codename.str, op3->codename.str);
+            if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_INT)
+            {
+            printf("%s GF@&expTmp int@%s int@%s\n", ADD, op1->codename.str, op3->codename.str);
+            }
+            if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_NONE)
+            {
+            printf("%s GF@&expTmp int@%s GF@&%s\n", ADD, op1->codename.str, (op3->codename.str)+1);
+            }
+            if(op1->datatype == DATATYPE_NONE && op3->datatype == DATATYPE_INT)
+            {
+            printf("%s GF@&expTmp GF@&%s int@%s \n", ADD, op1->codename.str, (op3->codename.str)+1);
+            }
+        }
+        else if(RULE_MULTIPLY)
+        {
+            printf("%s %s %s\n", MUL, op1->codename.str, op3->codename.str);
+        }
+        else if(RULE_SUBTRACTION)
+        {
+            printf("%s %s %s\n", SUB, op1->codename.str, op3->codename.str);
+        }
+        else if( RULE_DIVIDE){
+            printf("%s %s %s\n", DIV, op1->codename.str, op3->codename.str);
         }
     }
     if((stackPop(stack, count + 1)) == 1){

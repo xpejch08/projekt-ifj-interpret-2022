@@ -1,15 +1,8 @@
 <?php
 declare(strict_types=1);
 
-
-$o;
-$i;
-function bar(int $a) : int {
-    $fff = readi();
-    return 3;
-}
-
-$o = bar($i);
+$f;
+$p = 3 + $f;
 
 
 

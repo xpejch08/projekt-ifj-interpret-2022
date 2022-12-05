@@ -1248,7 +1248,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 case TYPE_STRING:
                 case TYPE_INTEGER_NUMBER:
                 case TYPE_DOUBLE_NUMBER:
-                    printf("%s ", sToken->content.str->str);
+                    printf("string@%s ", sToken->content.str->str);
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
