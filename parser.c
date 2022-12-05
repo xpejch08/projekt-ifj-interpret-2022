@@ -1102,6 +1102,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
                     if(sToken->type == KEYWORD_VOID){
                         fun_id->ret_value = KEYWORD_VOID;
+                        returnCount = true;
                         return SUCCES;
                     }
                     else if(sToken->type == KEYWORD_FLOAT){
@@ -1151,6 +1152,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                             }
                             if(sToken->type == KEYWORD_VOID){
                                 fun_id->ret_value = KEYWORD_VOID;
+                                returnCount = true;
                                 return SUCCES;
                             }
                             else if(sToken->type == KEYWORD_FLOAT){
