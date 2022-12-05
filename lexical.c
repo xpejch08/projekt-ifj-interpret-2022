@@ -380,6 +380,12 @@ int getNextToken(token *attr) {
                         strAddChar(attr->content.str, '3');
                         strAddChar(attr->content.str, '2');
                     }
+                    else if(character == '!'){
+                        strAddChar(attr->content.str, '\\');
+                        strAddChar(attr->content.str, '0');
+                        strAddChar(attr->content.str, '3');
+                        strAddChar(attr->content.str, '3');
+                    }
                     else if((character != EOF)){
                         strAddChar(attr->content.str, character);
 
@@ -534,8 +540,9 @@ int getNextToken(token *attr) {
                     strAddChar(attr->content.str, character);
                     state = exponentPlusOrMinusState;
                 }
-                else if(isspace(character)){
+                else{
                     attr->type = TYPE_DOUBLE_NUMBER;
+                    ungetc(character, source);
                     strCpyStr(attr->content.doubleNumber, attr->content.str);
                     return SUCCES;
                 }
@@ -553,13 +560,10 @@ int getNextToken(token *attr) {
                 if(isdigit(character)){
                     strAddChar(attr->content.str,character);
                 }
-                else if(isspace(character) || character == ';'){
+                else {
                     ungetc(character, source);
                     attr->type = TYPE_EXPONENT_NUMBER;
                     return SUCCES;
-                }
-                else{
-                    return LEX_ERROR;
                 }
                 break;
 
