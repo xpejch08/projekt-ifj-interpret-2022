@@ -1,7 +1,13 @@
 <?php
 declare(strict_types=1);
 
-write(4343.4);
+function foo(int $f) : int
+{
+    $d;
+    return 4;
+} 
+
+foo(4);
 
 
 

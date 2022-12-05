@@ -1,33 +1,7 @@
 #ifndef CODE_GEN_H
 #define CODE_GEN_H
 
-#include "stack.h"
 
-
-//Instr
-#define MOVE "MOVE"
-#define ADD "ADD"
-#define SUB "SUB"
-#define MUL "MUL"
-#define DIV "DIV"
-#define IDIV "IDIV"
-#define PUSH "PUSH"
-#define POP "POP"
-#define LT "LT"
-#define GT "GT"
-#define WRITE "WRITE"
-#define READ "READ"
-
-#define CREATEFRAME "CRATEFRAME"
-#define LABEL "LABEL"
-#define JUMP "JUMP"
-#define JUMPIFEQ "JUMPIFEQ"
-#define JUMPIFNEQ "JUMPIFNEQ"
-#define EXIT "EXIT"
-
-
-
-#define STRLEN "STRLEN"
 
 typedef struct
 {

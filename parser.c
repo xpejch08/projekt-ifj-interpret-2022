@@ -483,7 +483,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
                 return SUCCES;
             } else{
-                printf("%s %d\n", EXIT, 0);
+                printf("%s int@%d\n", EXIT, 0);
                 return SUCCES;
             }
 
@@ -782,7 +782,7 @@ int statlist(token *sToken, function_save *fun_id){
 
         case TYPE_END_OF_FILE:
             if (canParseEnd == true) {
-                printf("%s %d\n", EXIT, 0);
+                printf("%s int@%d\n", EXIT, 0);
                 return SUCCES;
             } else {
                 return SYN_ERROR;
@@ -1015,7 +1015,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 }
                 if (sToken->type == TYPE_VARIABLE) {
                     printf("%s LF@&param%d\n", DEFVAR, repeat);
-                    printf("%s LF@& param%d LF@&fun_param%d\n", MOVE, repeat, repeat);
+                    printf("%s LF@&param%d LF@&fun_param%d\n", MOVE, repeat, repeat);
                     BVSInsert(mainTree->rootPtr, *sToken);
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
@@ -1257,13 +1257,13 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     if(sToken->type == TYPE_DOUBLE_NUMBER){
                     printf("float@%s ", sToken->content.str->str);
                     }
+
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
                     if(sToken->type == TYPE_RBRACKET){
 
-                        printf("\n");
-                        DLL_Free(list);
+                        printf("\n"); 
                         return SUCCES;
                     }
                     else if(sToken->type == TYPE_COMMA){
@@ -1960,7 +1960,7 @@ int parse(void){
         result = statlist(sToken, fun_id);
         if(result != 0)
         {
-        printf("EXIT %d\n", result);
+        printf("EXIT int@%d\n", result);
         }    
     }
     
