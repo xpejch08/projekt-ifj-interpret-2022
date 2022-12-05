@@ -42,7 +42,7 @@ bool returnCount = false;
 //if true calls precedenceAction -> main function of precedence analysis
 bool afterAssign = false;
 
-TNodef *call_function_save; 
+TNodef *call_function_save;
 
 
 int uniqueIf = 0;
@@ -93,7 +93,7 @@ int declrList(token *sToken, function_save *fun_id) {
 
     //variable used for storing the value of next recursive call of statlist or declrlist
     int result;
-   
+
     switch (sToken->type) {
         //if token is rvinculum we always return succes and jump out of current declrlist
         case TYPE_RVINCULUM:
@@ -145,12 +145,12 @@ int declrList(token *sToken, function_save *fun_id) {
                         return SUCCES;
 
                     }
-                    //if function parametrs didn't return succes we return its error from errors.h
+                        //if function parametrs didn't return succes we return its error from errors.h
                     else {
                         return paramError;
                     }
                 }
-                // if type isn't left bracket returns syntax error
+                    // if type isn't left bracket returns syntax error
                 else {
                     return SYN_ERROR;
                 }
@@ -170,6 +170,10 @@ int declrList(token *sToken, function_save *fun_id) {
                         if (sToken->type != TYPE_SEMICOLON) {
                             return SYN_ERROR;
                         }
+                        strClean(sToken->content.str);
+                        strCpyStr(sToken->content.str, activeString);
+                        TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
+                        active->type = TYPE_STRING;
 
                         canParseEnd = true;
 
@@ -205,7 +209,10 @@ int declrList(token *sToken, function_save *fun_id) {
                         if (sToken->type != TYPE_SEMICOLON) {
                             return SYN_ERROR;
                         }
-
+                        strClean(sToken->content.str);
+                        strCpyStr(sToken->content.str, activeString);
+                        TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
+                        active->type = TYPE_INTEGER_NUMBER;
                         canParseEnd = true;
 
                         if((result = getNextToken(sToken)) != SUCCES){
@@ -240,6 +247,11 @@ int declrList(token *sToken, function_save *fun_id) {
                         if (sToken->type != TYPE_SEMICOLON) {
                             return SYN_ERROR;
                         }
+
+                        strClean(sToken->content.str);
+                        strCpyStr(sToken->content.str, activeString);
+                        TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
+                        active->type = TYPE_DOUBLE_NUMBER;
 
                         canParseEnd = true;
 
@@ -308,7 +320,7 @@ int declrList(token *sToken, function_save *fun_id) {
                             return  result;
                         }
                         if (sToken->type != TYPE_SEMICOLON) {
-                        
+
                             return SYN_ERROR;
                         }
                         canParseEnd = true;
@@ -413,7 +425,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 //setting canParseEnd to false, if we get EOF token now we return SYNTAX ERROR
                 canParseEnd = false;
                 call_function_save = BVSSearch_function(functionNames->rootPtr, *sToken);
-                
+
                 //tmpToken for call
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
@@ -441,7 +453,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
 
             }
-            //we called an undefined function
+                //we called an undefined function
             else {
                 return SEM_DEFINE_ERROR;
             }
@@ -469,7 +481,7 @@ int declrList(token *sToken, function_save *fun_id) {
             printf("%s\n", PUSHFRAME);
             printf("%s LF@&return_val\n", DEFVAR);
             printf("%s LF@&return_val %s\n", MOVE, NIL);
-            
+
 
             if((result = getNextToken(sToken)) != SUCCES) {
                 return result;
@@ -574,12 +586,8 @@ int declrList(token *sToken, function_save *fun_id) {
                 return SYN_ERROR;
             }
             else {
-                paramError = parametrs(PARAM_IF_WHILE, 1, sToken, fun_id); // misto parametrs volat precedencku
-                printf("%s &while_end%d GF@&expTmp bool@true\n", JUMPIFNEQ, whileCounter);
-                if(paramError != SUCCES){
-                    return paramError;
-                }
-                if((result = getNextToken(sToken)) != SUCCES) {
+                result = precedenceAction(mainTree, sToken, stack, in_function, 2);
+                if (result < 113 || result > 117) {
                     return result;
                 }
                 if(sToken->type != TYPE_LVINCULUM) {
@@ -612,10 +620,10 @@ int declrList(token *sToken, function_save *fun_id) {
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
-                     printf("%s &while%d\n", JUMP, whileCounter);
-                    printf("%s &while_end%d\n", LABEL, whileCounter);           
+                    printf("%s &while%d\n", JUMP, whileCounter);
+                    printf("%s &while_end%d\n", LABEL, whileCounter);
                     result = statlist(sToken, fun_id);
-                                       
+
                     if (result != SUCCES) {
                         return result;
                     }
@@ -652,16 +660,12 @@ int declrList(token *sToken, function_save *fun_id) {
             if (sToken->type != TYPE_LBRACKET) {
                 return SYN_ERROR;
             } else {
-                paramError = parametrs(PARAM_IF_WHILE,1, sToken, fun_id);
+                result = precedenceAction(mainTree, sToken, stack, in_function, 2);
                 printf("%s &else%d GF@&expTmp bool@true\n", JUMPIFNEQ, condCounter);
-                if(paramError != SUCCES) {
-                    return paramError;
+                if (result < 113 || result > 117) {
+                    return result;
                 }
                 else {
-
-                    if((result = getNextToken(sToken)) != SUCCES){
-                        return  result;
-                    }
                     if(sToken->type != TYPE_LVINCULUM) {
                         return SYN_ERROR;
                     }
@@ -927,7 +931,7 @@ int statlist(token *sToken, function_save *fun_id){
             }
             if (canParseEnd == true) {
                 result = parametrs(PARAM_RETURN, 1, sToken, fun_id);
-                
+
                 if (result != SUCCES) {
                     return result;
                 }
@@ -1084,10 +1088,10 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
     initToken.alloc = 0;
     initToken.length = 0;
     tmpToken = &initToken;
-    
+
     int result;
     switch (option) {
-        case PARAM_FUNCTION: 
+        case PARAM_FUNCTION:
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
@@ -1183,7 +1187,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             } else {
                 return SYN_ERROR;
             }
-        case PARAM_IF_WHILE: 
+        case PARAM_IF_WHILE:
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
@@ -1322,7 +1326,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
             }
             return SYN_ERROR;
-        case PARAM_WRITE: 
+        case PARAM_WRITE:
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
@@ -1368,14 +1372,14 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 case TYPE_INTEGER_NUMBER:
                 case TYPE_DOUBLE_NUMBER:
                     if(sToken->type == TYPE_STRING){
-                    printf("string@%s ", sToken->content.str->str);
+                        printf("string@%s ", sToken->content.str->str);
                     }
                     if(sToken->type == TYPE_INTEGER_NUMBER){
-                    printf("int@%s ", sToken->content.str->str);
+                        printf("int@%s ", sToken->content.str->str);
                     }
 
                     if(sToken->type == TYPE_DOUBLE_NUMBER){
-                    printf("float@%s ", sToken->content.str->str);
+                        printf("float@%s ", sToken->content.str->str);
                     }
 
                     if((result = getNextToken(sToken)) != SUCCES){
@@ -1383,7 +1387,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
                     if(sToken->type == TYPE_RBRACKET){
 
-                        printf("\n"); 
+                        printf("\n");
                         return SUCCES;
                     }
                     else if(sToken->type == TYPE_COMMA){
@@ -1395,7 +1399,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
             }
             return SYN_ERROR;
-        case PARAM_READI: 
+        case PARAM_READI:
             if(in_function){
                 printf("%s LF@&%s %s\n", READ,(activeString->str)+1,INT_TYPE);
 
@@ -1412,7 +1416,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             else{
                 return SYN_ERROR;
             }
-        case PARAM_READS: 
+        case PARAM_READS:
             if(in_function){
                 printf("%s LF@&%s %s\n", READ,(activeString->str)+1,STRING_TYPE);
 
@@ -1429,7 +1433,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             else{
                 return SYN_ERROR;
             }
-        case PARAM_READF: 
+        case PARAM_READF:
             if(in_function){
                 printf("%s LF@&%s %s\n", READ,(activeString->str)+1,FLOAT_TYPE);
             }
@@ -1446,7 +1450,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             else{
                 return SYN_ERROR;
             }
-        case PARAM_STRLEN: 
+        case PARAM_STRLEN:
 
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
@@ -1479,7 +1483,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 }
             }
             return SYN_ERROR;
-        case PARAM_SUBSTRING: 
+        case PARAM_SUBSTRING:
 
             printf("%s\n", CREATEFRAME);
             printf("%s\n", PUSHFRAME);
@@ -1667,7 +1671,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 }
             }
             return SYN_ERROR;
-        case PARAM_ORD: 
+        case PARAM_ORD:
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
@@ -1698,7 +1702,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             }
             return SYN_ERROR;
 
-        case PARAM_CHR: 
+        case PARAM_CHR:
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
@@ -1738,7 +1742,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 }
             }
             return SYN_ERROR;
-        case PARAM_RETURN: 
+        case PARAM_RETURN:
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
@@ -1789,7 +1793,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     case TYPE_EXPONENT_NUMBER:
                     case TYPE_INTEGER_NUMBER:
                     case TYPE_DOUBLE_NUMBER:
-                    
+
                         if((result = getNextToken(sToken)) != SUCCES){
                             return  result;
                         }
@@ -1931,8 +1935,8 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     return SYN_ERROR;
             }
             return SYN_ERROR;
-        case PARAM_FUNCTION_CALL: 
-        printf("%s\n", CREATEFRAME);
+        case PARAM_FUNCTION_CALL:
+            printf("%s\n", CREATEFRAME);
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
@@ -2113,10 +2117,10 @@ int parse(void){
         result = statlist(sToken, fun_id);
         if(result != 0)
         {
-        printf("EXIT int@%d\n", result);
-        }    
+            printf("EXIT int@%d\n", result);
+        }
     }
-    
+
     //BVSFree(mainTree);
     //BVSFree(insideFunction);
     //BVSFree_function(functionNames);
