@@ -431,8 +431,7 @@ int declrList(token *sToken, function_save *fun_id) {
             printf("%s\n", PUSHFRAME);
             printf("%s LF@&return_val\n", DEFVAR);
             printf("%s LF@&return_val %s\n", MOVE, NIL);
-            printf("%s\n", POPFRAME);
-            printf("%s\n", RETURN);
+            
 
             if((result = getNextToken(sToken)) != SUCCES) {
                 return result;
@@ -472,6 +471,8 @@ int declrList(token *sToken, function_save *fun_id) {
                 if(returnCount != true){
                     return SEM_COUNT_ERROR;
                 }
+                printf("%s\n", POPFRAME);
+                printf("%s\n", RETURN);
                 canParseEnd = true;
                 returnCount = false;
                 in_function = false;
@@ -746,7 +747,7 @@ int statlist(token *sToken, function_save *fun_id){
                 return SUCCES;
             } else {
                 if(in_function == false) {
-                    result = precedenceAction(mainTree, sToken, stack);
+                    result = precedenceAction(mainTree, sToken, stack, in_function);
                     if (result < 113 || result > 117) {
                         return result;
                     }
@@ -765,7 +766,7 @@ int statlist(token *sToken, function_save *fun_id){
                     return SUCCES;
                 }
                 else{
-                    result = precedenceAction(insideFunction, sToken, stack);
+                    result = precedenceAction(insideFunction, sToken, stack, in_function);
                     if (result < 113 || result > 117) {
                         return result;
                     }
@@ -925,7 +926,7 @@ int statlist(token *sToken, function_save *fun_id){
             }
             else {
                 if(in_function == false) {
-                    result = precedenceAction(mainTree, sToken, stack);
+                    result = precedenceAction(mainTree, sToken, stack, in_function);
                     if (result < 113 || result > 117) {
                         return result;
                     }
@@ -944,7 +945,7 @@ int statlist(token *sToken, function_save *fun_id){
                     return SUCCES;
                 }
                 else{
-                    result = precedenceAction(insideFunction, sToken, stack);
+                    result = precedenceAction(insideFunction, sToken, stack, in_function);
                     if (result < 113 || result > 117) {
                         return result;
                     }
@@ -1856,8 +1857,8 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 case TYPE_EXPONENT_NUMBER:
                 case TYPE_INTEGER_NUMBER:
                 case TYPE_DOUBLE_NUMBER:
-                    printf("%s TF@&fun_param%d\n", DEFVAR, unique);
-                    printf("%s TF@&fun_param%d int@%s\n", MOVE, unique, sToken->content.str->str);
+                    printf("%s TF@&fun_param%d\n", DEFVAR, repeat);
+                    printf("%s TF@&fun_param%d int@%s\n", MOVE, repeat, sToken->content.str->str);
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }

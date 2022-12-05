@@ -367,7 +367,7 @@ int countSymbols(Stack *stack) //pocet symbolu ve stacku pred "<" (SHIFT)
 
 }
 //redukuje vyraz, vola se pri akci ">""
-DataTypeEnum reduceExpression(Stack *stack){
+DataTypeEnum reduceExpression(Stack *stack, bool in_function){
 
     bool printon = 0;
     if (result != 0){
@@ -410,31 +410,146 @@ DataTypeEnum reduceExpression(Stack *stack){
 
     
     if(printon == 1) {
-        if (RULE_ADDITION) {
-            if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_INT)
+        if (rule == RULE_ADDITION) {
+            if(!in_function){
+                if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_INT)
+                {
+                printf("%s GF@&expTmp int@%s int@%s\n", ADD, op1->codename.str, op3->codename.str);
+                }
+                if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_NONE)
+                {
+                printf("%s GF@&expTmp int@%s GF@&%s\n", ADD, op1->codename.str, (op3->codename.str)+1);
+                }
+                if(op1->datatype == DATATYPE_NONE && op3->datatype == DATATYPE_INT)
+                {
+                printf("%s GF@&expTmp GF@&%s int@%s \n", ADD, op1->codename.str, (op3->codename.str)+1);
+                }
+            }
+            else{
+                 if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_INT)
+                {
+                printf("%s LF@&expTmp int@%s int@%s\n", ADD, op1->codename.str, op3->codename.str);
+                }
+                if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_NONE)
+                {
+                printf("%s LF@&expTmp int@%s GF@&%s\n", ADD, op1->codename.str, (op3->codename.str)+1);
+                }
+                if(op1->datatype == DATATYPE_NONE && op3->datatype == DATATYPE_INT)
+                {
+                printf("%s LF@&expTmp GF@&%s int@%s \n", ADD, op1->codename.str, (op3->codename.str)+1);
+                }
+            }
+        }
+        else if(rule == RULE_MULTIPLY)
+        {
+            if(!in_function){
+             if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_INT)
             {
-            printf("%s GF@&expTmp int@%s int@%s\n", ADD, op1->codename.str, op3->codename.str);
+            printf("%s GF@&expTmp int@%s int@%s\n", MUL, op1->codename.str, op3->codename.str);
             }
             if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_NONE)
             {
-            printf("%s GF@&expTmp int@%s GF@&%s\n", ADD, op1->codename.str, (op3->codename.str)+1);
+            printf("%s GF@&expTmp int@%s GF@&%s\n", MUL, op1->codename.str, (op3->codename.str)+1);
             }
             if(op1->datatype == DATATYPE_NONE && op3->datatype == DATATYPE_INT)
             {
-            printf("%s GF@&expTmp GF@&%s int@%s \n", ADD, op1->codename.str, (op3->codename.str)+1);
+            printf("%s GF@&expTmp GF@&%s int@%s \n", MUL, op1->codename.str, (op3->codename.str)+1);
+            }
+            }
+            else{
+                  if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_INT)
+            {
+            printf("%s LF@&expTmp int@%s int@%s\n", MUL, op1->codename.str, op3->codename.str);
+            }
+            if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_NONE)
+            {
+            printf("%s LF@&expTmp int@%s GF@&%s\n", MUL, op1->codename.str, (op3->codename.str)+1);
+            }
+            if(op1->datatype == DATATYPE_NONE && op3->datatype == DATATYPE_INT)
+            {
+            printf("%s LF@&expTmp GF@&%s int@%s \n", MUL, op1->codename.str, (op3->codename.str)+1);
+            }
             }
         }
-        else if(RULE_MULTIPLY)
+        else if(rule == RULE_SUBTRACTION)
         {
-            printf("%s %s %s\n", MUL, op1->codename.str, op3->codename.str);
+            if(!in_function){
+             if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_INT)
+            {
+            printf("%s GF@&expTmp int@%s int@%s\n", SUB, op1->codename.str, op3->codename.str);
+            }
+            if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_NONE)
+            {
+            printf("%s GF@&expTmp int@%s GF@&%s\n", SUB, op1->codename.str, (op3->codename.str)+1);
+            }
+            if(op1->datatype == DATATYPE_NONE && op3->datatype == DATATYPE_INT)
+            {
+            printf("%s GF@&expTmp GF@&%s int@%s \n", SUB, op1->codename.str, (op3->codename.str)+1);
+            }
+            }
+            else{
+                 if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_INT)
+            {
+            printf("%s LF@&expTmp int@%s int@%s\n", SUB, op1->codename.str, op3->codename.str);
+            }
+            if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_NONE)
+            {
+            printf("%s LF@&expTmp int@%s GF@&%s\n", SUB, op1->codename.str, (op3->codename.str)+1);
+            }
+            if(op1->datatype == DATATYPE_NONE && op3->datatype == DATATYPE_INT)
+            {
+            printf("%s LF@&expTmp GF@&%s int@%s \n", SUB, op1->codename.str, (op3->codename.str)+1);
+            }
+            }
         }
-        else if(RULE_SUBTRACTION)
+        else if(rule == RULE_DIVIDE){
+            if(!in_function){
+             if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_INT)
+            {
+            printf("%s GF@&expTmp int@%s int@%s\n", DIV, op1->codename.str, op3->codename.str);
+            }
+            if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_NONE)
+            {
+            printf("%s GF@&expTmp int@%s GF@&%s\n", DIV, op1->codename.str, (op3->codename.str)+1);
+            }
+            if(op1->datatype == DATATYPE_NONE && op3->datatype == DATATYPE_INT)
+            {
+            printf("%s GF@&expTmp GF@&%s int@%s \n", DIV, op1->codename.str, (op3->codename.str)+1);
+            }
+            }
+            else{
+                 if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_INT)
+            {
+            printf("%s LF@&expTmp int@%s int@%s\n", DIV, op1->codename.str, op3->codename.str);
+            }
+            if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_NONE)
+            {
+            printf("%s LF@&expTmp int@%s GF@&%s\n", DIV, op1->codename.str, (op3->codename.str)+1);
+            }
+            if(op1->datatype == DATATYPE_NONE && op3->datatype == DATATYPE_INT)
+            {
+            printf("%s LF@&expTmp GF@&%s int@%s \n", DIV, op1->codename.str, (op3->codename.str)+1);
+            }
+            }
+        }
+        /*
+        else if(rule == RULE_I)
         {
-            printf("%s %s %s\n", SUB, op1->codename.str, op3->codename.str);
+            if(!in_function){
+             if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_INT)
+            {
+            printf("%s GF@&%s int@%s\n", MOVE, (activeString->str)+1, op3->codename.str);
+            }
+            }
+            else
+            {
+                 if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_INT)
+                {
+                printf("%s GF@&%s int@%s\n", MOVE, (activeString->str)+1, op3->codename.str);
+                }
+            }
         }
-        else if( RULE_DIVIDE){
-            printf("%s %s %s\n", DIV, op1->codename.str, op3->codename.str);
-        }
+        */
     }
     if((stackPop(stack, count + 1)) == 1){
         result = INT_ERROR;
@@ -450,7 +565,7 @@ DataTypeEnum reduceExpression(Stack *stack){
 
 //StackElement stacktop;
 
-int precedenceAction(TRoot *someTree, token *sToken, Stack *stack){
+int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_function){
     if (result != 0){
         return result;
     }
@@ -510,7 +625,7 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack){
 
             case R:
                 
-                finaltype = reduceExpression(stack);
+                finaltype = reduceExpression(stack, in_function);
                 break;
 
             case X:
