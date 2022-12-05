@@ -374,6 +374,12 @@ int getNextToken(token *attr) {
                         return LEX_ERROR;
 
                     }
+                    else if(isspace(character)){
+                        strAddChar(attr->content.str, '\\');
+                        strAddChar(attr->content.str, '0');
+                        strAddChar(attr->content.str, '3');
+                        strAddChar(attr->content.str, '2');
+                    }
                     else if((character != EOF)){
                         strAddChar(attr->content.str, character);
 
@@ -401,20 +407,24 @@ int getNextToken(token *attr) {
                     break;
                 }
                 else if(character == 't') {
-                    character = 't';
-                    strAddChar(attr->content.str, character);
+                    strAddChar(attr->content.str, 'x');
+                    strAddChar(attr->content.str, '0');
+                    strAddChar(attr->content.str, '9');
                     state = waitForStringEnd;
                     break;
                 }
                 else if(character == 'n'){
-                    character = 'n';
-                    strAddChar(attr->content.str, character);
+                    strAddChar(attr->content.str, '0');
+                    strAddChar(attr->content.str, '1');
+                    strAddChar(attr->content.str, '0');
                     state = waitForStringEnd;
                     break;
                 }
                 else if(character == '"'){
                     character = '"';
-                    strAddChar(attr->content.str, character);
+                    strAddChar(attr->content.str, '0');
+                    strAddChar(attr->content.str, '3');
+                    strAddChar(attr->content.str, '4');
                     state = waitForStringEnd;
                     break;
                 }
