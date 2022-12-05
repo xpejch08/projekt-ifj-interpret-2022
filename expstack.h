@@ -43,6 +43,6 @@ int checkTypeForRule(PrtableRulesEnum rule, StackElementPtr op1, StackElementPtr
 int countSymbols(Stack stack);
 int reduceExpression(Stack stack);*/
 
-int precedenceAction(TRoot *someTree, token *sToken, Stack *stack);
+int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_function);
 
 #endif

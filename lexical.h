@@ -62,7 +62,12 @@ typedef union{
     string *doubleNumber;
     string *str;
 }tokenContent;
-
+/**
+ * @brief struct that saves data corresponding to the function we are currently in
+ * content is the name of the function
+ * param_count is the number of parametrs it has
+ * ret_value is the type the function should return
+ */
 typedef struct{
     string *content;
     int param_count;

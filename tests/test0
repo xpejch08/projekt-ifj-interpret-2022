@@ -1,14 +1,16 @@
 <?php
 declare(strict_types=1);
 
-function foo(int $f) : int
-{
-    $d;
-    return 4;
-} 
+$d = 4 + 6;
 
-foo(4);
+$c;
+$j;
+$st;
+function foo(string $c, int $j) : int {
+$in = 3 +4 ;
+return 55;
+}
 
+foo($st, 5);
 
-
-//python3 test.py ../interpret ../ic22int_linux64_2022-11-24/ic22int
+?>
