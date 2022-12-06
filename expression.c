@@ -2471,14 +2471,30 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
                     if (!in_function) {
                         switch (tToken.type) {
                             case TYPE_INTEGER_NUMBER:
-                                printf("%s GF@&expTmp int@%s\n", MOVE, tToken.content.str->str);
+                            if(nexttmpexp==0){
+                                printf("%s GF@&expTmp1 int@%s\n", MOVE, tToken.content.str->str);
+                            }
+                            else
+                            {
+                                printf("%s GF@&expTmp2 int@%s\n", MOVE, tToken.content.str->str);
+                            }
                                 break;
                             case TYPE_STRING:
-                                printf("%s GF@&expTmp string@%s\n", MOVE, tToken.content.str->str);
+                            if(nexttmpexp==0){
+                                printf("%s GF@&expTmp1 string@%s\n", MOVE, tToken.content.str->str);
+                            }
+                            else{
+                                printf("%s GF@&expTmp2 string@%s\n", MOVE, tToken.content.str->str);
+                            }
                                 break;
                             case TYPE_DOUBLE_NUMBER:
                                 f = string2double(&tToken);
-                                printf("%s GF@&expTmp float@%a\n", MOVE, f);
+                                if(nexttmpexp==0){
+                                printf("%s GF@&expTmp1 float@%a\n", MOVE, f);
+                                }
+                                else{
+                                printf("%s GF@&expTmp2 float@%a\n", MOVE, f);
+                                }
                         }
                         free(tToken.content.str);
                         if (tToken.type > 117 || tToken.type < 113) {
@@ -2489,14 +2505,29 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
                     } else {
                         switch (tToken.type) {
                             case TYPE_INTEGER_NUMBER:
-                                printf("%s LF@&expTmp int@%s\n", MOVE, tToken.content.str->str);
+                            if(nexttmpexp==0){
+                                printf("%s LF@&expTmp1 int@%s\n", MOVE, tToken.content.str->str);
+                            }
+                            else{
+                                printf("%s LF@&expTmp2 int@%s\n", MOVE, tToken.content.str->str);
+                            }
                                 break;
                             case TYPE_STRING:
-                                printf("%s LF@&expTmp string@%s\n", MOVE, tToken.content.str->str);
+                            if(nexttmpexp==0){
+                                printf("%s LF@&expTmp1 string@%s\n", MOVE, tToken.content.str->str);
+                            }
+                            else{
+                                printf("%s LF@&expTmp2 string@%s\n", MOVE, tToken.content.str->str);
+                            }
                                 break;
                             case TYPE_DOUBLE_NUMBER:
                                 f = string2double(&tToken);
-                                printf("%s LF@&expTmp float@%a\n", MOVE, f);
+                                if(nexttmpexp==0){
+                                    printf("%s LF@&expTmp1 float@%a\n", MOVE, f);
+                                }
+                                else{
+                                    printf("%s LF@&expTmp2 float@%a\n", MOVE, f);
+                                } 
                         }//CASE TYPE VARIABLE -> tTokentype = BVSSearchVariable
                         free(tToken.content.str);
                         if (tToken.type > 117 || tToken.type < 113) {
