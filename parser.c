@@ -51,7 +51,7 @@ int uniqueWhile = 0;
 int condCounter = 0;
 int unique = 0;
 int whileCounter = 0;
-int incId = 1;
+
 
 /**
  * @brief function that checks if the content of a token is a built in function or not
