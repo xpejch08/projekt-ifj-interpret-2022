@@ -135,7 +135,7 @@ int declrList(token *sToken, function_save *fun_id) {
                     return  result;
                 }
                 if (sToken->type == TYPE_LBRACKET) {
-                    
+
                     //calling function parametrs with PARAM_WRITE
                     paramError = parametrs(PARAM_WRITE, 1,  sToken, fun_id);
                     if (paramError == SUCCES) {
@@ -189,10 +189,20 @@ int declrList(token *sToken, function_save *fun_id) {
                             return SYN_ERROR;
                         }
                         if(afterAssign == true) {
-                            strClean(sToken->content.str);
-                            strCpyStr(sToken->content.str, activeString);
-                            TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
-                            active->type = TYPE_STRING;
+                            if(in_function == false) {
+                                strClean(sToken->content.str);
+                                strCpyStr(sToken->content.str, activeString);
+                                TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
+                                active->type = TYPE_STRING;
+                                afterAssign = false;
+                            }
+                            else{
+                                strClean(sToken->content.str);
+                                strCpyStr(sToken->content.str, activeString);
+                                TNode *active = BVSSearch(insideFunction->rootPtr, *sToken);
+                                active->type = TYPE_STRING;
+                                afterAssign = false;
+                            }
                         }
 
                         canParseEnd = true;
@@ -230,10 +240,20 @@ int declrList(token *sToken, function_save *fun_id) {
                             return SYN_ERROR;
                         }
                         if(afterAssign == true) {
-                            strClean(sToken->content.str);
-                            strCpyStr(sToken->content.str, activeString);
-                            TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
-                            active->type = TYPE_INTEGER_NUMBER;
+                            if(in_function == false) {
+                                strClean(sToken->content.str);
+                                strCpyStr(sToken->content.str, activeString);
+                                TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
+                                active->type = TYPE_STRING;
+                                afterAssign = false;
+                            }
+                            else{
+                                strClean(sToken->content.str);
+                                strCpyStr(sToken->content.str, activeString);
+                                TNode *active = BVSSearch(insideFunction->rootPtr, *sToken);
+                                active->type = TYPE_STRING;
+                                afterAssign = false;
+                            }
                         }
                         canParseEnd = true;
 
@@ -271,10 +291,20 @@ int declrList(token *sToken, function_save *fun_id) {
                         }
 
                         if(afterAssign == true) {
-                            strClean(sToken->content.str);
-                            strCpyStr(sToken->content.str, activeString);
-                            TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
-                            active->type = TYPE_DOUBLE_NUMBER;
+                            if(in_function == false) {
+                                strClean(sToken->content.str);
+                                strCpyStr(sToken->content.str, activeString);
+                                TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
+                                active->type = TYPE_STRING;
+                                afterAssign = false;
+                            }
+                            else{
+                                strClean(sToken->content.str);
+                                strCpyStr(sToken->content.str, activeString);
+                                TNode *active = BVSSearch(insideFunction->rootPtr, *sToken);
+                                active->type = TYPE_STRING;
+                                afterAssign = false;
+                            }
                         }
 
                         canParseEnd = true;
@@ -619,11 +649,11 @@ int declrList(token *sToken, function_save *fun_id) {
                 //returns token type or error
                 result = precedenceAction(mainTree, sToken, stack, in_function, 2);
                 if(!in_function){
-                printf("%s &while_end%d GF@&expTmp bool@true\n", JUMPIFNEQ, whileCounter);
+                    printf("%s &while_end%d GF@&expTmp bool@true\n", JUMPIFNEQ, whileCounter);
                 }
                 else
                 {
-                printf("%s &while_end%d LF@&expTmp bool@true\n", JUMPIFNEQ, whileCounter);
+                    printf("%s &while_end%d LF@&expTmp bool@true\n", JUMPIFNEQ, whileCounter);
                 }
                 if (result < 113 || result > 117) {
                     return result;
@@ -648,7 +678,7 @@ int declrList(token *sToken, function_save *fun_id) {
                     return SUCCES;
                 }
 
-                //while is not empty, we call statlist and then check for right vinculum
+                    //while is not empty, we call statlist and then check for right vinculum
                 else {
 
                     result = statlist(sToken, fun_id);
@@ -697,21 +727,21 @@ int declrList(token *sToken, function_save *fun_id) {
                 return SYN_ERROR;
             }
 
-            //we call precedence analysis on inside of if statement, precedence action returns error or datatype
+                //we call precedence analysis on inside of if statement, precedence action returns error or datatype
             else {
                 result = precedenceAction(mainTree, sToken, stack, in_function, 2);
                 if(!in_function){
-                printf("%s &else%d GF@&expTmp bool@true\n", JUMPIFNEQ, condCounter);
+                    printf("%s &else%d GF@&expTmp bool@true\n", JUMPIFNEQ, condCounter);
                 }
                 else
                 {
-                printf("%s &else%d LF@&expTmp bool@true\n", JUMPIFNEQ, condCounter);
+                    printf("%s &else%d LF@&expTmp bool@true\n", JUMPIFNEQ, condCounter);
                 }
                 if (result < 113 || result > 117) {
                     return result;
                 }
 
-                //next token has to be lvinculum
+                    //next token has to be lvinculum
                 else {
                     if(sToken->type != TYPE_LVINCULUM) {
                         return SYN_ERROR;
@@ -731,7 +761,7 @@ int declrList(token *sToken, function_save *fun_id) {
                         return SUCCES;
                     }
 
-                    //we are inside the if so we call statlist and then check for right vinculum
+                        //we are inside the if so we call statlist and then check for right vinculum
                     else {
                         result = statlist(sToken, fun_id);
                         if (result != SUCCES) {
@@ -797,7 +827,7 @@ int declrList(token *sToken, function_save *fun_id) {
 
             }
 
-            //we are inside of the else, so we call statlist and then check for right vinculum
+                //we are inside of the else, so we call statlist and then check for right vinculum
             else {
 
                 result = statlist(sToken, fun_id);
@@ -840,7 +870,7 @@ int statlist(token *sToken, function_save *fun_id){
 
     switch (sToken->type) {
 
-            //we cant get left vinculum in the main scope of a php program
+        //we cant get left vinculum in the main scope of a php program
         case TYPE_LVINCULUM:
             return SYN_ERROR;
 
@@ -849,7 +879,7 @@ int statlist(token *sToken, function_save *fun_id){
         case TYPE_COLON:
             return SYN_ERROR;
 
-        //if we get right vinculum we return success
+            //if we get right vinculum we return success
         case TYPE_RVINCULUM:
             return SUCCES;
 
@@ -869,7 +899,7 @@ int statlist(token *sToken, function_save *fun_id){
                     }
                 }
 
-                //we are inside a function, so we use the insideFunction tree
+                    //we are inside a function, so we use the insideFunction tree
                 else
                 {
                     if (BVSSearch(insideFunction->rootPtr, *sToken) == NULL) {
@@ -899,7 +929,7 @@ int statlist(token *sToken, function_save *fun_id){
                 return SUCCES;
             }
 
-            //the variable we got is after an assign token -> we call precedence analysis
+                //the variable we got is after an assign token -> we call precedence analysis
             else {
 
                 //if we aren't inside a function we use the mainTree
@@ -934,7 +964,7 @@ int statlist(token *sToken, function_save *fun_id){
                     return SUCCES;
                 }
 
-                //the else is the same as above, only the tree used is insideFunction
+                    //the else is the same as above, only the tree used is insideFunction
                 else{
                     result = precedenceAction(insideFunction, sToken, stack, in_function, 1);
                     printf("%s LF@&%s LF@&expTmp\n", MOVE, (activeString->str)+1);
@@ -1016,8 +1046,9 @@ int statlist(token *sToken, function_save *fun_id){
                     if (sToken->type != TYPE_DOUBLE_NUMBER) {
                         if (sToken->type != TYPE_INTEGER_NUMBER) {
                             if(sToken->type != TYPE_STRING){
-                                if(sToken->type != TYPE_LBRACKET) { // $a = (a);
-                                    afterAssign = false;
+                                if(sToken->type != TYPE_LBRACKET) {
+                                    if(sToken->type != TYPE_IDENTIFIER)// $a = (a);
+                                        afterAssign = false;
                                 }
                             }
                         }
@@ -1054,7 +1085,7 @@ int statlist(token *sToken, function_save *fun_id){
                 return SYN_ERROR;
             }
 
-            //check if we want to redeclare a built-in function
+                //check if we want to redeclare a built-in function
             else if ((checkIfBuiltIn(sToken)) != 0) {
                 return 3;
             }
@@ -1145,7 +1176,7 @@ int statlist(token *sToken, function_save *fun_id){
                 return SYN_ERROR;
             }
 
-            //we call precedence analysis depending on current scope insideFunction/globalScope
+                //we call precedence analysis depending on current scope insideFunction/globalScope
             else {
 
                 //we are not inside a function so we use mainTree
@@ -1177,7 +1208,7 @@ int statlist(token *sToken, function_save *fun_id){
                     return SUCCES;
                 }
 
-                //we are iside a function so we use the insideFunction tree
+                    //we are iside a function so we use the insideFunction tree
                 else{
                     result = precedenceAction(insideFunction, sToken, stack, in_function,1);
                     printf("%s LF@&%s GF@&expTmp\n", MOVE, (activeString->str)+1);
@@ -1224,7 +1255,7 @@ int statlist(token *sToken, function_save *fun_id){
                 return SUCCES;
             }
 
-            //afterAssign is true so we call precedence analysis
+                //afterAssign is true so we call precedence analysis
             else {
 
                 //we call precedence analysis depending on current scope insideFunction/globalScope
@@ -1553,6 +1584,14 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             }
 
             switch (sToken->type) {
+                case TYPE_RBRACKET:
+                if(repeat == 1){
+                printf("%s string@\n", WRITE);
+                return SUCCES;
+                }
+                else{
+                    return SYN_ERROR;
+                }
                 case TYPE_VARIABLE:
                     if(in_function){
                         if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
@@ -1577,7 +1616,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
                     if(sToken->type == TYPE_RBRACKET){
 
-                        
+
 
                         return SUCCES;
                     }
@@ -1609,7 +1648,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
                     if(sToken->type == TYPE_RBRACKET){
 
-                       
+
                         return SUCCES;
                     }
                     else if(sToken->type == TYPE_COMMA){
@@ -1733,6 +1772,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                             return SEM_UNDEFINED_ERROR;
                         }
                     }
+                    printf("%s LF@&tmp%d\n", DEFVAR, unique);
                     printf("%s LF@&tmp%d GF@&%s\n",MOVE, unique, (sToken->content.str->str)+1);
                 }
                 else{
@@ -1929,18 +1969,8 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 return  result;
             }
             if(sToken->type == TYPE_VARIABLE || sToken->type == TYPE_INTEGER_NUMBER){
-                if(sToken->type == TYPE_VARIABLE){
-                    if(in_function){
-                        if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
-                            return SEM_UNDEFINED_ERROR;
-                        }
-                    }
-                    else{
-                        if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
-                            return SEM_UNDEFINED_ERROR;
-                        }
-                    }
-                }
+                if(sToken->type == TYPE_INTEGER_NUMBER){
+                
                 unique++;
                 printf("%s\n", CREATEFRAME);
                 printf("%s\n", PUSHFRAME);
@@ -1951,10 +1981,34 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 printf("%s LF@&tmp%d int@%s int@%d\n", GT,unique, sToken->content.str->str, 255);
                 printf("%s &chr%d bool@true LF@&tmp%d\n",JUMPIFEQ, unique, unique);
                 printf("%s GF@&%s int@%s\n", INT2CHAR,(activeString->str)+1, sToken->content.str->str);
-                printf("%s &chr_legit\n", JUMP);
+                
+                }
+                else{
+                     if(in_function){
+                        if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
+                        }
+                    }
+                    else{
+                        if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
+                        }
+                    }
+                unique++;
+                printf("%s\n", CREATEFRAME);
+                printf("%s\n", PUSHFRAME);
+                printf("%s LF@&tmp%d\n", DEFVAR, unique);
+                printf("%s LF@&tmp%d bool@false\n", MOVE, unique);
+                printf("%s LF@&%s\n", DEFVAR, (sToken->content.str->str)+1);
+                printf("%s LF@&%s GF@&%s\n", MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
+                printf("%s LF@&tmp%d LF@&%s int@%d\n", LT,unique, (sToken->content.str->str)+1, 0);
+                printf("%s &chr%d bool@true LF@&tmp%d\n",JUMPIFEQ, unique, unique);
+                printf("%s LF@&tmp%d LF@&%s int@%d\n", GT,unique, (sToken->content.str->str)+1, 255);
+                printf("%s &chr%d bool@true LF@&tmp%d\n",JUMPIFEQ, unique, unique);
+                printf("%s GF@&%s LF@&%s\n", INT2CHAR,(activeString->str)+1, (sToken->content.str->str)+1);        
+
+                }
                 printf("%s &chr%d\n", LABEL, unique);
-                printf("%s int@%d\n", EXIT, SEM_ERROR);
-                printf("%s &chr_legit\n", LABEL);
                 printf("%s\n", POPFRAME);
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
@@ -2177,6 +2231,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
                     return SYN_ERROR;
                 case TYPE_VARIABLE: {
+
                     TNode *tmp_var = BVSSearch(insideFunction->rootPtr, *sToken);
                     if (fun_id->ret_value == KEYWORD_VOID) {
                         return SEM_RETURN_ERROR;
