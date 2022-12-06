@@ -5,6 +5,7 @@
 #include "str.h"
 #include "parser.h"
 #include "symtable.h"
+#include <stdlib.h>
 #include "expstack.h"
 #include "expression.h"
 
@@ -63,14 +64,14 @@ int incId = 1;
  * @param sToken token containing the float number we want to change
  * @return float number conatining the retyped string
  */
-float string2float(token *sToken){
+double string2double(token *sToken){
     char *endptr;
 
     string *str = malloc(sizeof (string));
 
     strCpyStr(str, sToken->content.str);
-    float f = strtof(str->str, &endptr);
-    return f;
+    double d = strtod(str->str, &endptr);
+    return d;
 }
 
 
@@ -1587,8 +1588,8 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
 
                     if(sToken->type == TYPE_DOUBLE_NUMBER){
-                        float f = string2float(sToken);
-                        printf("float@%a ", f);
+                        double d = string2double(sToken);
+                        printf("float@%a ", d);
                     }
 
                     if((result = getNextToken(sToken)) != SUCCES){
