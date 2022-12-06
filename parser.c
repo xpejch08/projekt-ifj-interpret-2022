@@ -535,7 +535,9 @@ int declrList(token *sToken, function_save *fun_id) {
             printf("%s &%s\n", LABEL, fun_id->content->str);
             printf("%s\n", PUSHFRAME);
             printf("%s LF@&return_val\n", DEFVAR);
-            printf("%s LF@&expTmp\n", DEFVAR);
+            printf("%s LF@&expTmp1\n", DEFVAR);
+            printf("%s LF@&expTmp2\n", DEFVAR);
+            
 
 
             if((result = getNextToken(sToken)) != SUCCES) {
@@ -650,7 +652,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 result = precedenceAction(mainTree, sToken, stack, in_function, 2,&nextexp);
                 if(!in_function){
                     if(nextexp==0){
-                        printf("%s &while_end%d GF@&expTmp2 bool@true\n", JUMPIFNEQ, whileCounter);
+                        printf("%s &while_end%d GF@&expTmp1 bool@true\n", JUMPIFNEQ, whileCounter);
                     }
                     else{
                         printf("%s &while_end%d GF@&expTmp2 bool@true\n", JUMPIFNEQ, whileCounter);
@@ -659,7 +661,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 else
                 {
                     if(nextexp==0){
-                        printf("%s &while_end%d LF@&expTmp2 bool@true\n", JUMPIFNEQ, whileCounter);
+                        printf("%s &while_end%d LF@&expTmp1 bool@true\n", JUMPIFNEQ, whileCounter);
                     }
                     else{
                         printf("%s &while_end%d LF@&expTmp2 bool@true\n", JUMPIFNEQ, whileCounter);
