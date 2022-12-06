@@ -1583,7 +1583,8 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         printf("string@%s ", sToken->content.str->str);
                     }
                     if(sToken->type == TYPE_INTEGER_NUMBER){
-                        printf("int@%s ", sToken->content.str->str);
+                        float f = string2float(sToken);
+                        printf("float@%a ", f);
                     }
 
                     if(sToken->type == TYPE_DOUBLE_NUMBER){
