@@ -967,9 +967,9 @@ int statlist(token *sToken, function_save *fun_id){
                     //precedence action returns the datatype or an error from errors.h
                     result = precedenceAction(mainTree, sToken, stack, in_function, 1, &nextexp);
                     if(nextexp==0){
-                        printf("%s LF@&%s LF@&expTmp1\n", MOVE, (activeString->str)+1);
+                        printf("%s GF@&%s GF@&expTmp1\n", MOVE, (activeString->str)+1);
                     }else{
-                        printf("%s LF@&%s LF@&expTmp2\n", MOVE, (activeString->str)+1);
+                        printf("%s GF@&%s GF@&expTmp2\n", MOVE, (activeString->str)+1);
                     }
                     if (result < 113 || result > 117) {
                         return result;
