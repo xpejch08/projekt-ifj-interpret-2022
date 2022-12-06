@@ -2164,51 +2164,52 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         return SEM_RETURN_ERROR;
                     }
                     return SYN_ERROR;
-                case TYPE_VARIABLE:
+                case TYPE_VARIABLE: {
                     TNode *tmp_var = BVSSearch(insideFunction->rootPtr, *sToken);
-                    if(fun_id->ret_value == KEYWORD_VOID){
+                    if (fun_id->ret_value == KEYWORD_VOID) {
                         return SEM_RETURN_ERROR;
                     }
-                    if(tmp == NULL){
+                    if (tmp == NULL) {
                         return SEM_UNDEFINED_ERROR;
                     }
-                    if(tmp_var->type == TYPE_INTEGER_NUMBER && fun_id->ret_value != KEYWORD_INT){
+                    if (tmp_var->type == TYPE_INTEGER_NUMBER && fun_id->ret_value != KEYWORD_INT) {
                         return SEM_COUNT_ERROR;
                     }
-                    if(tmp_var->type == TYPE_DOUBLE_NUMBER && fun_id->ret_value != KEYWORD_FLOAT){
+                    if (tmp_var->type == TYPE_DOUBLE_NUMBER && fun_id->ret_value != KEYWORD_FLOAT) {
                         return SEM_COUNT_ERROR;
                     }
-                    if(tmp_var->type == TYPE_STRING && fun_id->ret_value != KEYWORD_STRING){
+                    if (tmp_var->type == TYPE_STRING && fun_id->ret_value != KEYWORD_STRING) {
                         return SEM_COUNT_ERROR;
                     }
-                    if(fun_id->ret_value == KEYWORD_STRING){
-                        if((result = getNextToken(sToken)) != SUCCES){
-                            return  result;
+                    if (fun_id->ret_value == KEYWORD_STRING) {
+                        if ((result = getNextToken(sToken)) != SUCCES) {
+                            return result;
                         }
-                        if(sToken->type == TYPE_CONCATENATE){
+                        if (sToken->type == TYPE_CONCATENATE) {
                             repeat++;
                             return parametrs(PARAM_RETURN, repeat, sToken, fun_id);
-                        }else if(sToken->type == TYPE_SEMICOLON){
+                        } else if (sToken->type == TYPE_SEMICOLON) {
 
                             return SUCCES;
                         }
                         return SYN_ERROR;
-                    }else{
-                        if((result = getNextToken(sToken)) != SUCCES){
-                            return  result;
+                    } else {
+                        if ((result = getNextToken(sToken)) != SUCCES) {
+                            return result;
                         }
-                        if(sToken->type == TYPE_ADDITION ||
-                           sToken->type == TYPE_DIVIDE   ||
-                           sToken->type == TYPE_MULTIPLY ||
-                           sToken->type == TYPE_SUBTRACTION
-                                ){
+                        if (sToken->type == TYPE_ADDITION ||
+                            sToken->type == TYPE_DIVIDE ||
+                            sToken->type == TYPE_MULTIPLY ||
+                            sToken->type == TYPE_SUBTRACTION
+                                ) {
                             repeat++;
                             return parametrs(PARAM_RETURN, repeat, sToken, fun_id);
-                        }else if(sToken->type == TYPE_SEMICOLON){
+                        } else if (sToken->type == TYPE_SEMICOLON) {
                             return SUCCES;
                         }
                         return SYN_ERROR;
                     }
+                }
             }
             return SYN_ERROR;
         case PARAM_FUNCTION_CALL:
