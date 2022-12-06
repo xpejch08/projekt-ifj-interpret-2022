@@ -2394,7 +2394,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                                 printf("%s GF@&expTmp1 GF@&%s GF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
                             }
                             else{
-                                printf("%s GF@&expTmp1 GF@&%s string@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                                printf("%s GF@&expTmp1 GF@&%s string@%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
                             }
                         }
                     else{
@@ -2404,7 +2404,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                                 printf("%s GF@&expTmp2 GF@&%s GF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
                             }
                             else{
-                                printf("%s GF@&expTmp2 GF@&%s string@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                                printf("%s GF@&expTmp2 GF@&%s string@%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
                             }
 
                     }   
@@ -2417,7 +2417,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                                 printf("%s GF@&expTmp1 GF@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
                             }
                             else{
-                                printf("%s GF@&expTmp1 string@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                                printf("%s GF@&expTmp1 string@%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
                             }
                         }
                     else{
@@ -2427,7 +2427,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                                 printf("%s GF@&expTmp2 GF@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
                             }
                             else{
-                                printf("%s GF@&expTmp2 string@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                                printf("%s GF@&expTmp2 string@%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
                             }
                     }               
                 }
@@ -2562,7 +2562,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                                 printf("%s LF@&expTmp1 LF@&%s LF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
                             }
                             else{
-                                printf("%s LF@&expTmp1 LF@&%s string@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                                printf("%s LF@&expTmp1 LF@&%s string@%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
                             }
                         }
                     else{
@@ -2572,7 +2572,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                                 printf("%s LF@&expTmp2 LF@&%s LF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
                             }
                             else{
-                                printf("%s LF@&expTmp2 LF@&%s string@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                                printf("%s LF@&expTmp2 LF@&%s string@%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
                             }
 
                     }   
@@ -2585,7 +2585,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                                 printf("%s LF@&expTmp1 GF@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
                             }
                             else{
-                                printf("%s LF@&expTmp1 string@&%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                                printf("%s LF@&expTmp1 string@%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
                             }
                         }
                     else{
@@ -2595,7 +2595,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                                 printf("%s LF@&expTmp2 LF@&%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
                             }
                             else{
-                                printf("%s LF@&expTmp2 string@&%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                                printf("%s LF@&expTmp2 string@%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
                             }
                         }               
                     }
@@ -2615,7 +2615,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                                 printf("%s GF@&expTmp1 GF@&%s GF@&%s\n", CONCAT, op1->codename.str, (op3->codename.str)+1);
                             }
                             else{
-                                printf("%s GF@&expTmp1 string@&%s GF@&%s\n", CONCAT, op1->codename.str, (op3->codename.str)+1);
+                                printf("%s GF@&expTmp1 string@%s GF@&%s\n", CONCAT, op1->codename.str, (op3->codename.str)+1);
                             }
                     }
                     else{
@@ -2625,7 +2625,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                                 printf("%s GF@&expTmp12 GF@&%s GF@&%s\n", CONCAT, op1->codename.str, (op3->codename.str)+1);
                             }
                             else{
-                                printf("%s GF@&expTmp12 string@&%s GF@&%s\n", CONCAT, op1->codename.str, (op3->codename.str)+1);
+                                printf("%s GF@&expTmp12 string@%s GF@&%s\n", CONCAT, op1->codename.str, (op3->codename.str)+1);
                             } 
                        }
                 }
@@ -2761,7 +2761,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                                 printf("%s GF@&expTmp1 GF@&%s GF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
                             }
                             else{
-                                printf("%s GF@&expTmp1 GF@&%s string@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                                printf("%s GF@&expTmp1 GF@&%s string@%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
                             }
                         }
                     else{
@@ -2771,7 +2771,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                                 printf("%s GF@&expTmp2 GF@&%s GF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
                             }
                             else{
-                                printf("%s GF@&expTmp2 GF@&%s string@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                                printf("%s GF@&expTmp2 GF@&%s string@%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
                             }
 
                     }   
@@ -2784,7 +2784,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                                 printf("%s GF@&expTmp1 GF@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
                             }
                             else{
-                                printf("%s GF@&expTmp1 string@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                                printf("%s GF@&expTmp1 string@%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
                             }
                         }
                     else{
@@ -2794,7 +2794,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                                 printf("%s GF@&expTmp2 GF@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
                             }
                             else{
-                                printf("%s GF@&expTmp2 string@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                                printf("%s GF@&expTmp2 string@%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
                             }
                     }               
                 }
@@ -2929,7 +2929,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                                 printf("%s LF@&expTmp1 LF@&%s LF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
                             }
                             else{
-                                printf("%s LF@&expTmp1 LF@&%s string@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                                printf("%s LF@&expTmp1 LF@&%s string@%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
                             }
                         }
                     else{
@@ -2939,7 +2939,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                                 printf("%s LF@&expTmp2 LF@&%s LF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
                             }
                             else{
-                                printf("%s LF@&expTmp2 LF@&%s string@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                                printf("%s LF@&expTmp2 LF@&%s string@%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
                             }
 
                     }   
@@ -2952,7 +2952,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                                 printf("%s LF@&expTmp1 LF@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
                             }
                             else{
-                                printf("%s LF@&expTmp1 string@&%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                                printf("%s LF@&expTmp1 string@%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
                             }
                         }
                     else{
@@ -2962,7 +2962,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                                 printf("%s LF@&expTmp2 LF@&%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
                             }
                             else{
-                                printf("%s LF@&expTmp2 string@&%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                                printf("%s LF@&expTmp2 string@%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
                             }
                         }               
                     }
