@@ -818,7 +818,10 @@ int declrList(token *sToken, function_save *fun_id) {
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
+                condCounter--;
+                printf("%s &else_end%d\n", LABEL, condCounter);
                 result = statlist(sToken, fun_id);
+                
                 if (result != SUCCES) {
                     return result;
                 }
@@ -829,9 +832,12 @@ int declrList(token *sToken, function_save *fun_id) {
 
                 //we are inside of the else, so we call statlist and then check for right vinculum
             else {
-
+            
                 result = statlist(sToken, fun_id);
-
+                
+                
+                printf("%s &else_end%d\n", LABEL, condCounter);
+                
                 if (result != SUCCES) {
                     return result;
                 }
@@ -841,17 +847,17 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
                 //printf("%s &else_end%d\n", LABEL, condCounter);
                 //condCounter--;
-
+                
                 //we got right vinculum so we call statlist and carry on with a new token
                 canParseEnd = true;
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
-                printf("%s &else_end%d\n", LABEL, condCounter);
+                
                 result = statlist(sToken, fun_id);
                 //getNextToken ->statlist?
 
-                condCounter--;
+                
                 if (result != SUCCES) {
                     return result;
                 }
