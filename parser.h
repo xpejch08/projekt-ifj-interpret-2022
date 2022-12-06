@@ -94,5 +94,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id);
  */
 int parse();
 
+double string2double(token *sToken);
+
 
 #endif //PROJEKT_IFJ_INTERPRET_2022_PARSER_H

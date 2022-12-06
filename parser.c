@@ -1833,18 +1833,18 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                                 printf("%s &error LF@&cmp bool@true\n", JUMPIFEQ);
                                 printf("%s LF@&cmp LF@&%s int@%d\n", LT, (sToken->content.str->str)+1, 0);
                                 printf("%s &error LF@&cmp bool@true\n", JUMPIFEQ);
+                
                                 printf("%s LF@&%s\n", DEFVAR, (activeString->str)+1);
                                 printf("%s LF@&%s string@" "\n",MOVE, (activeString->str)+1);
+                                printf("%s LF@&cmp LF@&tmp%d LF@&%s\n", EQ, tmpCounter,(sToken->content.str->str)+1);
+                                printf("%s &legit LF@&cmp bool@true\n", JUMPIFEQ);
                                 printf("%s &substring%d\n", LABEL, unique);
                                 printf("%s LF@&tmp%d LF@&tmp%d LF@&%s\n", SUBSTRING, unique,tmpCounter, (sToken->content.str->str)+1);
                                 printf("%s LF@&%s LF@&%s LF@&tmp%d\n", CONCAT, (activeString->str)+1, (activeString->str)+1, unique);
-
-                                printf("%s LF@&cmp2 LF@&tmp%d LF@&%s\n", EQ, tmpCounter, (sToken->content.str->str)+1);
                                 printf("%s LF@&tmp%d LF@&tmp%d int@%d\n", ADD, tmpCounter,tmpCounter, 1);
+                                printf("%s LF@&cmp2 LF@&tmp%d LF@&%s\n", EQ, tmpCounter, (sToken->content.str->str)+1);
+                                
                                 printf("%s &substring%d LF@&cmp2 bool@true\n",JUMPIFNEQ, unique);
-
-
-                                printf("%s GF@&%s LF@&%s\n", MOVE, (activeString->str)+1, (activeString->str)+1);
                                 printf("%s &legit\n", JUMP);
 
                             }
@@ -1860,15 +1860,15 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
 
                                     printf("%s LF@&%s\n", DEFVAR, (activeString->str)+1);
                                     printf("%s LF@&%s string@\n",MOVE, (activeString->str)+1);
-
+                                    printf("%s LF@&cmp LF@&tmp%d LF@&tmp%d\n", EQ, tmpCounter,(tmpCounter)+1);
+                                    printf("%s &legit LF@&cmp bool@true\n", JUMPIFEQ);
                                     printf("%s &substring%d\n", LABEL, unique);
                                     printf("%s LF@&res%d LF@&tmp%d LF@&tmp%d\n", SUBSTRING, unique,unique, tmpCounter);
 
                                     printf("%s LF@&%s LF@&%s LF@&res%d\n", CONCAT, (activeString->str)+1,(activeString->str)+1, unique);
-                                    printf("%s LF@&cmp2 LF@&tmp%d LF@&tmp%d\n", EQ, tmpCounter, (tmpCounter)+1);
                                     printf("%s LF@&tmp%d LF@&tmp%d int@%d\n", ADD, tmpCounter,tmpCounter, 1);
+                                    printf("%s LF@&cmp2 LF@&tmp%d LF@&tmp%d\n", EQ, tmpCounter, (tmpCounter)+1); 
                                     printf("%s &substring%d LF@&cmp2 bool@true\n",JUMPIFNEQ, unique);
-                                    printf("%s GF@&%s LF@&%s\n", MOVE, (activeString->str)+1, (activeString->str)+1);
                                     printf("%s &legit\n", JUMP);
                                 }
                                 if(varI == true)
@@ -1883,16 +1883,18 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
 
                                     printf("%s LF@&%s\n", DEFVAR, (activeString->str)+1);
                                     printf("%s LF@&%s string@\n",MOVE, (activeString->str)+1);
-
+                                    printf("%s LF@&cmp LF@&%s LF@&tmp%d\n", EQ, (tmpToken->str)+1, (tmpCounter)+1);
+                                    printf("%s &legit LF@&cmp bool@true\n", JUMPIFEQ);
                                     printf("%s &substring%d\n", LABEL, unique);
                                     printf("%s LF@&res%d LF@&%s LF@&tmp%d\n", SUBSTRING, unique,(tmpToken->str)+1, tmpCounter);
 
                                     printf("%s LF@&%s LF@&%s LF@&res%d\n", CONCAT, (activeString->str)+1,(activeString->str)+1, unique);
-                                    printf("%s LF@&cmp2 LF@&%s LF@&tmp%d\n", EQ, (tmpToken->str)+1, (tmpCounter)+1);
                                     printf("%s LF@&%s LF@&%s int@%d\n", ADD, (tmpToken->str)+1,(tmpToken->str)+1, 1);
+                                    printf("%s LF@&cmp2 LF@&%s LF@&tmp%d\n", EQ, (tmpToken->str)+1, (tmpCounter)+1);
+                                
                                     printf("%s &substring%d LF@&cmp2 bool@true",JUMPIFNEQ, unique);
 
-                                    printf("%s GF@&%s LF@&%s\n", MOVE, (activeString->str)+1, (activeString->str)+1);
+                                    
                                     printf("%s &legit\n", JUMP);
                                 }
 
@@ -1911,7 +1913,10 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                                 {
                                     printf("%s LF@&%s nil@nil\n", MOVE, (activeString->str)+1);
                                 }
+                                printf("%s &subend\n", JUMP);
                                 printf("%s &legit\n", LABEL);
+                                printf("%s GF@&%s LF@&%s\n", MOVE, (activeString->str)+1, (activeString->str)+1);
+                                printf("%s &subend\n", LABEL);
                                 printf("%s\n", POPFRAME);
                                 return SUCCES;
                             }
@@ -1960,16 +1965,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 if(sToken->type == TYPE_INTEGER_NUMBER){
                 
                 unique++;
-                printf("%s\n", CREATEFRAME);
-                printf("%s\n", PUSHFRAME);
-                printf("%s LF@&tmp%d\n", DEFVAR, unique);
-                printf("%s LF@&tmp%d bool@false\n", MOVE, unique);
-                printf("%s LF@&tmp%d int@%s int@%d\n", LT,unique, sToken->content.str->str, 0);
-                printf("%s &chr%d bool@true LF@&tmp%d\n",JUMPIFEQ, unique, unique);
-                printf("%s LF@&tmp%d int@%s int@%d\n", GT,unique, sToken->content.str->str, 255);
-                printf("%s &chr%d bool@true LF@&tmp%d\n",JUMPIFEQ, unique, unique);
-                printf("%s GF@&%s int@%s\n", INT2CHAR,(activeString->str)+1, sToken->content.str->str);
-                
+                printf("%s GF@&%s int@%s\n", INT2CHAR,(activeString->str)+1, sToken->content.str->str);              
                 }
                 else{
                      if(in_function){
@@ -1985,19 +1981,13 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 unique++;
                 printf("%s\n", CREATEFRAME);
                 printf("%s\n", PUSHFRAME);
-                printf("%s LF@&tmp%d\n", DEFVAR, unique);
-                printf("%s LF@&tmp%d bool@false\n", MOVE, unique);
                 printf("%s LF@&%s\n", DEFVAR, (sToken->content.str->str)+1);
                 printf("%s LF@&%s GF@&%s\n", MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
-                printf("%s LF@&tmp%d LF@&%s int@%d\n", LT,unique, (sToken->content.str->str)+1, 0);
-                printf("%s &chr%d bool@true LF@&tmp%d\n",JUMPIFEQ, unique, unique);
-                printf("%s LF@&tmp%d LF@&%s int@%d\n", GT,unique, (sToken->content.str->str)+1, 255);
-                printf("%s &chr%d bool@true LF@&tmp%d\n",JUMPIFEQ, unique, unique);
+                
                 printf("%s GF@&%s LF@&%s\n", INT2CHAR,(activeString->str)+1, (sToken->content.str->str)+1);        
-
-                }
-                printf("%s &chr%d\n", LABEL, unique);
                 printf("%s\n", POPFRAME);
+                }
+              ;
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }

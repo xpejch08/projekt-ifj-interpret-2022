@@ -1,5 +1,3 @@
 <?php
 declare(strict_types=1);
- $f = "adam";
- $g = substring($f, 1, 4);
- write($g);
+$f = substring("adam", 1,1);
