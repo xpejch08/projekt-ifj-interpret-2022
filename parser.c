@@ -1328,8 +1328,9 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
     initToken.alloc = 0;
     initToken.length = 0;
     tmpToken = &initToken;
-
     int result;
+    int argument_save;
+
     switch (option) {
         case PARAM_FUNCTION:
             if((result = getNextToken(sToken)) != SUCCES){
@@ -1372,13 +1373,24 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                        sToken->type == KEYWORD_FLOAT ||
                        sToken->type == KEYWORD_STRING
                     ) {
+                argument_save = sToken->type;
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
                 if (sToken->type == TYPE_VARIABLE) {
                     printf("%s LF@&param%d\n", DEFVAR, repeat);
                     printf("%s LF@&param%d LF@&fun_param%d\n", MOVE, repeat, repeat);
-                    BVSInsert(mainTree->rootPtr, *sToken);
+                    BVSInsert(insideFunction->rootPtr, *sToken);
+                    TNode *argument_insert = BVSSearch(insideFunction->rootPtr, *sToken);
+                    if(argument_save == KEYWORD_INT){
+                        argument_insert->type = TYPE_INTEGER_NUMBER;
+                    }
+                    if(argument_save == KEYWORD_FLOAT){
+                        argument_insert->type = TYPE_DOUBLE_NUMBER;
+                    }
+                    if(argument_save == KEYWORD_STRING){
+                        argument_insert->type = TYPE_STRING;
+                    }
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
@@ -2094,11 +2106,11 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     if(BVSSearch_function(functionNames->rootPtr, *sToken) == NULL){
                         return SEM_DEFINE_ERROR;
                     }
-                    TNodef *tmp = BVSSearch_function(functionNames->rootPtr, *sToken);
-                    if(tmp->return_type != KEYWORD_VOID && fun_id->ret_value == KEYWORD_VOID){
+                    TNodef *tmp_fun = BVSSearch_function(functionNames->rootPtr, *sToken);
+                    if(tmp_fun->return_type != KEYWORD_VOID && fun_id->ret_value == KEYWORD_VOID){
                         return SEM_RETURN_ERROR;
                     }
-                    if(tmp->return_type != fun_id->ret_value){
+                    if(tmp_fun->return_type != fun_id->ret_value){
                         return SEM_COUNT_ERROR;
                     }
                     call_function_save = BVSSearch_function(functionNames->rootPtr, *sToken);
