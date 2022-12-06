@@ -2582,7 +2582,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                         if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
                             strCmpConstStr((&op1->codename), "expTmp2") == 0))
                             {
-                                printf("%s LF@&expTmp1 LF@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                                printf("%s LF@&expTmp1 GF@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
                             }
                             else{
                                 printf("%s LF@&expTmp1 string@&%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
@@ -2602,6 +2602,33 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                 }   
             }
 
+        }
+
+        else if(rule == RULE_CONCATENATE)
+        {
+            if(op1->orig == TYPE_STRING && op3->orig == TYPE_VARIABLE)
+                {
+                    if(exptmpchoose == 0){
+                        if(strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0)
+                            {
+                                printf("%s GF@&expTmp1 GF@&%s GF@&%s\n", CONCAT, op1->codename.str, (op3->codename.str)+1);
+                            }
+                            else{
+                                printf("%s GF@&expTmp1 string@&%s GF@&%s\n", CONCAT, op1->codename.str, (op3->codename.str)+1);
+                            }
+                    }
+                    else{
+                        if(strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0)
+                            {
+                                printf("%s GF@&expTmp12 GF@&%s GF@&%s\n", CONCAT, op1->codename.str, (op3->codename.str)+1);
+                            }
+                            else{
+                                printf("%s GF@&expTmp12 string@&%s GF@&%s\n", CONCAT, op1->codename.str, (op3->codename.str)+1);
+                            } 
+                       }
+                }
         }     
 
         else if(rule == RULE_NOT_EQUAL)

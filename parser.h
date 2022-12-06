@@ -35,6 +35,7 @@
 #define GT "GT"
 #define WRITE "WRITE"
 #define READ "READ"
+#define CONCAT "CONCAT"
 
 #define CREATEFRAME "CREATEFRAME"
 #define PUSHFRAME "PUSHFRAME"
