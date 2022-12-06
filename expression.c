@@ -457,7 +457,11 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
            if(!in_function){
                 if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
                 {
-                    printf("%s GF@&expTmp int@%s int@%s\n", ADD, op1->codename.str, op3->codename.str);
+                    if(exptmpchoose == 0) {
+                        printf("%s GF@&expTmp1 int@%s int@%s\n", ADD, op1->codename.str, op3->codename.str);
+                    }else{
+                        printf("%s GF@&expTmp2 int@%s int@%s\n", ADD, op1->codename.str, op3->codename.str);
+                    }
                 }
                 if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_VARIABLE)
                 {
@@ -511,8 +515,11 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
         {
             if(!in_function){
                 if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
-                {
-                    printf("%s GF@&expTmp int@%s int@%s\n", MUL, op1->codename.str, op3->codename.str);
+                {   if(exptmpchoose == 0) {
+                        printf("%s GF@&expTmp1 int@%s int@%s\n", MUL, op1->codename.str, op3->codename.str);
+                    }else{
+                        printf("%s GF@&expTmp2 int@%s int@%s\n", MUL, op1->codename.str, op3->codename.str);
+                    }
                 }
                 if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_VARIABLE)
                 {
@@ -1146,7 +1153,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
 
 //StackElement stacktop;
 
-int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_function, int iforass){
+int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_function, int iforass, bool* chooseexp){
     if (result != 0){
         return result;
     }
@@ -1283,6 +1290,7 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
     if (stackGetTop(stack) != NULL) {
         stackDispose(stack);
     }
+    *chooseexp = nexttmpexp;
     return prtableDataTypeToTokenType(finaltype); //vrati TYPE_NECO, def. v lexical.h
 }
    
