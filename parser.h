@@ -82,7 +82,7 @@ int statlist(token *sToken, function_save *fun_id);
  * functon or a keyword call, handles for example if condition
  * @param option option corresponding to what we need to handle for example PARAM_WHILE
  * @param repeat how many times we need to repeat a function, because it is called recursively
- * @param active token passed around through all functions that need to work with it
+ * @param sToken token passed around through all functions that need to work with it
  * @param fun_id stores information about the function we are currently in
  * @return returns SUCCESS if everything runs properly else returns coresponding error from errors.h
  */
