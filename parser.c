@@ -2169,7 +2169,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     if (fun_id->ret_value == KEYWORD_VOID) {
                         return SEM_RETURN_ERROR;
                     }
-                    if (tmp == NULL) {
+                    if (tmp_var == NULL) {
                         return SEM_UNDEFINED_ERROR;
                     }
                     if (tmp_var->type == TYPE_INTEGER_NUMBER && fun_id->ret_value != KEYWORD_INT) {
