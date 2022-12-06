@@ -135,7 +135,7 @@ int declrList(token *sToken, function_save *fun_id) {
                     return  result;
                 }
                 if (sToken->type == TYPE_LBRACKET) {
-                    printf("%s ", WRITE);
+                    
                     //calling function parametrs with PARAM_WRITE
                     paramError = parametrs(PARAM_WRITE, 1,  sToken, fun_id);
                     if (paramError == SUCCES) {
@@ -460,6 +460,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 printf("%s\n", CREATEFRAME);
                 paramError = parametrs(PARAM_FUNCTION_CALL, 1, sToken, fun_id);
                 printf("%s &%s\n", CALL, call_function_save->content->str);
+                printf("%s GF@&%s TF@&return_val\n", MOVE, (activeString->str)+1);
 
                 //if parametrs returns SUCCESS we call next token and jump into another layer of function statlist
                 if(paramError == SUCCES){
@@ -505,7 +506,6 @@ int declrList(token *sToken, function_save *fun_id) {
             printf("%s\n", PUSHFRAME);
             printf("%s LF@&return_val\n", DEFVAR);
             printf("%s LF@&expTmp\n", DEFVAR);
-            printf("%s LF@&return_val %s\n", MOVE, NIL);
 
 
             if((result = getNextToken(sToken)) != SUCCES) {
@@ -1554,10 +1554,10 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
                     if(!in_function)
                     {
-                        printf("GF@&%s ", (sToken->content.str->str)+1);
+                        printf("%s GF@&%s\n",WRITE, (sToken->content.str->str)+1);
                     }
                     else{
-                        printf("LF@&%s ", (sToken->content.str->str)+1);
+                        printf("%s LF@&%s\n",WRITE, (sToken->content.str->str)+1);
                     }
 
                     if((result = getNextToken(sToken)) != SUCCES){
@@ -1565,7 +1565,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
                     if(sToken->type == TYPE_RBRACKET){
 
-                        printf("\n");
+                        
 
                         return SUCCES;
                     }
@@ -1581,15 +1581,15 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 case TYPE_INTEGER_NUMBER:
                 case TYPE_DOUBLE_NUMBER:
                     if(sToken->type == TYPE_STRING){
-                        printf("string@%s ", sToken->content.str->str);
+                        printf("%s string@%s\n",WRITE, sToken->content.str->str);
                     }
                     if(sToken->type == TYPE_INTEGER_NUMBER){
-                        printf("int@%s ", sToken->content.str->str);
+                        printf("%s int@%s\n",WRITE, sToken->content.str->str);
                     }
 
                     if(sToken->type == TYPE_DOUBLE_NUMBER){
                         double d = string2double(sToken);
-                        printf("float@%a ", d);
+                        printf("%s float@%a\n",WRITE, d);
                     }
 
                     if((result = getNextToken(sToken)) != SUCCES){
@@ -1597,7 +1597,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
                     if(sToken->type == TYPE_RBRACKET){
 
-                        printf("\n");
+                       
                         return SUCCES;
                     }
                     else if(sToken->type == TYPE_COMMA){
@@ -2082,7 +2082,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     if(fun_id->ret_value != KEYWORD_STRING){
                         return SEM_COUNT_ERROR;
                     }
-                    printf("%s LF@return_val string@%s\n", MOVE, sToken->content.str->str);
+                    printf("%s LF@&return_val string@%s\n", MOVE, sToken->content.str->str);
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
@@ -2101,6 +2101,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     if(fun_id->ret_value != KEYWORD_INT){
                         return SEM_COUNT_ERROR;
                     }
+                    printf("%s LF@&return_val int@%s\n", MOVE, sToken->content.str->str);
                     if((result = getNextToken(sToken)) != SUCCES){
                         return  result;
                     }
