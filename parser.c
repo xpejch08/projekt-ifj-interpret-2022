@@ -649,11 +649,21 @@ int declrList(token *sToken, function_save *fun_id) {
                 //returns token type or error
                 result = precedenceAction(mainTree, sToken, stack, in_function, 2,&nextexp);
                 if(!in_function){
-                    printf("%s &while_end%d GF@&expTmp bool@true\n", JUMPIFNEQ, whileCounter);
+                    if(nextexp==0){
+                        printf("%s &while_end%d GF@&expTmp2 bool@true\n", JUMPIFNEQ, whileCounter);
+                    }
+                    else{
+                        printf("%s &while_end%d GF@&expTmp2 bool@true\n", JUMPIFNEQ, whileCounter);
+                    }
                 }
                 else
                 {
-                    printf("%s &while_end%d LF@&expTmp bool@true\n", JUMPIFNEQ, whileCounter);
+                    if(nextexp==0){
+                        printf("%s &while_end%d LF@&expTmp2 bool@true\n", JUMPIFNEQ, whileCounter);
+                    }
+                    else{
+                        printf("%s &while_end%d LF@&expTmp2 bool@true\n", JUMPIFNEQ, whileCounter);
+                    }
                 }
                 if (result < 113 || result > 117) {
                     return result;
@@ -731,11 +741,21 @@ int declrList(token *sToken, function_save *fun_id) {
             else {
                 result = precedenceAction(mainTree, sToken, stack, in_function, 2,&nextexp);
                 if(!in_function){
-                    printf("%s &else%d GF@&expTmp bool@true\n", JUMPIFNEQ, condCounter);
+                    if(nextexp==0){
+                        printf("%s &else%d GF@&expTmp1 bool@true\n", JUMPIFNEQ, condCounter);
+                    }
+                    else{
+                        printf("%s &else%d GF@&expTmp2 bool@true\n", JUMPIFNEQ, condCounter);
+                    }
                 }
                 else
                 {
-                    printf("%s &else%d LF@&expTmp bool@true\n", JUMPIFNEQ, condCounter);
+                    if(nextexp==0){
+                        printf("%s &else%d LF@&expTmp1 bool@true\n", JUMPIFNEQ, condCounter);
+                    }
+                    else{
+                        printf("%s &else%d LF@&expTmp2 bool@true\n", JUMPIFNEQ, condCounter);
+                    }                
                 }
                 if (result < 113 || result > 117) {
                     return result;
@@ -1199,7 +1219,12 @@ int statlist(token *sToken, function_save *fun_id){
                 //we are not inside a function so we use mainTree
                 if(in_function == false) {
                     result = precedenceAction(mainTree, sToken, stack, in_function, 1, &nextexp);
-                    printf("%s GF@&%s GF@&expTmp\n", MOVE, (activeString->str)+1);
+                    if(nextexp==0){
+                        printf("%s GF@&%s GF@&expTmp1\n", MOVE, (activeString->str)+1);
+                    }
+                    else{
+                        printf("%s GF@&%s GF@&expTmp2\n", MOVE, (activeString->str)+1);
+                    }
                     if (result < 113 || result > 117) {
                         return result;
                     }
@@ -1228,7 +1253,12 @@ int statlist(token *sToken, function_save *fun_id){
                     //we are iside a function so we use the insideFunction tree
                 else{
                     result = precedenceAction(insideFunction, sToken, stack, in_function,1, &nextexp);
-                    printf("%s LF@&%s GF@&expTmp\n", MOVE, (activeString->str)+1);
+                    if(nextexp==0){
+                        printf("%s LF@&%s LF@&expTmp1\n", MOVE, (activeString->str)+1);
+                    }
+                    else{
+                        printf("%s LF@&%s LF@&expTmp2\n", MOVE, (activeString->str)+1);
+                    }
                     if (result < 113 || result > 117) {
                         return result;
                     }
@@ -1309,8 +1339,12 @@ int statlist(token *sToken, function_save *fun_id){
                     //we are iside a function so we use the insideFunction tree
                 else{
                     result = precedenceAction(insideFunction, sToken, stack, in_function,1, &nextexp);
-                    printf("%s LF@&%s LF@&expTmp\n", MOVE, (activeString->str)+1);
-                    if (result < 113 || result > 117) {
+                    if(nextexp==0){
+                        printf("%s LF@&%s LF@&expTmp1\n", MOVE, (activeString->str)+1);
+                    }
+                    else{
+                        printf("%s LF@&%s LF@&expTmp2\n", MOVE, (activeString->str)+1);
+                    }                    if (result < 113 || result > 117) {
                         return result;
                     }
 

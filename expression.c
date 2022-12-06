@@ -1713,66 +1713,702 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                 
         }
         }
-        else if(rule == RULE_NOT_EQUAL)
-        {
-            if(!in_function)
-            {
+
+        else if(rule == RULE_EQUAL){
+            if(!in_function){
                 if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
                 {
-                    printf("%s GF@&expTmp int@%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))     
+                            {
+                                printf("%s GF@&expTmp1 GF@&%s GF@&%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                        else if((strCmpConstStr((&op1->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") != 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") != 0))
+                            {    
+                                printf("%s GF@&expTmp1 int@%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                        else if((strCmpConstStr((&op1->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") == 0 &&
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {                     
+                                printf("%s GF@&expTmp1 int@%s GF@&%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                        else if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op3->codename), "expTmp2") != 0))
+                            {
+                                printf("%s GF@&expTmp1 GF@&%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }                            
+                    }else{
+                        if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))     
+                            {
+                                printf("%s GF@&expTmp2 GF@&%s GF@&%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                        else if((strCmpConstStr((&op1->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op3->codename), "expTmp2") != 0))
+                            {    
+                                printf("%s GF@&expTmp2 int@%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                        else if((strCmpConstStr((&op1->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {                     
+                                printf("%s GF@&expTmp2 int@%s GF@&%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                        else if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op3->codename), "expTmp2") != 0))
+                            {
+                                printf("%s GF@&expTmp2 GF@&%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }                    
+                        }
                 }
+                
                 if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_VARIABLE)
                 {
-                    printf("%s GF@&expTmp int@%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
-                }
-                if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_INTEGER_NUMBER)
-                {
-                    printf("%s GF@&expTmp GF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0))
+                            {
+                                printf("%s GF@&expTmp1 GF@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                            else{
+                                printf("%s GF@&expTmp1 int@%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                    }
+                    else{
+                        if(strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0)
+                            {
+                                printf("%s GF@&expTmp2 GF@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                            else{
+                                printf("%s GF@&expTmp2 int@%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                    }
                 }
                 if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_VARIABLE)
                 {
-                    printf("%s GF@&expTmp GF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+                    if(exptmpchoose == 0){
+                        printf("%s GF@&expTmp1 GF@&%s GF@&%s \n", EQ, (op1->codename.str)+1, (op3->codename.str)+1);
+                    }
+                    else{
+                        printf("%s GF@&expTmp2 GF@&%s GF@&%s \n", EQ, (op1->codename.str)+1, (op3->codename.str)+1);
+                    }
                 }
-                if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_STRING)
+                if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_INTEGER_NUMBER)
                 {
-                    printf("%s GF@&expTmp GF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {
+                                printf("%s GF@&expTmp1 GF@&%s GF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                            else{
+                                printf("%s GF@&expTmp1 int@%s GF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                    }
+                    else{
+                        if(strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0)
+                            {
+                                printf("%s GF@&expTmp2 GF@&%s GF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                            else{
+                                printf("%s GF@&expTmp2 int@%s GF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                    }
                 }
+                 if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_STRING)
+                {
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {
+                                printf("%s GF@&expTmp1 GF@&%s GF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                            else{
+                                printf("%s GF@&expTmp1 GF@&%s string@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                        }
+                    else{
+                         if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {
+                                printf("%s GF@&expTmp2 GF@&%s GF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                            else{
+                                printf("%s GF@&expTmp2 GF@&%s string@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+
+                    }   
                 if(op1->orig == TYPE_STRING && op3->orig == TYPE_VARIABLE)
                 {
-                    printf("%s GF@&expTmp GF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0))
+                            {
+                                printf("%s GF@&expTmp1 GF@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                            else{
+                                printf("%s GF@&expTmp1 string@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                        }
+                    else{
+                         if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {
+                                printf("%s GF@&expTmp2 GF@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                            else{
+                                printf("%s GF@&expTmp2 string@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                    }               
                 }
-                printf("%s GF@&expTmp GF@&expTmp\n", NOT);
-
+                
+            }
             }
             else{
                 if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
-                {
-                    printf("%s LF@&expTmp int@%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
+                    {
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))     
+                            {
+                                printf("%s LF@&expTmp1 LF@&%s LF@&%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                        else if((strCmpConstStr((&op1->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") != 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") != 0))
+                            {    
+                                printf("%s LF@&expTmp1 int@%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                        else if((strCmpConstStr((&op1->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") == 0 &&
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {                     
+                                printf("%s LF@&expTmp1 int@%s LF@&%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                        else if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op3->codename), "expTmp2") != 0))
+                            {
+                                printf("%s LF@&expTmp1 GF@&%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }                            
+                    }else{
+                        if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))     
+                            {
+                                printf("%s LF@&expTmp2 LF@&%s LF@&%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                        else if((strCmpConstStr((&op1->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op3->codename), "expTmp2") != 0))
+                            {    
+                                printf("%s LF@&expTmp2 int@%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                        else if((strCmpConstStr((&op1->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {                     
+                                printf("%s LF@&expTmp2 int@%s LF@&%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                        else if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op3->codename), "expTmp2") != 0))
+                            {
+                                printf("%s LF@&expTmp2 LF@&%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }                    
+                        }
                 }
+                
                 if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_VARIABLE)
                 {
-                    printf("%s LF@&expTmp int@%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
-                }
-                if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_INTEGER_NUMBER)
-                {
-                    printf("%s LF@&expTmp LF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0))
+                            {
+                                printf("%s LF@&expTmp1 LF@&%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                            else{
+                                printf("%s LF@&expTmp1 int@%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                    }
+                    else{
+                        if(strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0)
+                            {
+                                printf("%s LF@&expTmp2 LF@&%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                            else{
+                                printf("%s LF@&expTmp2 int@%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                    }
                 }
                 if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_VARIABLE)
                 {
-                    printf("%s LF@&expTmp LF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+                    if(exptmpchoose == 0){
+                        printf("%s LF@&expTmp1 LF@&%s LF@&%s \n", EQ, (op1->codename.str)+1, (op3->codename.str)+1);
+                    }
+                    else{
+                        printf("%s LF@&expTmp2 LF@&%s LF@&%s \n", EQ, (op1->codename.str)+1, (op3->codename.str)+1);
+                    }
                 }
-                if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_STRING)
+                if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_INTEGER_NUMBER)
                 {
-                    printf("%s LF@&expTmp LF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {
+                                printf("%s LF@&expTmp1 LF@&%s LF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                            else{
+                                printf("%s LF@&expTmp1 int@%s LF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                    }
+                    else{
+                        if(strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0)
+                            {
+                                printf("%s LF@&expTmp2 LF@&%s LF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                            else{
+                                printf("%s LF@&expTmp2 int@%s LF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                    }
                 }
+                  if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_STRING)
+                {
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {
+                                printf("%s LF@&expTmp1 LF@&%s LF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                            else{
+                                printf("%s LF@&expTmp1 LF@&%s string@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                        }
+                    else{
+                         if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {
+                                printf("%s LF@&expTmp2 LF@&%s LF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                            else{
+                                printf("%s LF@&expTmp2 LF@&%s string@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+
+                    }   
                 if(op1->orig == TYPE_STRING && op3->orig == TYPE_VARIABLE)
                 {
-                    printf("%s LF@&expTmp LF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0))
+                            {
+                                printf("%s LF@&expTmp1 LF@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                            else{
+                                printf("%s LF@&expTmp1 string@&%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                        }
+                    else{
+                         if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {
+                                printf("%s LF@&expTmp2 LF@&%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                            else{
+                                printf("%s LF@&expTmp2 string@&%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                        }               
+                    }
+                }   
+            }
+
+        }     
+
+        else if(rule == RULE_NOT_EQUAL)
+        {
+            if(!in_function){
+                if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
+                {
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))     
+                            {
+                                printf("%s GF@&expTmp1 GF@&%s GF@&%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                        else if((strCmpConstStr((&op1->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") != 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") != 0))
+                            {    
+                                printf("%s GF@&expTmp1 int@%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                        else if((strCmpConstStr((&op1->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") == 0 &&
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {                     
+                                printf("%s GF@&expTmp1 int@%s GF@&%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                        else if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op3->codename), "expTmp2") != 0))
+                            {
+                                printf("%s GF@&expTmp1 GF@&%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }                            
+                    }else{
+                        if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))     
+                            {
+                                printf("%s GF@&expTmp2 GF@&%s GF@&%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                        else if((strCmpConstStr((&op1->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op3->codename), "expTmp2") != 0))
+                            {    
+                                printf("%s GF@&expTmp2 int@%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                        else if((strCmpConstStr((&op1->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {                     
+                                printf("%s GF@&expTmp2 int@%s GF@&%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                        else if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op3->codename), "expTmp2") != 0))
+                            {
+                                printf("%s GF@&expTmp2 GF@&%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }                    
+                        }
                 }
-                printf("%s LF@&expTmp LF@&expTmp\n", NOT);
+                
+                if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_VARIABLE)
+                {
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0))
+                            {
+                                printf("%s GF@&expTmp1 GF@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                            else{
+                                printf("%s GF@&expTmp1 int@%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                    }
+                    else{
+                        if(strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0)
+                            {
+                                printf("%s GF@&expTmp2 GF@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                            else{
+                                printf("%s GF@&expTmp2 int@%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                    }
+                }
+                if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_VARIABLE)
+                {
+                    if(exptmpchoose == 0){
+                        printf("%s GF@&expTmp1 GF@&%s GF@&%s \n", EQ, (op1->codename.str)+1, (op3->codename.str)+1);
+                    }
+                    else{
+                        printf("%s GF@&expTmp2 GF@&%s GF@&%s \n", EQ, (op1->codename.str)+1, (op3->codename.str)+1);
+                    }
+                }
+                if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_INTEGER_NUMBER)
+                {
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {
+                                printf("%s GF@&expTmp1 GF@&%s GF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                            else{
+                                printf("%s GF@&expTmp1 int@%s GF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                    }
+                    else{
+                        if(strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0)
+                            {
+                                printf("%s GF@&expTmp2 GF@&%s GF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                            else{
+                                printf("%s GF@&expTmp2 int@%s GF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                    }
+                }
+                 if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_STRING)
+                {
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {
+                                printf("%s GF@&expTmp1 GF@&%s GF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                            else{
+                                printf("%s GF@&expTmp1 GF@&%s string@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                        }
+                    else{
+                         if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {
+                                printf("%s GF@&expTmp2 GF@&%s GF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                            else{
+                                printf("%s GF@&expTmp2 GF@&%s string@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+
+                    }   
+                if(op1->orig == TYPE_STRING && op3->orig == TYPE_VARIABLE)
+                {
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0))
+                            {
+                                printf("%s GF@&expTmp1 GF@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                            else{
+                                printf("%s GF@&expTmp1 string@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                        }
+                    else{
+                         if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {
+                                printf("%s GF@&expTmp2 GF@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                            else{
+                                printf("%s GF@&expTmp2 string@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                    }               
+                }
+                
+            }
+            }
+            else{
+                if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
+                    {
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))     
+                            {
+                                printf("%s LF@&expTmp1 LF@&%s LF@&%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                        else if((strCmpConstStr((&op1->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") != 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") != 0))
+                            {    
+                                printf("%s LF@&expTmp1 int@%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                        else if((strCmpConstStr((&op1->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") == 0 &&
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {                     
+                                printf("%s LF@&expTmp1 int@%s LF@&%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                        else if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op3->codename), "expTmp2") != 0))
+                            {
+                                printf("%s LF@&expTmp1 GF@&%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }                            
+                    }else{
+                        if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))     
+                            {
+                                printf("%s LF@&expTmp2 LF@&%s LF@&%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                        else if((strCmpConstStr((&op1->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op3->codename), "expTmp2") != 0))
+                            {    
+                                printf("%s LF@&expTmp2 int@%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                        else if((strCmpConstStr((&op1->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {                     
+                                printf("%s LF@&expTmp2 int@%s LF@&%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                        else if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
+                            (strCmpConstStr((&op3->codename), "expTmp1") != 0 &&
+                            strCmpConstStr((&op3->codename), "expTmp2") != 0))
+                            {
+                                printf("%s LF@&expTmp2 LF@&%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }                    
+                        }
+                }
+                
+                if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_VARIABLE)
+                {
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0))
+                            {
+                                printf("%s LF@&expTmp1 LF@&%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                            else{
+                                printf("%s LF@&expTmp1 int@%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                    }
+                    else{
+                        if(strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0)
+                            {
+                                printf("%s LF@&expTmp2 LF@&%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                            else{
+                                printf("%s LF@&expTmp2 int@%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                    }
+                }
+                if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_VARIABLE)
+                {
+                    if(exptmpchoose == 0){
+                        printf("%s LF@&expTmp1 LF@&%s LF@&%s \n", EQ, (op1->codename.str)+1, (op3->codename.str)+1);
+                    }
+                    else{
+                        printf("%s LF@&expTmp2 LF@&%s LF@&%s \n", EQ, (op1->codename.str)+1, (op3->codename.str)+1);
+                    }
+                }
+                if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_INTEGER_NUMBER)
+                {
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {
+                                printf("%s LF@&expTmp1 LF@&%s LF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                            else{
+                                printf("%s LF@&expTmp1 int@%s LF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                    }
+                    else{
+                        if(strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0)
+                            {
+                                printf("%s LF@&expTmp2 LF@&%s LF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                            else{
+                                printf("%s LF@&expTmp2 int@%s LF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                    }
+                }
+                  if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_STRING)
+                {
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {
+                                printf("%s LF@&expTmp1 LF@&%s LF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                            else{
+                                printf("%s LF@&expTmp1 LF@&%s string@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                        }
+                    else{
+                         if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {
+                                printf("%s LF@&expTmp2 LF@&%s LF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                            else{
+                                printf("%s LF@&expTmp2 LF@&%s string@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+
+                    }   
+                if(op1->orig == TYPE_STRING && op3->orig == TYPE_VARIABLE)
+                {
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0))
+                            {
+                                printf("%s LF@&expTmp1 LF@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                            else{
+                                printf("%s LF@&expTmp1 string@&%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                        }
+                    else{
+                         if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {
+                                printf("%s LF@&expTmp2 LF@&%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                            else{
+                                printf("%s LF@&expTmp2 string@&%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                            }
+                        }               
+                    }
+                }   
+            }
+            if(!in_function){
+                if(exptmpchoose == 0){
+                    printf("%s GF@&expTmp1 GF@&expTmp1\n", NOT);
+                }
+                else{
+                    printf("%s GF@&expTmp2 GF@&expTmp2\n", NOT);
+                }
+            }
+            else{
+                if(exptmpchoose == 0){
+                    printf("%s LF@&expTmp1 LF@&expTmp1\n", NOT);
+                }
+                else{
+                    printf("%s LF@&expTmp2 LF@&expTmp2\n", NOT);
                 }
             }
         }
+    }
+            
     
 
     
