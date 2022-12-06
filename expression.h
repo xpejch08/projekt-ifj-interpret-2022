@@ -74,5 +74,31 @@ typedef enum
     INDEX_DOLLAR,  // $ :          $
     INDEXENUMERROR
 } PrtableIndexEnum;
+
+//prevest symboly na prislusny index prtable
+/**
+ * @brief Converts PrtableSymbolsEnum to PrtableIndexEnum (some symbols share indexes)
+ * 
+ * @param symb input PrtableSymbolsEnum
+ * @return Index in prtable -PrtableIndexEnum 
+ */
 PrtableIndexEnum prtableSymbolToIndex(PrtableSymbolsEnum symb);
+
+/**actions of precedence table
+ *  S,  shift (<)  put SHIFT ("<") to stack
+    E,  equal (=)  push input to stack
+    R,  reduce (>) pop stack until "<" is found, then reduce expression and generate code
+    X,   nothing ( )    ERROR
+    ACTIONSENUMERROR for sending an error to the caller
+ */
+typedef enum
+{
+    S, 
+    E, 
+    R, 
+    X, 
+    ACTIONSENUMERROR
+} PrtableActionsEnum;
+
+
 #endif

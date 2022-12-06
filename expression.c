@@ -6,21 +6,20 @@
 #include <string.h>
 
 
-//#include "expression.h"
+
 #include "expstack.h"
-//#include "lexical.h"
 #include "symtable.h"
-#include "code_gen.h"
-//#include "expstack.c"
+
+
 #include "str.h"
 #include "parser.h"
 
-bool nexttmpexp;
-int result;
+bool nexttmpexp; //tells to use tmpExp1 or tmpExp2 next, to avoid overwriting
+int result;//stores int of possible Error, is returned in precedenceAction
 
-//indexy prtable
-/*typedef enum
-{
+//indexes for precedence table
+/*
+
     INDEX_COMP,   // !==,=== :    comp
     INDEX_REL,    // <,>,<=,>= :  rel
     INDEX_ADD_SUB_CON,// +,-, . : asc
@@ -30,20 +29,24 @@ int result;
     INDEX_DATA,   // i:           var, int, float, string
     INDEX_DOLLAR,  // $ :          $
     INDEXENUMERROR
-} PrtableIndexEnum;*/
+*/
 
-//akce prtable
-typedef enum
-{
-    S, // shift (<)  dej vstup a "<" na zasobnik"
-    E, // equal (=)  dej vstup na zasobnik
-    R, // reduce (>) hledej na zasobniku "<" a pak pocaď pop a generuj instrukci
-    X,  // nic ( )    chyba
-    ACTIONSENUMERROR
-} PrtableActionsEnum;
+/*actions of precedence table
+    S,  shift (<)  put SHIFT ("<") to stack
+    E,  equal (=)  push input to stack
+    R,  reduce (>) pop stack until "<" is found, then reduce expression and generate code
+    X,   nothing ( )    ERROR
+    ACTIONSENUMERROR for sending an error to the caller
+ */
 
-//precedencni tabulka, X vodorovne vstup, Y svisle zasobnik
-int prtable[8][8] = { // [Y][X]
+/**
+ * @brief Precedence Table
+ * [Y][X]
+ * X INPUT, Y STACKINPUT
+ * @return Returns PrtableActionsEnum, depending on the action to be taken
+ * 
+*/
+int prtable[8][8] = { 
 //       comp|rel|asc| md| ( | ) | i | $
 /*comp*/ { R , S , S , S , S , R , S , R },
 /*rel*/  { R , R , S , S , S , R , S , R },
@@ -56,7 +59,7 @@ int prtable[8][8] = { // [Y][X]
 };
 
 
-//prevest tokeny na symboly prtable
+
 PrtableSymbolsEnum prtableTokenToSymbol(token *sToken, int iforass)
 {
     if (result != 0){
@@ -102,15 +105,15 @@ PrtableSymbolsEnum prtableTokenToSymbol(token *sToken, int iforass)
             return VARIABLE;
         case TYPE_SEMICOLON:
             if(iforass == 1){
-                return DOLLAR;
+                return DOLLAR; //THE ENDER of expression
             }
             else {
                 result = SYN_ERROR;
                 return SYMBOLSENUMERROR;
             }
-        case TYPE_LVINCULUM: ///SEMICOLON -> DOLLAR , EOL -> DOLLAR, default chyba?
+        case TYPE_LVINCULUM: 
             if(iforass == 2){
-                return DOLLAR;
+                return DOLLAR; //THE ENDER of expression
             }
             else {
                 result = SYN_ERROR;
@@ -121,7 +124,7 @@ PrtableSymbolsEnum prtableTokenToSymbol(token *sToken, int iforass)
             return SYMBOLSENUMERROR;
     }
 }
-//prevest datovy typ na token typ def. v lexical.h
+
 int prtableDataTypeToTokenType(DataTypeEnum type){
 
     switch(type)
@@ -137,7 +140,7 @@ int prtableDataTypeToTokenType(DataTypeEnum type){
     }
 }
 
-//prevest symboly na prislusny index prtable
+
 PrtableIndexEnum prtableSymbolToIndex(PrtableSymbolsEnum symb)
 {
     if (result != 0){
@@ -170,14 +173,14 @@ PrtableIndexEnum prtableSymbolToIndex(PrtableSymbolsEnum symb)
         case VARIABLE:
             return INDEX_DATA;
         default:
-            return INDEX_DOLLAR; // DOLLAR 
+            return INDEX_DOLLAR; //THE ENDER
 
 
     }
 }
 
 
-/*PRAVIDLA PRECEDENCNI ANALYZY, z prave strany budeme tvořit levou stranu
+/* PRECEDENCE ANALYSIS RULES, REDUCING RIGHT SIDE TO LEFT SIDE
  E -> E === E 
  E -> E !== E
  E -> E < E
@@ -192,6 +195,7 @@ PrtableIndexEnum prtableSymbolToIndex(PrtableSymbolsEnum symb)
  E -> (E)
  E -> i
 */
+
 
 PrtableRulesEnum pickRule(StackElement *op1, StackElement *op2, StackElement *op3)
 {
@@ -242,7 +246,6 @@ DataTypeEnum getDataType(token *sToken, TRoot *someTree){
     if (result != 0){
         return DATATYPEENUM_ERROR;
     }
-
     if (sToken->type == TYPE_INTEGER_NUMBER){
         return DATATYPE_INT;
     }else if (sToken->type == TYPE_DOUBLE_NUMBER || sToken->type == TYPE_EXPONENT_NUMBER){
@@ -251,7 +254,7 @@ DataTypeEnum getDataType(token *sToken, TRoot *someTree){
         return DATATYPE_STRING;
     }else if (sToken->type == TYPE_SEMICOLON || sToken->type == TYPE_RVINCULUM){
         return DATATYPE_NONE;
-    }else if (sToken->type == TYPE_VARIABLE){
+    }else if (sToken->type == TYPE_VARIABLE){ //search for the value of variable in BST
         TNode* data = BVSSearch(someTree->rootPtr, *sToken);
         if (data != NULL){
             if(data->type == TYPE_INTEGER_NUMBER){
@@ -266,13 +269,9 @@ DataTypeEnum getDataType(token *sToken, TRoot *someTree){
         }
         return DATATYPE_NONE;
     }
-
     return DATATYPE_NONE;
-
-
-
-
 }
+
 
 DataTypeEnum checkTypeForRule(PrtableRulesEnum rule, StackElement *op1, StackElement *op2, StackElement *op3)
 {
@@ -357,8 +356,8 @@ DataTypeEnum checkTypeForRule(PrtableRulesEnum rule, StackElement *op1, StackEle
     }
 }
 
-//struct ExpStack stack;
-int countSymbols(Stack *stack) //pocet symbolu ve stacku pred "<" (SHIFT)
+
+int countSymbols(Stack *stack) 
 {
     if (result != 0){
         return result;
@@ -381,10 +380,11 @@ int countSymbols(Stack *stack) //pocet symbolu ve stacku pred "<" (SHIFT)
     return -1;
 
 }
-//redukuje vyraz, vola se pri akci ">""
+
+
 DataTypeEnum reduceExpression(Stack *stack, bool in_function){
     bool exptmpchoose =0;
-    string *expTmp2 = malloc(sizeof (string));
+    string *expTmp2 = malloc(sizeof (string)); //expTmp1 and expTmp2 are used for storing expressions in stack
     string *expTmp1 = malloc(sizeof (string));
 
     strInit(expTmp1);
@@ -392,7 +392,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
     strInit(expTmp2);
     strClean(expTmp2);
 
-    char expTmpOne[]= "expTmp1";
+    char expTmpOne[]= "expTmp1";//strings too be stored in expTmp1 and expTmp2
     char expTmpTwo[]= "expTmp2";
 
     strcpy(expTmp1->str, expTmpOne);
@@ -402,7 +402,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
     if (result != 0){
         return DATATYPEENUM_ERROR;
     }
-    int isfirstreduction = 0;
+    int isfirstreduction = 0; //for checking if its the first iteration of a 3 operator reduction
     StackElement *op1 = NULL;
     StackElement *op2 = NULL;
     StackElement *op3 = NULL;
@@ -415,7 +415,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
     {
 
         op1 = stack->top;
-        rule = pickRule(op1, NULL, NULL);
+        rule = pickRule(op1, NULL, NULL); //should pick RULE_I, since it's just one operator
         printon = 0;
     }
     else if(count == 3) {
@@ -423,9 +423,9 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
         op2 = op3->nextElement;
         op1 = op2->nextElement;
         rule = pickRule(op3, op2, op1);
-        isfirstreduction++;
+        isfirstreduction++; 
 
-
+        //which of expTmp1 and expTmp2 should we use to store the new NONTERMINAL 
         if (strCmpConstStr((&op1->codename), "expTmp1") != 0 ||
             strCmpConstStr((&op3->codename), "expTmp1") != 0 ||
             strCmpConstStr((&op1->codename), "expTmp2") != 0 ||
@@ -440,7 +440,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
             }
 
         }
-        printon = 1;
+        printon = 1;//print the expression
     }else{
         result = SEM_COMPABILITY_ERROR;
         return DATATYPEENUM_ERROR;
@@ -449,11 +449,11 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
         result = SEM_COMPABILITY_ERROR;
         return DATATYPEENUM_ERROR;
     }
-    resulttype =  checkTypeForRule(rule, op1, op2, op3);
+    resulttype =  checkTypeForRule(rule, op1, op2, op3); //final type for expression
 
 
-    if(printon == 1) {
-        if (rule == RULE_ADDITION) {
+    if(printon == 1) { //printing the expression, lots of prints(checks rules, if in function, types of operands, which expTmp to use, etc.)
+        if (rule == RULE_ADDITION) { 
            if(!in_function){
                 if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
                 {
@@ -1123,12 +1123,12 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
     
 
     
-   if((stackPop(stack, count + 1)) == 1){
+   if((stackPop(stack, count + 1)) == 1){ //pop the operands of expression
         result = INT_ERROR;
         return DATATYPEENUM_ERROR;
     }
 
-    if(isfirstreduction > 0){
+    if(isfirstreduction > 0){ //if it is not the first 3op reduction we push expTmp1 or expTmp2 to stack
         if(exptmpchoose == 0){
             if((stackPush(stack, NON_TERMINAL, resulttype, *expTmp1, op1->orig)) == 1){
                 result = INT_ERROR;
@@ -1140,7 +1140,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                 return DATATYPEENUM_ERROR;
             }
         }
-    }else {
+    }else {//if it is the first 3op reduction, we need to push the original value of the expression to stack
         if ((stackPush(stack, NON_TERMINAL, resulttype, op1->codename, op1->orig)) == 1) {
             result = INT_ERROR;
             return DATATYPEENUM_ERROR;
@@ -1151,7 +1151,6 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
 }
 
 
-//StackElement stacktop;
 
 int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_function, int iforass, bool* chooseexp){
     if (result != 0){
@@ -1164,19 +1163,19 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
     int d = 0;
     bool done = 0;
     token tToken = *sToken;
-    int secondgothrough =0;
+    int secondgothrough =0; //if we are in second go through of the function
 
 
     stackPush(stack, DOLLAR, DATATYPE_NONE, t, d);
 
     while (done != 1){
         if(iforass == 1) {
-            if(secondgothrough == 0) {
+            if(secondgothrough == 0) {//saves the actual token to use later if we need to assign a simple value;
 
                 tToken.content.str = malloc(sizeof(string));
                 strCpyStr(tToken.content.str, sToken->content.str);
             }
-            if(secondgothrough == 1) {
+            if(secondgothrough == 1) { //if we are in a second go through of while and token is semicolon, assign previous token to expTmp
                 double f;
                 if(sToken->type == TYPE_SEMICOLON) {
                     if (!in_function) {
@@ -1243,11 +1242,11 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
             return result;
         }
 //112 vraci!!!!!!!! checknout rano
+
+        
+        // picks the action to be taken based off of cooridinates in prtable 
         PrtableActionsEnum action = prtable[coordstack][coordinput];
-        /* if(inputdatatype == DATATYPE_ENDER){
-             action = R;
-             done = 1;
-         }*/
+       
         switch(action){
             case S:
                 stackInsertAfterTopTerminal(stack, SHIFT, DATATYPE_NONE, t,d);
@@ -1290,8 +1289,8 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
     if (stackGetTop(stack) != NULL) {
         stackDispose(stack);
     }
-    *chooseexp = nexttmpexp;
-    return prtableDataTypeToTokenType(finaltype); //vrati TYPE_NECO, def. v lexical.h
+    *chooseexp = nexttmpexp; //switches between expTmp and expTmp2
+    return prtableDataTypeToTokenType(finaltype); 
 }
    
 
