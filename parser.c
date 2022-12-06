@@ -818,8 +818,9 @@ int declrList(token *sToken, function_save *fun_id) {
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
-                condCounter--;
+                
                 printf("%s &else_end%d\n", LABEL, condCounter);
+                condCounter--;
                 result = statlist(sToken, fun_id);
                 
                 if (result != SUCCES) {
