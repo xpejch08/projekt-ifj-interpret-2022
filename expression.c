@@ -745,7 +745,7 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
                 strCpyStr(tToken.content.str, sToken->content.str);
             }
             if(secondgothrough == 1) {
-
+                double f;
                 if(sToken->type == TYPE_SEMICOLON) {
                     if (!in_function) {
                         switch (tToken.type) {
@@ -756,7 +756,8 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
                                 printf("%s GF@&expTmp string@%s\n", MOVE, tToken.content.str->str);
                                 break;
                             case TYPE_DOUBLE_NUMBER:
-                                printf("%s GF@&expTmp float@%s\n", MOVE, tToken.content.str->str);
+                            f = string2double(&tToken);
+                                printf("%s GF@&expTmp float@%a\n", MOVE, f);
                         }
                         free(tToken.content.str);
                         if (tToken.type > 117 || tToken.type < 113) {
@@ -773,7 +774,8 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
                                 printf("%s LF@&expTmp string@%s\n", MOVE, tToken.content.str->str);
                                 break;
                             case TYPE_DOUBLE_NUMBER:
-                                printf("%s LF@&expTmp float@%s\n", MOVE, tToken.content.str->str);
+                            f = string2double(&tToken);
+                                printf("%s LF@&expTmp float@%s\n", MOVE, f);
                         }//CASE TYPE VARIABLE -> tTokentype = BVSSearchVariable
                         free(tToken.content.str);
                         if (tToken.type > 117 || tToken.type < 113) {
