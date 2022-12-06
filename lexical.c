@@ -235,61 +235,61 @@ int getNextToken(token *attr) {
                     state = numberState;
                 }
                 else if(character == '*'){
-                    attr->type = TYPE_MULTIPLY;
+                    attr->type = TYPE_MULTIPLY; //330
                     strFree(attr->content.str);
                     return SUCCES;
                 }
                 else if(character == '+'){
-                    attr->type = TYPE_ADDITION;
+                    attr->type = TYPE_ADDITION; //331
                     strFree(attr->content.str);
                     return SUCCES;
                 }
                 else if(character == '-'){
-                    attr->type = TYPE_SUBTRACTION;
+                    attr->type = TYPE_SUBTRACTION; //332
                     strFree(attr->content.str);
                     return SUCCES;
                 }
                 else if(character == '.'){
-                    attr->type = TYPE_CONCATENATE;
+                    attr->type = TYPE_CONCATENATE; //333
                     strFree(attr->content.str);
                     return SUCCES;
                 }
                 else if(character == EOF){
-                    attr->type = TYPE_END_OF_FILE;
+                    attr->type = TYPE_END_OF_FILE; //334
                     return SUCCES;
                 }
                 else if(character == '('){
-                    attr->type = TYPE_LBRACKET;
+                    attr->type = TYPE_LBRACKET;//335
                     return SUCCES;
                 }
 
                 else if(character == ')'){
-                    attr->type = TYPE_RBRACKET;
+                    attr->type = TYPE_RBRACKET;//336
                     return SUCCES;
                 }
                 else if(character == ';'){
-                    attr->type = TYPE_SEMICOLON;
+                    attr->type = TYPE_SEMICOLON;//337
                     return SUCCES;
                 }
                 else if(character == ':') {
-                    attr->type = TYPE_COLON;
+                    attr->type = TYPE_COLON;//338
                     return SUCCES;
                 }
                 else if(character == ',') {
-                    attr->type = TYPE_COMMA;
+                    attr->type = TYPE_COMMA;//339
                     return SUCCES;
                 }
                 else if(character == '{'){
-                    attr->type = TYPE_LVINCULUM;
+                    attr->type = TYPE_LVINCULUM;//340
                     return SUCCES;
                 }
 
                 else if(character == '}'){
-                    attr->type = TYPE_RVINCULUM;
+                    attr->type = TYPE_RVINCULUM;//341
                     return SUCCES;
                 }
 
-                else if(character == '>'){
+                else if(character == '<'){
                     state = smallerThanOrEqualState;
                 }
                 else if(character == '?'){
@@ -298,7 +298,7 @@ int getNextToken(token *attr) {
                 else if(character == '!'){
                     state = notEqualState;
                 }
-                else if(character == '<'){
+                else if(character == '>'){
                     state = greaterThanOrEqualState;
                 }
                 else if(character == '='){

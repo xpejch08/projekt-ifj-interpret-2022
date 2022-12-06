@@ -743,7 +743,7 @@ int declrList(token *sToken, function_save *fun_id) {
             else {
                 result = precedenceAction(mainTree, sToken, stack, in_function, 2,&nextexp);
                 if(!in_function){
-                    if(nextexp==0){
+                    if(nextexp==1){
                         printf("%s &else%d GF@&expTmp1 bool@true\n", JUMPIFNEQ, condCounter);
                     }
                     else{
@@ -752,7 +752,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
                 else
                 {
-                    if(nextexp==0){
+                    if(nextexp==1){
                         printf("%s &else%d LF@&expTmp1 bool@true\n", JUMPIFNEQ, condCounter);
                     }
                     else{

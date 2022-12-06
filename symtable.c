@@ -42,7 +42,7 @@ TNode *BVSInsert(TNode *rootPtr, token token){
     insert->rightPtr = NULL;
     insert->content = insertStr;
     strCpyStr(insert->content, token.content.str);
-    insert->type = token.type;
+    insert->type = KEYWORD_NULL;
     if(!tmp){
         rootPtr = insert;
         return rootPtr;

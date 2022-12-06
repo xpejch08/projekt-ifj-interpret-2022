@@ -8,14 +8,16 @@
 
 
 #include "expstack.h"
+//#include "lexical.h"
 #include "symtable.h"
 
 
 #include "str.h"
 #include "parser.h"
 
-bool nexttmpexp; //tells to use tmpExp1 or tmpExp2 next, to avoid overwriting
-int result;//stores int of possible Error, is returned in precedenceAction
+bool nexttmpexp;
+bool exptmpchoose = 0 ;
+int result;
 
 //indexes for precedence table
 /*
@@ -44,9 +46,9 @@ int result;//stores int of possible Error, is returned in precedenceAction
  * [Y][X]
  * X INPUT, Y STACKINPUT
  * @return Returns PrtableActionsEnum, depending on the action to be taken
- * 
+ *
 */
-int prtable[8][8] = { 
+int prtable[8][8] = {
 //       comp|rel|asc| md| ( | ) | i | $
 /*comp*/ { R , S , S , S , S , R , S , R },
 /*rel*/  { R , R , S , S , S , R , S , R },
@@ -111,7 +113,7 @@ PrtableSymbolsEnum prtableTokenToSymbol(token *sToken, int iforass)
                 result = SYN_ERROR;
                 return SYMBOLSENUMERROR;
             }
-        case TYPE_LVINCULUM: 
+        case TYPE_LVINCULUM:
             if(iforass == 2){
                 return DOLLAR; //THE ENDER of expression
             }
@@ -357,7 +359,7 @@ DataTypeEnum checkTypeForRule(PrtableRulesEnum rule, StackElement *op1, StackEle
 }
 
 
-int countSymbols(Stack *stack) 
+int countSymbols(Stack *stack)
 {
     if (result != 0){
         return result;
@@ -383,8 +385,7 @@ int countSymbols(Stack *stack)
 
 
 DataTypeEnum reduceExpression(Stack *stack, bool in_function){
-    bool exptmpchoose =0;
-    string *expTmp2 = malloc(sizeof (string)); //expTmp1 and expTmp2 are used for storing expressions in stack
+    string *expTmp2 = malloc(sizeof (string));
     string *expTmp1 = malloc(sizeof (string));
 
     strInit(expTmp1);
@@ -423,24 +424,10 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
         op2 = op3->nextElement;
         op1 = op2->nextElement;
         rule = pickRule(op3, op2, op1);
-        isfirstreduction++; 
+        isfirstreduction++;
 
-        //which of expTmp1 and expTmp2 should we use to store the new NONTERMINAL 
-        if (strCmpConstStr((&op1->codename), "expTmp1") != 0 ||
-            strCmpConstStr((&op3->codename), "expTmp1") != 0 ||
-            strCmpConstStr((&op1->codename), "expTmp2") != 0 ||
-            strCmpConstStr((&op3->codename), "expTmp2") != 0)
-        {
-            if (nexttmpexp == 0) {
-                exptmpchoose = 0;
-                nexttmpexp = 1;
-            } else {
-                exptmpchoose = 1;
-                nexttmpexp = 0;
-            }
 
-        }
-        printon = 1;//print the expression
+        printon = 1;
     }else{
         result = SEM_COMPABILITY_ERROR;
         return DATATYPEENUM_ERROR;
@@ -453,7 +440,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
 
 
     if(printon == 1) { //printing the expression, lots of prints(checks rules, if in function, types of operands, which expTmp to use, etc.)
-        if (rule == RULE_ADDITION) { 
+        if (rule == RULE_ADDITION) {
            if(!in_function){
                 if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
                 {
@@ -575,7 +562,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                 }
                  if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_DOUBLE_NUMBER)
                 {
-                    
+
                     if(exptmpchoose == 0){
                         if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
                             strCmpConstStr((&op3->codename), "expTmp2") == 0))
@@ -597,7 +584,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             }
                     }
                 }
-                
+
             }
                 else{
                       if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
@@ -1220,7 +1207,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                         if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
                             strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
-                            strCmpConstStr((&op3->codename), "expTmp2") == 0))     
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
                             {
                                 printf("%s GF@&expTmp1 GF@&%s GF@&%s\n", DIV, op1->codename.str, op3->codename.str);
                             }
@@ -1228,14 +1215,14 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") != 0 ||
                             strCmpConstStr((&op3->codename), "expTmp2") != 0))
-                            {    
+                            {
                                 printf("%s GF@&expTmp1 int@%s int@%s\n", DIV, op1->codename.str, op3->codename.str);
                             }
                         else if((strCmpConstStr((&op1->codename), "expTmp1") != 0 &&
                             strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") == 0 &&
                             strCmpConstStr((&op3->codename), "expTmp2") == 0))
-                            {                     
+                            {
                                 printf("%s GF@&expTmp1 int@%s GF@&%s\n", DIV, op1->codename.str, op3->codename.str);
                             }
                         else if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
@@ -1244,12 +1231,12 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             strCmpConstStr((&op3->codename), "expTmp2") != 0))
                             {
                                 printf("%s GF@&expTmp1 GF@&%s int@%s\n", DIV, op1->codename.str, op3->codename.str);
-                            }                            
+                            }
                     }else{
                         if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
                             strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
-                            strCmpConstStr((&op3->codename), "expTmp2") == 0))     
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
                             {
                                 printf("%s GF@&expTmp2 GF@&%s GF@&%s\n", DIV, op1->codename.str, op3->codename.str);
                             }
@@ -1257,14 +1244,14 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") != 0 &&
                             strCmpConstStr((&op3->codename), "expTmp2") != 0))
-                            {    
+                            {
                                 printf("%s GF@&expTmp2 int@%s int@%s\n", DIV, op1->codename.str, op3->codename.str);
                             }
                         else if((strCmpConstStr((&op1->codename), "expTmp1") != 0 &&
                             strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
                             strCmpConstStr((&op3->codename), "expTmp2") == 0))
-                            {                     
+                            {
                                 printf("%s GF@&expTmp2 int@%s GF@&%s\n", DIV, op1->codename.str, op3->codename.str);
                             }
                         else if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
@@ -1273,10 +1260,10 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             strCmpConstStr((&op3->codename), "expTmp2") != 0))
                             {
                                 printf("%s GF@&expTmp2 GF@&%s int@%s\n", DIV, op1->codename.str, op3->codename.str);
-                            }                    
+                            }
                         }
                 }
-                
+
                 if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_VARIABLE)
                 {
                     if(exptmpchoose == 0){
@@ -1332,7 +1319,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             }
                     }
                 }
-                
+
             }
                 else{
                       if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
@@ -1341,7 +1328,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                         if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
                             strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
-                            strCmpConstStr((&op3->codename), "expTmp2") == 0))     
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
                             {
                                 printf("%s LF@&expTmp1 LF@&%s LF@&%s\n", DIV, op1->codename.str, op3->codename.str);
                             }
@@ -1349,14 +1336,14 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") != 0 ||
                             strCmpConstStr((&op3->codename), "expTmp2") != 0))
-                            {    
+                            {
                                 printf("%s LF@&expTmp1 int@%s int@%s\n", DIV, op1->codename.str, op3->codename.str);
                             }
                         else if((strCmpConstStr((&op1->codename), "expTmp1") != 0 &&
                             strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") == 0 &&
                             strCmpConstStr((&op3->codename), "expTmp2") == 0))
-                            {                     
+                            {
                                 printf("%s LF@&expTmp1 int@%s LF@&%s\n", DIV, op1->codename.str, op3->codename.str);
                             }
                         else if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
@@ -1365,12 +1352,12 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             strCmpConstStr((&op3->codename), "expTmp2") != 0))
                             {
                                 printf("%s LF@&expTmp1 GF@&%s int@%s\n", DIV, op1->codename.str, op3->codename.str);
-                            }                            
+                            }
                     }else{
                         if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
                             strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
-                            strCmpConstStr((&op3->codename), "expTmp2") == 0))     
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
                             {
                                 printf("%s LF@&expTmp2 LF@&%s LF@&%s\n", DIV, op1->codename.str, op3->codename.str);
                             }
@@ -1378,14 +1365,14 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") != 0 &&
                             strCmpConstStr((&op3->codename), "expTmp2") != 0))
-                            {    
+                            {
                                 printf("%s LF@&expTmp2 int@%s int@%s\n", DIV, op1->codename.str, op3->codename.str);
                             }
                         else if((strCmpConstStr((&op1->codename), "expTmp1") != 0 &&
                             strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
                             strCmpConstStr((&op3->codename), "expTmp2") == 0))
-                            {                     
+                            {
                                 printf("%s LF@&expTmp2 int@%s LF@&%s\n", DIV, op1->codename.str, op3->codename.str);
                             }
                         else if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
@@ -1394,10 +1381,10 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             strCmpConstStr((&op3->codename), "expTmp2") != 0))
                             {
                                 printf("%s LF@&expTmp2 LF@&%s int@%s\n", DIV, op1->codename.str, op3->codename.str);
-                            }                    
+                            }
                         }
                 }
-                
+
                 if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_VARIABLE)
                 {
                     if(exptmpchoose == 0){
@@ -1992,7 +1979,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                         if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
                             strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
-                            strCmpConstStr((&op3->codename), "expTmp2") == 0))     
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
                             {
                                 printf("%s GF@&expTmp1 GF@&%s GF@&%s\n", EQ, op1->codename.str, op3->codename.str);
                                 printf("%s GF@&expTmp1 GF@&%s GF@&%s\n", GT, op1->codename.str, op3->codename.str);
@@ -2001,7 +1988,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") != 0 ||
                             strCmpConstStr((&op3->codename), "expTmp2") != 0))
-                            {    
+                            {
                                 printf("%s GF@&expTmp1 int@%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
                                 printf("%s GF@&expTmp1 int@%s int@%s\n", GT, op1->codename.str, op3->codename.str);
                             }
@@ -2009,8 +1996,8 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") == 0 &&
                             strCmpConstStr((&op3->codename), "expTmp2") == 0))
-                            {    
-                                printf("%s GF@&expTmp1 int@%s GF@&%s\n", EQ, op1->codename.str, op3->codename.str);                 
+                            {
+                                printf("%s GF@&expTmp1 int@%s GF@&%s\n", EQ, op1->codename.str, op3->codename.str);
                                 printf("%s GF@&expTmp1 int@%s GF@&%s\n", GT, op1->codename.str, op3->codename.str);
                             }
                         else if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
@@ -2020,12 +2007,12 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             {
                                 printf("%s GF@&expTmp1 GF@&%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
                                 printf("%s GF@&expTmp1 GF@&%s int@%s\n", GT, op1->codename.str, op3->codename.str);
-                            }                            
+                            }
                     }else{
                         if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
                             strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
-                            strCmpConstStr((&op3->codename), "expTmp2") == 0))     
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
                             {
                                 printf("%s GF@&expTmp2 GF@&%s GF@&%s\n", EQ, op1->codename.str, op3->codename.str);
                                 printf("%s GF@&expTmp2 GF@&%s GF@&%s\n", GT, op1->codename.str, op3->codename.str);
@@ -2034,7 +2021,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") != 0 &&
                             strCmpConstStr((&op3->codename), "expTmp2") != 0))
-                            {    
+                            {
                                 printf("%s GF@&expTmp2 int@%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
                                 printf("%s GF@&expTmp2 int@%s int@%s\n", GT, op1->codename.str, op3->codename.str);
                             }
@@ -2042,8 +2029,8 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
                             strCmpConstStr((&op3->codename), "expTmp2") == 0))
-                            {   
-                                printf("%s GF@&expTmp2 int@%s GF@&%s\n", EQ, op1->codename.str, op3->codename.str);                  
+                            {
+                                printf("%s GF@&expTmp2 int@%s GF@&%s\n", EQ, op1->codename.str, op3->codename.str);
                                 printf("%s GF@&expTmp2 int@%s GF@&%s\n", GT, op1->codename.str, op3->codename.str);
                             }
                         else if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
@@ -2053,10 +2040,10 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             {
                                 printf("%s GF@&expTmp2 GF@&%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
                                 printf("%s GF@&expTmp2 GF@&%s int@%s\n", GT, op1->codename.str, op3->codename.str);
-                            }                    
+                            }
                         }
                 }
-                
+
                 if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_VARIABLE)
                 {
                     if(exptmpchoose == 0){
@@ -2122,7 +2109,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             }
                     }
                 }
-                
+
             }
                 else{
                       if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
@@ -2131,7 +2118,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                         if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
                             strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
-                            strCmpConstStr((&op3->codename), "expTmp2") == 0))     
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
                             {
                                 printf("%s LF@&expTmp1 LF@&%s LF@&%s\n", EQ, op1->codename.str, op3->codename.str);
                                 printf("%s LF@&expTmp1 LF@&%s LF@&%s\n", GT, op1->codename.str, op3->codename.str);
@@ -2140,16 +2127,16 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") != 0 ||
                             strCmpConstStr((&op3->codename), "expTmp2") != 0))
-                            {   
-                                printf("%s LF@&expTmp1 int@%s int@%s\n", EQ, op1->codename.str, op3->codename.str); 
+                            {
+                                printf("%s LF@&expTmp1 int@%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
                                 printf("%s LF@&expTmp1 int@%s int@%s\n", GT, op1->codename.str, op3->codename.str);
                             }
                         else if((strCmpConstStr((&op1->codename), "expTmp1") != 0 &&
                             strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") == 0 &&
                             strCmpConstStr((&op3->codename), "expTmp2") == 0))
-                            {       
-                                printf("%s LF@&expTmp1 int@%s LF@&%s\n", EQ, op1->codename.str, op3->codename.str);              
+                            {
+                                printf("%s LF@&expTmp1 int@%s LF@&%s\n", EQ, op1->codename.str, op3->codename.str);
                                 printf("%s LF@&expTmp1 int@%s LF@&%s\n", GT, op1->codename.str, op3->codename.str);
                             }
                         else if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
@@ -2159,12 +2146,12 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             {
                                 printf("%s LF@&expTmp1 GF@&%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
                                 printf("%s LF@&expTmp1 GF@&%s int@%s\n", GT, op1->codename.str, op3->codename.str);
-                            }                            
+                            }
                     }else{
                         if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
                             strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
-                            strCmpConstStr((&op3->codename), "expTmp2") == 0))     
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
                             {
                                 printf("%s LF@&expTmp2 LF@&%s LF@&%s\n", EQ, op1->codename.str, op3->codename.str);
                                 printf("%s LF@&expTmp2 LF@&%s LF@&%s\n", GT, op1->codename.str, op3->codename.str);
@@ -2173,7 +2160,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") != 0 &&
                             strCmpConstStr((&op3->codename), "expTmp2") != 0))
-                            {    
+                            {
                                 printf("%s LF@&expTmp2 int@%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
                                 printf("%s LF@&expTmp2 int@%s int@%s\n", GT, op1->codename.str, op3->codename.str);
                             }
@@ -2181,8 +2168,8 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
                             strCmpConstStr((&op3->codename), "expTmp2") == 0))
-                            {    
-                                printf("%s LF@&expTmp2 int@%s LF@&%s\n", EQ, op1->codename.str, op3->codename.str);                 
+                            {
+                                printf("%s LF@&expTmp2 int@%s LF@&%s\n", EQ, op1->codename.str, op3->codename.str);
                                 printf("%s LF@&expTmp2 int@%s LF@&%s\n", GT, op1->codename.str, op3->codename.str);
                             }
                         else if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
@@ -2192,10 +2179,10 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             {
                                 printf("%s LF@&expTmp2 LF@&%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
                                 printf("%s LF@&expTmp2 LF@&%s int@%s\n", GT, op1->codename.str, op3->codename.str);
-                            }                    
+                            }
                         }
                 }
-                
+
                 if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_VARIABLE)
                 {
                     if(exptmpchoose == 0){
@@ -2261,7 +2248,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             }
                     }
                 }
-                
+
         }
         }
 
@@ -2626,10 +2613,10 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             }
                             else{
                                 printf("%s GF@&expTmp12 string@&%s GF@&%s\n", CONCAT, op1->codename.str, (op3->codename.str)+1);
-                            } 
+                            }
                        }
                 }
-        }     
+        }
 
         else if(rule == RULE_NOT_EQUAL)
         {
@@ -3013,16 +3000,32 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
             return DATATYPEENUM_ERROR;
         }
     }
+    if (strCmpConstStr((&op1->codename), "expTmp1") != 0 ||
+        strCmpConstStr((&op3->codename), "expTmp1") != 0 ||
+        strCmpConstStr((&op1->codename), "expTmp2") != 0 ||
+        strCmpConstStr((&op3->codename), "expTmp2") != 0)
+    {
+        if (nexttmpexp == 0) {
+            exptmpchoose = 0;
+            nexttmpexp = 1;
+        } else {
+            exptmpchoose = 1;
+            nexttmpexp = 0;
+        }
+    }
     return resulttype;
 
 }
 
 
+//StackElement stacktop;
 
 int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_function, int iforass, bool* chooseexp){
     if (result != 0){
         return result;
     }
+    exptmpchoose = false;
+    nexttmpexp = true;
     DataTypeEnum finaltype;
 
 
@@ -3030,7 +3033,7 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
     int d = 0;
     bool done = 0;
     token tToken = *sToken;
-    int secondgothrough =0; //if we are in second go through of the function
+    int secondgothrough = 0;
 
 
     stackPush(stack, DOLLAR, DATATYPE_NONE, t, d);
@@ -3141,10 +3144,10 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
         }
 //112 vraci!!!!!!!! checknout rano
 
-        
-        // picks the action to be taken based off of cooridinates in prtable 
+
+        // picks the action to be taken based off of cooridinates in prtable
         PrtableActionsEnum action = prtable[coordstack][coordinput];
-       
+
         switch(action){
             case S:
                 stackInsertAfterTopTerminal(stack, SHIFT, DATATYPE_NONE, t,d);
@@ -3182,13 +3185,14 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
                 return result;
 
         }
+
         secondgothrough++;
     }
     if (stackGetTop(stack) != NULL) {
         stackDispose(stack);
     }
     *chooseexp = nexttmpexp; //switches between expTmp and expTmp2
-    return prtableDataTypeToTokenType(finaltype); 
+    return prtableDataTypeToTokenType(finaltype);
 }
    
 
