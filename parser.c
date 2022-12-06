@@ -1729,6 +1729,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                             return SEM_UNDEFINED_ERROR;
                         }
                     }
+                    printf("%s LF@&tmp%d\n", DEFVAR, unique);
                     printf("%s LF@&tmp%d GF@&%s\n",MOVE, unique, (sToken->content.str->str)+1);
                 }
                 else{
