@@ -790,24 +790,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                 }
             }
         }
-        /*
-        else if(rule == RULE_I)
-        {
-            if(!in_function){
-             if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_INT)
-            {
-            printf("%s GF@&%s int@%s\n", MOVE, (activeString->str)+1, op3->codename.str);
-            }
-            }
-            else
-            {
-                 if(op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_INT)
-                {
-                printf("%s GF@&%s int@%s\n", MOVE, (activeString->str)+1, op3->codename.str);
-                }
-            }
-        }
-        */
+
     }
     if((stackPop(stack, count + 1)) == 1){
         result = INT_ERROR;
