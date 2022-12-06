@@ -775,7 +775,7 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
                                 break;
                             case TYPE_DOUBLE_NUMBER:
                             f = string2double(&tToken);
-                                printf("%s LF@&expTmp float@%s\n", MOVE, f);
+                                printf("%s LF@&expTmp float@%a\n", MOVE, f);
                         }//CASE TYPE VARIABLE -> tTokentype = BVSSearchVariable
                         free(tToken.content.str);
                         if (tToken.type > 117 || tToken.type < 113) {
