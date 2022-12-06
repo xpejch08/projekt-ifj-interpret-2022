@@ -8,7 +8,6 @@
 #include "code_gen.h"
 
 #define PARAM_FUNCTION      800 // case for checking arguments in declaration of function
-#define PARAM_IF_WHILE      801  
 #define PARAM_WRITE         802 // case for checking parameters in bult-in function write 
 #define PARAM_READI         803 // case for checking parameters in bult-in function readi
 #define PARAM_READS         804 // case for checking parameters in bult-in function reads
@@ -80,8 +79,8 @@ int statlist(token *sToken, function_save *fun_id);
 
 /**
  * @brief recursive function that is called anytime we need to check the parametrs of a
- * functon or a keyword call, handles for example if condition
- * @param option option corresponding to what we need to handle for example PARAM_WHILE
+ * functon or a keyword call
+ * @param option option corresponding to what we need to handle for example PARAM_READS
  * @param repeat how many times we need to repeat a function, because it is called recursively
  * @param sToken token passed around through all functions that need to work with it
  * @param fun_id stores information about the function we are currently in
