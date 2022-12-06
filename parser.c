@@ -1541,6 +1541,14 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             }
 
             switch (sToken->type) {
+                case TYPE_RBRACKET:
+                if(repeat == 1){
+                printf("%s string@\n", WRITE);
+                return SUCCES;
+                }
+                else{
+                    return SYN_ERROR;
+                }
                 case TYPE_VARIABLE:
                     if(in_function){
                         if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
@@ -1917,18 +1925,8 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 return  result;
             }
             if(sToken->type == TYPE_VARIABLE || sToken->type == TYPE_INTEGER_NUMBER){
-                if(sToken->type == TYPE_VARIABLE){
-                    if(in_function){
-                        if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
-                            return SEM_UNDEFINED_ERROR;
-                        }
-                    }
-                    else{
-                        if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
-                            return SEM_UNDEFINED_ERROR;
-                        }
-                    }
-                }
+                if(sToken->type == TYPE_INTEGER_NUMBER){
+                
                 unique++;
                 printf("%s\n", CREATEFRAME);
                 printf("%s\n", PUSHFRAME);
@@ -1939,10 +1937,34 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 printf("%s LF@&tmp%d int@%s int@%d\n", GT,unique, sToken->content.str->str, 255);
                 printf("%s &chr%d bool@true LF@&tmp%d\n",JUMPIFEQ, unique, unique);
                 printf("%s GF@&%s int@%s\n", INT2CHAR,(activeString->str)+1, sToken->content.str->str);
-                printf("%s &chr_legit\n", JUMP);
+                
+                }
+                else{
+                     if(in_function){
+                        if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
+                        }
+                    }
+                    else{
+                        if(BVSSearch(mainTree->rootPtr, *sToken) == NULL){
+                            return SEM_UNDEFINED_ERROR;
+                        }
+                    }
+                unique++;
+                printf("%s\n", CREATEFRAME);
+                printf("%s\n", PUSHFRAME);
+                printf("%s LF@&tmp%d\n", DEFVAR, unique);
+                printf("%s LF@&tmp%d bool@false\n", MOVE, unique);
+                printf("%s LF@&%s\n", DEFVAR, (sToken->content.str->str)+1);
+                printf("%s LF@&%s GF@&%s\n", MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
+                printf("%s LF@&tmp%d LF@&%s int@%d\n", LT,unique, (sToken->content.str->str)+1, 0);
+                printf("%s &chr%d bool@true LF@&tmp%d\n",JUMPIFEQ, unique, unique);
+                printf("%s LF@&tmp%d LF@&%s int@%d\n", GT,unique, (sToken->content.str->str)+1, 255);
+                printf("%s &chr%d bool@true LF@&tmp%d\n",JUMPIFEQ, unique, unique);
+                printf("%s GF@&%s LF@&%s\n", INT2CHAR,(activeString->str)+1, (sToken->content.str->str)+1);        
+
+                }
                 printf("%s &chr%d\n", LABEL, unique);
-                printf("%s int@%d\n", EXIT, SEM_ERROR);
-                printf("%s &chr_legit\n", LABEL);
                 printf("%s\n", POPFRAME);
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
