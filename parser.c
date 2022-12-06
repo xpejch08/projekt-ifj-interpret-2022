@@ -1593,8 +1593,8 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             switch (sToken->type) {
                 case TYPE_RBRACKET:
                 if(repeat == 1){
-                printf("%s string@\n", WRITE);
-                return SUCCES;
+                    printf("%s string@\n", WRITE);
+                    return SUCCES;
                 }
                 else{
                     return SYN_ERROR;
@@ -1760,7 +1760,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             printf("%s LF@&cmp2\n", DEFVAR);
             printf("%s LF@&cmp2 bool@false\n", MOVE);
             if((result = getNextToken(sToken)) != SUCCES){
-                return  result;
+                return result;
             }
             unique++;
             int tmpCounter = unique;
@@ -2243,6 +2243,9 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         return SEM_COUNT_ERROR;
                     }
                     if (tmp_var->type == TYPE_STRING && fun_id->ret_value != KEYWORD_STRING) {
+                        return SEM_COUNT_ERROR;
+                    }
+                    if (tmp_var->type == TYPE_EXPONENT_NUMBER && fun_id->ret_value != KEYWORD_FLOAT) {
                         return SEM_COUNT_ERROR;
                     }
                     if (fun_id->ret_value == KEYWORD_STRING) {
