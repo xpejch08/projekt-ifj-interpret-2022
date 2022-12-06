@@ -31,6 +31,7 @@
 #define PUSH "PUSH"
 #define POP "POP"
 #define EQ "EQ"
+#define NOT "NOT"
 #define LT "LT"
 #define GT "GT"
 #define WRITE "WRITE"

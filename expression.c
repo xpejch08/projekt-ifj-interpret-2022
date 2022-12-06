@@ -585,6 +585,14 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                 {
                     printf("%s GF@&expTmp string@%s GF@&%s \n", EQ, op1->codename.str, (op3->codename.str)+1);
                 }
+                if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_DOUBLE_NUMBER)
+                {
+                    printf("%s GF@&expTmp bool@false\n", MOVE);
+                }
+                if(op1->orig == TYPE_DOUBLE_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
+                {
+                    printf("%s GF@&expTmp bool@false\n", MOVE);
+                }
             }
             else{
                   if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
@@ -611,11 +619,20 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                 {
                     printf("%s LF@&expTmp string@%s LF@&%s \n", EQ, op1->codename.str, (op3->codename.str)+1);
                 }
+                if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_DOUBLE_NUMBER)
+                {
+                    printf("%s LF@&expTmp bool@false\n", MOVE);
+                }
+                if(op1->orig == TYPE_DOUBLE_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
+                {
+                    printf("%s LF@&expTmp bool@false\n", MOVE);
+                }
             }
         }
         else if(rule == RULE_GREATER_THAN)
         {
             if(!in_function){
+                
                  if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
                 {
                     printf("%s GF@&expTmp int@%s int@%s\n", GT, op1->codename.str, op3->codename.str);
@@ -640,9 +657,17 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                 {
                     printf("%s GF@&expTmp string@%s GF@&%s \n", GT, op1->codename.str, (op3->codename.str)+1);
                 }
+                if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_DOUBLE_NUMBER)
+                {
+                    printf("%s GF@&expTmp bool@false\n", MOVE);
+                }
+                if(op1->orig == TYPE_DOUBLE_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
+                {
+                    printf("%s GF@&expTmp bool@false\n", MOVE);
+                }
             }
             else{
-                   if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
+                if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
                 {
                     printf("%s LF@&expTmp int@%s int@%s\n", GT, op1->codename.str, op3->codename.str);
                 }
@@ -665,6 +690,14 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                 if(op1->orig == TYPE_STRING && op3->orig == TYPE_VARIABLE)
                 {
                     printf("%s LF@&expTmp string@%s LF@&%s \n", GT, op1->codename.str, (op3->codename.str)+1);
+                }
+                if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_DOUBLE_NUMBER)
+                {
+                    printf("%s LF@&expTmp bool@false\n", MOVE);
+                }
+                if(op1->orig == TYPE_DOUBLE_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
+                {
+                    printf("%s LF@&expTmp bool@false\n", MOVE);
                 }
             }
         }
@@ -695,6 +728,14 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                 {
                     printf("%s GF@&expTmp string@%s GF@&%s \n", LT, op1->codename.str, (op3->codename.str)+1);
                 }
+                if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_DOUBLE_NUMBER)
+                {
+                    printf("%s GF@&expTmp bool@false\n", MOVE);
+                }
+                if(op1->orig == TYPE_DOUBLE_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
+                {
+                    printf("%s GF@&expTmp bool@false\n", MOVE);
+                }
             }
             else{
                    if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
@@ -720,6 +761,14 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                 if(op1->orig == TYPE_STRING && op3->orig == TYPE_VARIABLE)
                 {
                     printf("%s LF@&expTmp string@%s LF@&%s \n", LT, op1->codename.str, (op3->codename.str)+1);
+                }
+                if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_DOUBLE_NUMBER)
+                {
+                    printf("%s LF@&expTmp bool@false\n", MOVE);
+                }
+                if(op1->orig == TYPE_DOUBLE_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
+                {
+                    printf("%s LF@&expTmp bool@false\n", MOVE);
                 }
             }
         }
@@ -756,6 +805,14 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                     printf("%s GF@&expTmp GF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
                     printf("%s GF@&expTmp GF@&%s int@%s \n", GT, (op1->codename.str)+1, op3->codename.str);
                 }
+                if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_DOUBLE_NUMBER)
+                {
+                    printf("%s GF@&expTmp bool@false\n", MOVE);
+                }
+                if(op1->orig == TYPE_DOUBLE_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
+                {
+                    printf("%s GF@&expTmp bool@false\n", MOVE);
+                }
             }
             else{
                     if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
@@ -788,6 +845,157 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                     printf("%s LF@&expTmp LF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
                     printf("%s LF@&expTmp LF@&%s int@%s \n", GT, (op1->codename.str)+1, op3->codename.str);
                 }
+                if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_DOUBLE_NUMBER)
+                {
+                    printf("%s LF@&expTmp bool@false\n", MOVE);
+                }
+                if(op1->orig == TYPE_DOUBLE_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
+                {
+                    printf("%s LF@&expTmp bool@false\n", MOVE);
+                }
+            }
+
+        }
+         else if(rule == RULE_SMALLER_OR_EQUAL)
+        {
+            if(!in_function){
+                   if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
+                {
+                    printf("%s GF@&expTmp int@%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
+                    printf("%s GF@&expTmp int@%s int@%s\n", LT, op1->codename.str, op3->codename.str);
+                }
+                if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_VARIABLE)
+                {
+                    printf("%s GF@&expTmp int@%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                    printf("%s GF@&expTmp int@%s GF@&%s\n", LT, op1->codename.str, (op3->codename.str)+1);
+                }
+                if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_INTEGER_NUMBER)
+                {
+                    printf("%s GF@&expTmp GF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+                    printf("%s GF@&expTmp GF@&%s int@%s \n", LT, (op1->codename.str)+1, op3->codename.str);
+                }
+                if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_VARIABLE)
+                {
+                    printf("%s GF@&expTmp GF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+                    printf("%s GF@&expTmp GF@&%s int@%s \n", LT, (op1->codename.str)+1, op3->codename.str);
+                }
+                if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_STRING)
+                {
+                    printf("%s GF@&expTmp GF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+                    printf("%s GF@&expTmp GF@&%s int@%s \n", LT, (op1->codename.str)+1, op3->codename.str);
+                }
+                if(op1->orig == TYPE_STRING && op3->orig == TYPE_VARIABLE)
+                {
+                    printf("%s GF@&expTmp GF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+                    printf("%s GF@&expTmp GF@&%s int@%s \n", LT, (op1->codename.str)+1, op3->codename.str);
+                }
+                if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_DOUBLE_NUMBER)
+                {
+                    printf("%s GF@&expTmp bool@false\n", MOVE);
+                }
+                if(op1->orig == TYPE_DOUBLE_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
+                {
+                    printf("%s GF@&expTmp bool@false\n", MOVE);
+                }
+            }
+            else{
+                    if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
+                {
+                    printf("%s LF@&expTmp int@%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
+                    printf("%s LF@&expTmp int@%s int@%s\n", LT, op1->codename.str, op3->codename.str);
+                }
+                if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_VARIABLE)
+                {
+                    printf("%s LF@&expTmp int@%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                    printf("%s LF@&expTmp int@%s LF@&%s\n", LT, op1->codename.str, (op3->codename.str)+1);
+                }
+                if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_INTEGER_NUMBER)
+                {
+                    printf("%s LF@&expTmp LF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+                    printf("%s LF@&expTmp LF@&%s int@%s \n", LT, (op1->codename.str)+1, op3->codename.str);
+                }
+                if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_VARIABLE)
+                {
+                    printf("%s LF@&expTmp LF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+                    printf("%s LF@&expTmp LF@&%s int@%s \n", LT, (op1->codename.str)+1, op3->codename.str);
+                }
+                if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_STRING)
+                {
+                    printf("%s LF@&expTmp LF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+                    printf("%s LF@&expTmp LF@&%s int@%s \n", LT, (op1->codename.str)+1, op3->codename.str);
+                }
+                if(op1->orig == TYPE_STRING && op3->orig == TYPE_VARIABLE)
+                {
+                    printf("%s LF@&expTmp LF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+                    printf("%s LF@&expTmp LF@&%s int@%s \n", LT, (op1->codename.str)+1, op3->codename.str);
+                }
+                if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_DOUBLE_NUMBER)
+                {
+                    printf("%s LF@&expTmp bool@false\n", MOVE);
+                }
+                if(op1->orig == TYPE_DOUBLE_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
+                {
+                    printf("%s LF@&expTmp bool@false\n", MOVE);
+                }
+            }
+        }
+        else if(rule == RULE_NOT_EQUAL)
+        {
+            if(!in_function)
+            {
+                if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
+                {
+                    printf("%s GF@&expTmp int@%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
+                }
+                if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_VARIABLE)
+                {
+                    printf("%s GF@&expTmp int@%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                }
+                if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_INTEGER_NUMBER)
+                {
+                    printf("%s GF@&expTmp GF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+                }
+                if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_VARIABLE)
+                {
+                    printf("%s GF@&expTmp GF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+                }
+                if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_STRING)
+                {
+                    printf("%s GF@&expTmp GF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+                }
+                if(op1->orig == TYPE_STRING && op3->orig == TYPE_VARIABLE)
+                {
+                    printf("%s GF@&expTmp GF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+                }
+                printf("%s GF@&expTmp GF@&expTmp\n", NOT);
+
+            }
+            else{
+                if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
+                {
+                    printf("%s LF@&expTmp int@%s int@%s\n", EQ, op1->codename.str, op3->codename.str);
+                }
+                if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_VARIABLE)
+                {
+                    printf("%s LF@&expTmp int@%s LF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                }
+                if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_INTEGER_NUMBER)
+                {
+                    printf("%s LF@&expTmp LF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+                }
+                if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_VARIABLE)
+                {
+                    printf("%s LF@&expTmp LF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+                }
+                if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_STRING)
+                {
+                    printf("%s LF@&expTmp LF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+                }
+                if(op1->orig == TYPE_STRING && op3->orig == TYPE_VARIABLE)
+                {
+                    printf("%s LF@&expTmp LF@&%s int@%s \n", EQ, (op1->codename.str)+1, op3->codename.str);
+                }
+                printf("%s LF@&expTmp LF@&expTmp\n", NOT);
             }
         }
 
