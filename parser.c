@@ -1311,7 +1311,7 @@ int statlist(token *sToken, function_save *fun_id){
                 //we are not inside a function so we use mainTree
                 if(in_function == false) {
                     result = precedenceAction(mainTree, sToken, stack, in_function, 1, &nextexp);
-                    if(nextexp!=0){
+                    if(nextexp==0){
                         printf("%s GF@&%s GF@&expTmp1\n", MOVE, (activeString->str)+1);
                     }else{
                         printf("%s GF@&%s GF@&expTmp2\n", MOVE, (activeString->str)+1);
