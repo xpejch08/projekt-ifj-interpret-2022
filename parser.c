@@ -57,6 +57,23 @@ int incId = 1;
  * @param sToken active token passed around through all functions that need to work with it
  * @return returns 1 if content is an inbuilt function else returns 0
  */
+
+/**
+ * @brief function that changes token string from string to float
+ * @param sToken token containing the float number we want to change
+ * @return float number conatining the retyped string
+ */
+float string2float(token *sToken){
+    char *endptr;
+
+    string *str = malloc(sizeof (string));
+
+    strCpyStr(str, sToken->content.str);
+    float f = strtof(str->str, &endptr);
+    return f;
+}
+
+
 int checkIfBuiltIn(token *sToken){
     if (strCmpConstStr(sToken->content.str, "write") == 0){
         return 1;
