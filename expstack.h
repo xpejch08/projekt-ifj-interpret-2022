@@ -11,6 +11,7 @@ typedef struct StackElement {
     PrtableSymbolsEnum symbol;
 	DataTypeEnum datatype;
     string codename;
+    int orig;
 	struct StackElement *nextElement;
 } StackElement;
 
@@ -22,13 +23,13 @@ typedef struct{
 
 void stackInit(Stack *stack );
 
-int stackPush( Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum datatype, string codename );
+int stackPush( Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum datatype, string codename, int orig );
 
-int stackInsertAfterTopTerminal( Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum datatype, string codename );
+int stackInsertAfterTopTerminal( Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum datatype, string codename, int orig );
 
 int stackPop( Stack *stack, int n ); //kolikrat popnout
 
-StackElement* stackGetTopSymbol( Stack *stack );
+StackElement* stackGetTop( Stack *stack );
 
 StackElement* stackGetTopTerminal( Stack *stack );
 

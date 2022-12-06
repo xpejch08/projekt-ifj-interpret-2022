@@ -5,21 +5,22 @@
 #include "expression.h"
 
 void stackInit(Stack *stack) {
-	stack->top = NULL;
+    stack->top = NULL;
 }
-int stackPush(Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum datatype, string codename) {
-	StackElement *newElement = malloc(sizeof(StackElement));
+int stackPush(Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum datatype, string codename, int orig) {
+    StackElement *newElement = malloc(sizeof(StackElement));
 
-	if (newElement == NULL) {
-		return 1;
-	}
+    if (newElement == NULL) {
+        return 1;
+    }
 
     newElement->codename = codename;
-	newElement->symbol = symbol;
-	newElement->datatype = datatype;
+    newElement->symbol = symbol;
+    newElement->datatype = datatype;
     newElement->nextElement = stack->top;
-	stack->top = newElement;
-	return 0;
+    newElement->orig = orig;
+    stack->top = newElement;
+    return 0;
 }
 int stackPop(Stack *stack, int n) {
 
@@ -36,33 +37,33 @@ int stackPop(Stack *stack, int n) {
 
 StackElement* stackGetTopTerminal(Stack *stack) {
     StackElement *elem = stack->top;
-	while(elem != NULL){
-		if (elem->symbol < SHIFT){
-			return elem;
-		}
+    while(elem != NULL){
+        if (elem->symbol < SHIFT){
+            return elem;
+        }
         elem = elem->nextElement;
-	}
-	return NULL;
+    }
+    return NULL;
 }
 
-int stackInsertAfterTopTerminal(Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum datatype, string codename) {
+int stackInsertAfterTopTerminal(Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum datatype, string codename, int orig) {
 
-	StackElement *previousElement = NULL;
+    StackElement *previousElement = NULL;
     StackElement *elem = stack->top;
-	while(elem != NULL){
-		if (elem->symbol < SHIFT){
-			StackElement *newElement = malloc(sizeof( struct StackElement));
-			if (newElement == NULL) {
-				return 1;
-			}
-			newElement->symbol = symbol;
-			newElement->datatype = datatype;
+    while(elem != NULL){
+        if (elem->symbol < SHIFT){
+            StackElement *newElement = malloc(sizeof( struct StackElement));
+            if (newElement == NULL) {
+                return 1;
+            }
+            newElement->symbol = symbol;
+            newElement->datatype = datatype;
             newElement->codename = codename;
-			if (previousElement != NULL){
-				newElement->nextElement = previousElement->nextElement;
-				previousElement->nextElement = newElement;
-			}
-			else {
+            if (previousElement != NULL){
+                newElement->nextElement = previousElement->nextElement;
+                previousElement->nextElement = newElement;
+            }
+            else {
                 newElement->nextElement = stack->top;
                 stack->top = newElement;
             }
@@ -71,17 +72,17 @@ int stackInsertAfterTopTerminal(Stack *stack, PrtableSymbolsEnum symbol, DataTyp
         previousElement = elem;
         elem = elem->nextElement;
     }
-	return 1;
+    return 1;
 }
 
-StackElement *stackGetTopSymbol(Stack *stack) {
-	return stack->top;
+StackElement *stackGetTop(Stack *stack) {
+    return stack->top;
 }
 
 void stackDispose(Stack *stack){
 
-	while (stack->top != NULL){
-		stackPop(stack, 1);
-	}
+    while (stack->top != NULL){
+        stackPop(stack, 1);
+    }
 }
 
