@@ -2468,7 +2468,8 @@ int parse(void){
         }
         //.IFJcode22 has to be on top of every ifjcode22 code
         printf(".IFJcode22\n");
-        printf("%s GF@&expTmp\n", DEFVAR);
+        printf("%s GF@&expTmp1\n", DEFVAR);
+        printf("%s GF@&expTmp2\n", DEFVAR);
 
         //calling first statlist
         result = statlist(sToken, fun_id);
