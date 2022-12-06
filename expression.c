@@ -19,7 +19,7 @@ bool nexttmpexp;
 int result;
 
 //indexy prtable
-typedef enum
+/*typedef enum
 {
     INDEX_COMP,   // !==,=== :    comp
     INDEX_REL,    // <,>,<=,>= :  rel
@@ -30,7 +30,7 @@ typedef enum
     INDEX_DATA,   // i:           var, int, float, string
     INDEX_DOLLAR,  // $ :          $
     INDEXENUMERROR
-} PrtableIndexEnum;
+} PrtableIndexEnum;*/
 
 //akce prtable
 typedef enum

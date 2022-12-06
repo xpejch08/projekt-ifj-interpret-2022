@@ -37,12 +37,14 @@ void stackDispose( Stack *stack );
 
 PrtableSymbolsEnum prtableTokenToSymbol(token *sToken, int iforass);
 
-/*PrtableIndexEnum prtableSymbolToIndex(PrtableSymbolsEnum symb);
-PrtableRulesEnum pickRule(StackElementPtr op1, StackElementPtr op2, StackElementPtr op3);
-DataTypeEnum getDataType(token *sToken, TRoot *mainTree);
-int checkTypeForRule(PrtableRulesEnum rule, StackElementPtr op1, StackElementPtr op2, StackElementPtr op3, DataTypeEnum* resulttype);
-int countSymbols(Stack stack);
-int reduceExpression(Stack stack);*/
+int prtableDataTypeToTokenType(DataTypeEnum type);
+
+
+PrtableRulesEnum pickRule(StackElement *op1, StackElement *op2, StackElement *op3);
+DataTypeEnum getDataType(token *sToken, TRoot *someTree);
+DataTypeEnum checkTypeForRule(PrtableRulesEnum rule, StackElement *op1, StackElement *op2, StackElement *op3);
+int countSymbols(Stack *stack);
+DataTypeEnum reduceExpression(Stack *stack, bool in_function);
 
 int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_function,int iforass, bool* chooseexp);
 

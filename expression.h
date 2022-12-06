@@ -9,7 +9,7 @@
 #include "lexical.h"
 #include "symtable.h"
 
-//s
+
 
 typedef enum{
     EQUAL = 0,
@@ -62,5 +62,17 @@ typedef enum {
     RULE_ERROR,
     RULESENUMERROR
 } PrtableRulesEnum;
-
+typedef enum
+{
+    INDEX_COMP,   // !==,=== :    comp
+    INDEX_REL,    // <,>,<=,>= :  rel
+    INDEX_ADD_SUB_CON,// +,-, . : asc
+    INDEX_MUL_DIV,// *,/ :        md
+    INDEX_LEFTBR, // ( :          (
+    INDEX_RIGHTBR,// ) :          )
+    INDEX_DATA,   // i:           var, int, float, string
+    INDEX_DOLLAR,  // $ :          $
+    INDEXENUMERROR
+} PrtableIndexEnum;
+PrtableIndexEnum prtableSymbolToIndex(PrtableSymbolsEnum symb);
 #endif
