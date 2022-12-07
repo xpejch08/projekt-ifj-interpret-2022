@@ -491,7 +491,9 @@ int declrList(token *sToken, function_save *fun_id) {
                 printf("%s\n", CREATEFRAME);
                 paramError = parametrs(PARAM_FUNCTION_CALL, 1, sToken, fun_id);
                 printf("%s &%s\n", CALL, call_function_save->content->str);
+                if(afterAssign == true){
                 printf("%s GF@&%s TF@&return_val\n", MOVE, (activeString->str)+1);
+                }
 
                 //if parametrs returns SUCCESS we call next token and jump into another layer of function statlist
                 if(paramError == SUCCES){
@@ -2311,7 +2313,9 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     if(sToken->type == TYPE_RBRACKET){
                         if(call_function_save->return_type == KEYWORD_VOID)
                         {
+                            if(afterAssign == true){
                             printf("%s GF@&%s nil@nil\n", MOVE, (activeString->str)+1);
+                            }
                         }
                         // check if it has correct amount of parameters
                         if(repeat == call_function_save->parameters){
@@ -2342,7 +2346,9 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     if(sToken->type == TYPE_RBRACKET){
                         if(call_function_save->return_type == KEYWORD_VOID)
                         {
+                            if(afterAssign == true){
                             printf("%s GF@&%s nil@nil\n", MOVE, (activeString->str)+1);
+                            }
                         }
                         // checking if there is corrent amount of parameters
                         if(repeat == call_function_save->parameters){
@@ -2369,7 +2375,9 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     if(sToken->type == TYPE_RBRACKET){
                         if(call_function_save->return_type == KEYWORD_VOID)
                         {
+                            if(afterAssign == true){
                             printf("%s GF@&%s nil@nil\n", MOVE, (activeString->str)+1);
+                            }
                         }
                         // check if we have correct amount of parameters
                         if(repeat == call_function_save->parameters){
