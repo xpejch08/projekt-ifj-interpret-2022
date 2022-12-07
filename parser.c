@@ -2219,12 +2219,11 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     // saving variable to tmp
                     TNode *tmp_var = BVSSearch(insideFunction->rootPtr, *sToken);
                     // if function is void we get error
-                    if (fun_id->ret_value == KEYWORD_VOID && tmp_var->type != KEYWORD_VOID) {
-                        return SEM_RETURN_ERROR;
-                    }
-                    // check if function is undeclared
                     if (tmp_var == NULL) {
                         return SEM_UNDEFINED_ERROR;
+                    }
+                    if (fun_id->ret_value == KEYWORD_VOID && tmp_var->type != KEYWORD_VOID) {
+                        return SEM_RETURN_ERROR;
                     }
                     // check if function is in correct typr
                     if (tmp_var->type == TYPE_INTEGER_NUMBER && fun_id->ret_value != KEYWORD_INT) {
