@@ -1,10 +1,8 @@
 <?php
 declare(strict_types=1);
-$x = "dd";
-if($x === "A")
-{
-    write($x);
-}
-else{
-    write("NO\n");
+$a;
+if($a === null){
+write("ahoj\n");
+}else{
+
 }

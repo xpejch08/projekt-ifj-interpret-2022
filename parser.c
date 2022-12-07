@@ -925,6 +925,7 @@ int statlist(token *sToken, function_save *fun_id){
                     //if the variable isn't found we declare it by adding it into the tree
                     if (BVSSearch(mainTree->rootPtr, *sToken) == NULL) {
                         printf("%s GF@&%s\n", DEFVAR, (sToken->content.str->str) + 1);
+                        printf("%s GF@&%s nil@nil\n", MOVE, (sToken->content.str->str)+1);
                         mainTree->rootPtr = BVSInsert(mainTree->rootPtr, *sToken);
                     }
                 }
@@ -935,6 +936,7 @@ int statlist(token *sToken, function_save *fun_id){
                     if (BVSSearch(insideFunction->rootPtr, *sToken) == NULL) {
                         insideFunction->rootPtr = BVSInsert(insideFunction->rootPtr, *sToken);
                         printf("%s LF@&%s\n", DEFVAR, (sToken->content.str->str) + 1);
+                        printf("%s LF@&%s nil@nil\n", MOVE, (sToken->content.str->str)+1);
                     }
                 }
 
@@ -2455,7 +2457,9 @@ int parse(void){
         //.IFJcode22 has to be on top of every ifjcode22 code
         printf(".IFJcode22\n");
         printf("%s GF@&expTmp1\n", DEFVAR);
+        printf("%s GF@&expTmp1 nil@nil\n", MOVE);
         printf("%s GF@&expTmp2\n", DEFVAR);
+        printf("%s GF@&expTmp2 nil@nil\n", MOVE);
 
         //calling first statlist
         result = statlist(sToken, fun_id);
