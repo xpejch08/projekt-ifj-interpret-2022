@@ -1,4 +1,6 @@
 <?php
 declare(strict_types=1);
-$c = 22;
-$a = 3 + 4 * 5 + $c;
+function f(int $x) : void {
+    write($x, "\n");
+}
+f();

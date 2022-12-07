@@ -5,7 +5,7 @@
 #include "str.h"
 #include "stack.h"
 #include "symtable.h"
-#include "code_gen.h"
+
 
 #define PARAM_FUNCTION      800 // case for checking arguments in declaration of function
 #define PARAM_WRITE         802 // case for checking parameters in bult-in function write 
