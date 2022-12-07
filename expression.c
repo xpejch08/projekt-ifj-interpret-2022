@@ -1,3 +1,14 @@
+//////////////////////////////////////////////////////////////////
+//    @@ Implementace překladače imperativního jazyka IFJ22 @@  //
+//                                                              //
+//       author: xlogin22                                       //
+//                                                              //
+//                                                              //
+//                                                              //
+//                                                              //
+//////////////////////////////////////////////////////////////////
+
+
 // Precedencni syntaktická analýza výrazu
 
 #include <stdio.h>
