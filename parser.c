@@ -27,9 +27,6 @@ string* activeString;
 //stack used in precedence analysis
 Stack *stack;
 
-DLList _list;
-DLList *list = &_list;
-
 //bool global variable used for checking if we are inside a function or not
 bool in_function = false;
 
@@ -47,11 +44,11 @@ bool afterAssign = false;
 TNodef *call_function_save;
 
 bool nextexp = 0;
-int uniqueIf = 0;
-int uniqueWhile = 0;
-int condCounter = 0;
-int unique = 0;
-int whileCounter = 0;
+int uniqueIf = 0; //counter for IF statements
+int uniqueWhile = 0; // counter for WHILE statements
+int condCounter; // counter for multiple IF/ELSE statements
+int unique = 0; // global statement counter
+int whileCounter = 0; // counter for multiple WHILE statements
 
 
 /**
