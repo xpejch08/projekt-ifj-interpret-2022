@@ -487,14 +487,14 @@ int declrList(token *sToken, function_save *fun_id) {
                         strCpyStr(sToken->content.str, activeString);
                         TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
                         active->type = call_function_save->return_type;
-                        afterAssign = false;
+                        
                     }
                     else{
                         strClean(sToken->content.str);
                         strCpyStr(sToken->content.str, activeString);
                         TNode *active = BVSSearch(insideFunction->rootPtr, *sToken);
                         active->type = call_function_save->return_type;
-                        afterAssign = false;
+                        
                     }
                 }
 
@@ -510,6 +510,7 @@ int declrList(token *sToken, function_save *fun_id) {
                 printf("%s &%s\n", CALL, call_function_save->content->str);
                 if(afterAssign == true){
                 printf("%s GF@&%s TF@&return_val\n", MOVE, (activeString->str)+1);
+                afterAssign = false;
                 }
                 //if parametrs returns SUCCESS we call next token and jump into another layer of function statlist
                 if(paramError == SUCCES){
