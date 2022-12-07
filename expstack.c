@@ -38,9 +38,9 @@ int stackPop(Stack *stack, int n) {
         if (!stack->top){
             return 1;
         }
-        //StackElement *temp = stack->top;
+        
         stack->top = stack->top->nextElement;
-        //free(temp);
+        
     }
     return 0;
 }

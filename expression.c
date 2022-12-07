@@ -327,7 +327,7 @@ DataTypeEnum checkTypeForRule(PrtableRulesEnum rule, StackElement *op1, StackEle
         case RULE_GREATER_OR_EQUAL:
             return DATATYPE_INT;
         case CONCATENATE:
-            //RETYPE IF op1 or op3 NOT A STRING v codegenu? asi
+            
             return DATATYPE_STRING;
         case RULE_ADDITION:
         case RULE_SUBTRACTION:
@@ -339,14 +339,14 @@ DataTypeEnum checkTypeForRule(PrtableRulesEnum rule, StackElement *op1, StackEle
                 return DATATYPE_FLOAT;
             }
             if ( op1->datatype == DATATYPE_FLOAT && op3->datatype == DATATYPE_INT){
-                //INT2FLOAT op3
+                
                 return DATATYPE_FLOAT;
             }
             if ( op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_FLOAT){
                 return DATATYPE_FLOAT;
-                //INT2FLOAT op1
+                
             }
-            result = SEM_COMPABILITY_ERROR; //neco je undefined nebo string
+            result = SEM_COMPABILITY_ERROR; 
             return DATATYPEENUM_ERROR;
 
         case RULE_DIVIDE:
@@ -363,7 +363,7 @@ DataTypeEnum checkTypeForRule(PrtableRulesEnum rule, StackElement *op1, StackEle
             if ( op1->datatype == DATATYPE_INT && op3->datatype == DATATYPE_FLOAT){
                 return DATATYPE_FLOAT;
             }
-            result = SEM_COMPABILITY_ERROR; //neco je undefined nebo string
+            result = SEM_COMPABILITY_ERROR; 
             return DATATYPEENUM_ERROR;
 
 
