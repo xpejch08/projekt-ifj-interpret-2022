@@ -158,7 +158,7 @@ int prtableDataTypeToTokenType(DataTypeEnum type){
 }
 
 
-PrtableIndexEnum prtableSymbolToIndex(PrtableSymbolsEnum symb)
+PrtableCoordEnum prtableSymbolToCoord(PrtableSymbolsEnum symb)
 {
     if (result != 0){
         return INDEXENUMERROR;
@@ -3700,13 +3700,13 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
             return INT_ERROR;
         }
 
-        PrtableIndexEnum coordinput;
-        if((coordinput = prtableSymbolToIndex(inputsymbol)) == INDEXENUMERROR){
+        PrtableCoordEnum coordinput;
+        if((coordinput = prtableSymbolToCoord(inputsymbol)) == INDEXENUMERROR){
             stackDispose(stack);
             return result;
         }
-        PrtableIndexEnum coordstack;
-        if((coordstack = prtableSymbolToIndex(stacktopterminal->symbol)) == INDEXENUMERROR){
+        PrtableCoordEnum coordstack;
+        if((coordstack = prtableSymbolToCoord(stacktopterminal->symbol)) == INDEXENUMERROR){
             stackDispose(stack);
             return result;
         }
