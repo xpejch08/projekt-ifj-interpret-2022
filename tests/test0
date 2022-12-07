@@ -1,7 +1,10 @@
 <?php
 declare(strict_types=1);
-function f(int $x) : int {
-    write($x, "\n");
-    return 4;
+$x = "dd";
+if($x === "A")
+{
+    write($x);
 }
-$g = f(2);
+else{
+    write("NO\n");
+}

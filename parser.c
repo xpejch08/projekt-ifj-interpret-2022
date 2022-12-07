@@ -2325,7 +2325,10 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     if(sToken->type == TYPE_RBRACKET){
                         if(call_function_save->return_type == KEYWORD_VOID)
                         {
+                            if(afterAssign == true){
                             printf("%s GF@&%s nil@nil\n", MOVE, (activeString->str)+1);
+                            
+                            }
                         }
                         // check if it has correct amount of parameters
                         if(repeat == call_function_save->parameters){
@@ -2385,7 +2388,9 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     if(sToken->type == TYPE_RBRACKET){
                         if(call_function_save->return_type == KEYWORD_VOID)
                         {
+                            if(afterAssign == true){
                             printf("%s GF@&%s nil@nil\n", MOVE, (activeString->str)+1);
+                            }
                         }
                         // check if we have correct amount of parameters
                         if(repeat == call_function_save->parameters){
