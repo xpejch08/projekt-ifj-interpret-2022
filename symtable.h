@@ -6,6 +6,7 @@
 #include "stack.h"
 #include "errors.h"
 #include "str.h"
+#include <stdbool.h>
 
 /////////VARIABLE//////////
 typedef struct tnode{
@@ -13,6 +14,7 @@ typedef struct tnode{
     struct tnode *leftPtr;
     struct tnode *rightPtr;
     int type;
+    bool declared;
 }TNode;
 
 typedef struct troot{
@@ -75,7 +77,7 @@ void BVSFree(TRoot *SymTable);
  * @brief function function initializes new symtable for functions
  * @param SymTable pointer to main root
  */
-void BVSInit_function(TRootf *SymTable); 
+void BVSInit_function(TRootf *SymTable);
 /**
  * @brief function creates new function in SymTable
  * @param token token from which we put data
