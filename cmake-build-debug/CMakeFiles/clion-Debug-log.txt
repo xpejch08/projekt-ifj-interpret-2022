@@ -1,4 +1,19 @@
-/snap/clion/218/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/snap/clion/218/bin/ninja/linux/ninja -G Ninja -S /home/ondrej/IFJHUB/CLION -B /home/ondrej/IFJHUB/CLION/cmake-build-debug
+/snap/clion/218/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "Unix Makefiles" -S /home/stepan/CLionProjects/projekt-ifj-interpret-2022 -B /home/stepan/CLionProjects/projekt-ifj-interpret-2022/cmake-build-debug
+-- The C compiler identification is GNU 9.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
 -- Configuring done
--- Generating done
--- Build files have been written to: /home/ondrej/IFJHUB/CLION/cmake-build-debug
+CMake Error at CMakeLists.txt:8 (add_executable):
+  Cannot find source file:
+
+    semantic.c
+
+
+CMake Error at CMakeLists.txt:8 (add_executable):
+  No SOURCES given to target: testing2
+
+
+CMake Generate step failed.  Build files cannot be regenerated correctly.

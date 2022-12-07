@@ -16,8 +16,6 @@ add_executable(testing2
         main.c
         parser.c
         parser.h
-        semantic.c
-        semantic.h
         stack.c
         stack.h
         str.c
