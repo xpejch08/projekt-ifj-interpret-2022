@@ -48,6 +48,7 @@
 #define EXIT "EXIT"
 #define CALL "CALL"
 #define RETURN "RETURN"
+#define TYPE "TYPE"
 
 #define STRING_TYPE "string"
 #define INT_TYPE "int"
