@@ -3435,6 +3435,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
 
 int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_function, int iforass, bool* chooseexp){
     if (result != 0){
+        stackDispose(stack);
         return result;
     }
     exptmpchoose = false;
@@ -3549,11 +3550,13 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
                         }
                         free(tToken.content.str);
                         if ((tToken.type > 117 || tToken.type < 113) && tToken.type != 105) {
+                            stackDispose(stack);
                             return SYN_ERROR;
                         }
                         nexttmpexp = true;
                         *chooseexp = nexttmpexp;
                         exptmpchoose = false;
+                        stackDispose(stack);
                         return tToken.type;
 
                     } else {
@@ -3595,7 +3598,7 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
                                 break;
                             case TYPE_VARIABLE:
                                 result = BVSSearch(someTree->rootPtr,tToken)->type;
-                                bool searched = BVSSearch(someTree->rootPtr,tToken)->declared;
+                                bool searched = BVSSearch(someTree->rootPtr,tToken)->declared; //if searched variable is declared
                                 if(searched == false){
                                     exit(5);
                                 }
@@ -3636,11 +3639,13 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
                         }//CASE TYPE VARIABLE -> tTokentype = BVSSearchVariable
                         free(tToken.content.str);
                         if ((tToken.type > 117 || tToken.type < 113) && tToken.type != 105 ) {
+                            stackDispose(stack);
                             return SYN_ERROR;
                         }
                         nexttmpexp = true;
                         *chooseexp = nexttmpexp;
                         exptmpchoose = false;
+                        stackDispose(stack);
                         return tToken.type;
                     }
 
@@ -3651,24 +3656,29 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
 
         PrtableSymbolsEnum inputsymbol;
         if ((inputsymbol = prtableTokenToSymbol(sToken, iforass)) == SYMBOLSENUMERROR){
+            stackDispose(stack);
             return result;
         }
         DataTypeEnum inputdatatype;
         if((inputdatatype = getDataType(sToken, someTree)) == DATATYPEENUM_ERROR){
+            stackDispose(stack);
             return result;
         }
 
         StackElement *stacktopterminal;
         if((stacktopterminal = stackGetTopTerminal(stack)) == NULL ){
+            stackDispose(stack);
             return INT_ERROR;
         }
 
         PrtableIndexEnum coordinput;
         if((coordinput = prtableSymbolToIndex(inputsymbol)) == INDEXENUMERROR){
+            stackDispose(stack);
             return result;
         }
         PrtableIndexEnum coordstack;
         if((coordstack = prtableSymbolToIndex(stacktopterminal->symbol)) == INDEXENUMERROR){
+            stackDispose(stack);
             return result;
         }
 
@@ -3682,6 +3692,7 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
                 stackInsertShift(stack, SHIFT, DATATYPE_NONE);
                 stackPush(stack, inputsymbol, inputdatatype, *sToken->content.str, sToken->type);
                 if ((result = getNextToken(sToken)) != SUCCES) {
+                    stackDispose(stack);
                     return result;
                 }
                 break;
@@ -3689,6 +3700,7 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
             case E:
                 stackPush(stack, inputsymbol, inputdatatype, *sToken->content.str, sToken->type);
                 if ((result = getNextToken(sToken)) != SUCCES) {
+                    stackDispose(stack);
                     return result;
                 }
                 break;
@@ -3708,6 +3720,7 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
                 else {
                     stackDispose(stack);
                     result = SYN_ERROR;
+                    stackDispose(stack);
                     return result;
                 }
             case ACTIONSENUMERROR:

@@ -1753,7 +1753,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         }
                     }
                     else{
-                        TNode *tmp_var_substring = BVSSearch(insideFunction->rootPtr, *sToken);
+                        TNode *tmp_var_substring = BVSSearch(mainTree->rootPtr, *sToken);
                         if(tmp_var_substring == NULL){
                             return SEM_UNDEFINED_ERROR;
                         }
@@ -1821,7 +1821,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                                         }
                                     }
                                     else{
-                                        TNode *tmp_var_substring = BVSSearch(insideFunction->rootPtr, *sToken);
+                                        TNode *tmp_var_substring = BVSSearch(mainTree->rootPtr, *sToken);
                                         if(tmp_var_substring == NULL){
                                             return SEM_UNDEFINED_ERROR;
                                         }
@@ -1945,7 +1945,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         }
                     }
                     else{
-                        TNode *tmp_var_ord = BVSSearch(insideFunction->rootPtr, *sToken);
+                        TNode *tmp_var_ord = BVSSearch(mainTree->rootPtr, *sToken);
                         if(tmp_var_ord == NULL){
                             return SEM_UNDEFINED_ERROR;
                         }
@@ -1989,7 +1989,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         }
                     }
                     else{
-                        TNode *tmp_var_chr = BVSSearch(insideFunction->rootPtr, *sToken);
+                        TNode *tmp_var_chr = BVSSearch(mainTree->rootPtr, *sToken);
                         if(tmp_var_chr == NULL){
                             return SEM_UNDEFINED_ERROR;
                         }
