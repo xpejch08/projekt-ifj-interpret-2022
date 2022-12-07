@@ -50,7 +50,7 @@ int stackPush( Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum datatype, s
  * @param orig original value of symbol
  * @return  0 if insert was successful, 1 otherwise
  */
-int stackInsertAfterTopTerminal( Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum datatype, string codename, int orig );
+int stackInsertShift( Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum datatype);
 
 /**
  * @brief Pops element from stack

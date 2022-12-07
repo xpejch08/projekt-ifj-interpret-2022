@@ -46,7 +46,7 @@ StackElement* stackGetTopTerminal(Stack *stack) {
     return NULL;
 }
 
-int stackInsertAfterTopTerminal(Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum datatype, string codename, int orig) {
+int stackInsertShift(Stack *stack, PrtableSymbolsEnum symbol, DataTypeEnum datatype) {
 
     StackElement *previousElement = NULL;
     StackElement *elem = stack->top;
@@ -58,7 +58,7 @@ int stackInsertAfterTopTerminal(Stack *stack, PrtableSymbolsEnum symbol, DataTyp
             }
             newElement->symbol = symbol;
             newElement->datatype = datatype;
-            newElement->codename = codename;
+            
             if (previousElement != NULL){
                 newElement->nextElement = previousElement->nextElement;
                 previousElement->nextElement = newElement;

@@ -390,7 +390,7 @@ int countSymbols(Stack *stack)
     while (elem != NULL)
     {
         if(elem->symbol == SHIFT){
-            elem = elem->nextElement;
+            
             return count;
 
         }
@@ -425,22 +425,22 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
         return DATATYPEENUM_ERROR;
     }
     int isfirstreduction = 0; //for checking if its the first iteration of a 3 operator reduction
-    StackElement *op1 = NULL;
+    StackElement *op1 = NULL; 
     StackElement *op2 = NULL;
     StackElement *op3 = NULL;
     DataTypeEnum resulttype;
     PrtableRulesEnum rule = RULE_ERROR;
 
-    int count = countSymbols(stack);
+    
 
-    if(count == 1)
+    if(countSymbols(stack) == 1)
     {
 
         op1 = stack->top;
         rule = pickRule(op1, NULL, NULL); //should pick RULE_I, since it's just one operator
         printon = 0;
     }
-    else if(count == 3) {
+    else if(countSymbols(stack) == 3) { //picks the operands from stack in reverse (the correct) order and picks the rule
         op3 = stack->top;
         op2 = op3->nextElement;
         op1 = op2->nextElement;
@@ -3272,7 +3272,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
 
 
 
-    if((stackPop(stack, count + 1)) == 1){ //pop the operands of expression
+    if((stackPop(stack, countSymbols(stack) + 1)) == 1){ //pop the operands of expression
         result = INT_ERROR;
         return DATATYPEENUM_ERROR;
     }
@@ -3553,7 +3553,7 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
         if((coordstack = prtableSymbolToIndex(stacktopterminal->symbol)) == INDEXENUMERROR){
             return result;
         }
-//112 vraci!!!!!!!! checknout rano
+
 
 
         // picks the action to be taken based off of cooridinates in prtable
@@ -3561,7 +3561,7 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
 
         switch(action){
             case S:
-                stackInsertAfterTopTerminal(stack, SHIFT, DATATYPE_NONE, t,d);
+                stackInsertShift(stack, SHIFT, DATATYPE_NONE);
                 stackPush(stack, inputsymbol, inputdatatype, *sToken->content.str, sToken->type);
                 if ((result = getNextToken(sToken)) != SUCCES) {
                     return result;
