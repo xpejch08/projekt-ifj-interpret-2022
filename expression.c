@@ -2605,7 +2605,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             printf("%s GF@&expTmp1 GF@&%s GF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
                         }
                         else{
-                            printf("%s GF@&expTmp1 int@%s GF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            printf("%s GF@&expTmp1 GF@&%s int@%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
                         }
                     }
                     else{
