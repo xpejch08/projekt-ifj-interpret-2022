@@ -1969,8 +1969,14 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 else{
                     printf("%s\n", CREATEFRAME);
                     printf("%s\n", PUSHFRAME);
-
+                    printf("%s GF@&ordTmp\n", DEFVAR);
+                    printf("%s GF@&ordTmp string@%s\n", STRLEN, sToken->content.str->str);
+                    printf("%s &error GF@&ordTmp int@0\n", JUMPIFEQ);
                     printf("%s GF@&%s string@%s int@%d\n",STRI2INT, (activeString->str)+1, sToken->content.str->str, 0);
+                    printf("%s &legit\n", JUMP);
+                    printf("%s &error\n", LABEL);
+                    printf("%s GF@&%s int@0\n", MOVE, (activeString->str)+1);
+                    printf("%s &legit\n", LABEL);
                     printf("%s\n",POPFRAME);
                 }
 
