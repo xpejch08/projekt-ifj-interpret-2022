@@ -974,14 +974,15 @@ int statlist(token *sToken, function_save *fun_id){
                 //we can end parse only if we get semicolon else it is a SYNTAX ERROR
                 if (sToken->type == TYPE_SEMICOLON) {
                     canParseEnd = true;
+                    result = statlist(sToken, fun_id);
+                    if (result != SUCCES) {
+                        return result;
+                    }
+                    return SUCCES;
                 }
-
-                //carrying on by calling statlist
-                result = statlist(sToken, fun_id);
-                if (result != SUCCES) {
-                    return result;
+                else{
+                    return SYN_ERROR;
                 }
-                return SUCCES;
             }
 
                 //the variable we got is after an assign token -> we call precedence analysis
