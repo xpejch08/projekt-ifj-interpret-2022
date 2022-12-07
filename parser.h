@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////
 //    @@ Implementace překladače imperativního jazyka IFJ22 @@  //
 //                                                              //
-//       author: xpejch08                                       //
+//       author: xpejch08,xniesl00,xsocha03                     //
 //                                                              //
 //                                                              //
 //                                                              //

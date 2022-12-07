@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////
 //    @@ Implementace překladače imperativního jazyka IFJ22 @@  //
 //                                                              //
-//       author: xlogin22                                       //
+//       author: xlogin22, xniesl00                             //
 //                                                              //
 //                                                              //
 //                                                              //
