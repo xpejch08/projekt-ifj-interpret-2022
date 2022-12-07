@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////////////
 //    @@ Implementace překladače imperativního jazyka IFJ22 @@  //
 //                                                              //
-//       author: xlogin55                                       //
-//                                                              //
+//       author: xceska07 (Ondřej Češka)                        //
+//       author: xniesl00 (Adam Nieslanik)                      //
 //                                                              //
 //                                                              //
 //                                                              //

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////////////
 //    @@ Implementace překladače imperativního jazyka IFJ22 @@  //
 //                                                              //
-//       author: xpejch08                                       //
-//                                                              //
+//       author: xpejch08 (Štěpán Pejchar)                      //
+//       author xsocha03 (Marcin Sochacki)                      //
 //                                                              //
 //                                                              //
 //                                                              //
@@ -13,7 +13,6 @@
 
 #include "parser.h"
 #include "lexical.h"
-#include "stack.h"
 #include "errors.h"
 #include "str.h"
 #include <stdbool.h>

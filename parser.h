@@ -1,9 +1,9 @@
 //////////////////////////////////////////////////////////////////
 //    @@ Implementace překladače imperativního jazyka IFJ22 @@  //
 //                                                              //
-//       author: xpejch08,xniesl00,xsocha03                     //
-//                                                              //
-//                                                              //
+//       author: xpejch08 (Štěpán Pejchar)                      //
+//       author: xsocha00 (Marcin Sochacki)                     //
+//       author: xniesl00 (Adam Nieslanik)                      //
 //                                                              //
 //                                                              //
 //////////////////////////////////////////////////////////////////
@@ -13,7 +13,6 @@
 
 #include "lexical.h"
 #include "str.h"
-#include "stack.h"
 #include "symtable.h"
 
 

@@ -1,6 +1,6 @@
-OBJS	= main.o lexical.o parser.o expression.o expstack.o stack.o str.o symtable.o
-SOURCE	= main.c lexical.c parser.c expression.c expstack.c stack.c str.c symtable.c
-HEADER	= errors.h lexical.h parser.h expression.h expstack.h stack.h str.h symtable.h
+OBJS	= main.o lexical.o parser.o expression.o expstack.o str.o symtable.o
+SOURCE	= main.c lexical.c parser.c expression.c expstack.c str.c symtable.c
+HEADER	= errors.h lexical.h parser.h expression.h expstack.h str.h symtable.h
 OUT	= interpret
 CC	 = gcc
 FLAGS	 = -g -c -Wall
@@ -23,9 +23,6 @@ expression.o: expression.c
 
 expstack.o: expstack.c
 	$(CC) $(FLAGS) expstack.c -std=c99
-
-stack.o: stack.c
-	$(CC) $(FLAGS) stack.c -std=c99
 
 str.o: str.c
 	$(CC) $(FLAGS) str.c -std=c99
