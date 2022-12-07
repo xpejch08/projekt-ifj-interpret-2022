@@ -21,7 +21,7 @@ typedef struct tnode{
 }TNode;
 
 /**
- * TRoot is symtable
+ * TRoot is symtable for variables
  */
 typedef struct troot{
     TNode *rootPtr; // pointer on specific tree
@@ -29,14 +29,19 @@ typedef struct troot{
 
 ///////////////////////////
 /////////FUNCTION//////////
+/**
+ * TNodef is a structure containing the important information about function
+ */
 typedef struct tnodef{
-    string *content;
-    struct tnodef *leftPtr;
-    struct tnodef *rightPtr;
-    int parameters;
-    int return_type;
+    string *content; // function name
+    struct tnodef *leftPtr; // pointer on its left child in BST
+    struct tnodef *rightPtr; // pointer on its right pointer in BST
+    int parameters; // number of parameters
+    int return_type; // what type function should return
 }TNodef;
-
+/**
+ * TRootf is symtable for functions
+ */
 typedef struct trootf{
     TNodef *rootPtr;
 }TRootf;

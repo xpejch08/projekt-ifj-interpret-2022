@@ -15,18 +15,23 @@ void BVSInit(TRoot *SymTable){
 
 TNode *BVSInsert(TNode *rootPtr, token token){
     TNode *tmp = rootPtr;
+    // allocating node and string struct
     TNode *insert = malloc((sizeof (TNode)));
     string *insertStr = malloc(sizeof (string));
     insert->leftPtr = NULL;
     insert->rightPtr = NULL;
+    // setting variable name
     insert->content = insertStr;
     strCpyStr(insert->content, token.content.str);
+    // variable is not defined yet
     insert->type = KEYWORD_NULL;
+    // if rootptr didnt exist before
     if(!tmp){
         rootPtr = insert;
         return rootPtr;
     }
     else {
+        // inserting node on right place in BST
         if ((strCmpStr(token.content.str, rootPtr->content)) < 0) {
             rootPtr->leftPtr =  BVSInsert(rootPtr->leftPtr, token);
             return rootPtr;
@@ -40,16 +45,21 @@ TNode *BVSInsert(TNode *rootPtr, token token){
 
 
 TNode *BVSSearch(TNode *rootPtr, token token){
+    // variable not found
     if(rootPtr == NULL){
         return NULL;
     }
+    // search based on content ASCII value
     else{
+        // variable found   
         if((strCmpStr(token.content.str, rootPtr->content)) == 0){
             return rootPtr;
         }
+        // ASCII value is smaller we go to left child
         else if((strCmpStr(token.content.str, rootPtr->content)) < 0){
             return BVSSearch(rootPtr->leftPtr, token);
         }
+        // ASCII value is bigger so we go to right child
         else if((strCmpStr(token.content.str, rootPtr->content)) > 0){
             return BVSSearch(rootPtr->rightPtr, token);
         }
@@ -58,6 +68,7 @@ TNode *BVSSearch(TNode *rootPtr, token token){
 }
 
 void BVSDisposeNode(TNode *rootPtr){
+    // disposing recursively evry node
     if(rootPtr != NULL){
         BVSDisposeNode(rootPtr->leftPtr);
         BVSDisposeNode(rootPtr->rightPtr);
@@ -66,6 +77,7 @@ void BVSDisposeNode(TNode *rootPtr){
 }
 
 void BVSFreeNode(TNode *rootPtr){
+    // free recursively every node
     if(rootPtr != NULL){
         BVSFreeNode(rootPtr->leftPtr);
         BVSFreeNode(rootPtr->rightPtr);
