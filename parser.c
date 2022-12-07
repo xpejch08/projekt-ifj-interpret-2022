@@ -2538,9 +2538,5 @@ int parse(void){
         }
     }
 
-    //BVSFree(mainTree);
-    //BVSFree(insideFunction);
-    //BVSFree_function(functionNames);
-    //todo freeToken() funtcion
     return result;
 }
