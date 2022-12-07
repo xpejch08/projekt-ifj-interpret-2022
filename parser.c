@@ -1444,7 +1444,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     printf("%s LF@&param%d\n", DEFVAR, repeat);
                     printf("%s LF@&param%d LF@&fun_param%d\n", MOVE, repeat, repeat);
                     // inserting variable to tree with variables inside function
-                    BVSInsert(insideFunction->rootPtr, *sToken);
+                   insideFunction->rootPtr =  BVSInsert(insideFunction->rootPtr, *sToken);
                     // finding variable in tree and saving into temporary pointer
                     TNode *argument_insert = BVSSearch(insideFunction->rootPtr, *sToken);
                     // setting variable type
