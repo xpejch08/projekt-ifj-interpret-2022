@@ -3344,7 +3344,18 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
                                 }
                                 else{
                                     printf("%s LF@&expTmp2 float@%a\n", MOVE, f);
+                                }
+                                break;
+                            case TYPE_EXPONENT_NUMBER:
+                                f = string2double(&tToken);
+                                if(nexttmpexp==0){
+
+                                    printf("%s GF@&expTmp1 float@%a\n", MOVE, f);
+                                }
+                                else{
+                                    printf("%s GF@&expTmp2 float@%a\n", MOVE, f);
                                 } 
+                                
                         }//CASE TYPE VARIABLE -> tTokentype = BVSSearchVariable
                         free(tToken.content.str);
                         if (tToken.type > 117 || tToken.type < 113) {

@@ -43,6 +43,7 @@ bool returnCount = false;
 //if true calls precedenceAction -> main function of precedence analysis
 bool afterAssign = false;
 
+// global variable used for storing pointer on function in tree that we are going to work with 
 TNodef *call_function_save;
 
 bool nextexp = 0;
@@ -1443,7 +1444,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     printf("%s LF@&%s\n", DEFVAR, (sToken->content.str->str)+1);
                     printf("%s LF@&%s LF@&fun_param%d\n", MOVE, (sToken->content.str->str)+1, repeat);
                     // inserting variable to tree with variables inside function
-                    BVSInsert(insideFunction->rootPtr, *sToken);
+                   insideFunction->rootPtr =  BVSInsert(insideFunction->rootPtr, *sToken);
                     // finding variable in tree and saving into temporary pointer
                     TNode *argument_insert = BVSSearch(insideFunction->rootPtr, *sToken);
                     // setting variable type
