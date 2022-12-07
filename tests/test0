@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
-$a;
-if($a === null){
-write("ahoj\n");
-}else{
-
+$x = readi();
+if($x !== null) {
+    $y = $x + 1;
+    write($y);
+} else {
+    write("It is null!\n");
 }

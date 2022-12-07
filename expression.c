@@ -808,15 +808,16 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                 }
                 if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_DOUBLE_NUMBER)
                 {
-
                     if(exptmpchoose == 0){
                         if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
                             strCmpConstStr((&op3->codename), "expTmp2") == 0))
                         {
+    
                             printf("%s GF@&expTmp1 GF@&%s GF@&%s\n", ADD, (op1->codename.str)+1, op3->codename.str);
                         }
                         else{
-                            printf("%s GF@&expTmp1 float@%s GF@&%s\n", ADD, (op1->codename.str)+1, op3->codename.str);
+                            double f = string2doubleExp(op3->codename);
+                            printf("%s GF@&expTmp1 GF@&%s float@&%a\n", ADD, (op1->codename.str)+1, f);
                         }
                     }
                     else{
@@ -826,7 +827,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             printf("%s GF@&expTmp2 GF@&%s GF@&%s\n", ADD, (op1->codename.str)+1, op3->codename.str);
                         }
                         else{
-                            printf("%s GF@&expTmp2 int@%s GF@&%s\n", ADD, (op1->codename.str)+1, op3->codename.str);
+                            printf("%s GF@&expTmp2 GF@&%s GF@&%s\n", ADD, (op1->codename.str)+1, op3->codename.str);
                         }
                     }
                 }
@@ -3082,6 +3083,76 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                     }
 
                 }
+                   if(op1->orig == TYPE_VARIABLE && op3->orig == KEYWORD_NULL)
+                    {
+                        if(exptmpchoose == 0){
+                            if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                                strCmpConstStr((&op1->codename), "expTmp2") == 0))
+                            {
+                                printf("%s GF@&expTmp1 GF@&%s nil@nil\n", EQ, op1->codename.str);
+                            }
+                            else{
+                            printf("%s GF@&expTmp1 GF@&%s nil@nil\n", EQ, (op1->codename.str)+1);
+                            }
+                        }
+                        else{
+                            if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                                strCmpConstStr((&op1->codename), "expTmp2") == 0))
+                            {
+                                printf("%s GF@&expTmp2 GF@&%s nil@nil\n", EQ, op1->codename.str);
+                            }
+                            else{
+                            printf("%s GF@&expTmp2 GF@&%s nil@nil\n", EQ, (op1->codename.str)+1);
+                            }
+                        }
+                    }
+
+                     if(op1->orig == KEYWORD_NULL && op3->orig == TYPE_VARIABLE)
+                    {
+                        if(exptmpchoose == 0){
+                            if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                                strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {
+                                printf("%s GF@&expTmp1 nil@nil GF@&%s\n", EQ, op3->codename.str);
+                            }
+                            else{
+                            printf("%s GF@&expTmp1 nil@nil GF@&%s\n", EQ, (op1->codename.str)+1);
+                            }
+                        }
+                        else{
+                             if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                                strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {
+                                printf("%s GF@&expTmp2 nil@nil GF@&%s\n", EQ, op3->codename.str);
+                            }
+                            else{
+                            printf("%s GF@&expTmp2 nil@nil GF@&%s\n", EQ, (op1->codename.str)+1);
+                            }
+                        }
+                    }
+                     if(op1->orig == TYPE_VARIABLE && op3->orig == KEYWORD_NULL)
+                    {
+                        if(exptmpchoose == 0){
+                            if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                                strCmpConstStr((&op1->codename), "expTmp2") == 0))
+                            {
+                                printf("%s GF@&expTmp1 GF@&%s nil@nil\n", EQ, op1->codename.str);
+                            }
+                            else{
+                            printf("%s GF@&expTmp1 GF@&%s nil@nil\n", EQ, (op1->codename.str)+1);
+                            }
+                        }
+                        else{
+                            if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                                strCmpConstStr((&op1->codename), "expTmp2") == 0))
+                            {
+                                printf("%s GF@&expTmp2 GF@&%s nil@nil\n", EQ, op1->codename.str);
+                            }
+                            else{
+                            printf("%s GF@&expTmp2 GF@&%s nil@nil\n", EQ, (op1->codename.str)+1);
+                            }
+                        }
+                    }
             }
             else{
                 if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
@@ -3249,6 +3320,53 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                         }
                     }
                 }
+                   if(op1->orig == TYPE_VARIABLE && op3->orig == KEYWORD_NULL)
+                    {
+                        if(exptmpchoose == 0){
+                            if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                                strCmpConstStr((&op1->codename), "expTmp2") == 0))
+                            {
+                                printf("%s LF@&expTmp1 LF@&%s nil@nil\n", EQ, op1->codename.str);
+                            }
+                            else{
+                            printf("%s LF@&expTmp1 LF@&%s nil@nil\n", EQ, (op1->codename.str)+1);
+                            }
+                        }
+                        else{
+                            if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                                strCmpConstStr((&op1->codename), "expTmp2") == 0))
+                            {
+                                printf("%s LF@&expTmp2 LF@&%s nil@nil\n", EQ, op1->codename.str);
+                            }
+                            else{
+                            printf("%s LF@&expTmp2 LF@&%s nil@nil\n", EQ, (op1->codename.str)+1);
+                            }
+                        }
+                    }
+
+                     if(op1->orig == KEYWORD_NULL && op3->orig == TYPE_VARIABLE)
+                    {
+                        if(exptmpchoose == 0){
+                            if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                                strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {
+                                printf("%s LF@&expTmp1 nil@nil LF@&%s\n", EQ, op3->codename.str);
+                            }
+                            else{
+                            printf("%s LF@&expTmp1 nil@nil LF@&%s\n", EQ, (op1->codename.str)+1);
+                            }
+                        }
+                        else{
+                             if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                                strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {
+                                printf("%s LF@&expTmp2 nil@nil LF@&%s\n", EQ, op3->codename.str);
+                            }
+                            else{
+                            printf("%s LF@&expTmp2 nil@nil LF@&%s\n", EQ, (op1->codename.str)+1);
+                            }
+                        }
+                    }
             }
             if(!in_function){
                 if(exptmpchoose == 0){
