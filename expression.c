@@ -3681,6 +3681,205 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
                 }
                 free(tToken.content.str);
             }
+        }else{///////////////////////////////
+            if(secondgothrough == 1) {//saves the actual token to use later if we need to assign a simple value;
+
+                tToken.content.str = malloc(sizeof(string));
+                strCpyStr(tToken.content.str, sToken->content.str);
+            }
+            if(secondgothrough == 2) { //if we are in a third go through of while or if condition and token is RBRACKET
+                double f;
+                if(sToken->type == TYPE_RBRACKET){ 
+                    if (!in_function) {
+                        switch (tToken.type) {
+                            case TYPE_INTEGER_NUMBER:
+                                if(nexttmpexp==0){
+                                    printf("%s GF@&expTmp1 int@%s\n", MOVE, tToken.content.str->str);
+                                }
+                                else{
+                                    printf("%s GF@&expTmp2 int@%s\n", MOVE, tToken.content.str->str);
+                                }
+                                break;
+                            case TYPE_STRING:
+                                if(nexttmpexp==0){
+                                    printf("%s GF@&expTmp1 string@%s\n", MOVE, tToken.content.str->str);
+                                }
+                                else{
+                                    printf("%s GF@&expTmp2 string@%s\n", MOVE, tToken.content.str->str);
+                                }
+                                break;
+                            case TYPE_DOUBLE_NUMBER:
+                                f = string2double(&tToken);
+                                if(nexttmpexp==0){
+                                    printf("%s GF@&expTmp1 float@%a\n", MOVE, f);
+                                }
+                                else{
+                                    printf("%s GF@&expTmp2 float@%a\n", MOVE, f);
+                                }
+                                break;
+                            case TYPE_EXPONENT_NUMBER:
+                                f = string2double(&tToken);
+                                if(nexttmpexp==0){
+
+                                    printf("%s GF@&expTmp1 float@%a\n", MOVE, f);
+                                }
+                                else{
+                                    printf("%s GF@&expTmp2 float@%a\n", MOVE, f);
+                                }
+                                break;
+                            case KEYWORD_NULL:
+                                if(nexttmpexp==0){
+                                    printf("%s GF@&expTmp1 nil@nil\n", MOVE);
+                                }
+                                else{
+                                    printf("%s GF@&expTmp2 nil@nil\n", MOVE);
+                                }
+                                break;
+                            case TYPE_VARIABLE:
+
+                                result = BVSSearch(someTree->rootPtr,tToken)->type;
+                                bool searched = BVSSearch(someTree->rootPtr,tToken)->declared;
+                                if(searched == false){
+                                    exit(5);
+                                }
+                                if (result == TYPE_INTEGER_NUMBER){
+                                    if(nexttmpexp==0){
+                                        printf("%s GF@&expTmp1 int@%s\n", MOVE, tToken.content.str->str);
+                                    }
+                                    else{
+                                        printf("%s GF@&expTmp2 int@%s\n", MOVE, tToken.content.str->str);
+                                    }
+                                }
+                                if (result == TYPE_STRING){
+                                    if(nexttmpexp==0){
+                                        printf("%s GF@&expTmp1 string@%s\n", MOVE, tToken.content.str->str);
+                                    }
+                                    else{
+                                        printf("%s GF@&expTmp2 string@%s\n", MOVE, tToken.content.str->str);
+                                    }
+                                }
+                                if (result == TYPE_EXPONENT_NUMBER || result == TYPE_DOUBLE_NUMBER){
+                                    f = string2double(&tToken);
+                                    if(nexttmpexp==0){
+                                        printf("%s GF@&expTmp1 float@%a\n", MOVE, f);
+                                    }
+                                    else{
+                                        printf("%s GF@&expTmp2 float@%a\n", MOVE, f);
+                                    }
+                                }
+                                if(result == KEYWORD_NULL){
+                                    if(nexttmpexp==0){
+                                        printf("%s GF@&expTmp1 nil@nil\n", MOVE);
+                                    }
+                                    else{
+                                        printf("%s GF@&expTmp2 nil@nil\n", MOVE);
+                                    }
+                                }
+                        }
+                        free(tToken.content.str);
+                        if ((tToken.type > 117 || tToken.type < 113) && tToken.type != 105) {
+                            stackDispose(stack);
+                            return SYN_ERROR;
+                        }
+                        nexttmpexp = true;
+                        *chooseexp = nexttmpexp;
+                        exptmpchoose = false;
+                        stackDispose(stack);
+                        return tToken.type;
+
+                    } else {
+                        switch (tToken.type) {
+                            case TYPE_INTEGER_NUMBER:
+                                if(nexttmpexp==0){
+                                    printf("%s LF@&expTmp1 int@%s\n", MOVE, tToken.content.str->str);
+                                }
+                                else{
+                                    printf("%s LF@&expTmp2 int@%s\n", MOVE, tToken.content.str->str);
+                                }
+                                break;
+                            case TYPE_STRING:
+                                if(nexttmpexp==0){
+                                    printf("%s LF@&expTmp1 string@%s\n", MOVE, tToken.content.str->str);
+                                }
+                                else{
+                                    printf("%s LF@&expTmp2 string@%s\n", MOVE, tToken.content.str->str);
+                                }
+                                break;
+                            case TYPE_DOUBLE_NUMBER:
+                            case TYPE_EXPONENT_NUMBER:
+                                f = string2double(&tToken);
+                                if(nexttmpexp==0){
+
+                                    printf("%s LF@&expTmp1 float@%a\n", MOVE, f);
+                                }
+                                else{
+                                    printf("%s LF@&expTmp2 float@%a\n", MOVE, f);
+                                }
+                                break;
+                            case KEYWORD_NULL:
+                                if(nexttmpexp==0){
+                                    printf("%s LF@&expTmp1 nil@nil\n", MOVE);
+                                }
+                                else{
+                                    printf("%s LF@&expTmp2 nil@nil\n", MOVE);
+                                }
+                                break;
+                            case TYPE_VARIABLE:
+                                result = BVSSearch(someTree->rootPtr,tToken)->type;
+                                bool searched = BVSSearch(someTree->rootPtr,tToken)->declared; //if searched variable is declared
+                                if(searched == false){
+                                    exit(5);
+                                }
+                                if (result == TYPE_INTEGER_NUMBER){
+                                    if(nexttmpexp==0){
+                                        printf("%s LF@&expTmp1 int@%s\n", MOVE, tToken.content.str->str);
+                                    }
+                                    else{
+                                        printf("%s LF@&expTmp2 int@%s\n", MOVE, tToken.content.str->str);
+                                    }
+                                }
+                                if (result == TYPE_STRING){
+                                    if(nexttmpexp==0){
+                                        printf("%s LF@&expTmp1 string@%s\n", MOVE, tToken.content.str->str);
+                                    }
+                                    else{
+                                        printf("%s LF@&expTmp2 string@%s\n", MOVE, tToken.content.str->str);
+                                    }
+                                }
+                                if (result == TYPE_EXPONENT_NUMBER || result == TYPE_DOUBLE_NUMBER){
+                                    f = string2double(&tToken);
+                                    if(nexttmpexp==0){
+                                        printf("%s LF@&expTmp1 float@%a\n", MOVE, f);
+                                    }
+                                    else{
+                                        printf("%s LF@&expTmp2 float@%a\n", MOVE, f);
+                                    }
+                                }
+                                if(result == KEYWORD_NULL){
+                                    if(nexttmpexp==0){
+                                        printf("%s LF@&expTmp1 nil@nil\n", MOVE);
+                                    }
+                                    else{
+                                        printf("%s LF@&expTmp2 nil@nil\n", MOVE);
+                                    }
+                                }
+
+                        }//CASE TYPE VARIABLE -> tTokentype = BVSSearchVariable
+                        free(tToken.content.str);
+                        if ((tToken.type > 117 || tToken.type < 113) && tToken.type != 105 ) {
+                            stackDispose(stack);
+                            return SYN_ERROR;
+                        }
+                        nexttmpexp = true;
+                        *chooseexp = nexttmpexp;
+                        exptmpchoose = false;
+                        stackDispose(stack);
+                        return tToken.type;
+                    }
+
+                }
+                free(tToken.content.str);
+            }
         }
 
         PrtableSymbolsEnum inputsymbol;

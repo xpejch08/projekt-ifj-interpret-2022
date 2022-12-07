@@ -86,6 +86,13 @@ typedef enum
  */
 PrtableCoordEnum prtableSymbolToCoord(PrtableSymbolsEnum symb);
 
+
+/**
+ * @brief Converts string to float
+ * 
+ * @param op string to be converted
+ * @return outputs float 
+ */
 double string2doubleExp(string op);
 
 /**actions of precedence table
