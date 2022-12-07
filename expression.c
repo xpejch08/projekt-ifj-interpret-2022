@@ -20,12 +20,12 @@ bool exptmpchoose = 0 ;
 int result;
 
 
-double string2doubleExp(StackElement *op){
+double string2doubleExp(string op){
     char *endptr;
 
     string *str = malloc(sizeof (string));
 
-    strCpyStr(str, op->codename);
+    strCpyStr(str, &op);
     double d = strtod(str->str, &endptr);
     return d;
 }
