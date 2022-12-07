@@ -43,6 +43,7 @@ bool returnCount = false;
 //if true calls precedenceAction -> main function of precedence analysis
 bool afterAssign = false;
 
+// global variable used for storing pointer on function in tree that we are going to work with 
 TNodef *call_function_save;
 
 bool nextexp = 0;
