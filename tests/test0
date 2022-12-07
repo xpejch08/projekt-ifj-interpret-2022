@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
-function f(int $x) : void {
+function f(int $x) : int {
     write($x, "\n");
+    return 4;
 }
-f(2);
+$g = f(2);
