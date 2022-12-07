@@ -481,6 +481,23 @@ int declrList(token *sToken, function_save *fun_id) {
                 canParseEnd = false;
                 call_function_save = BVSSearch_function(functionNames->rootPtr, *sToken);
 
+                if(afterAssign == true) {
+                    if(in_function == false) {
+                        strClean(sToken->content.str);
+                        strCpyStr(sToken->content.str, activeString);
+                        TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
+                        active->type = call_function_save->return_type;
+                        afterAssign = false;
+                    }
+                    else{
+                        strClean(sToken->content.str);
+                        strCpyStr(sToken->content.str, activeString);
+                        TNode *active = BVSSearch(insideFunction->rootPtr, *sToken);
+                        active->type = call_function_save->return_type;
+                        afterAssign = false;
+                    }
+                }
+
                 //tmpToken for call
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
