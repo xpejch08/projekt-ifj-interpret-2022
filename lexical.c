@@ -1,3 +1,13 @@
+//////////////////////////////////////////////////////////////////
+//    @@ Implementace překladače imperativního jazyka IFJ22 @@  //
+//                                                              //
+//       author: xpejch08                                       //
+//                                                              //
+//                                                              //
+//                                                              //
+//                                                              //
+//////////////////////////////////////////////////////////////////
+
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>

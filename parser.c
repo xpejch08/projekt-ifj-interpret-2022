@@ -1,3 +1,13 @@
+//////////////////////////////////////////////////////////////////
+//    @@ Implementace překladače imperativního jazyka IFJ22 @@  //
+//                                                              //
+//       author: xpejch08                                       //
+//                                                              //
+//                                                              //
+//                                                              //
+//                                                              //
+//////////////////////////////////////////////////////////////////
+
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
@@ -2525,9 +2535,5 @@ int parse(void){
         }
     }
 
-    //BVSFree(mainTree);
-    //BVSFree(insideFunction);
-    //BVSFree_function(functionNames);
-    //todo freeToken() funtcion
     return result;
 }

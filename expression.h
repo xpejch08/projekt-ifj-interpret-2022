@@ -1,3 +1,13 @@
+//////////////////////////////////////////////////////////////////
+//    @@ Implementace překladače imperativního jazyka IFJ22 @@  //
+//                                                              //
+//       author: xlogin55                                       //
+//                                                              //
+//                                                              //
+//                                                              //
+//                                                              //
+//////////////////////////////////////////////////////////////////
+
 //HEADER pro "expression.c"
 #ifndef EXPRESSION_H 
 #define EXPRESSION_H
