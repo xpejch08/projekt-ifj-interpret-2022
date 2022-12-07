@@ -450,7 +450,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
 
         printon = 1;
     }else{
-        result = SEM_COMPABILITY_ERROR;
+        result = SYN_ERROR;
         return DATATYPEENUM_ERROR;
     }
     if(rule == RULE_ERROR){
