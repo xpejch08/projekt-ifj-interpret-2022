@@ -75,16 +75,16 @@ typedef enum
     INDEX_DATA,   // i:           var, int, float, string
     INDEX_DOLLAR,  // $ :          $
     INDEXENUMERROR
-} PrtableIndexEnum;
+} PrtableCoordEnum;
 
 //prevest symboly na prislusny index prtable
 /**
- * @brief Converts PrtableSymbolsEnum to PrtableIndexEnum (some symbols share indexes)
+ * @brief Converts PrtableSymbolsEnum to PrtableCoordEnum (some symbols share indexes)
  * 
  * @param symb input PrtableSymbolsEnum
- * @return Index in prtable -PrtableIndexEnum 
+ * @return Coord in prtable -PrtableCoordEnum 
  */
-PrtableIndexEnum prtableSymbolToIndex(PrtableSymbolsEnum symb);
+PrtableCoordEnum prtableSymbolToCoord(PrtableSymbolsEnum symb);
 
 double string2doubleExp(string op);
 
