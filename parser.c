@@ -140,8 +140,8 @@ int declrList(token *sToken, function_save *fun_id) {
                     //calling function parametrs with PARAM_WRITE
                     paramError = parametrs(PARAM_WRITE, 1,  sToken, fun_id);
                     if (paramError == SUCCES) {
-                        if(getNextToken(sToken) == LEX_ERROR){
-                            return  LEX_ERROR;
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
                         }
                         //next token has to be semicolon else SYNTAX ERROR
                         if (sToken->type != TYPE_SEMICOLON) {
@@ -183,8 +183,8 @@ int declrList(token *sToken, function_save *fun_id) {
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_READS, 1, sToken, fun_id);
                     if (paramError == SUCCES) {
-                        if(getNextToken(sToken) == LEX_ERROR){
-                            return LEX_ERROR;
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
                         }
                         if (sToken->type != TYPE_SEMICOLON) {
                             return SYN_ERROR;
@@ -234,8 +234,8 @@ int declrList(token *sToken, function_save *fun_id) {
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_READI, 1, sToken, fun_id);
                     if (paramError == SUCCES) {
-                        if(getNextToken(sToken) == LEX_ERROR){
-                            return LEX_ERROR;
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
                         }
                         if (sToken->type != TYPE_SEMICOLON) {
                             return SYN_ERROR;
@@ -284,8 +284,8 @@ int declrList(token *sToken, function_save *fun_id) {
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_READF, 1, sToken, fun_id);
                     if (paramError == SUCCES) {
-                        if(getNextToken(sToken) == LEX_ERROR){
-                            return LEX_ERROR;
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
                         }
                         if (sToken->type != TYPE_SEMICOLON) {
                             return SYN_ERROR;
@@ -407,14 +407,17 @@ int declrList(token *sToken, function_save *fun_id) {
                 if (sToken->type == TYPE_LBRACKET) {
                     paramError = parametrs(PARAM_ORD, 1, sToken, fun_id);
                     if (paramError == SUCCES) {
-                        
-                        if (getNextToken(sToken) != TYPE_SEMICOLON) {
+
+                        if((result = getNextToken(sToken)) != SUCCES){
+                            return  result;
+                        }
+                        if (sToken->type != TYPE_SEMICOLON) {
                             //instructionFree()
                             return SYN_ERROR;
                         }
                         //todo instructionFree()
                         canParseEnd = true;
-                        
+
                         if((result = getNextToken(sToken)) != SUCCES){
                             return  result;
                         }
@@ -1934,7 +1937,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
-            
+
             if(sToken->type == TYPE_VARIABLE || sToken->type == TYPE_STRING){
                 if(sToken->type == TYPE_VARIABLE){
                     if(in_function){
@@ -1964,15 +1967,15 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 else{
                     printf("%s\n", CREATEFRAME);
                     printf("%s\n", PUSHFRAME);
-                
+
                     printf("%s GF@&%s string@%s int@%d\n",STRI2INT, (activeString->str)+1, sToken->content.str->str, 0);
                     printf("%s\n",POPFRAME);
                 }
-                
+
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
-                
+
                 if(sToken->type == TYPE_RBRACKET){
                     return SUCCES;
                 }
