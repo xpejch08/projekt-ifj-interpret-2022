@@ -412,7 +412,7 @@ int declrList(token *sToken, function_save *fun_id) {
                             return  result;
                         }
                         if (sToken->type != TYPE_SEMICOLON) {
-                            //instructionFree()
+                         
                             return SYN_ERROR;
                         }
                     
@@ -1786,7 +1786,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         if(sToken->type == TYPE_VARIABLE){
                             varI = true;
                             
-
+                            printf("%s LF@&%s\n",DEFVAR, (sToken->content.str->str)+1);
                             printf("%s LF@&%s GF@&%s\n",MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
                             printf("%s LF@&cmp LF@&%s int@%d\n", LT, (sToken->content.str->str)+1, 0);
                             printf("%s &error LF@&cmp bool@true\n", JUMPIFEQ);
@@ -1833,7 +1833,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                                             return SEM_COUNT_ERROR;
                                         }
                                     }
-                                }
+                                
                                 printf("%s LF@&%s GF@&%s\n", MOVE, (sToken->content.str->str)+1,(sToken->content.str->str)+1);
                                 printf("%s LF@&cmp LF@&tmp%d LF@&%s\n", GT, tmpCounter,(sToken->content.str->str)+1);
                                 printf("%s &error LF@&cmp bool@true\n", JUMPIFEQ);
@@ -1853,6 +1853,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                                 printf("%s &substring%d LF@&cmp2 bool@true\n",JUMPIFNEQ, unique);
                                 printf("%s &legit\n", JUMP);
 
+                                }
                             }
                             else{
 

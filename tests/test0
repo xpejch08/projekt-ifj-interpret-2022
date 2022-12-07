@@ -1,4 +1,8 @@
 <?php
 declare(strict_types=1);
-$n = strlen("");
-write($n);
+$x = substring("This is a string\n",10,13);
+if($x === "str") {
+    write("Substring is str\n");
+} else {
+    write("Not str\n");
+}
