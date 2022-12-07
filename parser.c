@@ -693,7 +693,7 @@ int declrList(token *sToken, function_save *fun_id) {
                         printf("%s &while_end%d LF@&expTmp2 bool@true\n", JUMPIFNEQ, whileCounter);
                     }
                 }
-                if (result < 113 || result > 117) {
+                if ((result < 113 || result > 117) && result != 105) {
                     return result;
                 }
 
@@ -785,7 +785,7 @@ int declrList(token *sToken, function_save *fun_id) {
                         printf("%s &else%d LF@&expTmp2 bool@true\n", JUMPIFNEQ, condCounter);
                     }
                 }
-                if (result < 113 || result > 117) {
+                if ((result < 113 || result > 117) && result != 105) {
                     return result;
                 }
 
@@ -997,7 +997,7 @@ int statlist(token *sToken, function_save *fun_id){
                     }else{
                         printf("%s GF@&%s GF@&expTmp2\n", MOVE, (activeString->str)+1);
                     }
-                    if (result < 113 || result > 117) {
+                    if ((result < 113 || result > 117) && result != 105) {
                         return result;
                     }
 
@@ -1034,7 +1034,7 @@ int statlist(token *sToken, function_save *fun_id){
                     }
 
 
-                    if (result < 113 || result > 117) {
+                    if ((result < 113 || result > 117) && result != 105) {
                         return result;
                     }
 
@@ -1258,7 +1258,7 @@ int statlist(token *sToken, function_save *fun_id){
                     else{
                         printf("%s GF@&%s GF@&expTmp2\n", MOVE, (activeString->str)+1);
                     }
-                    if (result < 113 || result > 117) {
+                    if ((result < 113 || result > 117) && result != 105) {
                         return result;
                     }
 
@@ -1293,7 +1293,7 @@ int statlist(token *sToken, function_save *fun_id){
                     else{
                         printf("%s LF@&%s LF@&expTmp2\n", MOVE, (activeString->str)+1);
                     }
-                    if (result < 113 || result > 117) {
+                    if ((result < 113 || result > 117) && result != 105) {
                         return result;
                     }
 
@@ -1349,7 +1349,7 @@ int statlist(token *sToken, function_save *fun_id){
                     }else{
                         printf("%s GF@&%s GF@&expTmp2\n", MOVE, (activeString->str)+1);
                     }
-                    if (result < 113 || result > 117) {
+                    if ((result < 113 || result > 117) && result != 105) {
                         return result;
                     }
 
@@ -1380,7 +1380,7 @@ int statlist(token *sToken, function_save *fun_id){
                     }
                     else{
                         printf("%s LF@&%s LF@&expTmp2\n", MOVE, (activeString->str)+1);
-                    }                    if (result < 113 || result > 117) {
+                    }                    if ((result < 113 || result > 117) && result != 105) {
                         return result;
                     }
 
