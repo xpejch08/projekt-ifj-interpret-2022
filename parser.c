@@ -2222,7 +2222,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     if (tmp_var == NULL) {
                         return SEM_UNDEFINED_ERROR;
                     }
-                    if (fun_id->ret_value == KEYWORD_VOID && tmp_var->type != KEYWORD_VOID) {
+                    if (fun_id->ret_value == KEYWORD_VOID && tmp_var->type != KEYWORD_NULL) {
                         return SEM_RETURN_ERROR;
                     }
                     // check if function is in correct typr
