@@ -19,6 +19,17 @@ bool nexttmpexp;
 bool exptmpchoose = 0 ;
 int result;
 
+
+double string2doubleExp(StackElement *op){
+    char *endptr;
+
+    string *str = malloc(sizeof (string));
+
+    strCpyStr(str, op->codename);
+    double d = strtod(str->str, &endptr);
+    return d;
+}
+
 //indexes for precedence table
 /*
 

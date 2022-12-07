@@ -2267,14 +2267,17 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 }
             }
             return SYN_ERROR;
+        // calling function
         case PARAM_FUNCTION_CALL:
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
             switch (sToken->type)
             {
+                // if there are no parameters
                 case TYPE_RBRACKET:
                     if(repeat == 1){
+                        // check if there is corrrect amount of parameters else semantic error
                         if(call_function_save->parameters == 0){
                             return SUCCES;
                         }else{
@@ -2283,6 +2286,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     }
                 case TYPE_VARIABLE:
                     if(in_function){
+                        // check if variable is defined
                         if(BVSSearch(insideFunction->rootPtr, *sToken) == NULL){
                             return SEM_UNDEFINED_ERROR;
                         }
@@ -2303,10 +2307,12 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         {
                             printf("%s GF@&%s nil@nil\n", MOVE, (activeString->str)+1);
                         }
+                        // check if it has correct amount of parameters
                         if(repeat == call_function_save->parameters){
                             return SUCCES;
                         }
                         return SEM_COUNT_ERROR;
+                    // if we get comma it means there are more parameters so we increase parameters count
                     }else if(sToken->type == TYPE_COMMA){
                         repeat++;
                         return parametrs(PARAM_FUNCTION_CALL, repeat, sToken, fun_id);
@@ -2332,13 +2338,16 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         {
                             printf("%s GF@&%s nil@nil\n", MOVE, (activeString->str)+1);
                         }
+                        // checking if there is corrent amount of parameters
                         if(repeat == call_function_save->parameters){
                             return SUCCES;
                         }
                         return SEM_COUNT_ERROR;
+                    // if we get comma it means there is one more parameter so we increase parameters count and call recursivly parametrs
                     }else if(sToken->type == TYPE_COMMA){
                         repeat++;
                         return parametrs(PARAM_FUNCTION_CALL, repeat, sToken, fun_id);
+                    // check if we are adding something to it
                     }else if(sToken->type == TYPE_ADDITION    ||
                              sToken->type == TYPE_SUBTRACTION ||
                              sToken->type == TYPE_DIVIDE      ||
@@ -2356,10 +2365,12 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         {
                             printf("%s GF@&%s nil@nil\n", MOVE, (activeString->str)+1);
                         }
+                        // check if we have correct amount of parameters
                         if(repeat == call_function_save->parameters){
                             return SUCCES;
                         }
                         return SEM_COUNT_ERROR;
+                    // increasing parameters count
                     }else if(sToken->type == TYPE_COMMA){
                         repeat++;
                         return parametrs(PARAM_FUNCTION_CALL, repeat, sToken, fun_id);

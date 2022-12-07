@@ -84,6 +84,8 @@ typedef enum
  */
 PrtableIndexEnum prtableSymbolToIndex(PrtableSymbolsEnum symb);
 
+double string2doubleExp(StackElement *op);
+
 /**actions of precedence table
  *  S,  shift (<)  put SHIFT ("<") to stack
     E,  equal (=)  push input to stack
