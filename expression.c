@@ -3369,6 +3369,9 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
                         if (tToken.type > 117 || tToken.type < 113) {
                             return SYN_ERROR;
                         }
+                        nexttmpexp = true;
+                        *chooseexp = nexttmpexp;
+                        exptmpchoose = false;
                         return tToken.type;
 
                     } else {
@@ -3449,8 +3452,12 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
                         if (tToken.type > 117 || tToken.type < 113) {
                             return SYN_ERROR;
                         }
+                        nexttmpexp = true;
+                        *chooseexp = nexttmpexp;
+                        exptmpchoose = false;
                         return tToken.type;
                     }
+
                 }
                 free(tToken.content.str);
             }
