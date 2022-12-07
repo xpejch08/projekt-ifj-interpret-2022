@@ -3430,7 +3430,7 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
                                 }
                         }
                         free(tToken.content.str);
-                        if (tToken.type > 117 || tToken.type < 113) {
+                        if ((tToken.type > 117 || tToken.type < 113) && tToken.type != 105) {
                             return SYN_ERROR;
                         }
                         nexttmpexp = true;
@@ -3517,7 +3517,7 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
 
                         }//CASE TYPE VARIABLE -> tTokentype = BVSSearchVariable
                         free(tToken.content.str);
-                        if (tToken.type > 117 || tToken.type < 113) {
+                        if ((tToken.type > 117 || tToken.type < 113) && tToken.type != 105 ) {
                             return SYN_ERROR;
                         }
                         nexttmpexp = true;
