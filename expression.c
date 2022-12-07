@@ -45,7 +45,7 @@ double string2doubleExp(string op){
 */
 
 /*actions of precedence table
-    S,  shift (<)  put SHIFT ("<") to stack
+    S,  shift (<)  put SHIFT ("<") to stack, push input to stack, get next token
     E,  equal (=)  push input to stack
     R,  reduce (>) pop stack until "<" is found, then reduce expression and generate code
     X,   nothing ( )    ERROR
@@ -3461,7 +3461,6 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
 }
 
 
-//StackElement stacktop;
 
 int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_function, int iforass, bool* chooseexp){
     if (result != 0){
@@ -3473,8 +3472,8 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
     DataTypeEnum finaltype;
 
 
-    string t;
-    int d = 0;
+    string t; //just to fill parameters when pushing DOLLAR to stack
+    int d = 0; //just to fill parameters when pushing DOLLAR to stack
     bool done = 0;
     token tToken = *sToken;
     int secondgothrough = 0;
