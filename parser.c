@@ -408,11 +408,11 @@ int declrList(token *sToken, function_save *fun_id) {
                     paramError = parametrs(PARAM_ORD, 1, sToken, fun_id);
                     if (paramError == SUCCES) {
                         
-                        if (getNextToken(sToken) != TYPE_SEMICOLON) {
-                            //instructionFree()
-                            return SYN_ERROR;
+                        if ((result = getNextToken(sToken)) != SUCCES) {
+                           
+                            return result;
                         }
-                        //todo instructionFree()
+                    
                         canParseEnd = true;
                         
                         if((result = getNextToken(sToken)) != SUCCES){
@@ -449,7 +449,7 @@ int declrList(token *sToken, function_save *fun_id) {
                         {
                             return SYN_ERROR;
                         }
-                        //todo instructionFree()
+                        
                         canParseEnd = true;
 
                         if((result = getNextToken(sToken)) != SUCCES){
@@ -1957,7 +1957,9 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         }
                         printf("%s\n", CREATEFRAME);
                         printf("%s\n", PUSHFRAME);
+                        printf("%s LF@&%s\n", DEFVAR, (sToken->content.str->str)+1);
                         printf("%s LF@&%s GF@&%s\n", MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
+
                         printf("%s GF@&%s LF@&%s int@%d\n",STRI2INT, (activeString->str)+1, (sToken->content.str->str)+1, 0);
                         printf("%s\n",POPFRAME);
                 }
