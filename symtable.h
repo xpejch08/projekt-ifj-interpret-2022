@@ -82,11 +82,6 @@ TNode *BVSSearch(TNode *rootPtr, token token);
  */
 void BVSDispose(TRoot *Symtable);
 /**
- * @brief function free all nodes with variables in SymTable
- * @param SymTable pointer on SymTable
- */
-void BVSFree(TRoot *SymTable);
-/**
  * @brief function function initializes new symtable for functions
  * @param SymTable pointer to main root
  */
@@ -106,25 +101,11 @@ TNodef *BVSInsert_function(TNodef *rootPtr, function_save token);
  */
 TNodef *BVSSearch_function(TNodef *rootPtr, token token);
 /**
- * @brief function free all nodes in SymTable with functions
- * @param SymTable pointer on SymTable
- */
-void BVSFree_function(TRootf *SymTable);
-/**
  * @brief function dispose every singe node with variable in function
  * @param rootPtr pointer on every variable
  */
 void BVSDisposeNode(TNode *rootPtr);
-/**
- * @brief function free all nodes 
- * @param rootPtr pointer on node with variable
- */
-void BVSFreeNode(TNode *rootPtr);
-/**
- * @brief function free all nodes in SymTable
- * @param rootPtr pointer on node with function name
- */
-void BVSFreeFunctionNode(TNodef *rootPtr);
+
 
 
 #endif

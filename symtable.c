@@ -86,24 +86,11 @@ void BVSDisposeNode(TNode *rootPtr){
     }
 }
 
-void BVSFreeNode(TNode *rootPtr){
-    // free recursively every node
-    if(rootPtr != NULL){
-        BVSFreeNode(rootPtr->leftPtr);
-        BVSFreeNode(rootPtr->rightPtr);
-        free(rootPtr);
-    }
-}
-
 void BVSDispose(TRoot *SymTable){
     BVSDisposeNode(SymTable->rootPtr);
     SymTable = NULL;
 }
 
-void BVSFree(TRoot *SymTable){
-    BVSFreeNode(SymTable->rootPtr);
-    free(SymTable);
-}
 //////////////////////////////////////////
 ///////////////FUNCTION//////////////////
 
@@ -149,19 +136,5 @@ TNodef *BVSSearch_function(TNodef *rootPtr, token token) {
         }
     }
     return NULL;
-}
-
-void BVSFreeFunctionNode(TNodef *rootPtr){
-    if(rootPtr != NULL){
-        BVSFreeFunctionNode(rootPtr->leftPtr);
-        BVSFreeFunctionNode(rootPtr->rightPtr);
-        free(rootPtr);
-    }
-}
-
-void BVSFree_function(TRootf *SymTable){
-    
-    BVSFreeFunctionNode(SymTable->rootPtr);
-    free(SymTable);
 }
 //////////////////////////////////////////
