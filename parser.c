@@ -195,6 +195,7 @@ int declrList(token *sToken, function_save *fun_id) {
                                 strCpyStr(sToken->content.str, activeString);
                                 TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
                                 active->type = TYPE_STRING;
+                                active->declared = true;
                                 afterAssign = false;
                             }
                             else{
@@ -202,6 +203,7 @@ int declrList(token *sToken, function_save *fun_id) {
                                 strCpyStr(sToken->content.str, activeString);
                                 TNode *active = BVSSearch(insideFunction->rootPtr, *sToken);
                                 active->type = TYPE_STRING;
+                                active->declared = true;
                                 afterAssign = false;
                             }
                         }
@@ -246,6 +248,7 @@ int declrList(token *sToken, function_save *fun_id) {
                                 strCpyStr(sToken->content.str, activeString);
                                 TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
                                 active->type = TYPE_STRING;
+                                active->declared = true;
                                 afterAssign = false;
                             }
                             else{
@@ -253,6 +256,7 @@ int declrList(token *sToken, function_save *fun_id) {
                                 strCpyStr(sToken->content.str, activeString);
                                 TNode *active = BVSSearch(insideFunction->rootPtr, *sToken);
                                 active->type = TYPE_STRING;
+                                active->declared = true;
                                 afterAssign = false;
                             }
                         }
@@ -297,6 +301,7 @@ int declrList(token *sToken, function_save *fun_id) {
                                 strCpyStr(sToken->content.str, activeString);
                                 TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
                                 active->type = TYPE_STRING;
+                                active->declared = true;
                                 afterAssign = false;
                             }
                             else{
@@ -304,6 +309,7 @@ int declrList(token *sToken, function_save *fun_id) {
                                 strCpyStr(sToken->content.str, activeString);
                                 TNode *active = BVSSearch(insideFunction->rootPtr, *sToken);
                                 active->type = TYPE_STRING;
+                                active->declared = true;
                                 afterAssign = false;
                             }
                         }
@@ -487,14 +493,14 @@ int declrList(token *sToken, function_save *fun_id) {
                         strCpyStr(sToken->content.str, activeString);
                         TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
                         active->type = call_function_save->return_type;
-                        
+                        active->declared = true;
                     }
                     else{
                         strClean(sToken->content.str);
                         strCpyStr(sToken->content.str, activeString);
                         TNode *active = BVSSearch(insideFunction->rootPtr, *sToken);
                         active->type = call_function_save->return_type;
-                        
+                        active->declared = true;
                     }
                 }
 
@@ -557,7 +563,7 @@ int declrList(token *sToken, function_save *fun_id) {
             printf("%s LF@&return_val\n", DEFVAR);
             printf("%s LF@&expTmp1\n", DEFVAR);
             printf("%s LF@&expTmp2\n", DEFVAR);
-            
+
 
 
             if((result = getNextToken(sToken)) != SUCCES) {
@@ -687,7 +693,7 @@ int declrList(token *sToken, function_save *fun_id) {
                         printf("%s &while_end%d LF@&expTmp2 bool@true\n", JUMPIFNEQ, whileCounter);
                     }
                 }
-                if (result < 113 || result > 117) {
+                if ((result < 113 || result > 117) && result != 105) {
                     return result;
                 }
 
@@ -777,9 +783,9 @@ int declrList(token *sToken, function_save *fun_id) {
                     }
                     else{
                         printf("%s &else%d LF@&expTmp2 bool@true\n", JUMPIFNEQ, condCounter);
-                    }                
+                    }
                 }
-                if (result < 113 || result > 117) {
+                if ((result < 113 || result > 117) && result != 105) {
                     return result;
                 }
 
@@ -860,11 +866,11 @@ int declrList(token *sToken, function_save *fun_id) {
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
-                
+
                 printf("%s &else_end%d\n", LABEL, condCounter);
                 condCounter--;
                 result = statlist(sToken, fun_id);
-                
+
                 if (result != SUCCES) {
                     return result;
                 }
@@ -875,12 +881,12 @@ int declrList(token *sToken, function_save *fun_id) {
 
                 //we are inside of the else, so we call statlist and then check for right vinculum
             else {
-            
+
                 result = statlist(sToken, fun_id);
-                
-                
+
+
                 printf("%s &else_end%d\n", LABEL, condCounter);
-                
+
                 if (result != SUCCES) {
                     return result;
                 }
@@ -991,7 +997,7 @@ int statlist(token *sToken, function_save *fun_id){
                     }else{
                         printf("%s GF@&%s GF@&expTmp2\n", MOVE, (activeString->str)+1);
                     }
-                    if (result < 113 || result > 117) {
+                    if ((result < 113 || result > 117) && result != 105) {
                         return result;
                     }
 
@@ -1003,6 +1009,7 @@ int statlist(token *sToken, function_save *fun_id){
                     TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
                     //setting type of active variable to the result of precedenceAction->correct datatype
                     active->type = result;
+                    active->declared = true;
 
                     //precedenceAction ends after semicolon so we get next token and call statlist
                     if ((result = getNextToken(sToken)) != SUCCES) {
@@ -1027,7 +1034,7 @@ int statlist(token *sToken, function_save *fun_id){
                     }
 
 
-                    if (result < 113 || result > 117) {
+                    if ((result < 113 || result > 117) && result != 105) {
                         return result;
                     }
 
@@ -1035,6 +1042,7 @@ int statlist(token *sToken, function_save *fun_id){
                     strCpyStr(sToken->content.str, activeString);
                     TNode *active = BVSSearch(insideFunction->rootPtr, *sToken);
                     active->type = result;
+                    active->declared = true;
 
                     if ((result = getNextToken(sToken)) != SUCCES) {
                         return result;
@@ -1106,8 +1114,11 @@ int statlist(token *sToken, function_save *fun_id){
                         if (sToken->type != TYPE_INTEGER_NUMBER) {
                             if(sToken->type != TYPE_STRING){
                                 if(sToken->type != TYPE_LBRACKET) {
-                                    if(sToken->type != TYPE_IDENTIFIER)// $a = (a);
-                                        afterAssign = false;
+                                    if(sToken->type != TYPE_IDENTIFIER) {// $a = (a);
+                                        if (sToken->type != KEYWORD_NULL) {
+                                            afterAssign = false;
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -1247,7 +1258,7 @@ int statlist(token *sToken, function_save *fun_id){
                     else{
                         printf("%s GF@&%s GF@&expTmp2\n", MOVE, (activeString->str)+1);
                     }
-                    if (result < 113 || result > 117) {
+                    if ((result < 113 || result > 117) && result != 105) {
                         return result;
                     }
 
@@ -1256,6 +1267,7 @@ int statlist(token *sToken, function_save *fun_id){
                     strCpyStr(sToken->content.str, activeString);
                     TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
                     active->type = result;
+                    active->declared = true;
 
 
                     //call next token and recursively call statlist
@@ -1281,7 +1293,7 @@ int statlist(token *sToken, function_save *fun_id){
                     else{
                         printf("%s LF@&%s LF@&expTmp2\n", MOVE, (activeString->str)+1);
                     }
-                    if (result < 113 || result > 117) {
+                    if ((result < 113 || result > 117) && result != 105) {
                         return result;
                     }
 
@@ -1290,6 +1302,7 @@ int statlist(token *sToken, function_save *fun_id){
                     strCpyStr(sToken->content.str, activeString);
                     TNode *active = BVSSearch(insideFunction->rootPtr, *sToken);
                     active->type = result;
+                    active->declared = true;
 
                     //call next token and recursively call statlist
                     if ((result = getNextToken(sToken)) != SUCCES) {
@@ -1336,7 +1349,7 @@ int statlist(token *sToken, function_save *fun_id){
                     }else{
                         printf("%s GF@&%s GF@&expTmp2\n", MOVE, (activeString->str)+1);
                     }
-                    if (result < 113 || result > 117) {
+                    if ((result < 113 || result > 117) && result != 105) {
                         return result;
                     }
 
@@ -1345,6 +1358,7 @@ int statlist(token *sToken, function_save *fun_id){
                     strCpyStr(sToken->content.str, activeString);
                     TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
                     active->type = result;
+                    active->declared = true;
 
                     //call next token and recursively call statlist
                     if ((result = getNextToken(sToken)) != SUCCES) {
@@ -1366,7 +1380,7 @@ int statlist(token *sToken, function_save *fun_id){
                     }
                     else{
                         printf("%s LF@&%s LF@&expTmp2\n", MOVE, (activeString->str)+1);
-                    }                    if (result < 113 || result > 117) {
+                    }                    if ((result < 113 || result > 117) && result != 105) {
                         return result;
                     }
 
@@ -1375,6 +1389,7 @@ int statlist(token *sToken, function_save *fun_id){
                     strCpyStr(sToken->content.str, activeString);
                     TNode *active = BVSSearch(insideFunction->rootPtr, *sToken);
                     active->type = result;
+                    active->declared = true;
 
                     //call next token and recursively call statlist
                     if ((result = getNextToken(sToken)) != SUCCES) {
@@ -1449,7 +1464,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                 else{
                     return SYN_ERROR;
                 }
-            // if we ge succesfully keyword
+                // if we ge succesfully keyword
             } else if (sToken->type == KEYWORD_INT ||
                        sToken->type == KEYWORD_FLOAT ||
                        sToken->type == KEYWORD_STRING
@@ -1463,7 +1478,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                     printf("%s LF@&%s\n", DEFVAR, (sToken->content.str->str)+1);
                     printf("%s LF@&%s LF@&fun_param%d\n", MOVE, (sToken->content.str->str)+1, repeat);
                     // inserting variable to tree with variables inside function
-                   insideFunction->rootPtr =  BVSInsert(insideFunction->rootPtr, *sToken);
+                    insideFunction->rootPtr =  BVSInsert(insideFunction->rootPtr, *sToken);
                     // finding variable in tree and saving into temporary pointer
                     TNode *argument_insert = BVSSearch(insideFunction->rootPtr, *sToken);
                     // setting variable type

@@ -6,17 +6,25 @@
 #include "stack.h"
 #include "errors.h"
 #include "str.h"
+#include <stdbool.h>
 
 /////////VARIABLE//////////
+/**
+ * TNode is a structure containing the important information about variable
+ */
 typedef struct tnode{
-    string *content;
-    struct tnode *leftPtr;
-    struct tnode *rightPtr;
-    int type;
+    string *content; // variable content
+    struct tnode *leftPtr; // pointer for its left child
+    struct tnode *rightPtr; // pointer for its right child
+    int type; // type of variable
+    bool declared; // bool if variable was declared
 }TNode;
 
+/**
+ * TRoot is symtable
+ */
 typedef struct troot{
-    TNode *rootPtr;
+    TNode *rootPtr; // pointer on specific tree
 }TRoot;
 
 ///////////////////////////
@@ -39,14 +47,6 @@ typedef struct trootf{
  * @param SymTable pointer to main root
  */
 void BVSInit(TRoot *SymTable); // TODO declere mistake wtf??
-
-/**
- * @brief function creates new node for variable in SymTable
- * @param token token from which we put data
- * @param rootPtr pointer on node
- * @return returns newly created node
- */
-TNode *BVSCreate(TNode *rootPtr, token token);
 /**
  * @brief function inserts variables to binary tree based on its ASCII value
  * @param rootPtr pointer on node
@@ -75,14 +75,7 @@ void BVSFree(TRoot *SymTable);
  * @brief function function initializes new symtable for functions
  * @param SymTable pointer to main root
  */
-void BVSInit_function(TRootf *SymTable); 
-/**
- * @brief function creates new function in SymTable
- * @param token token from which we put data
- * @param rootPtr pointer on node
- * @return returns newly created node
- */
-TNodef *BVSCreate_function(TNodef *rootPtr,function_save token);
+void BVSInit_function(TRootf *SymTable);
 /**
  * @brief function inserts function to binary tree based on its ASCII value
  * @param rootPtr pointer on node
@@ -117,10 +110,6 @@ void BVSFreeNode(TNode *rootPtr);
  * @param rootPtr pointer on node with function name
  */
 void BVSFreeFunctionNode(TNodef *rootPtr);
-/**
- * @brief help function to print tree
- * @param SymTable pointer on SymTable
- */
-void postorder(TNode *tree);
+
 
 #endif
