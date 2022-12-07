@@ -8,6 +8,7 @@
 
 //todo hexa escape octa escape
 
+#define typeIdentifierState             299
 #define basicState                      300 //beginning state waiting for the first character
 #define possibleCommentState            301 //state that found the '/' symbol and checks if comment will be one-line block, or won't be at all
 #define oneLineCommentState             302 //one line comment state waiting for '\n' to end else returns LEX_ERROR
@@ -36,8 +37,9 @@
 #define endExponentState                325 //waiting for end of exponent
 #define notEqualState                   326 //token was ! waiting for assign
 #define notEqualStateEnd                327 //waiting for last assign
-#define epilogState                     328 //token was ? which means only epilog can occur
+#define epilogStateOrType               328 //token was ? which means only epilog can occur
 #define decimalEndState                 329 //end of decimal number
+
 
 
 //initializing source file
@@ -64,6 +66,22 @@ int hexaToDecimal(const char arr[]){
         }
     }
     return decimal;
+}
+
+int isTypeFnc(token *attr){
+    if(strCmpConstStr(attr->content.str, "string") == 0){
+        attr->type = KEYWORD_STRING;
+        return SUCCES;
+    }
+    else if(strCmpConstStr(attr->content.str, "float") == 0){
+        attr->type = KEYWORD_FLOAT;
+        return SUCCES;
+    }
+    else if(strCmpConstStr(attr->content.str, "int") == 0){
+        attr->type = KEYWORD_INT;
+        return SUCCES;
+    }
+    return LEX_ERROR;
 }
 /**
  * @brief function that checks if a string is a keyword and sets the token depending on the output
@@ -293,7 +311,7 @@ int getNextToken(token *attr) {
                     state = smallerThanOrEqualState;
                 }
                 else if(character == '?'){
-                    state = epilogState;
+                    state = epilogStateOrType;
                 }
                 else if(character == '!'){
                     state = notEqualState;
@@ -319,12 +337,12 @@ int getNextToken(token *attr) {
                     state = oneLineCommentState;
                     break;
                 }
-                //checking for block comment
+                    //checking for block comment
                 else if(character == '*'){
                     state = blockCommentState;
                     break;
                 }
-                //if we don't get an asterisk it means the sign was a divide
+                    //if we don't get an asterisk it means the sign was a divide
                 else {
                     attr->type = TYPE_DIVIDE;
                     ungetc(character, source);
@@ -352,7 +370,7 @@ int getNextToken(token *attr) {
                 }
                 break;
 
-            //waiting for end of block comment
+                //waiting for end of block comment
             case waitForBlockCommentEnd:
                 if(character == '/'){
                     state = basicState;
@@ -403,19 +421,19 @@ int getNextToken(token *attr) {
                         attr->type = TYPE_STRING;
                         return SUCCES;
                     }
-                    //if we get dollar without escape sequence it is a lex error
+                        //if we get dollar without escape sequence it is a lex error
                     else if(character == 36){
                         return LEX_ERROR;
 
                     }
-                    //adding space character as octal escape sequence because of codegen
+                        //adding space character as octal escape sequence because of codegen
                     else if(isspace(character)){
                         strAddChar(attr->content.str, '\\');
                         strAddChar(attr->content.str, '0');
                         strAddChar(attr->content.str, '3');
                         strAddChar(attr->content.str, '2');
                     }
-                    //adding an exclamation point character as octal escape sequence because of codegen
+                        //adding an exclamation point character as octal escape sequence because of codegen
                     else if(character == '!'){
                         strAddChar(attr->content.str, '\\');
                         strAddChar(attr->content.str, '0');
@@ -427,7 +445,7 @@ int getNextToken(token *attr) {
 
                     }
                 }
-                //if we get backslash jumb into possible escape sequence
+                    //if we get backslash jumb into possible escape sequence
                 else if(character == 92){
                     strAddChar(attr->content.str, '\\');
                     state = backslashState;
@@ -447,7 +465,7 @@ int getNextToken(token *attr) {
                     state = escapeOctaState;
                     break;
                 }
-                //adding tab character as octal escape sequence because of codegen
+                    //adding tab character as octal escape sequence because of codegen
                 else if(character == 't') {
                     strAddChar(attr->content.str, 'x');
                     strAddChar(attr->content.str, '0');
@@ -455,7 +473,7 @@ int getNextToken(token *attr) {
                     state = waitForStringEnd;
                     break;
                 }
-                //adding newline character as octal escape sequence because of codegen
+                    //adding newline character as octal escape sequence because of codegen
                 else if(character == 'n'){
                     strAddChar(attr->content.str, '0');
                     strAddChar(attr->content.str, '1');
@@ -463,7 +481,7 @@ int getNextToken(token *attr) {
                     state = waitForStringEnd;
                     break;
                 }
-                //adding quotation mark character as octal escape sequence because of codegen
+                    //adding quotation mark character as octal escape sequence because of codegen
                 else if(character == '"'){
                     character = '"';
                     strAddChar(attr->content.str, '0');
@@ -472,14 +490,14 @@ int getNextToken(token *attr) {
                     state = waitForStringEnd;
                     break;
                 }
-                //dollar can come only after backslash
+                    //dollar can come only after backslash
                 else if(character == '$'){
                     character = '$';
                     strAddChar(attr->content.str, character);
                     state = waitForStringEnd;
                     break;
                 }
-                //anything else after backslash is not an error
+                    //anything else after backslash is not an error
                 else {
                     strAddChar(attr->content.str, 92);
                     state = waitForStringEnd;
@@ -545,12 +563,12 @@ int getNextToken(token *attr) {
                 if(isdigit(character)){
                     strAddChar(attr->content.str, character);
                 }
-                //checking if number is decimal
+                    //checking if number is decimal
                 else if(character == '.'){
                     strAddChar(attr->content.str, character);
                     state = decimalState;
                 }
-                //checking if number is exponent
+                    //checking if number is exponent
                 else if(character == 'e' || character == 'E'){
                     strAddChar(attr->content.str, character);
                     state = exponentPlusOrMinusState;
@@ -611,10 +629,10 @@ int getNextToken(token *attr) {
                     return SUCCES;
                 }
                 break;
-            /**
-             * next states check if next token is <=, >=, ===, !== or epilog
-             *else returns lex error
-             */
+                /**
+                 * next states check if next token is <=, >=, ===, !== or epilog
+                 *else returns lex error
+                 */
             case smallerThanOrEqualState:
                 if(character == '='){
                     attr->type = TYPE_SMALLER_OR_EQUAL;
@@ -664,7 +682,7 @@ int getNextToken(token *attr) {
                     return LEX_ERROR;
                 }
                 break;
-            case epilogState:
+            case epilogStateOrType:
                 if(character == '>'){
                     character = (char) getc(stdin);
                     if(character != EOF){
@@ -675,10 +693,19 @@ int getNextToken(token *attr) {
                         return SUCCES;
                     }
                 }
-                else{
-                    return SYN_ERROR;
+                else if(isalpha(character)){
+                    strAddChar(attr->content.str, character);
+                    state = typeIdentifierState;
                 }
                 break;
+            case typeIdentifierState:
+                if(isalpha(character)){
+                    strAddChar(attr->content.str, character);
+                    break;
+                }
+                else{
+                    return isTypeFnc(attr);
+                }
             case notEqualStateEnd:
                 if(character == '='){
                     attr->type = TYPE_NOT_EQUAL;
