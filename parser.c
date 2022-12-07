@@ -1698,13 +1698,22 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                             return SEM_COUNT_ERROR;
                         }
                     }
+                    if(in_function){
+
+                    printf("%s LF@&%s LF@&%s\n", STRLEN,(activeString->str)+1, (sToken->content.str->str)+1);
+                    }
+                    else{
+                    printf("%s GF@&%s GF@&%s\n", STRLEN,(activeString->str)+1, (sToken->content.str->str)+1);
+                    }
                 }
+                else{
                 if(in_function){
 
                     printf("%s LF@&%s string@%s\n", STRLEN,(activeString->str)+1, sToken->content.str->str);
                 }
                 else{
                     printf("%s GF@&%s string@%s\n", STRLEN,(activeString->str)+1, sToken->content.str->str);
+                }
                 }
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
