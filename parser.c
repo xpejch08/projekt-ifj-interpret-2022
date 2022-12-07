@@ -1975,7 +1975,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         if(tmp_var_chr == NULL){
                             return SEM_UNDEFINED_ERROR;
                         }
-                        if(tmp_var_chr->type != TYPE_STRING){
+                        if(tmp_var_chr->type != TYPE_INTEGER_NUMBER){
                             return SEM_COUNT_ERROR;
                         }
                     }
@@ -1984,7 +1984,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         if(tmp_var_chr == NULL){
                             return SEM_UNDEFINED_ERROR;
                         }
-                        if(tmp_var_chr->type != TYPE_STRING){
+                        if(tmp_var_chr->type != TYPE_INTEGER_NUMBER){
                             return SEM_COUNT_ERROR;
                         }
                     }
