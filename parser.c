@@ -1114,8 +1114,11 @@ int statlist(token *sToken, function_save *fun_id){
                         if (sToken->type != TYPE_INTEGER_NUMBER) {
                             if(sToken->type != TYPE_STRING){
                                 if(sToken->type != TYPE_LBRACKET) {
-                                    if(sToken->type != TYPE_IDENTIFIER)// $a = (a);
-                                        afterAssign = false;
+                                    if(sToken->type != TYPE_IDENTIFIER) {// $a = (a);
+                                        if (sToken->type != KEYWORD_NULL) {
+                                            afterAssign = false;
+                                        }
+                                    }
                                 }
                             }
                         }
