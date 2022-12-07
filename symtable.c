@@ -12,27 +12,6 @@
 void BVSInit(TRoot *SymTable){
     SymTable->rootPtr = NULL;
 }
-TNode *BVSCreate(TNode *rootPtr, token token){
-
-    TNode *newPtr = malloc(sizeof(struct tnode));
-    if(newPtr == NULL){
-        fprintf(stderr, "99");
-        return NULL;
-    }
-    //TNode init;
-    string initString;
-    initString.str = NULL;
-    initString.length = 0;
-    initString.alloc = 0;
-    newPtr->content = &initString;
-    strCpyStr(newPtr->content, (&token)->content.str);
-    newPtr->type = (&token)->type;
-    newPtr->leftPtr = NULL;  
-    newPtr->rightPtr = NULL;
-    rootPtr = newPtr;
-    
-    return newPtr;
-}
 
 TNode *BVSInsert(TNode *rootPtr, token token){
     TNode *tmp = rootPtr;
@@ -110,29 +89,6 @@ void BVSInit_function(TRootf *SymTable){
     SymTable->rootPtr = NULL;
 }
 
-TNodef *BVSCreate_function(TNodef *rootPtr,function_save token){
-    TNodef *newPtr = malloc(sizeof(struct tnodef));
-    if(newPtr == NULL){
-        fprintf(stderr, "99");
-        return NULL;
-    }
-    //TNodef init;
-    string initStr;
-    initStr.str = NULL;
-    initStr.length = 0;
-    initStr.alloc = 0;
-    //newPtr = &init;
-    newPtr->content = &initStr;
-    newPtr->leftPtr = NULL;
-    newPtr->rightPtr = NULL;
-    newPtr->return_type = token.ret_value;
-    newPtr->parameters = token.param_count;
-    strCpyStr(newPtr->content, token.content);
-    rootPtr = newPtr;
-
-    return newPtr;
-}
-
 TNodef *BVSInsert_function(TNodef *rootPtr, function_save token){
     TNodef *tmp = rootPtr;
     TNodef *insert = malloc((sizeof (TNode)));
@@ -186,14 +142,4 @@ void BVSFree_function(TRootf *SymTable){
     BVSFreeFunctionNode(SymTable->rootPtr);
     free(SymTable);
 }
-
-
 //////////////////////////////////////////
-void postorder(TNode *tree){ 
-    if(tree != NULL){
-        postorder(tree->leftPtr);
-        postorder(tree->rightPtr);
-        fprintf(stderr, "CONTENT: %s              TYPE: %d\n", tree->content->str, tree->type);
-    }
-    fprintf(stderr, "Whatttttttt");
-}
