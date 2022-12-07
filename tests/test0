@@ -1,9 +1,8 @@
 <?php
 declare(strict_types=1);
-$n = readi();
-$x = chr($n);
-if($x === "7") {
-    write("String is 7\n");
+$x = substring("This is a string\n",10,13);
+if($x === "str") {
+    write("Substring is str\n");
 } else {
-    write("Not 7\n");
+    write("Not str\n");
 }

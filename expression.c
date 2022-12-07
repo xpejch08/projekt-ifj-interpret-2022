@@ -528,6 +528,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
 
                 if(op1->orig == TYPE_DOUBLE_NUMBER && op3->orig == TYPE_DOUBLE_NUMBER)
                 {
+                    
                     if(exptmpchoose == 0){
                         if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
                             strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
@@ -817,7 +818,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                         }
                         else{
                             double f = string2doubleExp(op3->codename);
-                            printf("%s GF@&expTmp1 GF@&%s float@&%a\n", ADD, (op1->codename.str)+1, f);
+                            printf("%s GF@&expTmp1 GF@&%s float@%a\n", ADD, (op1->codename.str)+1, f);
                         }
                     }
                     else{
