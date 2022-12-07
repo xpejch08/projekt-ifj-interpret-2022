@@ -116,6 +116,8 @@ PrtableSymbolsEnum prtableTokenToSymbol(token *sToken, int iforass)
             return SSTRING;
         case TYPE_VARIABLE:
             return VARIABLE;
+        case KEYWORD_NULL:
+            return SNULL;
         case TYPE_SEMICOLON:
             if(iforass == 1){
                 return DOLLAR; //THE ENDER of expression
@@ -148,6 +150,8 @@ int prtableDataTypeToTokenType(DataTypeEnum type){
             return TYPE_DOUBLE_NUMBER;
         case DATATYPE_STRING:
             return TYPE_STRING;
+        case DATATYPE_NULL:
+            return KEYWORD_NULL;
         default:
             return SEM_UNDEFINED_ERROR;
     }
@@ -184,6 +188,7 @@ PrtableIndexEnum prtableSymbolToIndex(PrtableSymbolsEnum symb)
         case SFLOAT:
         case SSTRING:
         case VARIABLE:
+        case SNULL:
             return INDEX_DATA;
         default:
             return INDEX_DOLLAR; //THE ENDER
@@ -244,7 +249,7 @@ PrtableRulesEnum pickRule(StackElement *op1, StackElement *op2, StackElement *op
             return RULE_ERROR;
     }
     if (&(op1->symbol) != NULL && &(op2->symbol) == NULL && &(op3->symbol) == NULL){
-        if (op1->symbol == VARIABLE || op1->symbol == SINT || op1->symbol == SFLOAT || op1->symbol == SSTRING)
+        if (op1->symbol == VARIABLE || op1->symbol == SINT || op1->symbol == SFLOAT || op1->symbol == SSTRING || op1->symbol == SNULL)
             return RULE_I;
         else
             return RULE_ERROR;
@@ -267,6 +272,8 @@ DataTypeEnum getDataType(token *sToken, TRoot *someTree){
         return DATATYPE_STRING;
     }else if (sToken->type == TYPE_SEMICOLON || sToken->type == TYPE_RVINCULUM){
         return DATATYPE_NONE;
+    }else if (sToken->type == KEYWORD_NULL){
+        return DATATYPE_NULL;
     }else if (sToken->type == TYPE_VARIABLE){ //search for the value of variable in BST
         TNode* data = BVSSearch(someTree->rootPtr, *sToken);
         if (data != NULL){
@@ -278,6 +285,9 @@ DataTypeEnum getDataType(token *sToken, TRoot *someTree){
             }
             else if(data->type == TYPE_STRING){
                 return DATATYPE_STRING;
+            }
+            else if(data->type == KEYWORD_NULL){
+                return DATATYPE_NULL;
             }
         }
         return DATATYPE_NONE;
@@ -3330,7 +3340,12 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
                                 }
                                 break;
                             case TYPE_VARIABLE:
+
                                 result = BVSSearch(someTree->rootPtr,tToken)->type;
+                                bool searched = BVSSearch(someTree->rootPtr,tToken)->declared;
+                                if(searched == false){
+                                    exit(5);
+                                }
                                 if (result == TYPE_INTEGER_NUMBER){
                                     if(nexttmpexp==0){
                                         printf("%s GF@&expTmp1 int@%s\n", MOVE, tToken.content.str->str);
@@ -3413,6 +3428,10 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
                                 break;
                             case TYPE_VARIABLE:
                                 result = BVSSearch(someTree->rootPtr,tToken)->type;
+                                bool searched = BVSSearch(someTree->rootPtr,tToken)->declared;
+                                if(searched == false){
+                                    exit(5);
+                                }
                                 if (result == TYPE_INTEGER_NUMBER){
                                     if(nexttmpexp==0){
                                         printf("%s LF@&expTmp1 int@%s\n", MOVE, tToken.content.str->str);

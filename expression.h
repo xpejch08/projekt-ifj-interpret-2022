@@ -27,6 +27,7 @@ typedef enum{
     SFLOAT,
     SSTRING,
     VARIABLE,
+    SNULL,
     LBRACKET,
     RBRACKET,
     DOLLAR,
@@ -40,6 +41,7 @@ typedef enum{
     DATATYPE_FLOAT,
     DATATYPE_STRING,
     DATATYPE_NONE,
+    DATATYPE_NULL,
     DATATYPEENUM_ERROR,
     DATATYPE_ENDER
 }DataTypeEnum;
