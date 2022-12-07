@@ -530,8 +530,8 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") != 0 ||
                             strCmpConstStr((&op3->codename), "expTmp2") != 0))
-                            {   double f = string2doubleExp(op1); 
-                                double g = string2doubleExp(op3);
+                            {   double f = string2doubleExp(op1->codename); 
+                                double g = string2doubleExp(op3->codename);
                                 printf("%s GF@&expTmp1 float@%a float@%a\n", ADD,f, g);
                             }
                         else if((strCmpConstStr((&op1->codename), "expTmp1") != 0 &&
@@ -539,7 +539,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             (strCmpConstStr((&op3->codename), "expTmp1") == 0 &&
                             strCmpConstStr((&op3->codename), "expTmp2") == 0))
                             {     
-                                double f = string2doubleExp(op1);                
+                                double f = string2doubleExp(op1->codename);                
                                 printf("%s GF@&expTmp1 float@%a GF@&%s\n", ADD, f, op3->codename.str);
                             }
                         else if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
@@ -547,7 +547,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             (strCmpConstStr((&op3->codename), "expTmp1") != 0 &&
                             strCmpConstStr((&op3->codename), "expTmp2") != 0))
                             {
-                                double f = string2doubleExp(op3);
+                                double f = string2doubleExp(op3->codename);
                                 printf("%s GF@&expTmp1 GF@&%s float@%a\n", ADD, op1->codename.str,f);
                             }                            
                     }else{
@@ -563,21 +563,25 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                             (strCmpConstStr((&op3->codename), "expTmp1") != 0 &&
                             strCmpConstStr((&op3->codename), "expTmp2") != 0))
                             {    
-                                printf("%s GF@&expTmp2 int@%s int@%s\n", ADD, op1->codename.str, op3->codename.str);
+                                double f = string2doubleExp(op1->codename); 
+                                double g = string2doubleExp(op3->codename);
+                                printf("%s GF@&expTmp2 float@%a float@%a\n", ADD, f,g);
                             }
                         else if((strCmpConstStr((&op1->codename), "expTmp1") != 0 &&
                             strCmpConstStr((&op1->codename), "expTmp2") != 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
                             strCmpConstStr((&op3->codename), "expTmp2") == 0))
                             {                     
-                                printf("%s GF@&expTmp2 int@%s GF@&%s\n", ADD, op1->codename.str, op3->codename.str);
+                                double f = string2doubleExp(op1->codename); 
+                                printf("%s GF@&expTmp2 float@%a GF@&%s\n", ADD, f, op3->codename.str);
                             }
                         else if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
                             strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
                             (strCmpConstStr((&op3->codename), "expTmp1") != 0 &&
                             strCmpConstStr((&op3->codename), "expTmp2") != 0))
                             {
-                                printf("%s GF@&expTmp2 GF@&%s int@%s\n", ADD, op1->codename.str, op3->codename.str);
+                                double f = string2doubleExp(op3->codename); 
+                                printf("%s GF@&expTmp2 GF@&%s float@%a\n", ADD, op1->codename.str, f);
                             }                    
                         }
                 }
