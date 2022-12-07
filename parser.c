@@ -1690,7 +1690,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         }
                     }
                     else{
-                        TNode *tmp_var_strlen = BVSSearch(insideFunction->rootPtr, *sToken);
+                        TNode *tmp_var_strlen = BVSSearch(mainTree->rootPtr, *sToken);
                         if(tmp_var_strlen == NULL){
                             return SEM_UNDEFINED_ERROR;
                         }
