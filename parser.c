@@ -405,15 +405,16 @@ int declrList(token *sToken, function_save *fun_id) {
                 }
 
                 if (sToken->type == TYPE_LBRACKET) {
-                    paramError = parametrs(PARAM_SUBSTRING, 1, sToken, fun_id);
+                    paramError = parametrs(PARAM_ORD, 1, sToken, fun_id);
                     if (paramError == SUCCES) {
+                        
                         if (getNextToken(sToken) != TYPE_SEMICOLON) {
                             //instructionFree()
                             return SYN_ERROR;
                         }
                         //todo instructionFree()
                         canParseEnd = true;
-
+                        
                         if((result = getNextToken(sToken)) != SUCCES){
                             return  result;
                         }
@@ -1933,6 +1934,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
             if((result = getNextToken(sToken)) != SUCCES){
                 return  result;
             }
+            
             if(sToken->type == TYPE_VARIABLE || sToken->type == TYPE_STRING){
                 if(sToken->type == TYPE_VARIABLE){
                     if(in_function){
@@ -1952,16 +1954,25 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                         if(tmp_var_ord->type != TYPE_STRING){
                             return SEM_COUNT_ERROR;
                         }
-                    }
+                        }
+                        printf("%s\n", CREATEFRAME);
+                        printf("%s\n", PUSHFRAME);
+                        printf("%s LF@&%s GF@&%s\n", MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
+                        printf("%s GF@&%s LF@&%s int@%d\n",STRI2INT, (activeString->str)+1, (sToken->content.str->str)+1, 0);
+                        printf("%s\n",POPFRAME);
                 }
-                printf("%s\n", CREATEFRAME);
-                printf("%s\n", PUSHFRAME);
-                printf("%s LF@&%s GF@&%s\n", MOVE, (sToken->content.str->str)+1, (sToken->content.str->str)+1);
-                printf("%s GF@&%s LF@&%s int@%d\n",STRI2INT, (activeString->str)+1, (sToken->content.str->str)+1, 0);
-                printf("%s\n",POPFRAME);
+                else{
+                    printf("%s\n", CREATEFRAME);
+                    printf("%s\n", PUSHFRAME);
+                
+                    printf("%s GF@&%s string@%s int@%d\n",STRI2INT, (activeString->str)+1, sToken->content.str->str, 0);
+                    printf("%s\n",POPFRAME);
+                }
+                
                 if((result = getNextToken(sToken)) != SUCCES){
                     return  result;
                 }
+                
                 if(sToken->type == TYPE_RBRACKET){
                     return SUCCES;
                 }
