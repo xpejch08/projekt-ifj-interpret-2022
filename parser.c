@@ -1813,8 +1813,9 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                             }
 
                             if(sToken->type == TYPE_VARIABLE || sToken->type == TYPE_INTEGER_NUMBER){
-                                varJ = true;
+                                
                                 if(sToken->type == TYPE_VARIABLE){
+                                    varJ = true;
                                     if(in_function){
                                         TNode *tmp_var_substring = BVSSearch(insideFunction->rootPtr, *sToken);
                                         if(tmp_var_substring == NULL){
@@ -1852,9 +1853,8 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                                 
                                 printf("%s &substring%d LF@&cmp2 bool@true\n",JUMPIFNEQ, unique);
                                 printf("%s &legit\n", JUMP);
-
                                 }
-                            }
+                            
                             else{
 
                                 if(varI == false && varJ == false){
@@ -1904,7 +1904,7 @@ int parametrs(int option, int repeat, token *sToken, function_save *fun_id){
                                     
                                     printf("%s &legit\n", JUMP);
                                 }
-
+                            }
                             }
                             strClean(tmpToken);
                             if((result = getNextToken(sToken)) != SUCCES){
