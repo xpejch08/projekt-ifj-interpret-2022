@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
-$x = substring("This is a string\n",10,13);
-if($x === "str") {
-    write("Substring is str\n");
+$x = reads();
+if($x !== null) {
+    $y = "Hello " . $x . "!\n";
+    write($y);
 } else {
-    write("Not str\n");
+    write("It is null!\n");
 }
