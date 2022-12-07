@@ -245,14 +245,14 @@ int declrList(token *sToken, function_save *fun_id) {
                                 strClean(sToken->content.str);
                                 strCpyStr(sToken->content.str, activeString);
                                 TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
-                                active->type = TYPE_STRING;
+                                active->type = TYPE_INTEGER_NUMBER;
                                 afterAssign = false;
                             }
                             else{
                                 strClean(sToken->content.str);
                                 strCpyStr(sToken->content.str, activeString);
                                 TNode *active = BVSSearch(insideFunction->rootPtr, *sToken);
-                                active->type = TYPE_STRING;
+                                active->type = TYPE_INTEGER_NUMBER;
                                 afterAssign = false;
                             }
                         }
@@ -296,14 +296,14 @@ int declrList(token *sToken, function_save *fun_id) {
                                 strClean(sToken->content.str);
                                 strCpyStr(sToken->content.str, activeString);
                                 TNode *active = BVSSearch(mainTree->rootPtr, *sToken);
-                                active->type = TYPE_STRING;
+                                active->type = TYPE_DOUBLE_NUMBER;
                                 afterAssign = false;
                             }
                             else{
                                 strClean(sToken->content.str);
                                 strCpyStr(sToken->content.str, activeString);
                                 TNode *active = BVSSearch(insideFunction->rootPtr, *sToken);
-                                active->type = TYPE_STRING;
+                                active->type = TYPE_DOUBLE_NUMBER;
                                 afterAssign = false;
                             }
                         }
