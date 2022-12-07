@@ -390,7 +390,7 @@ int countSymbols(Stack *stack)
     while (elem != NULL)
     {
         if(elem->symbol == SHIFT){
-            
+
             return count;
 
         }
@@ -425,13 +425,13 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
         return DATATYPEENUM_ERROR;
     }
     int isfirstreduction = 0; //for checking if its the first iteration of a 3 operator reduction
-    StackElement *op1 = NULL; 
+    StackElement *op1 = NULL;
     StackElement *op2 = NULL;
     StackElement *op3 = NULL;
     DataTypeEnum resulttype;
     PrtableRulesEnum rule = RULE_ERROR;
 
-    
+
 
     if(countSymbols(stack) == 1)
     {
@@ -528,7 +528,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
 
                 if(op1->orig == TYPE_DOUBLE_NUMBER && op3->orig == TYPE_DOUBLE_NUMBER)
                 {
-                    
+
                     if(exptmpchoose == 0){
                         if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
                             strCmpConstStr((&op1->codename), "expTmp2") == 0) &&
@@ -813,7 +813,7 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                         if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
                             strCmpConstStr((&op3->codename), "expTmp2") == 0))
                         {
-    
+
                             printf("%s GF@&expTmp1 GF@&%s GF@&%s\n", ADD, (op1->codename.str)+1, op3->codename.str);
                         }
                         else{
@@ -2644,109 +2644,109 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
 
                     }
                 }
-                    if(op1->orig == TYPE_STRING && op3->orig == TYPE_VARIABLE)
-                    {
-                        if(exptmpchoose == 0){
-                            if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
-                                strCmpConstStr((&op1->codename), "expTmp2") == 0))
-                            {
-                                printf("%s GF@&expTmp1 GF@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
-                            }
-                            else{
-                                printf("%s GF@&expTmp1 string@%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
-                            }
-                        }
-                        else{
-                            if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
-                                strCmpConstStr((&op3->codename), "expTmp2") == 0))
-                            {
-                                printf("%s GF@&expTmp2 GF@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
-                            }
-                            else{
-                                printf("%s GF@&expTmp2 string@%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
-                            }
-                        }
-                    }
-
-                     if(op1->orig == TYPE_VARIABLE && op3->orig == KEYWORD_NULL)
-                    {
-                        if(exptmpchoose == 0){
-                            if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
-                                strCmpConstStr((&op1->codename), "expTmp2") == 0))
-                            {
-                                printf("%s GF@&expTmp1 GF@&%s nil@nil\n", EQ, op1->codename.str);
-                            }
-                            else{
-                            printf("%s GF@&expTmp1 GF@&%s nil@nil\n", EQ, (op1->codename.str)+1);
-                            }
-                        }
-                        else{
-                            if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
-                                strCmpConstStr((&op1->codename), "expTmp2") == 0))
-                            {
-                                printf("%s GF@&expTmp2 GF@&%s nil@nil\n", EQ, op1->codename.str);
-                            }
-                            else{
-                            printf("%s GF@&expTmp2 GF@&%s nil@nil\n", EQ, (op1->codename.str)+1);
-                            }
-                        }
-                    }
-
-                     if(op1->orig == KEYWORD_NULL && op3->orig == TYPE_VARIABLE)
-                    {
-                        if(exptmpchoose == 0){
-                            if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
-                                strCmpConstStr((&op3->codename), "expTmp2") == 0))
-                            {
-                                printf("%s GF@&expTmp1 nil@nil GF@&%s\n", EQ, op3->codename.str);
-                            }
-                            else{
-                            printf("%s GF@&expTmp1 nil@nil GF@&%s\n", EQ, (op1->codename.str)+1);
-                            }
-                        }
-                        else{
-                             if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
-                                strCmpConstStr((&op3->codename), "expTmp2") == 0))
-                            {
-                                printf("%s GF@&expTmp2 nil@nil GF@&%s\n", EQ, op3->codename.str);
-                            }
-                            else{
-                            printf("%s GF@&expTmp2 nil@nil GF@&%s\n", EQ, (op1->codename.str)+1);
-                            }
-                        }
-                    }
-
-                    if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_STRING)
+                if(op1->orig == TYPE_STRING && op3->orig == TYPE_VARIABLE)
                 {
-                    if(op1->datatype == DATATYPE_INT)
-                    {
                     if(exptmpchoose == 0){
                         if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
                             strCmpConstStr((&op1->codename), "expTmp2") == 0))
                         {
-                            printf("%s GF@&expTmp1 GF@&%s\n", INT2CHAR, op1->codename.str);
-                            printf("%s GF@&expTmp1 GF@&%s string@%s\n", EQ, op1->codename.str, op3->codename.str);
+                            printf("%s GF@&expTmp1 GF@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
                         }
                         else{
-                            printf("%s GF@&expTmp1 GF@&%s\n", INT2CHAR, (op1->codename.str)+1);
-                            printf("%s GF@&expTmp1 GF@&%s string@%s\n", EQ, (op1->codename.str)+1, op3->codename.str);                        }
+                            printf("%s GF@&expTmp1 string@%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
+                        }
                     }
                     else{
                         if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
                             strCmpConstStr((&op3->codename), "expTmp2") == 0))
                         {
-                            printf("%s GF@&expTmp2 GF@&%s GF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            printf("%s GF@&expTmp2 GF@&%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
                         }
                         else{
-                            printf("%s GF@&expTmp2 GF@&%s string@%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            printf("%s GF@&expTmp2 string@%s GF@&%s\n", EQ, op1->codename.str, (op3->codename.str)+1);
                         }
-
-                    }
                     }
                 }
 
+                if(op1->orig == TYPE_VARIABLE && op3->orig == KEYWORD_NULL)
+                {
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0))
+                        {
+                            printf("%s GF@&expTmp1 GF@&%s nil@nil\n", EQ, op1->codename.str);
+                        }
+                        else{
+                            printf("%s GF@&expTmp1 GF@&%s nil@nil\n", EQ, (op1->codename.str)+1);
+                        }
+                    }
+                    else{
+                        if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0))
+                        {
+                            printf("%s GF@&expTmp2 GF@&%s nil@nil\n", EQ, op1->codename.str);
+                        }
+                        else{
+                            printf("%s GF@&expTmp2 GF@&%s nil@nil\n", EQ, (op1->codename.str)+1);
+                        }
+                    }
                 }
-            
+
+                if(op1->orig == KEYWORD_NULL && op3->orig == TYPE_VARIABLE)
+                {
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                        {
+                            printf("%s GF@&expTmp1 nil@nil GF@&%s\n", EQ, op3->codename.str);
+                        }
+                        else{
+                            printf("%s GF@&expTmp1 nil@nil GF@&%s\n", EQ, (op1->codename.str)+1);
+                        }
+                    }
+                    else{
+                        if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                        {
+                            printf("%s GF@&expTmp2 nil@nil GF@&%s\n", EQ, op3->codename.str);
+                        }
+                        else{
+                            printf("%s GF@&expTmp2 nil@nil GF@&%s\n", EQ, (op1->codename.str)+1);
+                        }
+                    }
+                }
+
+                if(op1->orig == TYPE_VARIABLE && op3->orig == TYPE_STRING)
+                {
+                    if(op1->datatype == DATATYPE_INT)
+                    {
+                        if(exptmpchoose == 0){
+                            if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                                strCmpConstStr((&op1->codename), "expTmp2") == 0))
+                            {
+                                printf("%s GF@&expTmp1 GF@&%s\n", INT2CHAR, op1->codename.str);
+                                printf("%s GF@&expTmp1 GF@&%s string@%s\n", EQ, op1->codename.str, op3->codename.str);
+                            }
+                            else{
+                                printf("%s GF@&expTmp1 GF@&%s\n", INT2CHAR, (op1->codename.str)+1);
+                                printf("%s GF@&expTmp1 GF@&%s string@%s\n", EQ, (op1->codename.str)+1, op3->codename.str);                        }
+                        }
+                        else{
+                            if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                                strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                            {
+                                printf("%s GF@&expTmp2 GF@&%s GF@&%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+                            else{
+                                printf("%s GF@&expTmp2 GF@&%s string@%s\n", EQ, (op1->codename.str)+1, op3->codename.str);
+                            }
+
+                        }
+                    }
+                }
+
+            }
+
             else{
                 if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
                 {
@@ -3113,76 +3113,76 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                     }
 
                 }
-                   if(op1->orig == TYPE_VARIABLE && op3->orig == KEYWORD_NULL)
-                    {
-                        if(exptmpchoose == 0){
-                            if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
-                                strCmpConstStr((&op1->codename), "expTmp2") == 0))
-                            {
-                                printf("%s GF@&expTmp1 GF@&%s nil@nil\n", EQ, op1->codename.str);
-                            }
-                            else{
-                            printf("%s GF@&expTmp1 GF@&%s nil@nil\n", EQ, (op1->codename.str)+1);
-                            }
+                if(op1->orig == TYPE_VARIABLE && op3->orig == KEYWORD_NULL)
+                {
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0))
+                        {
+                            printf("%s GF@&expTmp1 GF@&%s nil@nil\n", EQ, op1->codename.str);
                         }
                         else{
-                            if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
-                                strCmpConstStr((&op1->codename), "expTmp2") == 0))
-                            {
-                                printf("%s GF@&expTmp2 GF@&%s nil@nil\n", EQ, op1->codename.str);
-                            }
-                            else{
-                            printf("%s GF@&expTmp2 GF@&%s nil@nil\n", EQ, (op1->codename.str)+1);
-                            }
+                            printf("%s GF@&expTmp1 GF@&%s nil@nil\n", EQ, (op1->codename.str)+1);
                         }
                     }
+                    else{
+                        if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0))
+                        {
+                            printf("%s GF@&expTmp2 GF@&%s nil@nil\n", EQ, op1->codename.str);
+                        }
+                        else{
+                            printf("%s GF@&expTmp2 GF@&%s nil@nil\n", EQ, (op1->codename.str)+1);
+                        }
+                    }
+                }
 
-                     if(op1->orig == KEYWORD_NULL && op3->orig == TYPE_VARIABLE)
-                    {
-                        if(exptmpchoose == 0){
-                            if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
-                                strCmpConstStr((&op3->codename), "expTmp2") == 0))
-                            {
-                                printf("%s GF@&expTmp1 nil@nil GF@&%s\n", EQ, op3->codename.str);
-                            }
-                            else{
+                if(op1->orig == KEYWORD_NULL && op3->orig == TYPE_VARIABLE)
+                {
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                        {
+                            printf("%s GF@&expTmp1 nil@nil GF@&%s\n", EQ, op3->codename.str);
+                        }
+                        else{
                             printf("%s GF@&expTmp1 nil@nil GF@&%s\n", EQ, (op1->codename.str)+1);
-                            }
+                        }
+                    }
+                    else{
+                        if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                        {
+                            printf("%s GF@&expTmp2 nil@nil GF@&%s\n", EQ, op3->codename.str);
                         }
                         else{
-                             if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
-                                strCmpConstStr((&op3->codename), "expTmp2") == 0))
-                            {
-                                printf("%s GF@&expTmp2 nil@nil GF@&%s\n", EQ, op3->codename.str);
-                            }
-                            else{
                             printf("%s GF@&expTmp2 nil@nil GF@&%s\n", EQ, (op1->codename.str)+1);
-                            }
                         }
                     }
-                     if(op1->orig == TYPE_VARIABLE && op3->orig == KEYWORD_NULL)
-                    {
-                        if(exptmpchoose == 0){
-                            if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
-                                strCmpConstStr((&op1->codename), "expTmp2") == 0))
-                            {
-                                printf("%s GF@&expTmp1 GF@&%s nil@nil\n", EQ, op1->codename.str);
-                            }
-                            else{
-                            printf("%s GF@&expTmp1 GF@&%s nil@nil\n", EQ, (op1->codename.str)+1);
-                            }
+                }
+                if(op1->orig == TYPE_VARIABLE && op3->orig == KEYWORD_NULL)
+                {
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0))
+                        {
+                            printf("%s GF@&expTmp1 GF@&%s nil@nil\n", EQ, op1->codename.str);
                         }
                         else{
-                            if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
-                                strCmpConstStr((&op1->codename), "expTmp2") == 0))
-                            {
-                                printf("%s GF@&expTmp2 GF@&%s nil@nil\n", EQ, op1->codename.str);
-                            }
-                            else{
-                            printf("%s GF@&expTmp2 GF@&%s nil@nil\n", EQ, (op1->codename.str)+1);
-                            }
+                            printf("%s GF@&expTmp1 GF@&%s nil@nil\n", EQ, (op1->codename.str)+1);
                         }
                     }
+                    else{
+                        if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0))
+                        {
+                            printf("%s GF@&expTmp2 GF@&%s nil@nil\n", EQ, op1->codename.str);
+                        }
+                        else{
+                            printf("%s GF@&expTmp2 GF@&%s nil@nil\n", EQ, (op1->codename.str)+1);
+                        }
+                    }
+                }
             }
             else{
                 if(op1->orig == TYPE_INTEGER_NUMBER && op3->orig == TYPE_INTEGER_NUMBER)
@@ -3350,53 +3350,53 @@ DataTypeEnum reduceExpression(Stack *stack, bool in_function){
                         }
                     }
                 }
-                   if(op1->orig == TYPE_VARIABLE && op3->orig == KEYWORD_NULL)
-                    {
-                        if(exptmpchoose == 0){
-                            if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
-                                strCmpConstStr((&op1->codename), "expTmp2") == 0))
-                            {
-                                printf("%s LF@&expTmp1 LF@&%s nil@nil\n", EQ, op1->codename.str);
-                            }
-                            else{
+                if(op1->orig == TYPE_VARIABLE && op3->orig == KEYWORD_NULL)
+                {
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0))
+                        {
+                            printf("%s LF@&expTmp1 LF@&%s nil@nil\n", EQ, op1->codename.str);
+                        }
+                        else{
                             printf("%s LF@&expTmp1 LF@&%s nil@nil\n", EQ, (op1->codename.str)+1);
-                            }
+                        }
+                    }
+                    else{
+                        if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op1->codename), "expTmp2") == 0))
+                        {
+                            printf("%s LF@&expTmp2 LF@&%s nil@nil\n", EQ, op1->codename.str);
                         }
                         else{
-                            if((strCmpConstStr((&op1->codename), "expTmp1") == 0 ||
-                                strCmpConstStr((&op1->codename), "expTmp2") == 0))
-                            {
-                                printf("%s LF@&expTmp2 LF@&%s nil@nil\n", EQ, op1->codename.str);
-                            }
-                            else{
                             printf("%s LF@&expTmp2 LF@&%s nil@nil\n", EQ, (op1->codename.str)+1);
-                            }
                         }
                     }
+                }
 
-                     if(op1->orig == KEYWORD_NULL && op3->orig == TYPE_VARIABLE)
-                    {
-                        if(exptmpchoose == 0){
-                            if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
-                                strCmpConstStr((&op3->codename), "expTmp2") == 0))
-                            {
-                                printf("%s LF@&expTmp1 nil@nil LF@&%s\n", EQ, op3->codename.str);
-                            }
-                            else{
-                            printf("%s LF@&expTmp1 nil@nil LF@&%s\n", EQ, (op1->codename.str)+1);
-                            }
+                if(op1->orig == KEYWORD_NULL && op3->orig == TYPE_VARIABLE)
+                {
+                    if(exptmpchoose == 0){
+                        if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                        {
+                            printf("%s LF@&expTmp1 nil@nil LF@&%s\n", EQ, op3->codename.str);
                         }
                         else{
-                             if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
-                                strCmpConstStr((&op3->codename), "expTmp2") == 0))
-                            {
-                                printf("%s LF@&expTmp2 nil@nil LF@&%s\n", EQ, op3->codename.str);
-                            }
-                            else{
-                            printf("%s LF@&expTmp2 nil@nil LF@&%s\n", EQ, (op1->codename.str)+1);
-                            }
+                            printf("%s LF@&expTmp1 nil@nil LF@&%s\n", EQ, (op1->codename.str)+1);
                         }
                     }
+                    else{
+                        if((strCmpConstStr((&op3->codename), "expTmp1") == 0 ||
+                            strCmpConstStr((&op3->codename), "expTmp2") == 0))
+                        {
+                            printf("%s LF@&expTmp2 nil@nil LF@&%s\n", EQ, op3->codename.str);
+                        }
+                        else{
+                            printf("%s LF@&expTmp2 nil@nil LF@&%s\n", EQ, (op1->codename.str)+1);
+                        }
+                    }
+                }
             }
             if(!in_function){
                 if(exptmpchoose == 0){
@@ -3486,6 +3486,7 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
             if(secondgothrough == 0) {//saves the actual token to use later if we need to assign a simple value;
 
                 tToken.content.str = malloc(sizeof(string));
+                tToken.type = sToken->type;
                 strCpyStr(tToken.content.str, sToken->content.str);
             }
             if(secondgothrough == 1) { //if we are in a second go through of while and token is semicolon, assign previous token to expTmp
@@ -3685,54 +3686,56 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
             if(secondgothrough == 1) {//saves the actual token to use later if we need to assign a simple value;
 
                 tToken.content.str = malloc(sizeof(string));
+                tToken.type = sToken->type;
                 strCpyStr(tToken.content.str, sToken->content.str);
             }
             if(secondgothrough == 2) { //if we are in a third go through of while or if condition and token is RBRACKET
                 double f;
-                if(sToken->type == TYPE_RBRACKET){ 
+
+                if(sToken->type == TYPE_RBRACKET){
                     if (!in_function) {
                         switch (tToken.type) {
                             case TYPE_INTEGER_NUMBER:
                                 if(nexttmpexp==0){
-                                    printf("%s GF@&expTmp1 int@%s\n", MOVE, tToken.content.str->str);
+                                    printf("%s GF@&expTmp1 int@%s int@0\n", EQ, tToken.content.str->str);
+                                    printf("%s GF@&expTmp1 GF@&expTmp1\n", NOT);
                                 }
                                 else{
-                                    printf("%s GF@&expTmp2 int@%s\n", MOVE, tToken.content.str->str);
+                                    printf("%s GF@&expTmp2 int@%s int@0\n", EQ, tToken.content.str->str);
+                                    printf("%s GF@&expTmp2 GF@&expTmp2\n", NOT);
                                 }
                                 break;
                             case TYPE_STRING:
                                 if(nexttmpexp==0){
-                                    printf("%s GF@&expTmp1 string@%s\n", MOVE, tToken.content.str->str);
+                                    printf("%s GF@&expTmp1 string@%s string@\n", EQ, tToken.content.str->str);
+                                    printf("%s GF@&expTmp1 GF@&expTmp1\n", NOT);
                                 }
                                 else{
-                                    printf("%s GF@&expTmp2 string@%s\n", MOVE, tToken.content.str->str);
+
+                                    printf("%s GF@&expTmp2 string@%s string@\n", EQ, tToken.content.str->str);
+                                    printf("%s GF@&expTmp2 GF@&expTmp2\n", NOT);
                                 }
                                 break;
                             case TYPE_DOUBLE_NUMBER:
-                                f = string2double(&tToken);
-                                if(nexttmpexp==0){
-                                    printf("%s GF@&expTmp1 float@%a\n", MOVE, f);
-                                }
-                                else{
-                                    printf("%s GF@&expTmp2 float@%a\n", MOVE, f);
-                                }
-                                break;
                             case TYPE_EXPONENT_NUMBER:
                                 f = string2double(&tToken);
+
                                 if(nexttmpexp==0){
 
-                                    printf("%s GF@&expTmp1 float@%a\n", MOVE, f);
+                                    printf("%s GF@&expTmp1 float@%a float@%a\n", EQ,f,(double) 0);
+                                    printf("%s GF@&expTmp1 GF@&expTmp1\n", NOT);
                                 }
                                 else{
-                                    printf("%s GF@&expTmp2 float@%a\n", MOVE, f);
+                                    printf("%s GF@&expTmp2 float@%a float@%a\n", EQ,f, (double) 0);
+                                    printf("%s GF@&expTmp2 GF@&expTmp2\n", NOT);
                                 }
                                 break;
                             case KEYWORD_NULL:
                                 if(nexttmpexp==0){
-                                    printf("%s GF@&expTmp1 nil@nil\n", MOVE);
+                                    printf("%s GF@&expTmp1 bool@false\n", MOVE);
                                 }
                                 else{
-                                    printf("%s GF@&expTmp2 nil@nil\n", MOVE);
+                                    printf("%s GF@&expTmp2 bool@false\n", MOVE);
                                 }
                                 break;
                             case TYPE_VARIABLE:
@@ -3744,227 +3747,260 @@ int precedenceAction(TRoot *someTree, token *sToken, Stack *stack, bool in_funct
                                 }
                                 if (result == TYPE_INTEGER_NUMBER){
                                     if(nexttmpexp==0){
-                                        printf("%s GF@&expTmp1 int@%s\n", MOVE, tToken.content.str->str);
+                                        printf("%s GF@&expTmp1 GF@&%s int@0\n", EQ, (tToken.content.str->str)+1);
+                                        printf("%s GF@&expTmp1 GF@&expTmp1\n",NOT);
                                     }
                                     else{
-                                        printf("%s GF@&expTmp2 int@%s\n", MOVE, tToken.content.str->str);
+                                        printf("%s GF@&expTmp2 GF@&%s int@0\n", EQ, (tToken.content.str->str)+1);
+                                        printf("%s GF@&expTmp2 GF@&expTmp2\n",NOT);
                                     }
                                 }
                                 if (result == TYPE_STRING){
                                     if(nexttmpexp==0){
-                                        printf("%s GF@&expTmp1 string@%s\n", MOVE, tToken.content.str->str);
+                                        printf("%s GF@&expTmp1 GF@&%s string@\n", EQ, (tToken.content.str->str)+1);
+                                        printf("%s GF@&expTmp1 GF@&expTmp1\n",NOT);
                                     }
                                     else{
-                                        printf("%s GF@&expTmp2 string@%s\n", MOVE, tToken.content.str->str);
+                                        printf("%s GF@&expTmp2 GF@&%s string@\n", EQ, (tToken.content.str->str)+1);
+                                        printf("%s GF@&expTmp2 GF@&expTmp2\n",NOT);
                                     }
                                 }
                                 if (result == TYPE_EXPONENT_NUMBER || result == TYPE_DOUBLE_NUMBER){
                                     f = string2double(&tToken);
+
                                     if(nexttmpexp==0){
-                                        printf("%s GF@&expTmp1 float@%a\n", MOVE, f);
+                                        printf("%s GF@&expTmp1 GF@&%s float@%a\n", EQ, (tToken.content.str->str)+1, (double)0);
+                                        printf("%s GF@&expTmp1 GF@&expTmp1\n",NOT);
                                     }
                                     else{
-                                        printf("%s GF@&expTmp2 float@%a\n", MOVE, f);
+                                        printf("%s GF@&expTmp2 GF@&%s float@%a\n", EQ, (tToken.content.str->str)+1, (double)0);
+                                        printf("%s GF@&expTmp2 GF@&expTmp2\n",NOT);
                                     }
                                 }
                                 if(result == KEYWORD_NULL){
                                     if(nexttmpexp==0){
-                                        printf("%s GF@&expTmp1 nil@nil\n", MOVE);
+                                        printf("%s GF@&expTmp1 GF@&%s nil@nil\n", EQ, (tToken.content.str->str)+1);
+                                        printf("%s GF@&expTmp1 GF@&expTmp1\n",NOT);
                                     }
                                     else{
-                                        printf("%s GF@&expTmp2 nil@nil\n", MOVE);
+                                        printf("%s GF@&expTmp2 GF@&%s nil@nil\n", EQ, (tToken.content.str->str)+1);
+                                        printf("%s GF@&expTmp2 GF@&expTmp2\n",NOT);
                                     }
                                 }
                         }
                         free(tToken.content.str);
-                        if ((tToken.type > 117 || tToken.type < 113) && tToken.type != 105) {
+                        if ((tToken.type > 117 || tToken.type < 112) && tToken.type != 105) {
                             stackDispose(stack);
                             return SYN_ERROR;
                         }
-                        nexttmpexp = true;
+                        if ((result = getNextToken(sToken)) != SUCCES) {
+                            return result;
+                        }
+
+                        nexttmpexp = false;
                         *chooseexp = nexttmpexp;
-                        exptmpchoose = false;
+                        exptmpchoose = true;
                         stackDispose(stack);
                         return tToken.type;
 
                     } else {
-                        switch (tToken.type) {
-                            case TYPE_INTEGER_NUMBER:
-                                if(nexttmpexp==0){
-                                    printf("%s LF@&expTmp1 int@%s\n", MOVE, tToken.content.str->str);
-                                }
-                                else{
-                                    printf("%s LF@&expTmp2 int@%s\n", MOVE, tToken.content.str->str);
-                                }
-                                break;
-                            case TYPE_STRING:
-                                if(nexttmpexp==0){
-                                    printf("%s LF@&expTmp1 string@%s\n", MOVE, tToken.content.str->str);
-                                }
-                                else{
-                                    printf("%s LF@&expTmp2 string@%s\n", MOVE, tToken.content.str->str);
-                                }
-                                break;
-                            case TYPE_DOUBLE_NUMBER:
-                            case TYPE_EXPONENT_NUMBER:
-                                f = string2double(&tToken);
-                                if(nexttmpexp==0){
+                            switch (tToken.type) {
+                                case TYPE_INTEGER_NUMBER:
+                                    if(nexttmpexp==0){
+                                        printf("%s LF@&expTmp1 int@%s int@0\n", EQ, tToken.content.str->str);
+                                        printf("%s LF@&expTmp1 LF@&expTmp1\n", NOT);
+                                    }
+                                    else{
+                                        printf("%s LF@&expTmp2 int@%s int@0\n", EQ, tToken.content.str->str);
+                                        printf("%s LF@&expTmp2 LF@&expTmp2\n", NOT);
+                                    }
+                                    break;
+                                case TYPE_STRING:
+                                    if(nexttmpexp==0){
+                                        printf("%s LF@&expTmp1 string@%s string@\n", EQ, tToken.content.str->str);
+                                        printf("%s LF@&expTmp1 LF@&expTmp1\n", NOT);
+                                    }
+                                    else{
 
-                                    printf("%s LF@&expTmp1 float@%a\n", MOVE, f);
-                                }
-                                else{
-                                    printf("%s LF@&expTmp2 float@%a\n", MOVE, f);
-                                }
-                                break;
-                            case KEYWORD_NULL:
-                                if(nexttmpexp==0){
-                                    printf("%s LF@&expTmp1 nil@nil\n", MOVE);
-                                }
-                                else{
-                                    printf("%s LF@&expTmp2 nil@nil\n", MOVE);
-                                }
-                                break;
-                            case TYPE_VARIABLE:
-                                result = BVSSearch(someTree->rootPtr,tToken)->type;
-                                bool searched = BVSSearch(someTree->rootPtr,tToken)->declared; //if searched variable is declared
-                                if(searched == false){
-                                    exit(5);
-                                }
-                                if (result == TYPE_INTEGER_NUMBER){
-                                    if(nexttmpexp==0){
-                                        printf("%s LF@&expTmp1 int@%s\n", MOVE, tToken.content.str->str);
+                                        printf("%s LF@&expTmp2 string@%s string@\n", EQ, tToken.content.str->str);
+                                        printf("%s LF@&expTmp2 LF@&expTmp2\n", NOT);
                                     }
-                                    else{
-                                        printf("%s LF@&expTmp2 int@%s\n", MOVE, tToken.content.str->str);
-                                    }
-                                }
-                                if (result == TYPE_STRING){
-                                    if(nexttmpexp==0){
-                                        printf("%s LF@&expTmp1 string@%s\n", MOVE, tToken.content.str->str);
-                                    }
-                                    else{
-                                        printf("%s LF@&expTmp2 string@%s\n", MOVE, tToken.content.str->str);
-                                    }
-                                }
-                                if (result == TYPE_EXPONENT_NUMBER || result == TYPE_DOUBLE_NUMBER){
+                                    break;
+                                case TYPE_DOUBLE_NUMBER:
+                                case TYPE_EXPONENT_NUMBER:
                                     f = string2double(&tToken);
-                                    if(nexttmpexp==0){
-                                        printf("%s LF@&expTmp1 float@%a\n", MOVE, f);
-                                    }
-                                    else{
-                                        printf("%s LF@&expTmp2 float@%a\n", MOVE, f);
-                                    }
-                                }
-                                if(result == KEYWORD_NULL){
-                                    if(nexttmpexp==0){
-                                        printf("%s LF@&expTmp1 nil@nil\n", MOVE);
-                                    }
-                                    else{
-                                        printf("%s LF@&expTmp2 nil@nil\n", MOVE);
-                                    }
-                                }
 
-                        }//CASE TYPE VARIABLE -> tTokentype = BVSSearchVariable
-                        free(tToken.content.str);
-                        if ((tToken.type > 117 || tToken.type < 113) && tToken.type != 105 ) {
+                                    if(nexttmpexp==0){
+
+                                        printf("%s LF@&expTmp1 float@%a float@%a\n", EQ,f,(double) 0);
+                                        printf("%s LF@&expTmp1 LF@&expTmp1\n", NOT);
+                                    }
+                                    else{
+                                        printf("%s LF@&expTmp2 float@%a float@%a\n", EQ,f, (double) 0);
+                                        printf("%s LF@&expTmp2 LF@&expTmp2\n", NOT);
+                                    }
+                                    break;
+                                case KEYWORD_NULL:
+                                    if(nexttmpexp==0){
+                                        printf("%s LF@&expTmp1 bool@false\n", MOVE);
+                                    }
+                                    else{
+                                        printf("%s LF@&expTmp2 bool@false\n", MOVE);
+                                    }
+                                    break;
+                                case TYPE_VARIABLE:
+
+                                    result = BVSSearch(someTree->rootPtr,tToken)->type;
+                                    bool searched = BVSSearch(someTree->rootPtr,tToken)->declared;
+                                    if(searched == false){
+                                        exit(5);
+                                    }
+                                    if (result == TYPE_INTEGER_NUMBER){
+                                        if(nexttmpexp==0){
+                                            printf("%s LF@&expTmp1 LF@&%s int@0\n", EQ, (tToken.content.str->str)+1);
+                                            printf("%s LF@&expTmp1 LF@&expTmp1\n",NOT);
+                                        }
+                                        else{
+                                            printf("%s LF@&expTmp2 LF@&%s int@0\n", EQ, (tToken.content.str->str)+1);
+                                            printf("%s LF@&expTmp2 LF@&expTmp2\n",NOT);
+                                        }
+                                    }
+                                    if (result == TYPE_STRING){
+                                        if(nexttmpexp==0){
+                                            printf("%s LF@&expTmp1 LF@&%s string@\n", EQ, (tToken.content.str->str)+1);
+                                            printf("%s LF@&expTmp1 LF@&expTmp1\n",NOT);
+                                        }
+                                        else{
+                                            printf("%s LF@&expTmp2 LF@&%s string@\n", EQ, (tToken.content.str->str)+1);
+                                            printf("%s LF@&expTmp2 LF@&expTmp2\n",NOT);
+                                        }
+                                    }
+                                    if (result == TYPE_EXPONENT_NUMBER || result == TYPE_DOUBLE_NUMBER){
+                                        f = string2double(&tToken);
+
+                                        if(nexttmpexp==0){
+                                            printf("%s LF@&expTmp1 LF@&%s float@%a\n", EQ, (tToken.content.str->str)+1, (double)0);
+                                            printf("%s LF@&expTmp1 LF@&expTmp1\n",NOT);
+                                        }
+                                        else{
+                                            printf("%s LF@&expTmp2 LF@&%s float@%a\n", EQ, (tToken.content.str->str)+1, (double)0);
+                                            printf("%s LF@&expTmp2 LF@&expTmp2\n",NOT);
+                                        }
+                                    }
+                                    if(result == KEYWORD_NULL){
+                                        if(nexttmpexp==0){
+                                            printf("%s LF@&expTmp1 LF@&%s nil@nil\n", EQ, (tToken.content.str->str)+1);
+                                            printf("%s LF@&expTmp1 LF@&expTmp1\n",NOT);
+                                        }
+                                        else{
+                                            printf("%s LF@&expTmp2 LF@&%s nil@nil\n", EQ, (tToken.content.str->str)+1);
+                                            printf("%s LF@&expTmp2 LF@&expTmp2\n",NOT);
+                                        }
+                                    }
+                            }
+                            free(tToken.content.str);
+                            if ((tToken.type > 117 || tToken.type < 112) && tToken.type != 105 ) {
+                                stackDispose(stack);
+                                return SYN_ERROR;
+                            }
+                            if ((result = getNextToken(sToken)) != SUCCES) {
+                                return result;
+                            }
+
+                            nexttmpexp = false;
+                            *chooseexp = nexttmpexp;
+                            exptmpchoose = true;
                             stackDispose(stack);
-                            return SYN_ERROR;
+                            return tToken.type;
                         }
-                        nexttmpexp = true;
-                        *chooseexp = nexttmpexp;
-                        exptmpchoose = false;
-                        stackDispose(stack);
-                        return tToken.type;
+
                     }
-
+                    free(tToken.content.str);
                 }
-                free(tToken.content.str);
             }
-        }
 
-        PrtableSymbolsEnum inputsymbol;
-        if ((inputsymbol = prtableTokenToSymbol(sToken, iforass)) == SYMBOLSENUMERROR){
-            stackDispose(stack);
-            return result;
-        }
-        DataTypeEnum inputdatatype;
-        if((inputdatatype = getDataType(sToken, someTree)) == DATATYPEENUM_ERROR){
-            stackDispose(stack);
-            return result;
-        }
-
-        StackElement *stacktopterminal;
-        if((stacktopterminal = stackGetTopTerminal(stack)) == NULL ){
-            stackDispose(stack);
-            return INT_ERROR;
-        }
-
-        PrtableCoordEnum coordinput;
-        if((coordinput = prtableSymbolToCoord(inputsymbol)) == INDEXENUMERROR){
-            stackDispose(stack);
-            return result;
-        }
-        PrtableCoordEnum coordstack;
-        if((coordstack = prtableSymbolToCoord(stacktopterminal->symbol)) == INDEXENUMERROR){
-            stackDispose(stack);
-            return result;
-        }
-
-
-
-        // picks the action to be taken based off of cooridinates in prtable
-        PrtableActionsEnum action = prtable[coordstack][coordinput];
-
-        switch(action){
-            case S:
-                stackInsertShift(stack, SHIFT, DATATYPE_NONE);
-                stackPush(stack, inputsymbol, inputdatatype, *sToken->content.str, sToken->type);
-                if ((result = getNextToken(sToken)) != SUCCES) {
-                    stackDispose(stack);
-                    return result;
-                }
-                break;
-
-            case E:
-                stackPush(stack, inputsymbol, inputdatatype, *sToken->content.str, sToken->type);
-                if ((result = getNextToken(sToken)) != SUCCES) {
-                    stackDispose(stack);
-                    return result;
-                }
-                break;
-
-            case R:
-
-                finaltype = reduceExpression(stack, in_function);
-                break;
-
-            case X:
-                if (coordinput == INDEX_DOLLAR && coordstack == INDEX_DOLLAR) {
-
-                    stackDispose(stack);
-                    done = 1;
-                    break;
-                }
-                else {
-                    stackDispose(stack);
-                    result = SYN_ERROR;
-                    stackDispose(stack);
-                    return result;
-                }
-            case ACTIONSENUMERROR:
+            PrtableSymbolsEnum inputsymbol;
+            if ((inputsymbol = prtableTokenToSymbol(sToken, iforass)) == SYMBOLSENUMERROR){
+                stackDispose(stack);
                 return result;
+            }
+            DataTypeEnum inputdatatype;
+            if((inputdatatype = getDataType(sToken, someTree)) == DATATYPEENUM_ERROR){
+                stackDispose(stack);
+                return result;
+            }
 
+            StackElement *stacktopterminal;
+            if((stacktopterminal = stackGetTopTerminal(stack)) == NULL ){
+                stackDispose(stack);
+                return INT_ERROR;
+            }
+
+            PrtableCoordEnum coordinput;
+            if((coordinput = prtableSymbolToCoord(inputsymbol)) == INDEXENUMERROR){
+                stackDispose(stack);
+                return result;
+            }
+            PrtableCoordEnum coordstack;
+            if((coordstack = prtableSymbolToCoord(stacktopterminal->symbol)) == INDEXENUMERROR){
+                stackDispose(stack);
+                return result;
+            }
+
+
+
+            // picks the action to be taken based off of cooridinates in prtable
+            PrtableActionsEnum action = prtable[coordstack][coordinput];
+
+            switch(action){
+                case S:
+                    stackInsertShift(stack, SHIFT, DATATYPE_NONE);
+                    stackPush(stack, inputsymbol, inputdatatype, *sToken->content.str, sToken->type);
+                    if ((result = getNextToken(sToken)) != SUCCES) {
+                        stackDispose(stack);
+                        return result;
+                    }
+                    break;
+
+                case E:
+                    stackPush(stack, inputsymbol, inputdatatype, *sToken->content.str, sToken->type);
+                    if ((result = getNextToken(sToken)) != SUCCES) {
+                        stackDispose(stack);
+                        return result;
+                    }
+                    break;
+
+                case R:
+
+                    finaltype = reduceExpression(stack, in_function);
+                    break;
+
+                case X:
+                    if (coordinput == INDEX_DOLLAR && coordstack == INDEX_DOLLAR) {
+
+                        stackDispose(stack);
+                        done = 1;
+                        break;
+                    }
+                    else {
+                        stackDispose(stack);
+                        result = SYN_ERROR;
+                        stackDispose(stack);
+                        return result;
+                    }
+                case ACTIONSENUMERROR:
+                    return result;
+
+            }
+
+            secondgothrough++;
         }
-
-        secondgothrough++;
+        if (stackGetTop(stack) != NULL) {
+            stackDispose(stack);
+        }
+        *chooseexp = nexttmpexp; //switches between expTmp and expTmp2
+        return prtableDataTypeToTokenType(finaltype);
     }
-    if (stackGetTop(stack) != NULL) {
-        stackDispose(stack);
-    }
-    *chooseexp = nexttmpexp; //switches between expTmp and expTmp2
-    return prtableDataTypeToTokenType(finaltype);
-}
-   
 
 
 
